@@ -1,0 +1,315 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Curve fitting: temperature as a function of month of the year &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Simple image blur by convolution with a Gaussian kernel" href="plot_image_blur.html" />
+    <link rel="prev" title="Crude periodicity finding" href="plot_periodicity_finder.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="plot_image_blur.html" title="Simple image blur by convolution with a Gaussian kernel"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="plot_periodicity_finder.html" title="Crude periodicity finding"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >1. Getting started with Python for science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../../scipy.html" accesskey="U">1.5. Scipy : high-level scientific computing</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/scipy/auto_examples/solutions/plot_curvefit_temperature_data.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="curve-fitting-temperature-as-a-function-of-month-of-the-year">
+<span id="sphx-glr-intro-scipy-auto-examples-solutions-plot-curvefit-temperature-data-py"></span><h1>Curve fitting: temperature as a function of month of the year<a class="headerlink" href="#curve-fitting-temperature-as-a-function-of-month-of-the-year" title="Permalink to this headline">¶</a></h1>
+<p>We have the min and max temperatures in Alaska for each months of the
+year. We would like to find a function to describe this yearly evolution.</p>
+<p>For this, we will fit a periodic function.</p>
+<div class="section" id="the-data">
+<h2>The data<a class="headerlink" href="#the-data" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">temp_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">17</span><span class="p">,</span>  <span class="mi">19</span><span class="p">,</span>  <span class="mi">21</span><span class="p">,</span>  <span class="mi">28</span><span class="p">,</span>  <span class="mi">33</span><span class="p">,</span>  <span class="mi">38</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span>  <span class="mi">37</span><span class="p">,</span>  <span class="mi">31</span><span class="p">,</span>  <span class="mi">23</span><span class="p">,</span>  <span class="mi">19</span><span class="p">,</span>  <span class="mi">18</span><span class="p">])</span>
+<div class="newline"></div><span class="n">temp_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">62</span><span class="p">,</span> <span class="o">-</span><span class="mi">59</span><span class="p">,</span> <span class="o">-</span><span class="mi">56</span><span class="p">,</span> <span class="o">-</span><span class="mi">46</span><span class="p">,</span> <span class="o">-</span><span class="mi">32</span><span class="p">,</span> <span class="o">-</span><span class="mi">18</span><span class="p">,</span> <span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="o">-</span><span class="mi">13</span><span class="p">,</span> <span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="o">-</span><span class="mi">46</span><span class="p">,</span> <span class="o">-</span><span class="mi">52</span><span class="p">,</span> <span class="o">-</span><span class="mi">58</span><span class="p">])</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="newline"></div><span class="n">months</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">months</span><span class="p">,</span> <span class="n">temp_max</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">months</span><span class="p">,</span> <span class="n">temp_min</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Month&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Min and max temperature&#39;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<img alt="../../../../_images/sphx_glr_plot_curvefit_temperature_data_001.png" class="align-center" src="../../../../_images/sphx_glr_plot_curvefit_temperature_data_001.png" />
+</div>
+<div class="section" id="fitting-it-to-a-periodic-function">
+<h2>Fitting it to a periodic function<a class="headerlink" href="#fitting-it-to-a-periodic-function" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
+<div class="newline"></div><span class="k">def</span> <span class="nf">yearly_temps</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">avg</span><span class="p">,</span> <span class="n">ampl</span><span class="p">,</span> <span class="n">time_offset</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="p">(</span><span class="n">avg</span>
+<div class="newline"></div>            <span class="o">+</span> <span class="n">ampl</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">((</span><span class="n">times</span> <span class="o">+</span> <span class="n">time_offset</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">times</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">res_max</span><span class="p">,</span> <span class="n">cov_max</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">curve_fit</span><span class="p">(</span><span class="n">yearly_temps</span><span class="p">,</span> <span class="n">months</span><span class="p">,</span>
+<div class="newline"></div>                                      <span class="n">temp_max</span><span class="p">,</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<div class="newline"></div><span class="n">res_min</span><span class="p">,</span> <span class="n">cov_min</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">curve_fit</span><span class="p">(</span><span class="n">yearly_temps</span><span class="p">,</span> <span class="n">months</span><span class="p">,</span>
+<div class="newline"></div>                                      <span class="n">temp_min</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="plotting-the-fit">
+<h2>Plotting the fit<a class="headerlink" href="#plotting-the-fit" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">days</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">365</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">months</span><span class="p">,</span> <span class="n">temp_max</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">days</span><span class="p">,</span> <span class="n">yearly_temps</span><span class="p">(</span><span class="n">days</span><span class="p">,</span> <span class="o">*</span><span class="n">res_max</span><span class="p">),</span> <span class="s1">&#39;r-&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">months</span><span class="p">,</span> <span class="n">temp_min</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">days</span><span class="p">,</span> <span class="n">yearly_temps</span><span class="p">(</span><span class="n">days</span><span class="p">,</span> <span class="o">*</span><span class="n">res_min</span><span class="p">),</span> <span class="s1">&#39;b-&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Month&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature ($^\circ$C)&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<img alt="../../../../_images/sphx_glr_plot_curvefit_temperature_data_002.png" class="align-center" src="../../../../_images/sphx_glr_plot_curvefit_temperature_data_002.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.185 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../../_downloads/plot_curvefit_temperature_data.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_curvefit_temperature_data.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../../_downloads/plot_curvefit_temperature_data.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_curvefit_temperature_data.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Curve fitting: temperature as a function of month of the year</a><ul>
+<li><a class="reference internal" href="#the-data">The data</a></li>
+<li><a class="reference internal" href="#fitting-it-to-a-periodic-function">Fitting it to a periodic function</a></li>
+<li><a class="reference internal" href="#plotting-the-fit">Plotting the fit</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="plot_image_blur.html" title="Simple image blur by convolution with a Gaussian kernel"
+             >next</a></li>
+        <li class="right" >
+          <a href="plot_periodicity_finder.html" title="Crude periodicity finding"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >1. Getting started with Python for science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../../scipy.html" >1.5. Scipy : high-level scientific computing</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/scipy/auto_examples/solutions/plot_curvefit_temperature_data.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

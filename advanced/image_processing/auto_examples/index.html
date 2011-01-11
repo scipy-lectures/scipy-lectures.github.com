@@ -1,0 +1,379 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Examples for the image processing chapter &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/image_processing/auto_examples/index.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="examples-for-the-image-processing-chapter">
+<h1>Examples for the image processing chapter<a class="headerlink" href="#examples-for-the-image-processing-chapter" title="Permalink to this headline">¶</a></h1>
+<div class="sphx-glr-thumbcontainer" tooltip="Small example to plot a racoon face. "><div class="figure" id="id1">
+<img alt="../../../_images/sphx_glr_plot_face_thumb.png" src="../../../_images/sphx_glr_plot_face_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_face.html#sphx-glr-advanced-image-processing-auto-examples-plot-face-py"><span class="std std-ref">Displaying a Racoon Face</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="The example demonstrates image interpolation on a Racoon face. "><div class="figure" id="id2">
+<img alt="../../../_images/sphx_glr_plot_interpolation_face_thumb.png" src="../../../_images/sphx_glr_plot_interpolation_face_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_interpolation_face.html#sphx-glr-advanced-image-processing-auto-examples-plot-interpolation-face-py"><span class="std std-ref">Image interpolation</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example shows how to do image manipulation using common numpy arrays tricks."><div class="figure" id="id3">
+<img alt="../../../_images/sphx_glr_plot_numpy_array_thumb.png" src="../../../_images/sphx_glr_plot_numpy_array_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_numpy_array.html#sphx-glr-advanced-image-processing-auto-examples-plot-numpy-array-py"><span class="std std-ref">Image manipulation and numpy arrays</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example shows how to do a radial mean with scikit-image. "><div class="figure" id="id4">
+<img alt="../../../_images/sphx_glr_plot_radial_mean_thumb.png" src="../../../_images/sphx_glr_plot_radial_mean_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_radial_mean.html#sphx-glr-advanced-image-processing-auto-examples-plot-radial-mean-py"><span class="std std-ref">Radial mean</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing how to use broad-casting to plot the mean of blocks of an image. "><div class="figure" id="id5">
+<img alt="../../../_images/sphx_glr_plot_block_mean_thumb.png" src="../../../_images/sphx_glr_plot_block_mean_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_block_mean.html#sphx-glr-advanced-image-processing-auto-examples-plot-block-mean-py"><span class="std std-ref">Plot the block mean of an image</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example that displays a racoon face with matplotlib. "><div class="figure" id="id6">
+<img alt="../../../_images/sphx_glr_plot_display_face_thumb.png" src="../../../_images/sphx_glr_plot_display_face_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_display_face.html#sphx-glr-advanced-image-processing-auto-examples-plot-display-face-py"><span class="std std-ref">Display a Racoon Face</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example shows how to sharpen an image in noiseless situation by applying the filter invers..."><div class="figure" id="id7">
+<img alt="../../../_images/sphx_glr_plot_sharpen_thumb.png" src="../../../_images/sphx_glr_plot_sharpen_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_sharpen.html#sphx-glr-advanced-image-processing-auto-examples-plot-sharpen-py"><span class="std std-ref">Image sharpening</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing various processes that blur an image. "><div class="figure" id="id8">
+<img alt="../../../_images/sphx_glr_plot_blur_thumb.png" src="../../../_images/sphx_glr_plot_blur_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_blur.html#sphx-glr-advanced-image-processing-auto-examples-plot-blur-py"><span class="std std-ref">Blurring of images</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="The example generates and displays simple synthetic data. "><div class="figure" id="id9">
+<img alt="../../../_images/sphx_glr_plot_synthetic_data_thumb.png" src="../../../_images/sphx_glr_plot_synthetic_data_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_synthetic_data.html#sphx-glr-advanced-image-processing-auto-examples-plot-synthetic-data-py"><span class="std std-ref">Synthetic data</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example shows simple operations of mathematical morphology. "><div class="figure" id="id10">
+<img alt="../../../_images/sphx_glr_plot_propagation_thumb.png" src="../../../_images/sphx_glr_plot_propagation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_propagation.html#sphx-glr-advanced-image-processing-auto-examples-plot-propagation-py"><span class="std std-ref">Opening, erosion, and propagation</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example demoes image denoising on a Racoon face. "><div class="figure" id="id11">
+<img alt="../../../_images/sphx_glr_plot_face_denoise_thumb.png" src="../../../_images/sphx_glr_plot_face_denoise_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_face_denoise.html#sphx-glr-advanced-image-processing-auto-examples-plot-face-denoise-py"><span class="std std-ref">Image denoising</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example shows how to extract the bounding box of the largest object"><div class="figure" id="id12">
+<img alt="../../../_images/sphx_glr_plot_find_object_thumb.png" src="../../../_images/sphx_glr_plot_find_object_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_find_object.html#sphx-glr-advanced-image-processing-auto-examples-plot-find-object-py"><span class="std std-ref">Find the bounding box of an object</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This examples shows how to measure quantities from various images."><div class="figure" id="id13">
+<img alt="../../../_images/sphx_glr_plot_measure_data_thumb.png" src="../../../_images/sphx_glr_plot_measure_data_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_measure_data.html#sphx-glr-advanced-image-processing-auto-examples-plot-measure-data-py"><span class="std std-ref">Measurements from images</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This examples demos some simple geometrical transformations on a Racoon face. "><div class="figure" id="id14">
+<img alt="../../../_images/sphx_glr_plot_geom_face_thumb.png" src="../../../_images/sphx_glr_plot_geom_face_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_geom_face.html#sphx-glr-advanced-image-processing-auto-examples-plot-geom-face-py"><span class="std std-ref">Geometrical transformations</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example shows the original image, the noisy image, the denoised one (with the median filte..."><div class="figure" id="id15">
+<img alt="../../../_images/sphx_glr_plot_denoising_thumb.png" src="../../../_images/sphx_glr_plot_denoising_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_denoising.html#sphx-glr-advanced-image-processing-auto-examples-plot-denoising-py"><span class="std std-ref">Denoising an image with the median filter</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example does simple histogram analysis to perform segmentation. "><div class="figure" id="id16">
+<img alt="../../../_images/sphx_glr_plot_histo_segmentation_thumb.png" src="../../../_images/sphx_glr_plot_histo_segmentation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_histo_segmentation.html#sphx-glr-advanced-image-processing-auto-examples-plot-histo-segmentation-py"><span class="std std-ref">Histogram segmentation</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="The Sobel filter is one of the simplest way of finding edges. "><div class="figure" id="id17">
+<img alt="../../../_images/sphx_glr_plot_find_edges_thumb.png" src="../../../_images/sphx_glr_plot_find_edges_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_find_edges.html#sphx-glr-advanced-image-processing-auto-examples-plot-find-edges-py"><span class="std std-ref">Finding edges with Sobel filters</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example demoes Total-Variation (TV) denoising on a Racoon face. "><div class="figure" id="id18">
+<img alt="../../../_images/sphx_glr_plot_face_tv_denoise_thumb.png" src="../../../_images/sphx_glr_plot_face_tv_denoise_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_face_tv_denoise.html#sphx-glr-advanced-image-processing-auto-examples-plot-face-tv-denoise-py"><span class="std std-ref">Total Variation denoising</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example illustrates greyscale mathematical morphology. "><div class="figure" id="id19">
+<img alt="../../../_images/sphx_glr_plot_greyscale_dilation_thumb.png" src="../../../_images/sphx_glr_plot_greyscale_dilation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_greyscale_dilation.html#sphx-glr-advanced-image-processing-auto-examples-plot-greyscale-dilation-py"><span class="std std-ref">Greyscale dilation</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing how to clean segmentation with mathematical morphology: removing small regio..."><div class="figure" id="id20">
+<img alt="../../../_images/sphx_glr_plot_clean_morpho_thumb.png" src="../../../_images/sphx_glr_plot_clean_morpho_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_clean_morpho.html#sphx-glr-advanced-image-processing-auto-examples-plot-clean-morpho-py"><span class="std std-ref">Cleaning segmentation with mathematical morphology</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example performs a Gaussian mixture model analysis of the image histogram to find the righ..."><div class="figure" id="id21">
+<img alt="../../../_images/sphx_glr_plot_GMM_thumb.png" src="../../../_images/sphx_glr_plot_GMM_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_GMM.html#sphx-glr-advanced-image-processing-auto-examples-plot-gmm-py"><span class="std std-ref">Segmentation with Gaussian mixture models</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example shows how to do segmentation with watershed. "><div class="figure" id="id22">
+<img alt="../../../_images/sphx_glr_plot_watershed_segmentation_thumb.png" src="../../../_images/sphx_glr_plot_watershed_segmentation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_watershed_segmentation.html#sphx-glr-advanced-image-processing-auto-examples-plot-watershed-segmentation-py"><span class="std std-ref">Watershed segmentation</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example performs a simple granulometry analysis. "><div class="figure" id="id23">
+<img alt="../../../_images/sphx_glr_plot_granulo_thumb.png" src="../../../_images/sphx_glr_plot_granulo_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_granulo.html#sphx-glr-advanced-image-processing-auto-examples-plot-granulo-py"><span class="std std-ref">Granulometry</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example uses spectral clustering to do segmentation. "><div class="figure" id="id24">
+<img alt="../../../_images/sphx_glr_plot_spectral_clustering_thumb.png" src="../../../_images/sphx_glr_plot_spectral_clustering_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_spectral_clustering.html#sphx-glr-advanced-image-processing-auto-examples-plot-spectral-clustering-py"><span class="std std-ref">Segmentation with spectral clustering</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/auto_examples_python1.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/auto_examples_jupyter1.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc"></div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/image_processing/auto_examples/index.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

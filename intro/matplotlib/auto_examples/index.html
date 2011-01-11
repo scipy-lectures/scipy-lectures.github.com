@@ -1,0 +1,635 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Code samples for Matplotlib &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/matplotlib/auto_examples/index.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="code-samples-for-matplotlib">
+<h1>Code samples for Matplotlib<a class="headerlink" href="#code-samples-for-matplotlib" title="Permalink to this headline">¶</a></h1>
+<p>The examples here are only examples relevant to the points raised in this
+chapter. The matplotlib documentation comes with a much more exhaustive
+<a class="reference external" href="http://matplotlib.org/gallery.html">gallery</a>.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="A simple pie chart example with matplotlib. "><div class="figure" id="id1">
+<img alt="../../../_images/sphx_glr_plot_pie_thumb.png" src="../../../_images/sphx_glr_plot_pie_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_pie.html#sphx-glr-intro-matplotlib-auto-examples-plot-pie-py"><span class="std std-ref">Pie chart</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="A simple example showing how to plot a scatter of points with matplotlib. "><div class="figure" id="id2">
+<img alt="../../../_images/sphx_glr_plot_scatter_thumb.png" src="../../../_images/sphx_glr_plot_scatter_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_scatter.html#sphx-glr-intro-matplotlib-auto-examples-plot-scatter-py"><span class="std std-ref">Plotting a scatter of points</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Demoing some simple features of matplotlib "><div class="figure" id="id3">
+<img alt="../../../_images/sphx_glr_plot_good_thumb.png" src="../../../_images/sphx_glr_plot_good_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_good.html#sphx-glr-intro-matplotlib-auto-examples-plot-good-py"><span class="std std-ref">A simple, good-looking plot</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Show multiple subplots in matplotlib. "><div class="figure" id="id4">
+<img alt="../../../_images/sphx_glr_plot_multiplot_thumb.png" src="../../../_images/sphx_glr_plot_multiplot_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_multiplot.html#sphx-glr-intro-matplotlib-auto-examples-plot-multiplot-py"><span class="std std-ref">Subplots</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example shows a couple of simple usage of axes."><div class="figure" id="id5">
+<img alt="../../../_images/sphx_glr_plot_axes_thumb.png" src="../../../_images/sphx_glr_plot_axes_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_axes.html#sphx-glr-intro-matplotlib-auto-examples-plot-axes-py"><span class="std std-ref">Simple axes example</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="A plotting example with a few simple tweaks "><div class="figure" id="id6">
+<img alt="../../../_images/sphx_glr_plot_bad_thumb.png" src="../../../_images/sphx_glr_plot_bad_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_bad.html#sphx-glr-intro-matplotlib-auto-examples-plot-bad-py"><span class="std std-ref">A simple plotting example</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing horizontal arrangement of subplots with matplotlib. "><div class="figure" id="id7">
+<img alt="../../../_images/sphx_glr_plot_subplot-horizontal_thumb.png" src="../../../_images/sphx_glr_plot_subplot-horizontal_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_subplot-horizontal.html#sphx-glr-intro-matplotlib-auto-examples-plot-subplot-horizontal-py"><span class="std std-ref">Horizontal arrangement of subplots</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing vertical arrangement of subplots with matplotlib. "><div class="figure" id="id8">
+<img alt="../../../_images/sphx_glr_plot_subplot-vertical_thumb.png" src="../../../_images/sphx_glr_plot_subplot-vertical_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_subplot-vertical.html#sphx-glr-intro-matplotlib-auto-examples-plot-subplot-vertical-py"><span class="std std-ref">Subplot plot arrangement vertical</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="A simple example of 3D plotting. "><div class="figure" id="id9">
+<img alt="../../../_images/sphx_glr_plot_plot3d_thumb.png" src="../../../_images/sphx_glr_plot_plot3d_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_plot3d.html#sphx-glr-intro-matplotlib-auto-examples-plot-plot3d-py"><span class="std std-ref">3D plotting</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example demoing imshow and styling the figure. "><div class="figure" id="id10">
+<img alt="../../../_images/sphx_glr_plot_imshow_thumb.png" src="../../../_images/sphx_glr_plot_imshow_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_imshow.html#sphx-glr-intro-matplotlib-auto-examples-plot-imshow-py"><span class="std std-ref">Imshow elaborate</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="A simple example showing how to plot a vector field (quiver) with matplotlib. "><div class="figure" id="id11">
+<img alt="../../../_images/sphx_glr_plot_quiver_thumb.png" src="../../../_images/sphx_glr_plot_quiver_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_quiver.html#sphx-glr-intro-matplotlib-auto-examples-plot-quiver-py"><span class="std std-ref">Plotting a vector field: quiver</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="A simple example showing how to plot in polar coordinnates with matplotlib. "><div class="figure" id="id12">
+<img alt="../../../_images/sphx_glr_plot_polar_thumb.png" src="../../../_images/sphx_glr_plot_polar_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_polar.html#sphx-glr-intro-matplotlib-auto-examples-plot-polar-py"><span class="std std-ref">Plotting in polar coordinnates</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing how to display the contours of a function with matplotlib. "><div class="figure" id="id13">
+<img alt="../../../_images/sphx_glr_plot_contour_thumb.png" src="../../../_images/sphx_glr_plot_contour_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_contour.html#sphx-glr-intro-matplotlib-auto-examples-plot-contour-py"><span class="std std-ref">Displaying the contours of a function</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An &quot;ugly&quot; example of plotting. "><div class="figure" id="id14">
+<img alt="../../../_images/sphx_glr_plot_ugly_thumb.png" src="../../../_images/sphx_glr_plot_ugly_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_ugly.html#sphx-glr-intro-matplotlib-auto-examples-plot-ugly-py"><span class="std std-ref">A example of plotting not quite right</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Simple example of plots and filling between them with matplotlib. "><div class="figure" id="id15">
+<img alt="../../../_images/sphx_glr_plot_plot_thumb.png" src="../../../_images/sphx_glr_plot_plot_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_plot.html#sphx-glr-intro-matplotlib-auto-examples-plot-plot-py"><span class="std std-ref">Plot and filled plots</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example of bar plots with matplotlib. "><div class="figure" id="id16">
+<img alt="../../../_images/sphx_glr_plot_bar_thumb.png" src="../../../_images/sphx_glr_plot_bar_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_bar.html#sphx-glr-intro-matplotlib-auto-examples-plot-bar-py"><span class="std std-ref">Bar plots</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing the subplot grid in matplotlib. "><div class="figure" id="id17">
+<img alt="../../../_images/sphx_glr_plot_subplot-grid_thumb.png" src="../../../_images/sphx_glr_plot_subplot-grid_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_subplot-grid.html#sphx-glr-intro-matplotlib-auto-examples-plot-subplot-grid-py"><span class="std std-ref">Subplot grid</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example shows various axes command to position matplotlib axes."><div class="figure" id="id18">
+<img alt="../../../_images/sphx_glr_plot_axes-2_thumb.png" src="../../../_images/sphx_glr_plot_axes-2_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_axes-2.html#sphx-glr-intro-matplotlib-auto-examples-plot-axes-2-py"><span class="std std-ref">Axes</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Displaying a grid on the axes in matploblib. "><div class="figure" id="id19">
+<img alt="../../../_images/sphx_glr_plot_grid_thumb.png" src="../../../_images/sphx_glr_plot_grid_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_grid.html#sphx-glr-intro-matplotlib-auto-examples-plot-grid-py"><span class="std std-ref">Grid</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Demo 3D plotting with matplotlib and style the figure. "><div class="figure" id="id20">
+<img alt="../../../_images/sphx_glr_plot_plot3d-2_thumb.png" src="../../../_images/sphx_glr_plot_plot3d-2_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_plot3d-2.html#sphx-glr-intro-matplotlib-auto-examples-plot-plot3d-2-py"><span class="std std-ref">3D plotting</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example demoing gridspec "><div class="figure" id="id21">
+<img alt="../../../_images/sphx_glr_plot_gridspec_thumb.png" src="../../../_images/sphx_glr_plot_gridspec_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_gridspec.html#sphx-glr-intro-matplotlib-auto-examples-plot-gridspec-py"><span class="std std-ref">GridSpec</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="A example showing off elaborate text printing with matplotlib. "><div class="figure" id="id22">
+<img alt="../../../_images/sphx_glr_plot_text_thumb.png" src="../../../_images/sphx_glr_plot_text_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_text.html#sphx-glr-intro-matplotlib-auto-examples-plot-text-py"><span class="std std-ref">Demo text printing</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div></div>
+<div class="section" id="code-for-the-chapter-s-exercises">
+<h1>Code for the chapter’s exercises<a class="headerlink" href="#code-for-the-chapter-s-exercises" title="Permalink to this headline">¶</a></h1>
+<div class="sphx-glr-thumbcontainer" tooltip="Solution of the excercise 1 with matplotlib. "><div class="figure" id="id23">
+<img alt="../../../_images/sphx_glr_plot_exercise_1_thumb.png" src="../../../_images/sphx_glr_plot_exercise_1_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="exercises/plot_exercise_1.html#sphx-glr-intro-matplotlib-auto-examples-exercises-plot-exercise-1-py"><span class="std std-ref">Excercise 1</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Exercise 4 with matplotlib. "><div class="figure" id="id24">
+<img alt="../../../_images/sphx_glr_plot_exercise_4_thumb.png" src="../../../_images/sphx_glr_plot_exercise_4_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="exercises/plot_exercise_4.html#sphx-glr-intro-matplotlib-auto-examples-exercises-plot-exercise-4-py"><span class="std std-ref">Exercise 4</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Exercise 3 with matplotlib. "><div class="figure" id="id25">
+<img alt="../../../_images/sphx_glr_plot_exercise_3_thumb.png" src="../../../_images/sphx_glr_plot_exercise_3_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="exercises/plot_exercise_3.html#sphx-glr-intro-matplotlib-auto-examples-exercises-plot-exercise-3-py"><span class="std std-ref">Exercise 3</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Exercise 5 with matplotlib. "><div class="figure" id="id26">
+<img alt="../../../_images/sphx_glr_plot_exercise_5_thumb.png" src="../../../_images/sphx_glr_plot_exercise_5_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="exercises/plot_exercise_5.html#sphx-glr-intro-matplotlib-auto-examples-exercises-plot-exercise-5-py"><span class="std std-ref">Exercise 5</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Exercise 6 with matplotlib. "><div class="figure" id="id27">
+<img alt="../../../_images/sphx_glr_plot_exercise_6_thumb.png" src="../../../_images/sphx_glr_plot_exercise_6_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="exercises/plot_exercise_6.html#sphx-glr-intro-matplotlib-auto-examples-exercises-plot-exercise-6-py"><span class="std std-ref">Exercise 6</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Exercise 2 with matplotlib. "><div class="figure" id="id28">
+<img alt="../../../_images/sphx_glr_plot_exercise_2_thumb.png" src="../../../_images/sphx_glr_plot_exercise_2_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="exercises/plot_exercise_2.html#sphx-glr-intro-matplotlib-auto-examples-exercises-plot-exercise-2-py"><span class="std std-ref">Exercise 2</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Exercise 7 with matplotlib "><div class="figure" id="id29">
+<img alt="../../../_images/sphx_glr_plot_exercise_7_thumb.png" src="../../../_images/sphx_glr_plot_exercise_7_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="exercises/plot_exercise_7.html#sphx-glr-intro-matplotlib-auto-examples-exercises-plot-exercise-7-py"><span class="std std-ref">Exercise 7</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Exercise 8 with matplotlib. "><div class="figure" id="id30">
+<img alt="../../../_images/sphx_glr_plot_exercise_8_thumb.png" src="../../../_images/sphx_glr_plot_exercise_8_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="exercises/plot_exercise_8.html#sphx-glr-intro-matplotlib-auto-examples-exercises-plot-exercise-8-py"><span class="std std-ref">Exercise 8</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Exercise 9 with matplotlib. "><div class="figure" id="id31">
+<img alt="../../../_images/sphx_glr_plot_exercise_9_thumb.png" src="../../../_images/sphx_glr_plot_exercise_9_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="exercises/plot_exercise_9.html#sphx-glr-intro-matplotlib-auto-examples-exercises-plot-exercise-9-py"><span class="std std-ref">Exercise 9</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Exercises with matplotlib. "><div class="figure" id="id32">
+<img alt="../../../_images/sphx_glr_plot_exercise_10_thumb.png" src="../../../_images/sphx_glr_plot_exercise_10_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="exercises/plot_exercise_10.html#sphx-glr-intro-matplotlib-auto-examples-exercises-plot-exercise-10-py"><span class="std std-ref">Exercise</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div></div>
+<div class="section" id="example-demoing-choices-for-an-option">
+<h1>Example demoing choices for an option<a class="headerlink" href="#example-demoing-choices-for-an-option" title="Permalink to this headline">¶</a></h1>
+<div class="sphx-glr-thumbcontainer" tooltip="An example demoing the various colors taken by matplotlib's plot. "><div class="figure" id="id33">
+<img alt="../../../_images/sphx_glr_plot_color_thumb.png" src="../../../_images/sphx_glr_plot_color_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_color.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-color-py"><span class="std std-ref">The colors matplotlib line plots</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Plot various linewidth with matplotlib. "><div class="figure" id="id34">
+<img alt="../../../_images/sphx_glr_plot_linewidth_thumb.png" src="../../../_images/sphx_glr_plot_linewidth_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_linewidth.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-linewidth-py"><span class="std std-ref">Linewidth</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates using alpha for transparency. "><div class="figure" id="id35">
+<img alt="../../../_images/sphx_glr_plot_alpha_thumb.png" src="../../../_images/sphx_glr_plot_alpha_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_alpha.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-alpha-py"><span class="std std-ref">Alpha: transparency</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates aliased versus anti-aliased text. "><div class="figure" id="id36">
+<img alt="../../../_images/sphx_glr_plot_aliased_thumb.png" src="../../../_images/sphx_glr_plot_aliased_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_aliased.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-aliased-py"><span class="std std-ref">Aliased versus anti-aliased</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="The example shows aliased versus anti-aliased text. "><div class="figure" id="id37">
+<img alt="../../../_images/sphx_glr_plot_antialiased_thumb.png" src="../../../_images/sphx_glr_plot_antialiased_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_antialiased.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-antialiased-py"><span class="std std-ref">Aliased versus anti-aliased</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Demo the marker size control in matplotlib. "><div class="figure" id="id38">
+<img alt="../../../_images/sphx_glr_plot_ms_thumb.png" src="../../../_images/sphx_glr_plot_ms_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_ms.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-ms-py"><span class="std std-ref">Marker size</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Demo the marker edge widths of matplotlib's markers. "><div class="figure" id="id39">
+<img alt="../../../_images/sphx_glr_plot_mew_thumb.png" src="../../../_images/sphx_glr_plot_mew_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_mew.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-mew-py"><span class="std std-ref">Marker edge width</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Demo the marker edge color of matplotlib's markers. "><div class="figure" id="id40">
+<img alt="../../../_images/sphx_glr_plot_mec_thumb.png" src="../../../_images/sphx_glr_plot_mec_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_mec.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-mec-py"><span class="std std-ref">Marker edge color</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Demo the marker face color of matplotlib's markers. "><div class="figure" id="id41">
+<img alt="../../../_images/sphx_glr_plot_mfc_thumb.png" src="../../../_images/sphx_glr_plot_mfc_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_mfc.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-mfc-py"><span class="std std-ref">Marker face color</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example plotting the matplotlib colormaps. "><div class="figure" id="id42">
+<img alt="../../../_images/sphx_glr_plot_colormaps_thumb.png" src="../../../_images/sphx_glr_plot_colormaps_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_colormaps.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-colormaps-py"><span class="std std-ref">Colormaps</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example demoing the solide cap style in matplotlib. "><div class="figure" id="id43">
+<img alt="../../../_images/sphx_glr_plot_solid_capstyle_thumb.png" src="../../../_images/sphx_glr_plot_solid_capstyle_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_solid_capstyle.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-solid-capstyle-py"><span class="std std-ref">Solid cap style</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing the differen solid joint styles in matplotlib. "><div class="figure" id="id44">
+<img alt="../../../_images/sphx_glr_plot_solid_joinstyle_thumb.png" src="../../../_images/sphx_glr_plot_solid_joinstyle_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_solid_joinstyle.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-solid-joinstyle-py"><span class="std std-ref">Solid joint style</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example demoing the dash capstyle. "><div class="figure" id="id45">
+<img alt="../../../_images/sphx_glr_plot_dash_capstyle_thumb.png" src="../../../_images/sphx_glr_plot_dash_capstyle_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_dash_capstyle.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-dash-capstyle-py"><span class="std std-ref">Dash capstyle</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Example demoing the dash join style. "><div class="figure" id="id46">
+<img alt="../../../_images/sphx_glr_plot_dash_joinstyle_thumb.png" src="../../../_images/sphx_glr_plot_dash_joinstyle_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_dash_joinstyle.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-dash-joinstyle-py"><span class="std std-ref">Dash join style</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Plot the different line styles. "><div class="figure" id="id47">
+<img alt="../../../_images/sphx_glr_plot_linestyles_thumb.png" src="../../../_images/sphx_glr_plot_linestyles_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_linestyles.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-linestyles-py"><span class="std std-ref">Linestyles</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Show the different markers of matplotlib. "><div class="figure" id="id48">
+<img alt="../../../_images/sphx_glr_plot_markers_thumb.png" src="../../../_images/sphx_glr_plot_markers_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_markers.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-markers-py"><span class="std std-ref">Markers</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example demoing different locators to position ticks on axis for matplotlib. "><div class="figure" id="id49">
+<img alt="../../../_images/sphx_glr_plot_ticks_thumb.png" src="../../../_images/sphx_glr_plot_ticks_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="options/plot_ticks.html#sphx-glr-intro-matplotlib-auto-examples-options-plot-ticks-py"><span class="std std-ref">Locators for tick on axis</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div></div>
+<div class="section" id="code-generating-the-summary-figures-with-a-title">
+<h1>Code generating the summary figures with a title<a class="headerlink" href="#code-generating-the-summary-figures-with-a-title" title="Permalink to this headline">¶</a></h1>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing how to plot in polar coordinnate, and some decorations. "><div class="figure" id="id50">
+<img alt="../../../_images/sphx_glr_plot_polar_ext_thumb.png" src="../../../_images/sphx_glr_plot_polar_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_polar_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-polar-ext-py"><span class="std std-ref">Plotting in polar, decorated</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Demo 3D plotting with matplotlib and decorate the figure. "><div class="figure" id="id51">
+<img alt="../../../_images/sphx_glr_plot_plot3d_ext_thumb.png" src="../../../_images/sphx_glr_plot_plot3d_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_plot3d_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-plot3d-ext-py"><span class="std std-ref">3D plotting vignette</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example of plots with matplotlib, and added annotations. "><div class="figure" id="id52">
+<img alt="../../../_images/sphx_glr_plot_plot_ext_thumb.png" src="../../../_images/sphx_glr_plot_plot_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_plot_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-plot-ext-py"><span class="std std-ref">Plot example vignette</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Demo multiple plots and style the figure. "><div class="figure" id="id53">
+<img alt="../../../_images/sphx_glr_plot_multiplot_ext_thumb.png" src="../../../_images/sphx_glr_plot_multiplot_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_multiplot_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-multiplot-ext-py"><span class="std std-ref">Multiple plots vignette</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example of doing box plots with matplotlib"><div class="figure" id="id54">
+<img alt="../../../_images/sphx_glr_plot_boxplot_ext_thumb.png" src="../../../_images/sphx_glr_plot_boxplot_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_boxplot_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-boxplot-ext-py"><span class="std std-ref">Boxplot with matplotlib</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing the scatter function, with decorations. "><div class="figure" id="id55">
+<img alt="../../../_images/sphx_glr_plot_scatter_ext_thumb.png" src="../../../_images/sphx_glr_plot_scatter_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_scatter_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-scatter-ext-py"><span class="std std-ref">Plot scatter decorated</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Demo pie chart with matplotlib and style the figure. "><div class="figure" id="id56">
+<img alt="../../../_images/sphx_glr_plot_pie_ext_thumb.png" src="../../../_images/sphx_glr_plot_pie_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_pie_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-pie-ext-py"><span class="std std-ref">Pie chart vignette</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An more elaborate bar plot example "><div class="figure" id="id57">
+<img alt="../../../_images/sphx_glr_plot_bar_ext_thumb.png" src="../../../_images/sphx_glr_plot_bar_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_bar_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-bar-ext-py"><span class="std std-ref">Bar plot advanced</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing quiver with decorations. "><div class="figure" id="id58">
+<img alt="../../../_images/sphx_glr_plot_quiver_ext_thumb.png" src="../../../_images/sphx_glr_plot_quiver_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_quiver_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-quiver-ext-py"><span class="std std-ref">Plotting quiver decorated</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Demoing imshow "><div class="figure" id="id59">
+<img alt="../../../_images/sphx_glr_plot_imshow_ext_thumb.png" src="../../../_images/sphx_glr_plot_imshow_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_imshow_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-imshow-ext-py"><span class="std std-ref">Imshow demo</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example demoing how to plot the contours of a function, with additional layout tweeks."><div class="figure" id="id60">
+<img alt="../../../_images/sphx_glr_plot_contour_ext_thumb.png" src="../../../_images/sphx_glr_plot_contour_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_contour_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-contour-ext-py"><span class="std std-ref">Display the contours of a function</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example displaying a grid on the axes and tweaking the layout. "><div class="figure" id="id61">
+<img alt="../../../_images/sphx_glr_plot_grid_ext_thumb.png" src="../../../_images/sphx_glr_plot_grid_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_grid_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-grid-ext-py"><span class="std std-ref">Grid elaborate</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing text printing and decorating the resulting figure. "><div class="figure" id="id62">
+<img alt="../../../_images/sphx_glr_plot_text_ext_thumb.png" src="../../../_images/sphx_glr_plot_text_ext_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="pretty_plots/plot_text_ext.html#sphx-glr-intro-matplotlib-auto-examples-pretty-plots-plot-text-ext-py"><span class="std std-ref">Text printing decorated</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/auto_examples_python4.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/auto_examples_jupyter4.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Code samples for Matplotlib</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#code-for-the-chapter-s-exercises">Code for the chapter’s exercises</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#example-demoing-choices-for-an-option">Example demoing choices for an option</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#code-generating-the-summary-figures-with-a-title">Code generating the summary figures with a title</a><ul>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/matplotlib/auto_examples/index.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

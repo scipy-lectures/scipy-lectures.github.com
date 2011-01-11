@@ -1,0 +1,348 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>1.2. The Python language &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1.2.1. First steps" href="first_steps.html" />
+    <link rel="prev" title="1.1. Python scientific computing ecosystem" href="../intro.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="first_steps.html" title="1.2.1. First steps"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../intro.html" title="1.1. Python scientific computing ecosystem"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">1. Getting started with Python for science</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/language/python_language.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="the-python-language">
+<span id="python-language-chapter"></span><h1>1.2. The Python language<a class="headerlink" href="#the-python-language" title="Permalink to this headline">¶</a></h1>
+<p><strong>Authors</strong>: <em>Chris Burns, Christophe Combelles, Emmanuelle Gouillart,
+Gaël Varoquaux</em></p>
+<div class="topic">
+<p class="topic-title first">Python for scientific computing</p>
+<p>We introduce here the Python language. Only the bare minimum
+necessary for getting started with Numpy and Scipy is addressed here.
+To learn more about the language, consider going through the
+excellent tutorial <a class="reference external" href="https://docs.python.org/tutorial">https://docs.python.org/tutorial</a>. Dedicated books
+are also available, such as <a class="reference external" href="http://www.diveintopython.net/">http://www.diveintopython.net/</a>.</p>
+</div>
+<img alt="../../_images/python-logo.png" class="align-right" src="../../_images/python-logo.png" />
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>Python is a <strong>programming language</strong>, as are C, Fortran, BASIC, PHP,
+etc. Some specific features of Python are as follows:</p>
+<ul class="simple">
+<li>an <em>interpreted</em> (as opposed to <em>compiled</em>) language. Contrary to e.g.
+C or Fortran, one does not compile Python code before executing it. In
+addition, Python can be used <strong>interactively</strong>: many Python
+interpreters are available, from which commands and scripts can be
+executed.</li>
+<li>a free software released under an <strong>open-source</strong> license: Python can
+be used and distributed free of charge, even for building commercial
+software.</li>
+<li><strong>multi-platform</strong>: Python is available for all major operating
+systems, Windows, Linux/Unix, MacOS X, most likely your mobile phone
+OS, etc.</li>
+<li>a very readable language with clear non-verbose syntax</li>
+<li>a language for which a large variety of high-quality packages are
+available for various applications, from web frameworks to scientific
+computing.</li>
+<li>a language very easy to interface with other languages, in particular C
+and C++.</li>
+<li>Some other features of the language are illustrated just below. For
+example, Python is an object-oriented language, with dynamic typing
+(the same variable can contain objects of different types during the
+course of a program).</li>
+</ul>
+<p class="last">See <a class="reference external" href="https://www.python.org/about/">https://www.python.org/about/</a> for more information about
+distinguishing features of Python.</p>
+</div>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="first_steps.html">1.2.1. First steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_types.html">1.2.2. Basic types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basic_types.html#numerical-types">1.2.2.1. Numerical types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_types.html#containers">1.2.2.2. Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_types.html#assignment-operator">1.2.2.3. Assignment operator</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="control_flow.html">1.2.3. Control Flow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="control_flow.html#if-elif-else">1.2.3.1. if/elif/else</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control_flow.html#for-range">1.2.3.2. for/range</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control_flow.html#while-break-continue">1.2.3.3. while/break/continue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control_flow.html#conditional-expressions">1.2.3.4. Conditional Expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control_flow.html#advanced-iteration">1.2.3.5. Advanced iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control_flow.html#list-comprehensions">1.2.3.6. List Comprehensions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html">1.2.4. Defining functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#function-definition">1.2.4.1. Function definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#return-statement">1.2.4.2. Return statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#parameters">1.2.4.3. Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#passing-by-value">1.2.4.4. Passing by value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#global-variables">1.2.4.5. Global variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#variable-number-of-parameters">1.2.4.6. Variable number of parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#docstrings">1.2.4.7. Docstrings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#functions-are-objects">1.2.4.8. Functions are objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#methods">1.2.4.9. Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#exercises">1.2.4.10. Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reusing_code.html">1.2.5. Reusing code: scripts and modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reusing_code.html#scripts">1.2.5.1. Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reusing_code.html#importing-objects-from-modules">1.2.5.2. Importing objects from modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reusing_code.html#creating-modules">1.2.5.3. Creating modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reusing_code.html#main-and-module-loading">1.2.5.4. ‘__main__’ and module loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reusing_code.html#scripts-or-modules-how-to-organize-your-code">1.2.5.5. Scripts or modules? How to organize your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reusing_code.html#packages">1.2.5.6. Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reusing_code.html#good-practices">1.2.5.7. Good practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">1.2.6. Input and Output</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="io.html#iterating-over-a-file">1.2.6.1. Iterating over a file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="standard_library.html">1.2.7. Standard Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="standard_library.html#os-module-operating-system-functionality">1.2.7.1. <code class="docutils literal"><span class="pre">os</span></code> module: operating system functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standard_library.html#shutil-high-level-file-operations">1.2.7.2. <code class="docutils literal"><span class="pre">shutil</span></code>: high-level file operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standard_library.html#glob-pattern-matching-on-files">1.2.7.3. <code class="docutils literal"><span class="pre">glob</span></code>: Pattern matching on files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standard_library.html#sys-module-system-specific-information">1.2.7.4. <code class="docutils literal"><span class="pre">sys</span></code> module: system-specific information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standard_library.html#pickle-easy-persistence">1.2.7.5. <code class="docutils literal"><span class="pre">pickle</span></code>: easy persistence</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">1.2.8. Exception handling in Python</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html#exceptions">1.2.8.1. Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html#catching-exceptions">1.2.8.2. Catching exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html#raising-exceptions">1.2.8.3. Raising exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="oop.html">1.2.9. Object-oriented programming (OOP)</a></li>
+</ul>
+</div>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc"></div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="first_steps.html" title="1.2.1. First steps"
+             >next</a></li>
+        <li class="right" >
+          <a href="../intro.html" title="1.1. Python scientific computing ecosystem"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >1. Getting started with Python for science</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/language/python_language.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

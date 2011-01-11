@@ -1,0 +1,1361 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2.7. Mathematical optimization: finding minima of functions &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.7.4.1. Noisy optimization problem" href="auto_examples/plot_noisy.html" />
+    <link rel="prev" title="2.6.8.24. Segmentation with spectral clustering" href="../image_processing/auto_examples/plot_spectral_clustering.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="auto_examples/plot_noisy.html" title="2.7.4.1. Noisy optimization problem"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../image_processing/auto_examples/plot_spectral_clustering.html" title="2.6.8.24. Segmentation with spectral clustering"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">2. Advanced topics</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/mathematical_optimization/index.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mathematical-optimization-finding-minima-of-functions">
+<span id="mathematical-optimization"></span><h1>2.7. Mathematical optimization: finding minima of functions<a class="headerlink" href="#mathematical-optimization-finding-minima-of-functions" title="Permalink to this headline">¶</a></h1>
+<p><strong>Authors</strong>: <em>Gaël Varoquaux</em></p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Mathematical_optimization">Mathematical optimization</a> deals with the
+problem of finding numerically minimums (or maximums or zeros) of
+a function. In this context, the function is called <em>cost function</em>, or
+<em>objective function</em>, or <em>energy</em>.</p>
+<p>Here, we are interested in using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html#module-scipy.optimize" title="(in SciPy v1.0.0)"><code class="xref py py-mod docutils literal"><span class="pre">scipy.optimize</span></code></a> for black-box
+optimization: we do not rely on the mathematical expression of the
+function that we are optimizing. Note that this expression can often be
+used for more efficient, non black-box, optimization.</p>
+<div class="topic">
+<p class="topic-title first">Prerequisites</p>
+<ul class="horizontal simple">
+<li><a class="reference internal" href="../../intro/numpy/index.html#numpy"><span class="std std-ref">Numpy</span></a></li>
+<li><a class="reference internal" href="../../intro/scipy.html#scipy"><span class="std std-ref">Scipy</span></a></li>
+<li><a class="reference internal" href="../../intro/matplotlib/index.html#matplotlib"><span class="std std-ref">Matplotlib</span></a></li>
+</ul>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p><strong>References</strong></p>
+<p>Mathematical optimization is very … mathematical. If you want
+performance, it really pays to read the books:</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://www.stanford.edu/~boyd/cvxbook/">Convex Optimization</a>
+by Boyd and Vandenberghe (pdf available free online).</li>
+<li><a class="reference external" href="http://users.eecs.northwestern.edu/~nocedal/book/num-opt.html">Numerical Optimization</a>,
+by Nocedal and Wright. Detailed reference on gradient descent methods.</li>
+<li><a class="reference external" href="http://www.amazon.com/gp/product/0471494631/ref=ox_sc_act_title_1?ie=UTF8&amp;smid=ATVPDKIKX0DER">Practical Methods of Optimization</a> by Fletcher: good at hand-waving explanations.</li>
+</ul>
+</div>
+<style type="text/css">
+  div.bodywrapper blockquote {
+      margin: 0 ;
+  }
+
+  div.toctree-wrapper ul {
+      margin-top: 0 ;
+      margin-bottom: 0 ;
+      padding-left: 10px ;
+  }
+
+  li.toctree-l1 {
+      padding: 0 0 0.5em 0 ;
+      list-style-type: none;
+      font-size: 150% ;
+      font-weight: bold;
+      }
+
+  li.toctree-l1 ul {
+      padding-left: 40px ;
+  }
+
+  li.toctree-l2 {
+      font-size: 70% ;
+      list-style-type: square;
+      font-weight: normal;
+      }
+
+  li.toctree-l3 {
+      font-size: 85% ;
+      list-style-type: circle;
+      font-weight: normal;
+      }
+
+</style><div class="contents local topic" id="chapters-contents">
+<p class="topic-title first">Chapters contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#knowing-your-problem" id="id30">Knowing your problem</a><ul>
+<li><a class="reference internal" href="#convex-versus-non-convex-optimization" id="id31">Convex versus non-convex optimization</a></li>
+<li><a class="reference internal" href="#smooth-and-non-smooth-problems" id="id32">Smooth and non-smooth problems</a></li>
+<li><a class="reference internal" href="#noisy-versus-exact-cost-functions" id="id33">Noisy versus exact cost functions</a></li>
+<li><a class="reference internal" href="#constraints" id="id34">Constraints</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#a-review-of-the-different-optimizers" id="id35">A review of the different optimizers</a><ul>
+<li><a class="reference internal" href="#getting-started-1d-optimization" id="id36">Getting started: 1D optimization</a></li>
+<li><a class="reference internal" href="#gradient-based-methods" id="id37">Gradient based methods</a></li>
+<li><a class="reference internal" href="#newton-and-quasi-newton-methods" id="id38">Newton and quasi-newton methods</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#full-code-examples" id="id39">Full code examples</a></li>
+<li><a class="reference internal" href="#examples-for-the-mathematical-optimization-chapter" id="id40">Examples for the mathematical optimization chapter</a><ul>
+<li><a class="reference internal" href="#gradient-less-methods" id="id41">Gradient-less methods</a></li>
+<li><a class="reference internal" href="#global-optimizers" id="id42">Global optimizers</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#practical-guide-to-optimization-with-scipy" id="id43">Practical guide to optimization with scipy</a><ul>
+<li><a class="reference internal" href="#choosing-a-method" id="id44">Choosing a method</a></li>
+<li><a class="reference internal" href="#making-your-optimizer-faster" id="id45">Making your optimizer faster</a></li>
+<li><a class="reference internal" href="#computing-gradients" id="id46">Computing gradients</a></li>
+<li><a class="reference internal" href="#synthetic-exercices" id="id47">Synthetic exercices</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#special-case-non-linear-least-squares" id="id48">Special case: non-linear least-squares</a><ul>
+<li><a class="reference internal" href="#minimizing-the-norm-of-a-vector-function" id="id49">Minimizing the norm of a vector function</a></li>
+<li><a class="reference internal" href="#curve-fitting" id="id50">Curve fitting</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#optimization-with-constraints" id="id51">Optimization with constraints</a><ul>
+<li><a class="reference internal" href="#box-bounds" id="id52">Box bounds</a></li>
+<li><a class="reference internal" href="#general-constraints" id="id53">General constraints</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2" id="id54">Full code examples</a></li>
+<li><a class="reference internal" href="#id3" id="id55">Examples for the mathematical optimization chapter</a></li>
+</ul>
+</div>
+<div class="section" id="knowing-your-problem">
+<h2><a class="toc-backref" href="#id30">2.7.1. Knowing your problem</a><a class="headerlink" href="#knowing-your-problem" title="Permalink to this headline">¶</a></h2>
+<p>Not all optimization problems are equal. Knowing your problem enables you
+to choose the right tool.</p>
+<div class="topic">
+<p class="topic-title first"><strong>Dimensionality of the problem</strong></p>
+<p>The scale of an optimization problem is pretty much set by the
+<em>dimensionality of the problem</em>, i.e. the number of scalar variables
+on which the search is performed.</p>
+</div>
+<div class="section" id="convex-versus-non-convex-optimization">
+<h3><a class="toc-backref" href="#id31">2.7.1.1. Convex versus non-convex optimization</a><a class="headerlink" href="#convex-versus-non-convex-optimization" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><img alt="convex_1d_1" src="../../_images/sphx_glr_plot_convex_001.png" /></td>
+<td><img alt="convex_1d_2" src="../../_images/sphx_glr_plot_convex_002.png" /></td>
+</tr>
+<tr class="row-even"><td><p class="first"><strong>A convex function</strong>:</p>
+<ul class="last simple">
+<li><cite>f</cite> is above all its tangents.</li>
+<li>equivalently, for two point A, B, f(C) lies below the segment
+[f(A), f(B])], if A &lt; C &lt; B</li>
+</ul>
+</td>
+<td><strong>A non-convex function</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Optimizing convex functions is easy. Optimizing non-convex functions can
+be very hard.</strong></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It can be proven that for a convex function a local minimum is
+also a global minimum. Then, in some sense, the minimum is unique.</p>
+</div>
+</div>
+<div class="section" id="smooth-and-non-smooth-problems">
+<h3><a class="toc-backref" href="#id32">2.7.1.2. Smooth and non-smooth problems</a><a class="headerlink" href="#smooth-and-non-smooth-problems" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><img alt="smooth_1d_1" src="../../_images/sphx_glr_plot_smooth_001.png" /></td>
+<td><img alt="smooth_1d_2" src="../../_images/sphx_glr_plot_smooth_002.png" /></td>
+</tr>
+<tr class="row-even"><td><p class="first"><strong>A smooth function</strong>:</p>
+<p class="last">The gradient is defined everywhere, and is a continuous function</p>
+</td>
+<td><strong>A non-smooth function</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Optimizing smooth functions is easier</strong>
+(true in the context of <em>black-box</em> optimization, otherwise
+<a class="reference external" href="http://en.wikipedia.org/wiki/Linear_programming">Linear Programming</a>
+is an example of methods which deal very efficiently with
+piece-wise linear functions).</p>
+</div>
+<div class="section" id="noisy-versus-exact-cost-functions">
+<h3><a class="toc-backref" href="#id33">2.7.1.3. Noisy versus exact cost functions</a><a class="headerlink" href="#noisy-versus-exact-cost-functions" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Noisy (blue) and non-noisy (green) functions</td>
+<td><img alt="noisy" src="../../_images/sphx_glr_plot_noisy_001.png" /></td>
+</tr>
+</tbody>
+</table>
+<div class="topic">
+<p class="topic-title first"><strong>Noisy gradients</strong></p>
+<p>Many optimization methods rely on gradients of the objective function.
+If the gradient function is not given, they are computed numerically,
+which induces errors. In such situation, even if the objective
+function is not noisy, a gradient-based optimization may be a noisy
+optimization.</p>
+</div>
+</div>
+<div class="section" id="constraints">
+<h3><a class="toc-backref" href="#id34">2.7.1.4. Constraints</a><a class="headerlink" href="#constraints" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first">Optimizations under constraints</p>
+<p>Here:</p>
+<p><img class="math" src="../../_images/math/b270dcff9524408f385d632b77523aed51e9f444.png" alt="-1 &lt; x_1 &lt; 1"/></p>
+<p class="last"><img class="math" src="../../_images/math/b109b5cb82fcb53f0a1c2d3855cc5340c4598139.png" alt="-1 &lt; x_2 &lt; 1"/></p>
+</td>
+<td><a class="reference external" href="auto_examples/plot_constraints.html"><img alt="constraints" src="../../_images/sphx_glr_plot_constraints_001.png" /></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="a-review-of-the-different-optimizers">
+<h2><a class="toc-backref" href="#id35">2.7.2. A review of the different optimizers</a><a class="headerlink" href="#a-review-of-the-different-optimizers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getting-started-1d-optimization">
+<h3><a class="toc-backref" href="#id36">2.7.2.1. Getting started: 1D optimization</a><a class="headerlink" href="#getting-started-1d-optimization" title="Permalink to this headline">¶</a></h3>
+<p>Let’s get started by finding the minimum of the scalar function
+<img class="math" src="../../_images/math/c8b2b4fa34dbb68f7c75a530d0fc24e3c4a6c6f1.png" alt="f(x)=\exp[(x-0.7)^2]"/>. <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize_scalar.html#scipy.optimize.minimize_scalar" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize_scalar()</span></code></a> uses
+Brent’s method to find the minimum of a function:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">optimize</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">0.7</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">minimize_scalar</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">success</span> <span class="c1"># check if solver was successful</span>
+<div class="newline"></div><span class="go">True</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x_min</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x_min</span> 
+<div class="newline"></div><span class="go">0.699999999...</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x_min</span> <span class="o">-</span> <span class="mf">0.7</span> 
+<div class="newline"></div><span class="go">-2.160590595323697e-10</span>
+<div class="newline"></div></pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Brent’s method on a quadratic function</strong>: it converges in 3 iterations,
+as the quadratic approximation is then exact.</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_1d_optim_001.png"><img alt="1d_optim_1" src="../../_images/sphx_glr_plot_1d_optim_001.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_1d_optim_002.png"><img alt="1d_optim_2" src="../../_images/sphx_glr_plot_1d_optim_002.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+<tr class="row-even"><td><strong>Brent’s method on a non-convex function</strong>: note that the fact that the
+optimizer avoided the local minimum is a matter of luck.</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_1d_optim_003.png"><img alt="1d_optim_3" src="../../_images/sphx_glr_plot_1d_optim_003.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_1d_optim_004.png"><img alt="1d_optim_4" src="../../_images/sphx_glr_plot_1d_optim_004.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can use different solvers using the parameter <code class="docutils literal"><span class="pre">method</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize_scalar.html#scipy.optimize.minimize_scalar" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize_scalar()</span></code></a> can also be used for optimization
+constrained to an interval using the parameter <code class="docutils literal"><span class="pre">bounds</span></code>.</p>
+</div>
+</div>
+<div class="section" id="gradient-based-methods">
+<h3><a class="toc-backref" href="#id37">2.7.2.2. Gradient based methods</a><a class="headerlink" href="#gradient-based-methods" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="some-intuitions-about-gradient-descent">
+<h4>Some intuitions about gradient descent<a class="headerlink" href="#some-intuitions-about-gradient-descent" title="Permalink to this headline">¶</a></h4>
+<p>Here we focus on <strong>intuitions</strong>, not code. Code will follow.</p>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Gradient_descent">Gradient descent</a>
+basically consists in taking small steps in the direction of the
+gradient, that is the direction of the <em>steepest descent</em>.</p>
+<table border="1" class="docutils" id="id5">
+<caption><span class="caption-text"><strong>Fixed step gradient descent</strong></span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>A well-conditioned quadratic function.</strong></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_000.png"><img alt="gradient_quad_cond" src="../../_images/sphx_glr_plot_gradient_descent_000.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_100.png"><img alt="gradient_quad_cond_conv" src="../../_images/sphx_glr_plot_gradient_descent_100.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+<tr class="row-even"><td><p class="first"><strong>An ill-conditioned quadratic function.</strong></p>
+<p class="last">The core problem of gradient-methods on ill-conditioned problems is
+that the gradient tends not to point in the direction of the
+minimum.</p>
+</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_002.png"><img alt="gradient_quad_icond" src="../../_images/sphx_glr_plot_gradient_descent_002.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_102.png"><img alt="gradient_quad_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_102.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+</tbody>
+</table>
+<p>We can see that very anisotropic (<a class="reference external" href="http://en.wikipedia.org/wiki/Condition_number">ill-conditioned</a>) functions are harder
+to optimize.</p>
+<div class="topic">
+<p class="topic-title first"><strong>Take home message: conditioning number and preconditioning</strong></p>
+<p>If you know natural scaling for your variables, prescale them so that
+they behave similarly. This is related to <a class="reference external" href="https://en.wikipedia.org/wiki/Preconditioner">preconditioning</a>.</p>
+</div>
+<p>Also, it clearly can be advantageous to take bigger steps. This
+is done in gradient descent code using a
+<a class="reference external" href="https://en.wikipedia.org/wiki/Line_search">line search</a>.</p>
+<table border="1" class="docutils" id="id6">
+<caption><span class="caption-text"><strong>Adaptive step gradient descent</strong></span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>A well-conditioned quadratic function.</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_001.png"><img alt="agradient_quad_cond" src="../../_images/sphx_glr_plot_gradient_descent_001.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_101.png"><img alt="agradient_quad_cond_conv" src="../../_images/sphx_glr_plot_gradient_descent_101.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+<tr class="row-even"><td>An ill-conditioned quadratic function.</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_003.png"><img alt="agradient_quad_icond" src="../../_images/sphx_glr_plot_gradient_descent_003.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_103.png"><img alt="agradient_quad_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_103.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+<tr class="row-odd"><td>An ill-conditioned non-quadratic function.</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_004.png"><img alt="agradient_gauss_icond" src="../../_images/sphx_glr_plot_gradient_descent_004.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_104.png"><img alt="agradient_gauss_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_104.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+<tr class="row-even"><td>An ill-conditioned very non-quadratic function.</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_005.png"><img alt="agradient_rosen_icond" src="../../_images/sphx_glr_plot_gradient_descent_005.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_105.png"><img alt="agradient_rosen_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_105.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+</tbody>
+</table>
+<p>The more a function looks like a quadratic function (elliptic
+iso-curves), the easier it is to optimize.</p>
+</div>
+<div class="section" id="conjugate-gradient-descent">
+<h4>Conjugate gradient descent<a class="headerlink" href="#conjugate-gradient-descent" title="Permalink to this headline">¶</a></h4>
+<p>The gradient descent algorithms above are toys not to be used on real
+problems.</p>
+<p>As can be seen from the above experiments, one of the problems of the
+simple gradient descent algorithms, is that it tends to oscillate across
+a valley, each time following the direction of the gradient, that makes
+it cross the valley. The conjugate gradient solves this problem by adding
+a <em>friction</em> term: each step depends on the two last values of the
+gradient and sharp turns are reduced.</p>
+<table border="1" class="docutils" id="id7">
+<caption><span class="caption-text"><strong>Conjugate gradient descent</strong></span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>An ill-conditioned non-quadratic function.</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_006.png"><img alt="cg_gauss_icond" src="../../_images/sphx_glr_plot_gradient_descent_006.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_106.png"><img alt="cg_gauss_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_106.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+<tr class="row-even"><td>An ill-conditioned very non-quadratic function.</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_007.png"><img alt="cg_rosen_icond" src="../../_images/sphx_glr_plot_gradient_descent_007.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_107.png"><img alt="cg_rosen_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_107.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+</tbody>
+</table>
+<p>scipy provides <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a> to find the minimum of scalar
+functions of one or more variables. The simple conjugate gradient method can
+be used by setting the parameter <code class="docutils literal"><span class="pre">method</span></code> to CG</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>   <span class="c1"># The rosenbrock function</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;CG&quot;</span><span class="p">)</span>    
+<div class="newline"></div><span class="go">     fun: 1.6503...e-11</span>
+<div class="newline"></div><span class="go">     jac: array([ -6.1534...e-06,   2.5380...e-07])</span>
+<div class="newline"></div><span class="go"> message: ...&#39;Optimization terminated successfully.&#39;</span>
+<div class="newline"></div><span class="go">    nfev: 108</span>
+<div class="newline"></div><span class="go">     nit: 13</span>
+<div class="newline"></div><span class="go">    njev: 27</span>
+<div class="newline"></div><span class="go">  status: 0</span>
+<div class="newline"></div><span class="go"> success: True</span>
+<div class="newline"></div><span class="go">       x: array([ 0.99999...,  0.99998...])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Gradient methods need the Jacobian (gradient) of the function. They can compute it
+numerically, but will perform better if you can pass them the gradient:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="o">-</span><span class="mi">2</span><span class="o">*.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;CG&quot;</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">jacobian</span><span class="p">)</span>    
+<div class="newline"></div><span class="go">     fun: 2.957...e-14</span>
+<div class="newline"></div><span class="go">     jac: array([  7.1825...e-07,  -2.9903...e-07])</span>
+<div class="newline"></div><span class="go"> message: &#39;Optimization terminated successfully.&#39;</span>
+<div class="newline"></div><span class="go">    nfev: 16</span>
+<div class="newline"></div><span class="go">     nit: 8</span>
+<div class="newline"></div><span class="go">    njev: 16</span>
+<div class="newline"></div><span class="go">  status: 0</span>
+<div class="newline"></div><span class="go"> success: True</span>
+<div class="newline"></div><span class="go">       x: array([ 1.0000...,  1.0000...])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Note that the function has only been evaluated 27 times, compared to 108
+without the gradient.</p>
+</div>
+</div>
+<div class="section" id="newton-and-quasi-newton-methods">
+<h3><a class="toc-backref" href="#id38">2.7.2.3. Newton and quasi-newton methods</a><a class="headerlink" href="#newton-and-quasi-newton-methods" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="newton-methods-using-the-hessian-2nd-differential">
+<h4>Newton methods: using the Hessian (2nd differential)<a class="headerlink" href="#newton-methods-using-the-hessian-2nd-differential" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Newton%27s_method_in_optimization">Newton methods</a> use a
+local quadratic approximation to compute the jump direction. For this
+purpose, they rely on the 2 first derivative of the function: the
+<em>gradient</em> and the <a class="reference external" href="http://en.wikipedia.org/wiki/Hessian_matrix">Hessian</a>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first"><strong>An ill-conditioned quadratic function:</strong></p>
+<p class="last">Note that, as the quadratic approximation is exact, the Newton
+method is blazing fast</p>
+</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_008.png"><img alt="ncg_quad_icond" src="../../_images/sphx_glr_plot_gradient_descent_008.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_108.png"><img alt="ncg_quad_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_108.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+<tr class="row-even"><td><p class="first"><strong>An ill-conditioned non-quadratic function:</strong></p>
+<p class="last">Here we are optimizing a Gaussian, which is always below its
+quadratic approximation. As a result, the Newton method overshoots
+and leads to oscillations.</p>
+</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_009.png"><img alt="ncg_gauss_icond" src="../../_images/sphx_glr_plot_gradient_descent_009.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_109.png"><img alt="ncg_gauss_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_109.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+<tr class="row-odd"><td><strong>An ill-conditioned very non-quadratic function:</strong></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_010.png"><img alt="ncg_rosen_icond" src="../../_images/sphx_glr_plot_gradient_descent_010.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_110.png"><img alt="ncg_rosen_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_110.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+</tbody>
+</table>
+<p>In scipy, you can use the Newton method by setting <code class="docutils literal"><span class="pre">method</span></code> to Newton-CG in
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a>. Here, CG refers to the fact that an internal
+inversion of the Hessian is performed by conjugate gradient</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>   <span class="c1"># The rosenbrock function</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="o">-</span><span class="mi">2</span><span class="o">*.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Newton-CG&quot;</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">jacobian</span><span class="p">)</span>    
+<div class="newline"></div><span class="go">     fun: 1.5601...e-15</span>
+<div class="newline"></div><span class="go">     jac: array([  1.0575...e-07,  -7.4832...e-08])</span>
+<div class="newline"></div><span class="go"> message: ...&#39;Optimization terminated successfully.&#39;</span>
+<div class="newline"></div><span class="go">    nfev: 11</span>
+<div class="newline"></div><span class="go">    nhev: 0</span>
+<div class="newline"></div><span class="go">     nit: 10</span>
+<div class="newline"></div><span class="go">    njev: 52</span>
+<div class="newline"></div><span class="go">  status: 0</span>
+<div class="newline"></div><span class="go"> success: True</span>
+<div class="newline"></div><span class="go">       x: array([ 0.99999...,  0.99999...])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Note that compared to a conjugate gradient (above), Newton’s method has
+required less function evaluations, but more gradient evaluations, as it
+uses it to approximate the Hessian. Let’s compute the Hessian and pass it
+to the algorithm:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">hessian</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="c1"># Computed with sympy</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(((</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">12</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">)))</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Newton-CG&quot;</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">jacobian</span><span class="p">,</span> <span class="n">hess</span><span class="o">=</span><span class="n">hessian</span><span class="p">)</span>    
+<div class="newline"></div><span class="go">     fun: 1.6277...e-15</span>
+<div class="newline"></div><span class="go">     jac: array([  1.1104...e-07,  -7.7809...e-08])</span>
+<div class="newline"></div><span class="go"> message: ...&#39;Optimization terminated successfully.&#39;</span>
+<div class="newline"></div><span class="go">    nfev: 11</span>
+<div class="newline"></div><span class="go">    nhev: 10</span>
+<div class="newline"></div><span class="go">     nit: 10</span>
+<div class="newline"></div><span class="go">    njev: 20</span>
+<div class="newline"></div><span class="go">  status: 0</span>
+<div class="newline"></div><span class="go"> success: True</span>
+<div class="newline"></div><span class="go">       x: array([ 0.99999...,  0.99999...])</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">At very high-dimension, the inversion of the Hessian can be costly
+and unstable (large scale &gt; 250).</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Newton optimizers should not to be confused with Newton’s root finding
+method, based on the same principles, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.newton.html#scipy.optimize.newton" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.newton()</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="quasi-newton-methods-approximating-the-hessian-on-the-fly">
+<span id="quasi-newton"></span><h4>Quasi-Newton methods: approximating the Hessian on the fly<a class="headerlink" href="#quasi-newton-methods-approximating-the-hessian-on-the-fly" title="Permalink to this headline">¶</a></h4>
+<p><strong>BFGS</strong>: BFGS (Broyden-Fletcher-Goldfarb-Shanno algorithm) refines at
+each step an approximation of the Hessian.</p>
+</div>
+</div>
+</div>
+<div class="section" id="full-code-examples">
+<h2><a class="toc-backref" href="#id39">2.7.3. Full code examples</a><a class="headerlink" href="#full-code-examples" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="examples-for-the-mathematical-optimization-chapter">
+<h2><a class="toc-backref" href="#id40">2.7.4. Examples for the mathematical optimization chapter</a><a class="headerlink" href="#examples-for-the-mathematical-optimization-chapter" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Draws a figure explaining noisy vs non-noisy optimization "><div class="figure" id="id8">
+<img alt="../../_images/sphx_glr_plot_noisy_thumb.png" src="../../_images/sphx_glr_plot_noisy_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_noisy.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-noisy-py"><span class="std std-ref">Noisy optimization problem</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Draws a figure to explain smooth versus non smooth optimization. "><div class="figure" id="id9">
+<img alt="../../_images/sphx_glr_plot_smooth_thumb.png" src="../../_images/sphx_glr_plot_smooth_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_smooth.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-smooth-py"><span class="std std-ref">Smooth vs non-smooth</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="A curve fitting example "><div class="figure" id="id10">
+<img alt="../../_images/sphx_glr_plot_curve_fit_thumb.png" src="../../_images/sphx_glr_plot_curve_fit_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_curve_fit.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-curve-fit-py"><span class="std std-ref">Curve fitting</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="A figure showing the definition of a convex function "><div class="figure" id="id11">
+<img alt="../../_images/sphx_glr_plot_convex_thumb.png" src="../../_images/sphx_glr_plot_convex_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_convex.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-convex-py"><span class="std std-ref">Convex function</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An excercise of finding minimum. This excercise is hard because the function is very flat aroun..."><div class="figure" id="id12">
+<img alt="../../_images/sphx_glr_plot_exercise_flat_minimum_thumb.png" src="../../_images/sphx_glr_plot_exercise_flat_minimum_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_exercise_flat_minimum.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-exercise-flat-minimum-py"><span class="std std-ref">Finding a minimum in a flat neighborhood</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing how to do optimization with general constraints using SLSQP and cobyla. "><div class="figure" id="id13">
+<img alt="../../_images/sphx_glr_plot_non_bounds_constraints_thumb.png" src="../../_images/sphx_glr_plot_non_bounds_constraints_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_non_bounds_constraints.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-non-bounds-constraints-py"><span class="std std-ref">Optimization with constraints</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Illustration of 1D optimization: Brent's method "><div class="figure" id="id14">
+<img alt="../../_images/sphx_glr_plot_1d_optim_thumb.png" src="../../_images/sphx_glr_plot_1d_optim_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_1d_optim.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-1d-optim-py"><span class="std std-ref">Brent’s method</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="A small figure explaining optimization with constraints "><div class="figure" id="id15">
+<img alt="../../_images/sphx_glr_plot_constraints_thumb.png" src="../../_images/sphx_glr_plot_constraints_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_constraints.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-constraints-py"><span class="std std-ref">Constraint optimization: visualizing the geometry</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Plots the results from the comparison of optimizers."><div class="figure" id="id16">
+<img alt="../../_images/sphx_glr_plot_compare_optimizers_thumb.png" src="../../_images/sphx_glr_plot_compare_optimizers_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_compare_optimizers.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-compare-optimizers-py"><span class="std std-ref">Plotting the comparison of optimizers</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="The challenge here is that Hessian of the problem is a very ill-conditioned matrix. This can ea..."><div class="figure" id="id17">
+<img alt="../../_images/sphx_glr_plot_exercise_ill_conditioned_thumb.png" src="../../_images/sphx_glr_plot_exercise_ill_conditioned_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_exercise_ill_conditioned.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-exercise-ill-conditioned-py"><span class="std std-ref">Alternating optimization</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example demoing gradient descent by creating figures that trace the evolution of the optimiz..."><div class="figure" id="id18">
+<img alt="../../_images/sphx_glr_plot_gradient_descent_thumb.png" src="../../_images/sphx_glr_plot_gradient_descent_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_gradient_descent.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-gradient-descent-py"><span class="std std-ref">Gradient descent</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/auto_examples_python2.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/auto_examples_jupyter2.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first"><strong>An ill-conditioned quadratic function:</strong></p>
+<p class="last">On a exactly quadratic function, BFGS is not as fast as Newton’s
+method, but still very fast.</p>
+</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_011.png"><img alt="bfgs_quad_icond" src="../../_images/sphx_glr_plot_gradient_descent_011.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_111.png"><img alt="bfgs_quad_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_111.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+<tr class="row-even"><td><p class="first"><strong>An ill-conditioned non-quadratic function:</strong></p>
+<p class="last">Here BFGS does better than Newton, as its empirical estimate of the
+curvature is better than that given by the Hessian.</p>
+</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_012.png"><img alt="bfgs_gauss_icond" src="../../_images/sphx_glr_plot_gradient_descent_012.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_112.png"><img alt="bfgs_gauss_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_112.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+<tr class="row-odd"><td><strong>An ill-conditioned very non-quadratic function:</strong></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_013.png"><img alt="bfgs_rosen_icond" src="../../_images/sphx_glr_plot_gradient_descent_013.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_113.png"><img alt="bfgs_rosen_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_113.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>   <span class="c1"># The rosenbrock function</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="o">-</span><span class="mi">2</span><span class="o">*.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;BFGS&quot;</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">jacobian</span><span class="p">)</span>    
+<div class="newline"></div><span class="go">      fun: 2.6306...e-16</span>
+<div class="newline"></div><span class="go"> hess_inv: array([[ 0.99986...,  2.0000...],</span>
+<div class="newline"></div><span class="go">       [ 2.0000...,  4.498...]])</span>
+<div class="newline"></div><span class="go">      jac: array([  6.7089...e-08,  -3.2222...e-08])</span>
+<div class="newline"></div><span class="go">  message: ...&#39;Optimization terminated successfully.&#39;</span>
+<div class="newline"></div><span class="go">     nfev: 10</span>
+<div class="newline"></div><span class="go">      nit: 8</span>
+<div class="newline"></div><span class="go">     njev: 10</span>
+<div class="newline"></div><span class="go">   status: 0</span>
+<div class="newline"></div><span class="go">  success: True</span>
+<div class="newline"></div><span class="go">        x: array([ 1.        ,  0.99999...])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><strong>L-BFGS:</strong> Limited-memory BFGS Sits between BFGS and conjugate gradient:
+in very high dimensions (&gt; 250) the Hessian matrix is too costly to
+compute and invert. L-BFGS keeps a low-rank version. In addition, box bounds
+are also supported by L-BFGS-B:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>   <span class="c1"># The rosenbrock function</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="o">-</span><span class="mi">2</span><span class="o">*.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">jacobian</span><span class="p">)</span>    
+<div class="newline"></div><span class="go">      fun: 1.4417...e-15</span>
+<div class="newline"></div><span class="go"> hess_inv: &lt;2x2 LbfgsInvHessProduct with dtype=float64&gt;</span>
+<div class="newline"></div><span class="go">      jac: array([  1.0233...e-07,  -2.5929...e-08])</span>
+<div class="newline"></div><span class="go">  message: ...&#39;CONVERGENCE: NORM_OF_PROJECTED_GRADIENT_&lt;=_PGTOL&#39;</span>
+<div class="newline"></div><span class="go">     nfev: 17</span>
+<div class="newline"></div><span class="go">      nit: 16</span>
+<div class="newline"></div><span class="go">   status: 0</span>
+<div class="newline"></div><span class="go">  success: True</span>
+<div class="newline"></div><span class="go">        x: array([ 1.0000...,  1.0000...])</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="section" id="gradient-less-methods">
+<h3><a class="toc-backref" href="#id41">2.7.4.12. Gradient-less methods</a><a class="headerlink" href="#gradient-less-methods" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="a-shooting-method-the-powell-algorithm">
+<h4>A shooting method: the Powell algorithm<a class="headerlink" href="#a-shooting-method-the-powell-algorithm" title="Permalink to this headline">¶</a></h4>
+<p>Almost a gradient approach</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first"><strong>An ill-conditioned quadratic function:</strong></p>
+<p class="last">Powell’s method isn’t too sensitive to local ill-conditionning in
+low dimensions</p>
+</td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_014.png"><img alt="powell_quad_icond" src="../../_images/sphx_glr_plot_gradient_descent_014.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_114.png"><img alt="powell_quad_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_114.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+<tr class="row-even"><td><strong>An ill-conditioned very non-quadratic function:</strong></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_016.png"><img alt="powell_rosen_icond" src="../../_images/sphx_glr_plot_gradient_descent_016.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_116.png"><img alt="powell_rosen_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_116.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="simplex-method-the-nelder-mead">
+<h4>Simplex method: the Nelder-Mead<a class="headerlink" href="#simplex-method-the-nelder-mead" title="Permalink to this headline">¶</a></h4>
+<p>The Nelder-Mead algorithms is a generalization of dichotomy approaches to
+high-dimensional spaces. The algorithm works by refining a <a class="reference external" href="http://en.wikipedia.org/wiki/Simplex">simplex</a>, the generalization of intervals
+and triangles to high-dimensional spaces, to bracket the minimum.</p>
+<p><strong>Strong points</strong>: it is robust to noise, as it does not rely on
+computing gradients. Thus it can work on functions that are not locally
+smooth such as experimental data points, as long as they display a
+large-scale bell-shape behavior. However it is slower than gradient-based
+methods on smooth, non-noisy functions.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>An ill-conditioned non-quadratic function:</strong></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_017.png"><img alt="nm_gauss_icond" src="../../_images/sphx_glr_plot_gradient_descent_017.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_117.png"><img alt="nm_gauss_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_117.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+<tr class="row-even"><td><strong>An ill-conditioned very non-quadratic function:</strong></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_018.png"><img alt="nm_rosen_icond" src="../../_images/sphx_glr_plot_gradient_descent_018.png" style="width: 270.0px; height: 225.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/sphx_glr_plot_gradient_descent_118.png"><img alt="nm_rosen_icond_conv" src="../../_images/sphx_glr_plot_gradient_descent_118.png" style="width: 300.0px; height: 225.0px;" /></a></td>
+</tr>
+</tbody>
+</table>
+<p>Using the Nelder-Mead solver in <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>   <span class="c1"># The rosenbrock function</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Nelder-Mead&quot;</span><span class="p">)</span> 
+<div class="newline"></div><span class="go"> final_simplex: (array([[ 1.0000...,  1.0000...],</span>
+<div class="newline"></div><span class="go">       [ 0.99998... ,  0.99996... ],</span>
+<div class="newline"></div><span class="go">       [ 1.0000...,  1.0000... ]]), array([  1.1152...e-10,   1.5367...e-10,   4.9883...e-10]))</span>
+<div class="newline"></div><span class="go">           fun: 1.1152...e-10</span>
+<div class="newline"></div><span class="go">       message: ...&#39;Optimization terminated successfully.&#39;</span>
+<div class="newline"></div><span class="go">          nfev: 111</span>
+<div class="newline"></div><span class="go">           nit: 58</span>
+<div class="newline"></div><span class="go">        status: 0</span>
+<div class="newline"></div><span class="go">       success: True</span>
+<div class="newline"></div><span class="go">             x: array([ 1.0000...,  1.0000...])</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="global-optimizers">
+<h3><a class="toc-backref" href="#id42">2.7.4.13. Global optimizers</a><a class="headerlink" href="#global-optimizers" title="Permalink to this headline">¶</a></h3>
+<p>If your problem does not admit a unique local minimum (which can be hard
+to test unless the function is convex), and you do not have prior
+information to initialize the optimization close to the solution, you
+may need a global optimizer.</p>
+<div class="section" id="brute-force-a-grid-search">
+<h4>Brute force: a grid search<a class="headerlink" href="#brute-force-a-grid-search" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.brute.html#scipy.optimize.brute" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.brute()</span></code></a> evaluates the function on a given grid of
+parameters and returns the parameters corresponding to the minimum
+value. The parameters are specified with ranges given to
+<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mgrid.html#numpy.mgrid" title="(in NumPy v1.14)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.mgrid</span></code></a>. By default, 20 steps are taken in each direction:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>   <span class="c1"># The rosenbrock function</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">brute</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span> 
+<div class="newline"></div><span class="go">array([ 1.0000...,  1.0000...])</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="practical-guide-to-optimization-with-scipy">
+<h2><a class="toc-backref" href="#id43">2.7.5. Practical guide to optimization with scipy</a><a class="headerlink" href="#practical-guide-to-optimization-with-scipy" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="choosing-a-method">
+<h3><a class="toc-backref" href="#id44">2.7.5.1. Choosing a method</a><a class="headerlink" href="#choosing-a-method" title="Permalink to this headline">¶</a></h3>
+<p>All methods are exposed as the <code class="docutils literal"><span class="pre">method</span></code> argument of
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a>.</p>
+<a class="reference internal image-reference" href="../../_images/sphx_glr_plot_compare_optimizers_001.png"><img alt="../../_images/sphx_glr_plot_compare_optimizers_001.png" class="align-center" src="../../_images/sphx_glr_plot_compare_optimizers_001.png" style="width: 95%;" /></a>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Without knowledge of the gradient:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li>In general, prefer <strong>BFGS</strong> or <strong>L-BFGS</strong>, even if you have to approximate
+numerically gradients. These are also the default if you omit the parameter
+<code class="docutils literal"><span class="pre">method</span></code> - depending if the problem has constraints or bounds</li>
+<li>On well-conditioned problems, <strong>Powell</strong>
+and <strong>Nelder-Mead</strong>, both gradient-free methods, work well in
+high dimension, but they collapse for ill-conditioned problems.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">With knowledge of the gradient:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>BFGS</strong> or <strong>L-BFGS</strong>.</li>
+<li>Computational overhead of BFGS is larger than that L-BFGS, itself
+larger than that of conjugate gradient. On the other side, BFGS usually
+needs less function evaluations than CG. Thus conjugate gradient method
+is better than BFGS at optimizing computationally cheap functions.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">With the Hessian:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li>If you can compute the Hessian, prefer the Newton method
+(<strong>Newton-CG</strong> or <strong>TCG</strong>).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">If you have noisy measurements:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li>Use <strong>Nelder-Mead</strong> or <strong>Powell</strong>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="making-your-optimizer-faster">
+<h3><a class="toc-backref" href="#id45">2.7.5.2. Making your optimizer faster</a><a class="headerlink" href="#making-your-optimizer-faster" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Choose the right method (see above), do compute analytically the
+gradient and Hessian, if you can.</li>
+<li>Use <a class="reference external" href="http://en.wikipedia.org/wiki/Preconditioner">preconditionning</a>
+when possible.</li>
+<li>Choose your initialization points wisely. For instance, if you are
+running many similar optimizations, warm-restart one with the results of
+another.</li>
+<li>Relax the tolerance if you don’t need precision using the parameter <code class="docutils literal"><span class="pre">tol</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="computing-gradients">
+<h3><a class="toc-backref" href="#id46">2.7.5.3. Computing gradients</a><a class="headerlink" href="#computing-gradients" title="Permalink to this headline">¶</a></h3>
+<p>Computing gradients, and even more Hessians, is very tedious but worth
+the effort. Symbolic computation with <a class="reference internal" href="../../packages/sympy.html#sympy"><span class="std std-ref">Sympy</span></a> may come in
+handy.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>A <em>very</em> common source of optimization not converging well is human
+error in the computation of the gradient. You can use
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.check_grad.html#scipy.optimize.check_grad" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.check_grad()</span></code></a> to check that your gradient is
+correct. It returns the norm of the different between the gradient
+given, and a gradient computed numerically:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">check_grad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">jacobian</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<div class="newline"></div><span class="go">2.384185791015625e-07</span>
+<div class="newline"></div></pre></div>
+</div>
+<p class="last">See also <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.approx_fprime.html#scipy.optimize.approx_fprime" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.approx_fprime()</span></code></a> to find your errors.</p>
+</div>
+</div>
+<div class="section" id="synthetic-exercices">
+<h3><a class="toc-backref" href="#id47">2.7.5.4. Synthetic exercices</a><a class="headerlink" href="#synthetic-exercices" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_exercise_ill_conditioned.html"><img alt="../../_images/sphx_glr_plot_exercise_ill_conditioned_001.png" class="align-right" src="../../_images/sphx_glr_plot_exercise_ill_conditioned_001.png" style="width: 224.0px; height: 168.0px;" /></a>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercice: A simple (?) quadratic function</strong></p>
+<p>Optimize the following function, using K[0] as a starting point:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="newline"></div><span class="n">K</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Time your approach. Find the fastest approach. Why is BFGS not
+working well?</p>
+</div>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercice: A locally flat minimum</strong></p>
+<p>Consider the function <cite>exp(-1/(.1*x**2 + y**2)</cite>. This function admits
+a minimum in (0, 0). Starting from an initialization at (1, 1), try
+to get within 1e-8 of this minimum point.</p>
+<p class="centered">
+<strong><a class="reference external" href="auto_examples/plot_exercise_flat_minimum.html"><img alt="flat_min_0" src="../../_images/sphx_glr_plot_exercise_flat_minimum_000.png" style="width: 307.2px; height: 230.4px;" /></a> <a class="reference external" href="auto_examples/plot_exercise_flat_minimum.html"><img alt="flat_min_1" src="../../_images/sphx_glr_plot_exercise_flat_minimum_001.png" style="width: 307.2px; height: 230.4px;" /></a></strong></p></div>
+</div>
+</div>
+<div class="section" id="special-case-non-linear-least-squares">
+<h2><a class="toc-backref" href="#id48">2.7.6. Special case: non-linear least-squares</a><a class="headerlink" href="#special-case-non-linear-least-squares" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="minimizing-the-norm-of-a-vector-function">
+<h3><a class="toc-backref" href="#id49">2.7.6.1. Minimizing the norm of a vector function</a><a class="headerlink" href="#minimizing-the-norm-of-a-vector-function" title="Permalink to this headline">¶</a></h3>
+<p>Least square problems, minimizing the norm of a vector function, have a
+specific structure that can be used in the <a class="reference external" href="https://en.wikipedia.org/wiki/Levenberg-Marquardt_algorithm">Levenberg–Marquardt algorithm</a>
+implemented in <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html#scipy.optimize.leastsq" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.leastsq()</span></code></a>.</p>
+<p>Lets try to minimize the norm of the following vectorial function:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">leastsq</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">)</span>
+<div class="newline"></div><span class="go">(array([ 0.        ,  0.11111111,  0.22222222,  0.33333333,  0.44444444,</span>
+<div class="newline"></div><span class="go">        0.55555556,  0.66666667,  0.77777778,  0.88888889,  1.        ]), 2)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>This took 67 function evaluations (check it with ‘full_output=1’). What
+if we compute the norm ourselves and use a good generic optimizer
+(BFGS):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;BFGS&quot;</span><span class="p">)</span>   
+<div class="newline"></div><span class="go">  fun: 2.6940...e-11</span>
+<div class="newline"></div><span class="go"> hess_inv: array([[...</span>
+<div class="newline"></div><span class="go"> ...</span>
+<div class="newline"></div><span class="go">           ...]])</span>
+<div class="newline"></div><span class="go">      jac: array([</span>
+<div class="newline"></div><span class="go"> ...</span>
+<div class="newline"></div><span class="go">           ...])</span>
+<div class="newline"></div><span class="go">  message: ...&#39;Optimization terminated successfully.&#39;</span>
+<div class="newline"></div><span class="go">     nfev: 144</span>
+<div class="newline"></div><span class="go">      nit: 11</span>
+<div class="newline"></div><span class="go">     njev: 12</span>
+<div class="newline"></div><span class="go">   status: 0</span>
+<div class="newline"></div><span class="go">  success: True</span>
+<div class="newline"></div><span class="go">        x: array([ -7.3845...e-09,   1.1111...e-01,   2.2222...e-01,</span>
+<div class="newline"></div><span class="go">         3.3333...e-01,   4.4444...e-01,   5.5555...e-01,</span>
+<div class="newline"></div><span class="go">         6.6666...e-01,   7.7777...e-01,   8.8889...e-01,</span>
+<div class="newline"></div><span class="go">         1.0000...e+00])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>BFGS needs more function calls, and gives a less precise result.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><cite>leastsq</cite> is interesting compared to BFGS only if the
+dimensionality of the output vector is large, and larger than the number
+of parameters to optimize.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If the function is linear, this is a linear-algebra problem, and
+should be solved with <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.lstsq.html#scipy.linalg.lstsq" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.linalg.lstsq()</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="curve-fitting">
+<h3><a class="toc-backref" href="#id50">2.7.6.2. Curve fitting</a><a class="headerlink" href="#curve-fitting" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_curve_fit.html"><img alt="../../_images/sphx_glr_plot_curve_fit_001.png" class="align-right" src="../../_images/sphx_glr_plot_curve_fit_001.png" style="width: 307.2px; height: 230.4px;" /></a>
+<p>Least square problems occur often when fitting a non-linear to data.
+While it is possible to construct our optimization problem ourselves,
+scipy provides a helper function for this purpose:
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy.optimize.curve_fit" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.curve_fit()</span></code></a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">omega</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">phi</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="o">.</span><span class="mi">1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">curve_fit</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>   
+<div class="newline"></div><span class="go">(array([ 1.5185...,  0.92665...]), array([[ 0.00037..., -0.00056...],</span>
+<div class="newline"></div><span class="go">       [-0.0005...,  0.00123...]]))</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong></p>
+<p>Do the same with omega = 3. What is the difficulty?</p>
+</div>
+</div>
+</div>
+<div class="section" id="optimization-with-constraints">
+<h2><a class="toc-backref" href="#id51">2.7.7. Optimization with constraints</a><a class="headerlink" href="#optimization-with-constraints" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="box-bounds">
+<h3><a class="toc-backref" href="#id52">2.7.7.1. Box bounds</a><a class="headerlink" href="#box-bounds" title="Permalink to this headline">¶</a></h3>
+<p>Box bounds correspond to limiting each of the individual parameters of
+the optimization. Note that some problems that are not originally written
+as box bounds can be rewritten as such via change of variables. Both
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize_scalar.html#scipy.optimize.minimize_scalar" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize_scalar()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a>
+support bound constraints with the parameter <code class="docutils literal"><span class="pre">bounds</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>   <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">bounds</span><span class="o">=</span><span class="p">((</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)))</span>   
+<div class="newline"></div><span class="go">      fun: 1.5811...</span>
+<div class="newline"></div><span class="go"> hess_inv: &lt;2x2 LbfgsInvHessProduct with dtype=float64&gt;</span>
+<div class="newline"></div><span class="go">      jac: array([-0.94868..., -0.31622...])</span>
+<div class="newline"></div><span class="go">  message: ...&#39;CONVERGENCE: NORM_OF_PROJECTED_GRADIENT_&lt;=_PGTOL&#39;</span>
+<div class="newline"></div><span class="go">     nfev: 9</span>
+<div class="newline"></div><span class="go">      nit: 2</span>
+<div class="newline"></div><span class="go">   status: 0</span>
+<div class="newline"></div><span class="go">  success: True</span>
+<div class="newline"></div><span class="go">        x: array([ 1.5,  1.5])</span>
+<div class="newline"></div></pre></div>
+</div>
+<a class="reference external image-reference" href="auto_examples/plot_constraints.html"><img alt="../../_images/sphx_glr_plot_constraints_002.png" class="align-right" src="../../_images/sphx_glr_plot_constraints_002.png" style="width: 225.0px; height: 187.5px;" /></a>
+</div>
+<div class="section" id="general-constraints">
+<h3><a class="toc-backref" href="#id53">2.7.7.2. General constraints</a><a class="headerlink" href="#general-constraints" title="Permalink to this headline">¶</a></h3>
+<p>Equality and inequality constraints specified as functions: <img class="math" src="../../_images/math/6504e3f0bdd624bb75e2c6f760ac542612e8e8fa.png" alt="f(x) = 0"/>
+and <img class="math" src="../../_images/math/a82ae2f507c0518d5157707f511738073b04ce5b.png" alt="g(x) &lt; 0"/>.</p>
+<ul>
+<li><p class="first"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_slsqp.html#scipy.optimize.fmin_slsqp" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.fmin_slsqp()</span></code></a> Sequential least square programming:
+equality and inequality constraints:</p>
+<a class="reference external image-reference" href="auto_examples/plot_non_bounds_constraints.html"><img alt="../../_images/sphx_glr_plot_non_bounds_constraints_001.png" class="align-right" src="../../_images/sphx_glr_plot_non_bounds_constraints_001.png" style="width: 225.0px; height: 187.5px;" /></a>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">constraint</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="mf">1.5</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fun&quot;</span><span class="p">:</span> <span class="n">constraint</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ineq&quot;</span><span class="p">})</span> 
+<div class="newline"></div><span class="go">     fun: 2.4748...</span>
+<div class="newline"></div><span class="go">     jac: array([-0.70708..., -0.70712...])</span>
+<div class="newline"></div><span class="go"> message: ...&#39;Optimization terminated successfully.&#39;</span>
+<div class="newline"></div><span class="go">    nfev: 20</span>
+<div class="newline"></div><span class="go">     nit: 5</span>
+<div class="newline"></div><span class="go">    njev: 5</span>
+<div class="newline"></div><span class="go">  status: 0</span>
+<div class="newline"></div><span class="go"> success: True</span>
+<div class="newline"></div><span class="go">       x: array([ 1.2500...,  0.2499...])</span>
+<div class="newline"></div></pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The above problem is known as the <a class="reference external" href="http://en.wikipedia.org/wiki/Lasso_(statistics)#LASSO_method">Lasso</a>
+problem in statistics, and there exist very efficient solvers for it
+(for instance in <a class="reference external" href="http://scikit-learn.org">scikit-learn</a>). In
+general do not use generic solvers when specific ones exist.</p>
+</div>
+<div class="topic">
+<p class="topic-title first"><strong>Lagrange multipliers</strong></p>
+<p>If you are ready to do a bit of math, many constrained optimization
+problems can be converted to non-constrained optimization problems
+using a mathematical trick known as <a class="reference external" href="https://en.wikipedia.org/wiki/Lagrange_multiplier">Lagrange multipliers</a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id54">2.7.8. Full code examples</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id55">2.7.9. Examples for the mathematical optimization chapter</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Draws a figure explaining noisy vs non-noisy optimization "><div class="figure" id="id19">
+<img alt="../../_images/sphx_glr_plot_noisy_thumb.png" src="../../_images/sphx_glr_plot_noisy_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_noisy.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-noisy-py"><span class="std std-ref">Noisy optimization problem</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Draws a figure to explain smooth versus non smooth optimization. "><div class="figure" id="id20">
+<img alt="../../_images/sphx_glr_plot_smooth_thumb.png" src="../../_images/sphx_glr_plot_smooth_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_smooth.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-smooth-py"><span class="std std-ref">Smooth vs non-smooth</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="A curve fitting example "><div class="figure" id="id21">
+<img alt="../../_images/sphx_glr_plot_curve_fit_thumb.png" src="../../_images/sphx_glr_plot_curve_fit_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_curve_fit.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-curve-fit-py"><span class="std std-ref">Curve fitting</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="A figure showing the definition of a convex function "><div class="figure" id="id22">
+<img alt="../../_images/sphx_glr_plot_convex_thumb.png" src="../../_images/sphx_glr_plot_convex_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_convex.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-convex-py"><span class="std std-ref">Convex function</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An excercise of finding minimum. This excercise is hard because the function is very flat aroun..."><div class="figure" id="id23">
+<img alt="../../_images/sphx_glr_plot_exercise_flat_minimum_thumb.png" src="../../_images/sphx_glr_plot_exercise_flat_minimum_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_exercise_flat_minimum.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-exercise-flat-minimum-py"><span class="std std-ref">Finding a minimum in a flat neighborhood</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing how to do optimization with general constraints using SLSQP and cobyla. "><div class="figure" id="id24">
+<img alt="../../_images/sphx_glr_plot_non_bounds_constraints_thumb.png" src="../../_images/sphx_glr_plot_non_bounds_constraints_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_non_bounds_constraints.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-non-bounds-constraints-py"><span class="std std-ref">Optimization with constraints</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Illustration of 1D optimization: Brent's method "><div class="figure" id="id25">
+<img alt="../../_images/sphx_glr_plot_1d_optim_thumb.png" src="../../_images/sphx_glr_plot_1d_optim_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_1d_optim.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-1d-optim-py"><span class="std std-ref">Brent’s method</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="A small figure explaining optimization with constraints "><div class="figure" id="id26">
+<img alt="../../_images/sphx_glr_plot_constraints_thumb.png" src="../../_images/sphx_glr_plot_constraints_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_constraints.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-constraints-py"><span class="std std-ref">Constraint optimization: visualizing the geometry</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Plots the results from the comparison of optimizers."><div class="figure" id="id27">
+<img alt="../../_images/sphx_glr_plot_compare_optimizers_thumb.png" src="../../_images/sphx_glr_plot_compare_optimizers_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_compare_optimizers.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-compare-optimizers-py"><span class="std std-ref">Plotting the comparison of optimizers</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="The challenge here is that Hessian of the problem is a very ill-conditioned matrix. This can ea..."><div class="figure" id="id28">
+<img alt="../../_images/sphx_glr_plot_exercise_ill_conditioned_thumb.png" src="../../_images/sphx_glr_plot_exercise_ill_conditioned_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_exercise_ill_conditioned.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-exercise-ill-conditioned-py"><span class="std std-ref">Alternating optimization</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="An example demoing gradient descent by creating figures that trace the evolution of the optimiz..."><div class="figure" id="id29">
+<img alt="../../_images/sphx_glr_plot_gradient_descent_thumb.png" src="../../_images/sphx_glr_plot_gradient_descent_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_gradient_descent.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-gradient-descent-py"><span class="std std-ref">Gradient descent</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/auto_examples_python2.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/auto_examples_jupyter2.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.7. Mathematical optimization: finding minima of functions</a><ul>
+<li><a class="reference internal" href="#knowing-your-problem">2.7.1. Knowing your problem</a><ul>
+<li><a class="reference internal" href="#convex-versus-non-convex-optimization">2.7.1.1. Convex versus non-convex optimization</a></li>
+<li><a class="reference internal" href="#smooth-and-non-smooth-problems">2.7.1.2. Smooth and non-smooth problems</a></li>
+<li><a class="reference internal" href="#noisy-versus-exact-cost-functions">2.7.1.3. Noisy versus exact cost functions</a></li>
+<li><a class="reference internal" href="#constraints">2.7.1.4. Constraints</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#a-review-of-the-different-optimizers">2.7.2. A review of the different optimizers</a><ul>
+<li><a class="reference internal" href="#getting-started-1d-optimization">2.7.2.1. Getting started: 1D optimization</a></li>
+<li><a class="reference internal" href="#gradient-based-methods">2.7.2.2. Gradient based methods</a><ul>
+<li><a class="reference internal" href="#some-intuitions-about-gradient-descent">Some intuitions about gradient descent</a></li>
+<li><a class="reference internal" href="#conjugate-gradient-descent">Conjugate gradient descent</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#newton-and-quasi-newton-methods">2.7.2.3. Newton and quasi-newton methods</a><ul>
+<li><a class="reference internal" href="#newton-methods-using-the-hessian-2nd-differential">Newton methods: using the Hessian (2nd differential)</a></li>
+<li><a class="reference internal" href="#quasi-newton-methods-approximating-the-hessian-on-the-fly">Quasi-Newton methods: approximating the Hessian on the fly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#full-code-examples">2.7.3. Full code examples</a></li>
+<li><a class="reference internal" href="#examples-for-the-mathematical-optimization-chapter">2.7.4. Examples for the mathematical optimization chapter</a><ul>
+<li><a class="reference internal" href="#gradient-less-methods">2.7.4.12. Gradient-less methods</a><ul>
+<li><a class="reference internal" href="#a-shooting-method-the-powell-algorithm">A shooting method: the Powell algorithm</a></li>
+<li><a class="reference internal" href="#simplex-method-the-nelder-mead">Simplex method: the Nelder-Mead</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#global-optimizers">2.7.4.13. Global optimizers</a><ul>
+<li><a class="reference internal" href="#brute-force-a-grid-search">Brute force: a grid search</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#practical-guide-to-optimization-with-scipy">2.7.5. Practical guide to optimization with scipy</a><ul>
+<li><a class="reference internal" href="#choosing-a-method">2.7.5.1. Choosing a method</a></li>
+<li><a class="reference internal" href="#making-your-optimizer-faster">2.7.5.2. Making your optimizer faster</a></li>
+<li><a class="reference internal" href="#computing-gradients">2.7.5.3. Computing gradients</a></li>
+<li><a class="reference internal" href="#synthetic-exercices">2.7.5.4. Synthetic exercices</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#special-case-non-linear-least-squares">2.7.6. Special case: non-linear least-squares</a><ul>
+<li><a class="reference internal" href="#minimizing-the-norm-of-a-vector-function">2.7.6.1. Minimizing the norm of a vector function</a></li>
+<li><a class="reference internal" href="#curve-fitting">2.7.6.2. Curve fitting</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#optimization-with-constraints">2.7.7. Optimization with constraints</a><ul>
+<li><a class="reference internal" href="#box-bounds">2.7.7.1. Box bounds</a></li>
+<li><a class="reference internal" href="#general-constraints">2.7.7.2. General constraints</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2">2.7.8. Full code examples</a></li>
+<li><a class="reference internal" href="#id3">2.7.9. Examples for the mathematical optimization chapter</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="auto_examples/plot_noisy.html" title="2.7.4.1. Noisy optimization problem"
+             >next</a></li>
+        <li class="right" >
+          <a href="../image_processing/auto_examples/plot_spectral_clustering.html" title="2.6.8.24. Segmentation with spectral clustering"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >2. Advanced topics</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/mathematical_optimization/index.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

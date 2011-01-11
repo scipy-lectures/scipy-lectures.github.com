@@ -1,0 +1,246 @@
+
+
+.. _sphx_glr_packages_scikit-learn_auto_examples_plot_boston_prediction.py:
+
+
+A simple regression analysis on the Boston housing data
+========================================================
+
+Here we perform a simple regression analysis on the Boston housing
+data, exploring two types of regressors.
+
+
+
+
+.. code-block:: python
+
+
+    from sklearn.datasets import load_boston
+    data = load_boston()
+
+
+
+
+
+
+
+Print a histogram of the quantity to predict: price
+
+
+
+.. code-block:: python
+
+    import matplotlib.pyplot as plt
+    plt.figure(figsize=(4, 3))
+    plt.hist(data.target)
+    plt.xlabel('price ($1000s)')
+    plt.ylabel('count')
+    plt.tight_layout()
+
+
+
+
+.. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_001.png
+    :align: center
+
+
+
+
+Print the join histogram for each feature
+
+
+
+.. code-block:: python
+
+
+    for index, feature_name in enumerate(data.feature_names):
+        plt.figure(figsize=(4, 3))
+        plt.scatter(data.data[:, index], data.target)
+        plt.ylabel('Price', size=15)
+        plt.xlabel(feature_name, size=15)
+        plt.tight_layout()
+
+
+
+
+
+.. rst-class:: sphx-glr-horizontal
+
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_002.png
+            :scale: 47
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_003.png
+            :scale: 47
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_004.png
+            :scale: 47
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_005.png
+            :scale: 47
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_006.png
+            :scale: 47
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_007.png
+            :scale: 47
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_008.png
+            :scale: 47
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_009.png
+            :scale: 47
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_010.png
+            :scale: 47
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_011.png
+            :scale: 47
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_012.png
+            :scale: 47
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_013.png
+            :scale: 47
+
+    *
+
+      .. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_014.png
+            :scale: 47
+
+
+
+
+Simple prediction
+
+
+
+.. code-block:: python
+
+
+    from sklearn.model_selection import train_test_split
+    X_train, X_test, y_train, y_test = train_test_split(data.data, data.target)
+
+    from sklearn.linear_model import LinearRegression
+    clf = LinearRegression()
+    clf.fit(X_train, y_train)
+    predicted = clf.predict(X_test)
+    expected = y_test
+
+    plt.figure(figsize=(4, 3))
+    plt.scatter(expected, predicted)
+    plt.plot([0, 50], [0, 50], '--k')
+    plt.axis('tight')
+    plt.xlabel('True price ($1000s)')
+    plt.ylabel('Predicted price ($1000s)')
+    plt.tight_layout()
+
+
+
+
+
+.. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_015.png
+    :align: center
+
+
+
+
+Prediction with gradient boosted tree
+
+
+
+.. code-block:: python
+
+
+    from sklearn.ensemble import GradientBoostingRegressor
+
+    clf = GradientBoostingRegressor()
+    clf.fit(X_train, y_train)
+
+    predicted = clf.predict(X_test)
+    expected = y_test
+
+    plt.figure(figsize=(4, 3))
+    plt.scatter(expected, predicted)
+    plt.plot([0, 50], [0, 50], '--k')
+    plt.axis('tight')
+    plt.xlabel('True price ($1000s)')
+    plt.ylabel('Predicted price ($1000s)')
+    plt.tight_layout()
+
+
+
+
+.. image:: /packages/scikit-learn/auto_examples/images/sphx_glr_plot_boston_prediction_016.png
+    :align: center
+
+
+
+
+Print the error rate
+
+
+
+.. code-block:: python
+
+    import numpy as np
+    print("RMS: %r " % np.sqrt(np.mean((predicted - expected) ** 2)))
+
+    plt.show()
+
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out::
+
+    RMS: 3.3940265988986305
+
+
+**Total running time of the script:** ( 0 minutes  2.312 seconds)
+
+
+
+.. container:: sphx-glr-footer
+
+
+  .. container:: sphx-glr-download
+
+     :download:`Download Python source code: plot_boston_prediction.py <plot_boston_prediction.py>`
+
+
+
+  .. container:: sphx-glr-download
+
+     :download:`Download Jupyter notebook: plot_boston_prediction.ipynb <plot_boston_prediction.ipynb>`
+
+.. rst-class:: sphx-glr-signature
+
+    `Generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_

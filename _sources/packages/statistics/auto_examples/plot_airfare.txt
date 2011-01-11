@@ -1,0 +1,139 @@
+
+
+.. _example_plot_airfare.py:
+
+
+Air fares before and after 9/11
+=====================================
+
+This is a business-intelligence (BI) like application.
+
+What is interesting here is that we may want to study fares as a function
+of the year, paired accordingly to the trips, or forgetting the year,
+only as a function of the trip endpoints.
+
+Using statsmodels' linear models, we find that both with an OLS (ordinary
+least square) and a robust fit, the intercept and the slope are
+significantly non-zero: the air fares have decreased between 2000 and
+2001, and their dependence on distance travelled has also decreased
+
+
+
+
+.. rst-class:: horizontal
+
+
+    *
+
+      .. image:: images/plot_airfare_1.png
+
+    *
+
+      .. image:: images/plot_airfare_2.png
+
+    *
+
+      .. image:: images/plot_airfare_3.png
+
+    *
+
+      .. image:: images/plot_airfare_4.png
+
+    *
+
+      .. image:: images/plot_airfare_5.png
+
+
+**Script output**:
+
+.. rst-class:: max_height
+
+ ::
+
+    OLS Regression Results                            
+  ==============================================================================
+  Dep. Variable:                   fare   R-squared:                       0.275
+  Model:                            OLS   Adj. R-squared:                  0.275
+  Method:                 Least Squares   F-statistic:                     1585.
+  Date:                Mon, 10 Oct 2016   Prob (F-statistic):               0.00
+  Time:                        22:14:30   Log-Likelihood:                -45532.
+  No. Observations:                8352   AIC:                         9.107e+04
+  Df Residuals:                    8349   BIC:                         9.109e+04
+  Df Model:                           2                                         
+  Covariance Type:            nonrobust                                         
+  =================================================================================
+                      coef    std err          t      P>|t|      [0.025      0.975]
+  ---------------------------------------------------------------------------------
+  Intercept       211.2428      2.466     85.669      0.000     206.409     216.076
+  dist              0.0484      0.001     48.149      0.000       0.046       0.050
+  nb_passengers   -32.8925      1.127    -29.191      0.000     -35.101     -30.684
+  ==============================================================================
+  Omnibus:                      604.051   Durbin-Watson:                   1.446
+  Prob(Omnibus):                  0.000   Jarque-Bera (JB):              740.733
+  Skew:                           0.710   Prob(JB):                    1.42e-161
+  Kurtosis:                       3.338   Cond. No.                     5.23e+03
+  ==============================================================================
+  
+  Warnings:
+  [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+  [2] The condition number is large, 5.23e+03. This might indicate that there are
+  strong multicollinearity or other numerical problems.
+                      Robust linear Model Regression Results                    
+  ==============================================================================
+  Dep. Variable:                   fare   No. Observations:                 8352
+  Model:                            RLM   Df Residuals:                     8349
+  Method:                          IRLS   Df Model:                            2
+  Norm:                          HuberT                                         
+  Scale Est.:                       mad                                         
+  Cov Type:                          H1                                         
+  Date:                Mon, 10 Oct 2016                                         
+  Time:                        22:14:30                                         
+  No. Iterations:                    12                                         
+  =================================================================================
+                      coef    std err          z      P>|z|      [0.025      0.975]
+  ---------------------------------------------------------------------------------
+  Intercept       215.0848      2.448     87.856      0.000     210.287     219.883
+  dist              0.0460      0.001     46.166      0.000       0.044       0.048
+  nb_passengers   -35.2686      1.119    -31.526      0.000     -37.461     -33.076
+  =================================================================================
+  
+  If the model instance has been used for another fit with different fit
+  parameters, then the fit options might not be the correct ones anymore .
+                              OLS Regression Results                            
+  ==============================================================================
+  Dep. Variable:              fare_2001   R-squared:                       0.159
+  Model:                            OLS   Adj. R-squared:                  0.159
+  Method:                 Least Squares   F-statistic:                     791.7
+  Date:                Mon, 10 Oct 2016   Prob (F-statistic):          1.20e-159
+  Time:                        22:14:30   Log-Likelihood:                -22640.
+  No. Observations:                4176   AIC:                         4.528e+04
+  Df Residuals:                    4174   BIC:                         4.530e+04
+  Df Model:                           1                                         
+  Covariance Type:            nonrobust                                         
+  ==============================================================================
+                   coef    std err          t      P>|t|      [0.025      0.975]
+  ------------------------------------------------------------------------------
+  Intercept    148.0279      1.673     88.480      0.000     144.748     151.308
+  dist           0.0388      0.001     28.136      0.000       0.036       0.041
+  ==============================================================================
+  Omnibus:                      136.558   Durbin-Watson:                   1.544
+  Prob(Omnibus):                  0.000   Jarque-Bera (JB):              149.624
+  Skew:                           0.462   Prob(JB):                     3.23e-33
+  Kurtosis:                       2.920   Cond. No.                     2.40e+03
+  ==============================================================================
+  
+  Warnings:
+  [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+  [2] The condition number is large, 2.4e+03. This might indicate that there are
+  strong multicollinearity or other numerical problems.
+
+
+
+**Python source code:** :download:`plot_airfare.py <plot_airfare.py>`
+
+.. literalinclude:: plot_airfare.py
+    :lines: 17-
+
+**Total running time of the example:**  9.64 seconds
+( 0 minutes  9.64 seconds)
+    

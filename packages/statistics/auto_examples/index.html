@@ -1,0 +1,301 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Full code for the figures &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/statistics/auto_examples/index.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="full-code-for-the-figures">
+<h1>Full code for the figures<a class="headerlink" href="#full-code-for-the-figures" title="Permalink to this headline">¶</a></h1>
+<p>Code examples for the statistics chapter.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="Plot boxplots for FSIQ, PIQ, and the paired difference between the two: while the spread (error..."><div class="figure" id="id1">
+<img alt="../../../_images/sphx_glr_plot_paired_boxplots_thumb.png" src="../../../_images/sphx_glr_plot_paired_boxplots_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_paired_boxplots.html#sphx-glr-packages-statistics-auto-examples-plot-paired-boxplots-py"><span class="std std-ref">Boxplots and paired differences</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example loads from a CSV file data with mixed numerical and categorical entries, and plots..."><div class="figure" id="id2">
+<img alt="../../../_images/sphx_glr_plot_pandas_thumb.png" src="../../../_images/sphx_glr_plot_pandas_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_pandas.html#sphx-glr-packages-statistics-auto-examples-plot-pandas-py"><span class="std std-ref">Plotting simple quantities of a pandas dataframe</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Ilustrate an analysis on a real dataset:"><div class="figure" id="id3">
+<img alt="../../../_images/sphx_glr_plot_iris_analysis_thumb.png" src="../../../_images/sphx_glr_plot_iris_analysis_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_iris_analysis.html#sphx-glr-packages-statistics-auto-examples-plot-iris-analysis-py"><span class="std std-ref">Analysis of Iris petal and sepal sizes</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Fit a simple linear regression using 'statsmodels', compute corresponding p-values. "><div class="figure" id="id4">
+<img alt="../../../_images/sphx_glr_plot_regression_thumb.png" src="../../../_images/sphx_glr_plot_regression_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_regression.html#sphx-glr-packages-statistics-auto-examples-plot-regression-py"><span class="std std-ref">Simple Regression</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Calculate using 'statsmodels' just the best fit, or all the corresponding statistical parameter..."><div class="figure" id="id5">
+<img alt="../../../_images/sphx_glr_plot_regression_3d_thumb.png" src="../../../_images/sphx_glr_plot_regression_3d_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_regression_3d.html#sphx-glr-packages-statistics-auto-examples-plot-regression-3d-py"><span class="std std-ref">Multiple Regression</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Wages depend mostly on education. Here we investigate how this dependence is related to gender:..."><div class="figure" id="id6">
+<img alt="../../../_images/sphx_glr_plot_wage_education_gender_thumb.png" src="../../../_images/sphx_glr_plot_wage_education_gender_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_wage_education_gender.html#sphx-glr-packages-statistics-auto-examples-plot-wage-education-gender-py"><span class="std std-ref">Test for an education/gender interaction in wages</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example uses seaborn to quickly plot various factors relating wages, experience and educti..."><div class="figure" id="id7">
+<img alt="../../../_images/sphx_glr_plot_wage_data_thumb.png" src="../../../_images/sphx_glr_plot_wage_data_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_wage_data.html#sphx-glr-packages-statistics-auto-examples-plot-wage-data-py"><span class="std std-ref">Visualizing factors influencing wages</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This is a business-intelligence (BI) like application."><div class="figure" id="id8">
+<img alt="../../../_images/sphx_glr_plot_airfare_thumb.png" src="../../../_images/sphx_glr_plot_airfare_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_airfare.html#sphx-glr-packages-statistics-auto-examples-plot-airfare-py"><span class="std std-ref">Air fares before and after 9/11</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div></div>
+<div class="section" id="solutions-to-this-chapter-s-exercises">
+<h1>Solutions to this chapter’s exercises<a class="headerlink" href="#solutions-to-this-chapter-s-exercises" title="Permalink to this headline">¶</a></h1>
+<div class="sphx-glr-thumbcontainer" tooltip="Going back to the brain size + IQ data, test if the VIQ of male and female are different after ..."><div class="figure" id="id9">
+<img alt="../../../_images/sphx_glr_plot_brain_size_thumb.png" src="../../../_images/sphx_glr_plot_brain_size_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="solutions/plot_brain_size.html#sphx-glr-packages-statistics-auto-examples-solutions-plot-brain-size-py"><span class="std std-ref">Relating Gender and IQ</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/auto_examples_python10.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/auto_examples_jupyter10.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Full code for the figures</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#solutions-to-this-chapter-s-exercises">Solutions to this chapter’s exercises</a></li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/statistics/auto_examples/index.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

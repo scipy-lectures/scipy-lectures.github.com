@@ -1,0 +1,563 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2.7.4.11. Gradient descent &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="2.8. Interfacing with C" href="../../interfacing_with_c/interfacing_with_c.html" />
+    <link rel="prev" title="2.7.4.10. Alternating optimization" href="plot_exercise_ill_conditioned.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../interfacing_with_c/interfacing_with_c.html" title="2.8. Interfacing with C"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="plot_exercise_ill_conditioned.html" title="2.7.4.10. Alternating optimization"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >2. Advanced topics</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">2.7. Mathematical optimization: finding minima of functions</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/mathematical_optimization/auto_examples/plot_gradient_descent.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="gradient-descent">
+<span id="sphx-glr-advanced-mathematical-optimization-auto-examples-plot-gradient-descent-py"></span><h1>2.7.4.11. Gradient descent<a class="headerlink" href="#gradient-descent" title="Permalink to this headline">¶</a></h1>
+<p>An example demoing gradient descent by creating figures that trace the
+evolution of the optimizer.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<div class="newline"></div><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;helper&#39;</span><span class="p">))</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">cost_functions</span> <span class="kn">import</span> <span class="n">mk_quad</span><span class="p">,</span> <span class="n">mk_gauss</span><span class="p">,</span> <span class="n">rosenbrock</span><span class="p">,</span>\
+<div class="newline"></div>    <span class="n">rosenbrock_prime</span><span class="p">,</span> <span class="n">rosenbrock_hessian</span><span class="p">,</span> <span class="n">LoggingFunction</span><span class="p">,</span>\
+<div class="newline"></div>    <span class="n">CountingFunction</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
+<div class="newline"></div><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="mf">2.25</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="n">x_min</span> <span class="o">-</span> <span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="mf">2.25</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="n">x_max</span> <span class="o">-</span> <span class="o">.</span><span class="mi">2</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>A formatter to print values on contours</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">super_fmt</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<div class="newline"></div>        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-</span> <span class="n">value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="o">.</span><span class="mi">1</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">out</span> <span class="o">=</span> <span class="s1">&#39;$10^{</span><span class="si">%.1i</span><span class="s1">}$&#39;</span> <span class="o">%</span> <span class="n">value</span>
+<div class="newline"></div>        <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">out</span> <span class="o">=</span> <span class="s1">&#39;$10^{</span><span class="si">%.1f</span><span class="s1">}$&#39;</span> <span class="o">%</span> <span class="n">value</span>
+<div class="newline"></div>    <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>        <span class="n">value</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.exp" title="View documentation for numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="o">.</span><span class="mo">01</span><span class="p">)</span>
+<div class="newline"></div>        <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">1</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">out</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%1.1f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">value</span>
+<div class="newline"></div>        <span class="k">elif</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mo">01</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">out</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">value</span>
+<div class="newline"></div>        <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">out</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%.2e</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">value</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">out</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>A gradient descent algorithm
+do not use: its a toy, use scipy’s optimize.fmin_cg</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gradient_descent</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">hessian</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">adaptative</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span> <span class="o">=</span> <span class="n">x0</span>
+<div class="newline"></div>    <span class="n">all_x_i</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<div class="newline"></div>    <span class="n">all_y_i</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<div class="newline"></div>    <span class="n">all_f_i</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+<div class="newline"></div>        <span class="n">all_x_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_i</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">all_y_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_i</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">all_f_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">([</span><span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">]))</span>
+<div class="newline"></div>        <span class="n">dx_i</span><span class="p">,</span> <span class="n">dy_i</span> <span class="o">=</span> <span class="n">f_prime</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.asarray" title="View documentation for numpy.asarray"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">([</span><span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">]))</span>
+<div class="newline"></div>        <span class="k">if</span> <span class="n">adaptative</span><span class="p">:</span>
+<div class="newline"></div>            <span class="c1"># Compute a step size using a line_search to satisfy the Wolf</span>
+<div class="newline"></div>            <span class="c1"># conditions</span>
+<div class="newline"></div>            <span class="n">step</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.html#scipy.optimize.line_search" title="View documentation for scipy.optimize.line_search"><span class="n">optimize</span><span class="o">.</span><span class="n">line_search</span></a><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span>
+<div class="newline"></div>                                <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.r_" title="View documentation for numpy.r_"><span class="n">np</span><span class="o">.</span><span class="n">r_</span></a><span class="p">[</span><span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">],</span> <span class="o">-</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.r_" title="View documentation for numpy.r_"><span class="n">np</span><span class="o">.</span><span class="n">r_</span></a><span class="p">[</span><span class="n">dx_i</span><span class="p">,</span> <span class="n">dy_i</span><span class="p">],</span>
+<div class="newline"></div>                                <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.r_" title="View documentation for numpy.r_"><span class="n">np</span><span class="o">.</span><span class="n">r_</span></a><span class="p">[</span><span class="n">dx_i</span><span class="p">,</span> <span class="n">dy_i</span><span class="p">],</span> <span class="n">c2</span><span class="o">=.</span><span class="mo">05</span><span class="p">)</span>
+<div class="newline"></div>            <span class="n">step</span> <span class="o">=</span> <span class="n">step</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="newline"></div>            <span class="k">if</span> <span class="n">step</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<div class="newline"></div>                <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="newline"></div>        <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="newline"></div>        <span class="n">x_i</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">step</span><span class="o">*</span><span class="n">dx_i</span>
+<div class="newline"></div>        <span class="n">y_i</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">step</span><span class="o">*</span><span class="n">dy_i</span>
+<div class="newline"></div>        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">all_f_i</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">1e-16</span><span class="p">:</span>
+<div class="newline"></div>            <span class="k">break</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">all_x_i</span><span class="p">,</span> <span class="n">all_y_i</span><span class="p">,</span> <span class="n">all_f_i</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">gradient_descent_adaptative</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">hessian</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">gradient_descent</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">adaptative</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">conjugate_gradient</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">hessian</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">all_x_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">all_y_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">all_f_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">)]</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<div class="newline"></div>        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span>
+<div class="newline"></div>        <span class="n">all_x_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">all_y_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">all_f_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">f_prime</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;CG&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">store</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;gtol&quot;</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">})</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">all_x_i</span><span class="p">,</span> <span class="n">all_y_i</span><span class="p">,</span> <span class="n">all_f_i</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">newton_cg</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">hessian</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">all_x_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">all_y_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">all_f_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">)]</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<div class="newline"></div>        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span>
+<div class="newline"></div>        <span class="n">all_x_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">all_y_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">all_f_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Newton-CG&quot;</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">f_prime</span><span class="p">,</span> <span class="n">hess</span><span class="o">=</span><span class="n">hessian</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">store</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;xtol&quot;</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">})</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">all_x_i</span><span class="p">,</span> <span class="n">all_y_i</span><span class="p">,</span> <span class="n">all_f_i</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">bfgs</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">hessian</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">all_x_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">all_y_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">all_f_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">)]</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<div class="newline"></div>        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span>
+<div class="newline"></div>        <span class="n">all_x_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">all_y_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">all_f_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;BFGS&quot;</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">f_prime</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">store</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;gtol&quot;</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">})</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">all_x_i</span><span class="p">,</span> <span class="n">all_y_i</span><span class="p">,</span> <span class="n">all_f_i</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">powell</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">hessian</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">all_x_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">all_y_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">all_f_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">)]</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<div class="newline"></div>        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span>
+<div class="newline"></div>        <span class="n">all_x_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">all_y_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">all_f_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Powell&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">store</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ftol&quot;</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">})</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">all_x_i</span><span class="p">,</span> <span class="n">all_y_i</span><span class="p">,</span> <span class="n">all_f_i</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">nelder_mead</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">hessian</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">all_x_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">all_y_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">all_f_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">)]</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<div class="newline"></div>        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span>
+<div class="newline"></div>        <span class="n">all_x_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">all_y_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">all_f_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Nelder-Mead&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">store</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ftol&quot;</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">})</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">all_x_i</span><span class="p">,</span> <span class="n">all_y_i</span><span class="p">,</span> <span class="n">all_f_i</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Run different optimizers on these problems</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">levels</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">((</span><span class="n">f</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">hessian</span><span class="p">),</span> <span class="n">optimizer</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_quad</span><span class="p">(</span><span class="o">.</span><span class="mi">7</span><span class="p">),</span> <span class="n">gradient_descent</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_quad</span><span class="p">(</span><span class="o">.</span><span class="mi">7</span><span class="p">),</span> <span class="n">gradient_descent_adaptative</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_quad</span><span class="p">(</span><span class="o">.</span><span class="mo">02</span><span class="p">),</span> <span class="n">gradient_descent</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_quad</span><span class="p">(</span><span class="o">.</span><span class="mo">02</span><span class="p">),</span> <span class="n">gradient_descent_adaptative</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_gauss</span><span class="p">(</span><span class="o">.</span><span class="mo">02</span><span class="p">),</span> <span class="n">gradient_descent_adaptative</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">((</span><span class="n">rosenbrock</span><span class="p">,</span> <span class="n">rosenbrock_prime</span><span class="p">,</span> <span class="n">rosenbrock_hessian</span><span class="p">),</span>
+<div class="newline"></div>                                    <span class="n">gradient_descent_adaptative</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_gauss</span><span class="p">(</span><span class="o">.</span><span class="mo">02</span><span class="p">),</span> <span class="n">conjugate_gradient</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">((</span><span class="n">rosenbrock</span><span class="p">,</span> <span class="n">rosenbrock_prime</span><span class="p">,</span> <span class="n">rosenbrock_hessian</span><span class="p">),</span>
+<div class="newline"></div>                                    <span class="n">conjugate_gradient</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_quad</span><span class="p">(</span><span class="o">.</span><span class="mo">02</span><span class="p">),</span> <span class="n">newton_cg</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_gauss</span><span class="p">(</span><span class="o">.</span><span class="mo">02</span><span class="p">),</span> <span class="n">newton_cg</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">((</span><span class="n">rosenbrock</span><span class="p">,</span> <span class="n">rosenbrock_prime</span><span class="p">,</span> <span class="n">rosenbrock_hessian</span><span class="p">),</span>
+<div class="newline"></div>                                    <span class="n">newton_cg</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_quad</span><span class="p">(</span><span class="o">.</span><span class="mo">02</span><span class="p">),</span> <span class="n">bfgs</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_gauss</span><span class="p">(</span><span class="o">.</span><span class="mo">02</span><span class="p">),</span> <span class="n">bfgs</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">((</span><span class="n">rosenbrock</span><span class="p">,</span> <span class="n">rosenbrock_prime</span><span class="p">,</span> <span class="n">rosenbrock_hessian</span><span class="p">),</span>
+<div class="newline"></div>                            <span class="n">bfgs</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_quad</span><span class="p">(</span><span class="o">.</span><span class="mo">02</span><span class="p">),</span> <span class="n">powell</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_gauss</span><span class="p">(</span><span class="o">.</span><span class="mo">02</span><span class="p">),</span> <span class="n">powell</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">((</span><span class="n">rosenbrock</span><span class="p">,</span> <span class="n">rosenbrock_prime</span><span class="p">,</span> <span class="n">rosenbrock_hessian</span><span class="p">),</span>
+<div class="newline"></div>                            <span class="n">powell</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="n">mk_gauss</span><span class="p">(</span><span class="o">.</span><span class="mo">02</span><span class="p">),</span> <span class="n">nelder_mead</span><span class="p">),</span>
+<div class="newline"></div>                <span class="p">((</span><span class="n">rosenbrock</span><span class="p">,</span> <span class="n">rosenbrock_prime</span><span class="p">,</span> <span class="n">rosenbrock_hessian</span><span class="p">),</span>
+<div class="newline"></div>                            <span class="n">nelder_mead</span><span class="p">),</span>
+<div class="newline"></div>            <span class="p">)):</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c1"># Compute a gradient-descent</span>
+<div class="newline"></div>    <span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span> <span class="o">=</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.1</span>
+<div class="newline"></div>    <span class="n">counting_f_prime</span> <span class="o">=</span> <span class="n">CountingFunction</span><span class="p">(</span><span class="n">f_prime</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">counting_hessian</span> <span class="o">=</span> <span class="n">CountingFunction</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">logging_f</span> <span class="o">=</span> <span class="n">LoggingFunction</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">counter</span><span class="o">=</span><span class="n">counting_f_prime</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">all_x_i</span><span class="p">,</span> <span class="n">all_y_i</span><span class="p">,</span> <span class="n">all_f_i</span> <span class="o">=</span> <span class="n">optimizer</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">]),</span>
+<div class="newline"></div>                                          <span class="n">logging_f</span><span class="p">,</span> <span class="n">counting_f_prime</span><span class="p">,</span>
+<div class="newline"></div>                                          <span class="n">hessian</span><span class="o">=</span><span class="n">counting_hessian</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c1"># Plot the contour plot</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">max</span><span class="p">(</span><span class="n">all_y_i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">y_max</span><span class="p">:</span>
+<div class="newline"></div>        <span class="n">x_min</span> <span class="o">*=</span> <span class="mf">1.2</span>
+<div class="newline"></div>        <span class="n">x_max</span> <span class="o">*=</span> <span class="mf">1.2</span>
+<div class="newline"></div>        <span class="n">y_min</span> <span class="o">*=</span> <span class="mf">1.2</span>
+<div class="newline"></div>        <span class="n">y_max</span> <span class="o">*=</span> <span class="mf">1.2</span>
+<div class="newline"></div>    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.mgrid" title="View documentation for numpy.mgrid"><span class="n">np</span><span class="o">.</span><span class="n">mgrid</span></a><span class="p">[</span><span class="n">x_min</span><span class="p">:</span><span class="n">x_max</span><span class="p">:</span><span class="mi">100j</span><span class="p">,</span> <span class="n">y_min</span><span class="p">:</span><span class="n">y_max</span><span class="p">:</span><span class="mi">100j</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span>
+<div class="newline"></div>    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">T</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">X</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.concatenate" title="View documentation for numpy.concatenate"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">((</span><span class="n">x</span><span class="p">[</span><a href="http://docs.scipy.org/doc/numpy/reference/arrays.html#numpy.newaxis" title="View documentation for numpy.newaxis"><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span></a><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><a href="http://docs.scipy.org/doc/numpy/reference/arrays.html#numpy.newaxis" title="View documentation for numpy.newaxis"><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span></a><span class="p">,</span> <span class="o">...</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">z</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.apply_along_axis" title="View documentation for numpy.apply_along_axis"><span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span></a><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">log_z</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.log" title="View documentation for numpy.log"><span class="n">np</span><span class="o">.</span><span class="n">log</span></a><span class="p">(</span><span class="n">z</span> <span class="o">+</span> <span class="o">.</span><span class="mo">01</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">log_z</span><span class="p">,</span>
+<div class="newline"></div>            <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">],</span>
+<div class="newline"></div>            <span class="n">cmap</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray_r</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span>
+<div class="newline"></div>            <span class="n">vmax</span><span class="o">=</span><span class="n">log_z</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">log_z</span><span class="o">.</span><span class="n">ptp</span><span class="p">())</span>
+<div class="newline"></div>    <span class="n">contours</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">log_z</span><span class="p">,</span>
+<div class="newline"></div>                        <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span>
+<div class="newline"></div>                        <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">],</span>
+<div class="newline"></div>                        <span class="n">cmap</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gnuplot</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">levels</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">contours</span><span class="o">.</span><span class="n">levels</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">contours</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<div class="newline"></div>                <span class="n">fmt</span><span class="o">=</span><span class="n">super_fmt</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">all_x_i</span><span class="p">,</span> <span class="n">all_y_i</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">all_x_i</span><span class="p">,</span> <span class="n">all_y_i</span><span class="p">,</span> <span class="s1">&#39;k+&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">logging_f</span><span class="o">.</span><span class="n">all_x_i</span><span class="p">,</span> <span class="n">logging_f</span><span class="o">.</span><span class="n">all_y_i</span><span class="p">,</span> <span class="s1">&#39;k.&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;rx&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">xticks</span><span class="p">(())</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">yticks</span><span class="p">(())</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">100</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.maximum" title="View documentation for numpy.maximum"><span class="n">np</span><span class="o">.</span><span class="n">maximum</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">all_f_i</span><span class="p">),</span> <span class="mf">1e-30</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<div class="newline"></div>                <span class="n">label</span><span class="o">=</span><span class="s1">&#39;# iterations&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Error on f(x)&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">logging_f</span><span class="o">.</span><span class="n">counts</span><span class="p">,</span>
+<div class="newline"></div>                <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.maximum" title="View documentation for numpy.maximum"><span class="n">np</span><span class="o">.</span><span class="n">maximum</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">logging_f</span><span class="o">.</span><span class="n">all_f_i</span><span class="p">),</span> <span class="mf">1e-30</span><span class="p">),</span>
+<div class="newline"></div>                <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;# function calls&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">),</span>
+<div class="newline"></div>              <span class="n">borderaxespad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">handlelength</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">handletextpad</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_000.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_000.png" src="../../../_images/sphx_glr_plot_gradient_descent_000.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_001.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_001.png" src="../../../_images/sphx_glr_plot_gradient_descent_001.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_002.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_002.png" src="../../../_images/sphx_glr_plot_gradient_descent_002.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_003.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_003.png" src="../../../_images/sphx_glr_plot_gradient_descent_003.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_004.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_004.png" src="../../../_images/sphx_glr_plot_gradient_descent_004.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_005.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_005.png" src="../../../_images/sphx_glr_plot_gradient_descent_005.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_006.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_006.png" src="../../../_images/sphx_glr_plot_gradient_descent_006.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_007.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_007.png" src="../../../_images/sphx_glr_plot_gradient_descent_007.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_008.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_008.png" src="../../../_images/sphx_glr_plot_gradient_descent_008.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_009.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_009.png" src="../../../_images/sphx_glr_plot_gradient_descent_009.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_010.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_010.png" src="../../../_images/sphx_glr_plot_gradient_descent_010.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_011.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_011.png" src="../../../_images/sphx_glr_plot_gradient_descent_011.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_012.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_012.png" src="../../../_images/sphx_glr_plot_gradient_descent_012.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_013.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_013.png" src="../../../_images/sphx_glr_plot_gradient_descent_013.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_014.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_014.png" src="../../../_images/sphx_glr_plot_gradient_descent_014.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_015.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_015.png" src="../../../_images/sphx_glr_plot_gradient_descent_015.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_016.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_016.png" src="../../../_images/sphx_glr_plot_gradient_descent_016.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_017.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_017.png" src="../../../_images/sphx_glr_plot_gradient_descent_017.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_018.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_018.png" src="../../../_images/sphx_glr_plot_gradient_descent_018.png" style="width: 141.0px; height: 117.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_100.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_100.png" src="../../../_images/sphx_glr_plot_gradient_descent_100.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_101.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_101.png" src="../../../_images/sphx_glr_plot_gradient_descent_101.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_102.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_102.png" src="../../../_images/sphx_glr_plot_gradient_descent_102.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_103.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_103.png" src="../../../_images/sphx_glr_plot_gradient_descent_103.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_104.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_104.png" src="../../../_images/sphx_glr_plot_gradient_descent_104.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_105.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_105.png" src="../../../_images/sphx_glr_plot_gradient_descent_105.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_106.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_106.png" src="../../../_images/sphx_glr_plot_gradient_descent_106.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_107.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_107.png" src="../../../_images/sphx_glr_plot_gradient_descent_107.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_108.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_108.png" src="../../../_images/sphx_glr_plot_gradient_descent_108.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_109.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_109.png" src="../../../_images/sphx_glr_plot_gradient_descent_109.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_110.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_110.png" src="../../../_images/sphx_glr_plot_gradient_descent_110.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_111.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_111.png" src="../../../_images/sphx_glr_plot_gradient_descent_111.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_112.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_112.png" src="../../../_images/sphx_glr_plot_gradient_descent_112.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_113.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_113.png" src="../../../_images/sphx_glr_plot_gradient_descent_113.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_114.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_114.png" src="../../../_images/sphx_glr_plot_gradient_descent_114.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_115.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_115.png" src="../../../_images/sphx_glr_plot_gradient_descent_115.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_116.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_116.png" src="../../../_images/sphx_glr_plot_gradient_descent_116.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_117.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_117.png" src="../../../_images/sphx_glr_plot_gradient_descent_117.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_gradient_descent_118.png"><img alt="../../../_images/sphx_glr_plot_gradient_descent_118.png" src="../../../_images/sphx_glr_plot_gradient_descent_118.png" style="width: 188.0px; height: 141.0px;" /></a>
+</li>
+</ul>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  15.623 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/plot_gradient_descent.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_gradient_descent.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/plot_gradient_descent.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_gradient_descent.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc"></div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../interfacing_with_c/interfacing_with_c.html" title="2.8. Interfacing with C"
+             >next</a></li>
+        <li class="right" >
+          <a href="plot_exercise_ill_conditioned.html" title="2.7.4.10. Alternating optimization"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >2. Advanced topics</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >2.7. Mathematical optimization: finding minima of functions</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/mathematical_optimization/auto_examples/plot_gradient_descent.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

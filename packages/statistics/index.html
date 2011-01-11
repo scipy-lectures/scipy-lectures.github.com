@@ -1,0 +1,1143 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3.1. Statistics in Python &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.1.6.1. Boxplots and paired differences" href="auto_examples/plot_paired_boxplots.html" />
+    <link rel="prev" title="3. Packages and applications" href="../index.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="auto_examples/plot_paired_boxplots.html" title="3.1.6.1. Boxplots and paired differences"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../index.html" title="3. Packages and applications"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">3. Packages and applications</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/statistics/index.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="statistics-in-python">
+<span id="statistics"></span><h1>3.1. Statistics in Python<a class="headerlink" href="#statistics-in-python" title="Permalink to this headline">¶</a></h1>
+<p><strong>Author</strong>: <em>Gaël Varoquaux</em></p>
+<div class="topic">
+<p class="topic-title first"><strong>Requirements</strong></p>
+<ul class="simple">
+<li>Standard scientific Python environment (numpy, scipy, matplotlib)</li>
+<li><a class="reference external" href="http://pandas.pydata.org/">Pandas</a></li>
+<li><a class="reference external" href="http://www.statsmodels.org/">Statsmodels</a></li>
+<li><a class="reference external" href="http://seaborn.pydata.org">Seaborn</a></li>
+</ul>
+<p>To install Python and these dependencies, we recommend that you
+download <a class="reference external" href="http://continuum.io/downloads">Anaconda Python</a> or
+<a class="reference external" href="https://store.enthought.com/">Enthought Canopy</a>, or preferably use
+the package manager if you are under Ubuntu or other linux.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><strong>Bayesian statistics in Python</strong>:
+This chapter does not cover tools for Bayesian statistics. Of
+particular interest for Bayesian modelling is <a class="reference external" href="http://pymc-devs.github.io/pymc">PyMC</a>, which implements a probabilistic
+programming language in Python.</li>
+<li><strong>Read a statistics book</strong>:
+The <a class="reference external" href="http://greenteapress.com/wp/think-stats-2e">Think stats</a> book is
+available as free PDF or in print and is a great introduction to
+statistics.</li>
+</ul>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p><strong>Why Python for statistics?</strong></p>
+<p class="last">R is a language dedicated to statistics. Python is a general-purpose
+language with statistics modules. R has more statistical analysis
+features than Python, and specialized syntaxes. However, when it
+comes to building complex analysis pipelines that mix statistics with
+e.g. image analysis, text mining, or control of a physical
+experiment, the richness of Python is an invaluable asset.</p>
+</div>
+<div class="contents local topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#data-representation-and-interaction" id="id10">Data representation and interaction</a><ul>
+<li><a class="reference internal" href="#data-as-a-table" id="id11">Data as a table</a></li>
+<li><a class="reference internal" href="#the-pandas-data-frame" id="id12">The pandas data-frame</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#hypothesis-testing-comparing-two-groups" id="id13">Hypothesis testing: comparing two groups</a><ul>
+<li><a class="reference internal" href="#student-s-t-test-the-simplest-statistical-test" id="id14">Student’s t-test: the simplest statistical test</a></li>
+<li><a class="reference internal" href="#paired-tests-repeated-measurements-on-the-same-indivuals" id="id15">Paired tests: repeated measurements on the same indivuals</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#linear-models-multiple-factors-and-analysis-of-variance" id="id16">Linear models, multiple factors, and analysis of variance</a><ul>
+<li><a class="reference internal" href="#formulas-to-specify-statistical-models-in-python" id="id17">“formulas” to specify statistical models in Python</a></li>
+<li><a class="reference internal" href="#multiple-regression-including-multiple-factors" id="id18">Multiple Regression: including multiple factors</a></li>
+<li><a class="reference internal" href="#post-hoc-hypothesis-testing-analysis-of-variance-anova" id="id19">Post-hoc hypothesis testing: analysis of variance (ANOVA)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#more-visualization-seaborn-for-statistical-exploration" id="id20">More visualization: seaborn for statistical exploration</a><ul>
+<li><a class="reference internal" href="#pairplot-scatter-matrices" id="id21">Pairplot: scatter matrices</a></li>
+<li><a class="reference internal" href="#lmplot-plotting-a-univariate-regression" id="id22">lmplot: plotting a univariate regression</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing-for-interactions" id="id23">Testing for interactions</a></li>
+<li><a class="reference internal" href="#full-code-for-the-figures" id="id24">Full code for the figures</a></li>
+<li><a class="reference internal" href="#solutions-to-this-chapter-s-exercises" id="id25">Solutions to this chapter’s exercises</a></li>
+</ul>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>In this document, the Python inputs are represented with the sign
+“&gt;&gt;&gt;”.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Disclaimer: Gender questions</strong></p>
+<p class="last">Some of the examples of this tutorial are chosen around gender
+questions. The reason is that on such questions controlling the truth
+of a claim actually matters to many people.</p>
+</div>
+<div class="section" id="data-representation-and-interaction">
+<h2><a class="toc-backref" href="#id10">3.1.1. Data representation and interaction</a><a class="headerlink" href="#data-representation-and-interaction" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-as-a-table">
+<h3><a class="toc-backref" href="#id11">3.1.1.1. Data as a table</a><a class="headerlink" href="#data-as-a-table" title="Permalink to this headline">¶</a></h3>
+<p>The setting that we consider for statistical analysis is that of multiple
+<em>observations</em> or <em>samples</em> described by a set of different <em>attributes</em>
+or <em>features</em>. The data can than be seen as a 2D table, or matrix, with
+columns giving the different attributes of the data, and rows the
+observations. For instance, the data contained in
+<a class="reference download internal" href="../../_downloads/brain_size.csv" download=""><code class="xref download docutils literal"><span class="pre">examples/brain_size.csv</span></code></a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;&quot;</span><span class="p">;</span><span class="s2">&quot;Gender&quot;</span><span class="p">;</span><span class="s2">&quot;FSIQ&quot;</span><span class="p">;</span><span class="s2">&quot;VIQ&quot;</span><span class="p">;</span><span class="s2">&quot;PIQ&quot;</span><span class="p">;</span><span class="s2">&quot;Weight&quot;</span><span class="p">;</span><span class="s2">&quot;Height&quot;</span><span class="p">;</span><span class="s2">&quot;MRI_Count&quot;</span>
+<div class="newline"></div><span class="s2">&quot;1&quot;</span><span class="p">;</span><span class="s2">&quot;Female&quot;</span><span class="p">;</span><span class="mi">133</span><span class="p">;</span><span class="mi">132</span><span class="p">;</span><span class="mi">124</span><span class="p">;</span><span class="s2">&quot;118&quot;</span><span class="p">;</span><span class="s2">&quot;64.5&quot;</span><span class="p">;</span><span class="mi">816932</span>
+<div class="newline"></div><span class="s2">&quot;2&quot;</span><span class="p">;</span><span class="s2">&quot;Male&quot;</span><span class="p">;</span><span class="mi">140</span><span class="p">;</span><span class="mi">150</span><span class="p">;</span><span class="mi">124</span><span class="p">;</span><span class="s2">&quot;.&quot;</span><span class="p">;</span><span class="s2">&quot;72.5&quot;</span><span class="p">;</span><span class="mi">1001121</span>
+<div class="newline"></div><span class="s2">&quot;3&quot;</span><span class="p">;</span><span class="s2">&quot;Male&quot;</span><span class="p">;</span><span class="mi">139</span><span class="p">;</span><span class="mi">123</span><span class="p">;</span><span class="mi">150</span><span class="p">;</span><span class="s2">&quot;143&quot;</span><span class="p">;</span><span class="s2">&quot;73.3&quot;</span><span class="p">;</span><span class="mi">1038437</span>
+<div class="newline"></div><span class="s2">&quot;4&quot;</span><span class="p">;</span><span class="s2">&quot;Male&quot;</span><span class="p">;</span><span class="mi">133</span><span class="p">;</span><span class="mi">129</span><span class="p">;</span><span class="mi">128</span><span class="p">;</span><span class="s2">&quot;172&quot;</span><span class="p">;</span><span class="s2">&quot;68.8&quot;</span><span class="p">;</span><span class="mi">965353</span>
+<div class="newline"></div><span class="s2">&quot;5&quot;</span><span class="p">;</span><span class="s2">&quot;Female&quot;</span><span class="p">;</span><span class="mi">137</span><span class="p">;</span><span class="mi">132</span><span class="p">;</span><span class="mi">134</span><span class="p">;</span><span class="s2">&quot;147&quot;</span><span class="p">;</span><span class="s2">&quot;65.0&quot;</span><span class="p">;</span><span class="mi">951545</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="the-pandas-data-frame">
+<h3><a class="toc-backref" href="#id12">3.1.1.2. The pandas data-frame</a><a class="headerlink" href="#the-pandas-data-frame" title="Permalink to this headline">¶</a></h3>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">We will store and manipulate this data in a
+<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.22.0)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a>, from the <a class="reference external" href="http://pandas.pydata.org">pandas</a> module. It is the Python equivalent of
+the spreadsheet table. It is different from a 2D <code class="docutils literal"><span class="pre">numpy</span></code> array as it
+has named columns, can contain a mixture of different data types by
+column, and has elaborate selection and pivotal mechanisms.</p>
+</div>
+<div class="section" id="creating-dataframes-reading-data-files-or-converting-arrays">
+<h4>Creating dataframes: reading data files or converting arrays<a class="headerlink" href="#creating-dataframes-reading-data-files-or-converting-arrays" title="Permalink to this headline">¶</a></h4>
+<div class="sidebar">
+<p class="first sidebar-title"><strong>Separator</strong></p>
+<p class="last">It is a CSV file, but the separator is “;”</p>
+</div>
+<p><strong>Reading from a CSV file:</strong> Using the above CSV file that gives
+observations of brain size and weight and IQ (Willerman et al. 1991), the
+data are a mixture of numerical and categorical values:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/brain_size.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>  
+<div class="newline"></div><span class="go">    Unnamed: 0  Gender  FSIQ  VIQ  PIQ  Weight  Height  MRI_Count</span>
+<div class="newline"></div><span class="go">0            1  Female   133  132  124   118.0    64.5     816932</span>
+<div class="newline"></div><span class="go">1            2    Male   140  150  124     NaN    72.5    1001121</span>
+<div class="newline"></div><span class="go">2            3    Male   139  123  150   143.0    73.3    1038437</span>
+<div class="newline"></div><span class="go">3            4    Male   133  129  128   172.0    68.8     965353</span>
+<div class="newline"></div><span class="go">4            5  Female   137  132  134   147.0    65.0     951545</span>
+<div class="newline"></div><span class="gp">...</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p><strong>Missing values</strong></p>
+<p class="last">The weight of the second individual is missing in the CSV file. If we
+don’t specify the missing value (NA = not available) marker, we will
+not be able to do statistical analysis.</p>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Creating from arrays</strong>: A <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.22.0)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a> can also be seen
+as a dictionary of 1D ‘series’, eg arrays or lists. If we have 3
+<code class="docutils literal"><span class="pre">numpy</span></code> arrays:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">sin_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">cos_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>We can expose them as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.22.0)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s1">&#39;sin&#39;</span><span class="p">:</span> <span class="n">sin_t</span><span class="p">,</span> <span class="s1">&#39;cos&#39;</span><span class="p">:</span> <span class="n">cos_t</span><span class="p">})</span>  
+<div class="newline"></div><span class="go">         cos       sin         t</span>
+<div class="newline"></div><span class="go">0   0.960170  0.279415 -6.000000</span>
+<div class="newline"></div><span class="go">1   0.609977  0.792419 -5.368421</span>
+<div class="newline"></div><span class="go">2   0.024451  0.999701 -4.736842</span>
+<div class="newline"></div><span class="go">3  -0.570509  0.821291 -4.105263</span>
+<div class="newline"></div><span class="go">4  -0.945363  0.326021 -3.473684</span>
+<div class="newline"></div><span class="go">5  -0.955488 -0.295030 -2.842105</span>
+<div class="newline"></div><span class="go">6  -0.596979 -0.802257 -2.210526</span>
+<div class="newline"></div><span class="go">7  -0.008151 -0.999967 -1.578947</span>
+<div class="newline"></div><span class="go">8   0.583822 -0.811882 -0.947368</span>
+<div class="newline"></div><span class="gp">...</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Other inputs</strong>: <a class="reference external" href="http://pandas.pydata.org">pandas</a> can input data from
+SQL, excel files, or other formats. See the <a class="reference external" href="http://pandas.pydata.org">pandas documentation</a>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="manipulating-data">
+<h4>Manipulating data<a class="headerlink" href="#manipulating-data" title="Permalink to this headline">¶</a></h4>
+<p><cite>data</cite> is a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.22.0)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a>, that resembles R’s dataframe:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>    <span class="c1"># 40 rows and 8 columns</span>
+<div class="newline"></div><span class="go">(40, 8)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">columns</span>  <span class="c1"># It has columns   </span>
+<div class="newline"></div><span class="go">Index([u&#39;Unnamed: 0&#39;, u&#39;Gender&#39;, u&#39;FSIQ&#39;, u&#39;VIQ&#39;, u&#39;PIQ&#39;, u&#39;Weight&#39;, u&#39;Height&#39;, u&#39;MRI_Count&#39;], dtype=&#39;object&#39;)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">])</span>  <span class="c1"># Columns can be addressed by name   </span>
+<div class="newline"></div><span class="go">0     Female</span>
+<div class="newline"></div><span class="go">1       Male</span>
+<div class="newline"></div><span class="go">2       Male</span>
+<div class="newline"></div><span class="go">3       Male</span>
+<div class="newline"></div><span class="go">4     Female</span>
+<div class="newline"></div><span class="gp">...</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Simpler selector</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Female&#39;</span><span class="p">][</span><span class="s1">&#39;VIQ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="newline"></div><span class="go">109.45</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For a quick view on a large dataframe, use its <cite>describe</cite>
+method: <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html#pandas.DataFrame.describe" title="(in pandas v0.22.0)"><code class="xref py py-meth docutils literal"><span class="pre">pandas.DataFrame.describe()</span></code></a>.</p>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>groupby</strong>: splitting a dataframe on values of categorical variables:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_gender</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Gender&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">gender</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">groupby_gender</span><span class="p">[</span><span class="s1">&#39;VIQ&#39;</span><span class="p">]:</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="nb">print</span><span class="p">((</span><span class="n">gender</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+<div class="newline"></div><span class="go">(&#39;Female&#39;, 109.45)</span>
+<div class="newline"></div><span class="go">(&#39;Male&#39;, 115.25)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><cite>groupby_gender</cite> is a powerful object that exposes many
+operations on the resulting group of dataframes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_gender</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="newline"></div><span class="go">        Unnamed: 0   FSIQ     VIQ     PIQ      Weight     Height  MRI_Count</span>
+<div class="newline"></div><span class="go">Gender</span>
+<div class="newline"></div><span class="go">Female       19.65  111.9  109.45  110.45  137.200000  65.765000   862654.6</span>
+<div class="newline"></div><span class="go">Male         21.35  115.0  115.25  111.60  166.444444  71.431579   954855.4</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Use tab-completion on <cite>groupby_gender</cite> to find more.  Other common
+grouping functions are median, count (useful for checking to see the
+amount of missing values in different subsets) or sum.  Groupby
+evaluation is lazy, no work is done until an aggregation function is
+applied.</p>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<a class="reference external image-reference" href="auto_examples/plot_pandas.html"><img alt="../../_images/sphx_glr_plot_pandas_001.png" class="align-right" src="../../_images/sphx_glr_plot_pandas_001.png" style="width: 268.8px; height: 201.6px;" /></a>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong></p>
+<ul>
+<li><p class="first">What is the mean value for VIQ for the full population?</p>
+</li>
+<li><p class="first">How many males/females were included in this study?</p>
+<p><strong>Hint</strong> use ‘tab completion’ to find out the methods that can be
+called, instead of ‘mean’ in the above example.</p>
+</li>
+<li><p class="first">What is the average value of MRI counts expressed in log units, for
+males and females?</p>
+</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><cite>groupby_gender.boxplot</cite> is used for the plots above (see <span class="xref std std-ref">this
+example</span>).</p>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="plotting-data">
+<h4>Plotting data<a class="headerlink" href="#plotting-data" title="Permalink to this headline">¶</a></h4>
+<p>Pandas comes with some plotting tools (<code class="xref py py-mod docutils literal"><span class="pre">pandas.tools.plotting</span></code>, using
+matplotlib behind the scene) to display statistics of the data in
+dataframes:</p>
+<p><strong>Scatter matrices</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pandas.tools</span> <span class="k">import</span> <span class="n">plotting</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plotting</span><span class="o">.</span><span class="n">scatter_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s1">&#39;Weight&#39;</span><span class="p">,</span> <span class="s1">&#39;Height&#39;</span><span class="p">,</span> <span class="s1">&#39;MRI_Count&#39;</span><span class="p">]])</span>   
+<div class="newline"></div></pre></div>
+</div>
+<a class="reference external image-reference" href="auto_examples/plot_pandas.html"><img alt="../../_images/sphx_glr_plot_pandas_002.png" class="align-center" src="../../_images/sphx_glr_plot_pandas_002.png" style="width: 448.0px; height: 336.0px;" /></a>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plotting</span><span class="o">.</span><span class="n">scatter_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">,</span> <span class="s1">&#39;VIQ&#39;</span><span class="p">,</span> <span class="s1">&#39;FSIQ&#39;</span><span class="p">]])</span>   
+<div class="newline"></div></pre></div>
+</div>
+<div class="sidebar">
+<p class="first sidebar-title"><strong>Two populations</strong></p>
+<p class="last">The IQ metrics are bimodal, as if there are 2 sub-populations.</p>
+</div>
+<a class="reference external image-reference" href="auto_examples/plot_pandas.html"><img alt="../../_images/sphx_glr_plot_pandas_003.png" class="align-center" src="../../_images/sphx_glr_plot_pandas_003.png" style="width: 448.0px; height: 336.0px;" /></a>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong></p>
+<p>Plot the scatter matrix for males only, and for females only. Do you
+think that the 2 sub-populations correspond to gender?</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="hypothesis-testing-comparing-two-groups">
+<h2><a class="toc-backref" href="#id13">3.1.2. Hypothesis testing: comparing two groups</a><a class="headerlink" href="#hypothesis-testing-comparing-two-groups" title="Permalink to this headline">¶</a></h2>
+<p>For simple <a class="reference external" href="https://en.wikipedia.org/wiki/Statistical_hypothesis_testing">statistical tests</a>, we will
+use the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/stats.html#module-scipy.stats" title="(in SciPy v1.0.0)"><code class="xref py py-mod docutils literal"><span class="pre">scipy.stats</span></code></a> sub-module of <a class="reference external" href="http://docs.scipy.org/doc/">scipy</a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">stats</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Scipy is a vast library. For a quick summary to the whole library, see
+the <a class="reference internal" href="../../intro/scipy.html#scipy"><span class="std std-ref">scipy</span></a> chapter.</p>
+</div>
+<div class="section" id="student-s-t-test-the-simplest-statistical-test">
+<h3><a class="toc-backref" href="#id14">3.1.2.1. Student’s t-test: the simplest statistical test</a><a class="headerlink" href="#student-s-t-test-the-simplest-statistical-test" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="sample-t-test-testing-the-value-of-a-population-mean">
+<h4>1-sample t-test: testing the value of a population mean<a class="headerlink" href="#sample-t-test-testing-the-value-of-a-population-mean" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="../../_images/two_sided.png"><img alt="../../_images/two_sided.png" class="align-right" src="../../_images/two_sided.png" style="width: 228.5px; height: 223.5px;" /></a>
+<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_1samp.html#scipy.stats.ttest_1samp" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.stats.ttest_1samp()</span></code></a> tests if the population mean of data is
+likely to be equal to a given value (technically if observations are
+drawn from a Gaussian distributions of given population mean). It returns
+the <a class="reference external" href="https://en.wikipedia.org/wiki/Student%27s_t-test">T statistic</a>,
+and the <a class="reference external" href="https://en.wikipedia.org/wiki/P-value">p-value</a> (see the
+function’s help):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_1samp</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;VIQ&#39;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>   
+<div class="newline"></div><span class="go">Ttest_1sampResult(statistic=30.088099970..., pvalue=1.32891964...e-28)</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">With a p-value of 10^-28 we can claim that the population mean for
+the IQ (VIQ measure) is not 0.</p>
+</div>
+</div>
+<div class="section" id="sample-t-test-testing-for-difference-across-populations">
+<h4>2-sample t-test: testing for difference across populations<a class="headerlink" href="#sample-t-test-testing-for-difference-across-populations" title="Permalink to this headline">¶</a></h4>
+<p>We have seen above that the mean VIQ in the male and female populations
+were different. To test if this is significant, we do a 2-sample t-test
+with <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html#scipy.stats.ttest_ind" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.stats.ttest_ind()</span></code></a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">female_viq</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Female&#39;</span><span class="p">][</span><span class="s1">&#39;VIQ&#39;</span><span class="p">]</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">male_viq</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Male&#39;</span><span class="p">][</span><span class="s1">&#39;VIQ&#39;</span><span class="p">]</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">female_viq</span><span class="p">,</span> <span class="n">male_viq</span><span class="p">)</span>   
+<div class="newline"></div><span class="go">Ttest_indResult(statistic=-0.77261617232..., pvalue=0.4445287677858...)</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="paired-tests-repeated-measurements-on-the-same-indivuals">
+<h3><a class="toc-backref" href="#id15">3.1.2.2. Paired tests: repeated measurements on the same indivuals</a><a class="headerlink" href="#paired-tests-repeated-measurements-on-the-same-indivuals" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_pandas.html"><img alt="../../_images/sphx_glr_plot_paired_boxplots_001.png" class="align-right" src="../../_images/sphx_glr_plot_paired_boxplots_001.png" style="width: 280.0px; height: 210.0px;" /></a>
+<p>PIQ, VIQ, and FSIQ give 3 measures of IQ. Let us test if FISQ and PIQ are
+significantly different. We can use a 2 sample test:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">])</span>   
+<div class="newline"></div><span class="go">Ttest_indResult(statistic=0.46563759638..., pvalue=0.64277250...)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>The problem with this approach is that it forgets that there are links
+between observations: FSIQ and PIQ are measured on the same individuals.
+Thus the variance due to inter-subject variability is confounding, and
+can be removed, using a “paired test”, or <a class="reference external" href="https://en.wikipedia.org/wiki/Repeated_measures_design">“repeated measures test”</a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_rel</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">])</span>   
+<div class="newline"></div><span class="go">Ttest_relResult(statistic=1.784201940..., pvalue=0.082172638183...)</span>
+<div class="newline"></div></pre></div>
+</div>
+<a class="reference external image-reference" href="auto_examples/plot_pandas.html"><img alt="../../_images/sphx_glr_plot_paired_boxplots_002.png" class="align-right" src="../../_images/sphx_glr_plot_paired_boxplots_002.png" style="width: 240.0px; height: 180.0px;" /></a>
+<p>This is equivalent to a 1-sample test on the difference:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_1samp</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>   
+<div class="newline"></div><span class="go">Ttest_1sampResult(statistic=1.784201940..., pvalue=0.082172638...)</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>T-tests assume Gaussian errors. We
+can use a <a class="reference external" href="https://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test">Wilcoxon signed-rank test</a>, that relaxes
+this assumption:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">wilcoxon</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">])</span>   
+<div class="newline"></div><span class="go">WilcoxonResult(statistic=274.5, pvalue=0.106594927...)</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The corresponding test in the non paired case is the <a class="reference external" href="https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U">Mann–Whitney U
+test</a>,
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mannwhitneyu.html#scipy.stats.mannwhitneyu" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.stats.mannwhitneyu()</span></code></a>.</p>
+</div>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong></p>
+<ul class="simple">
+<li>Test the difference between weights in males and females.</li>
+<li>Use non parametric statistics to test the difference between VIQ in
+males and females.</li>
+</ul>
+<p><strong>Conclusion</strong>: we find that the data does not support the hypothesis
+that males and females have different VIQ.</p>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+</div>
+<div class="section" id="linear-models-multiple-factors-and-analysis-of-variance">
+<h2><a class="toc-backref" href="#id16">3.1.3. Linear models, multiple factors, and analysis of variance</a><a class="headerlink" href="#linear-models-multiple-factors-and-analysis-of-variance" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="formulas-to-specify-statistical-models-in-python">
+<h3><a class="toc-backref" href="#id17">3.1.3.1. “formulas” to specify statistical models in Python</a><a class="headerlink" href="#formulas-to-specify-statistical-models-in-python" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="a-simple-linear-regression">
+<h4>A simple linear regression<a class="headerlink" href="#a-simple-linear-regression" title="Permalink to this headline">¶</a></h4>
+<a class="reference external image-reference" href="auto_examples/plot_regression.html"><img alt="../../_images/sphx_glr_plot_regression_001.png" class="align-right" src="../../_images/sphx_glr_plot_regression_001.png" style="width: 300.0px; height: 240.0px;" /></a>
+<p>Given two set of observations, <cite>x</cite> and <cite>y</cite>, we want to test the
+hypothesis that <cite>y</cite> is a linear function of <cite>x</cite>. In other terms:</p>
+<blockquote>
+<div><img class="math" src="../../_images/math/8c27948834377cd91a6907f91d1f87acb32f1817.png" alt="y = x * \textit{coef} + \textit{intercept} + e"/></div></blockquote>
+<p>where <cite>e</cite> is observation noise. We will use the <a class="reference external" href="http://statsmodels.sourceforge.net/">statsmodels</a> module to:</p>
+<ol class="arabic simple">
+<li>Fit a linear model. We will use the simplest strategy, <a class="reference external" href="https://en.wikipedia.org/wiki/Ordinary_least_squares">ordinary least
+squares</a> (OLS).</li>
+<li>Test that <cite>coef</cite> is non zero.</li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>First, we generate simulated data according to the model:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c1"># normal distributed noise</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a data frame containing all the relevant variables</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">})</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="sidebar">
+<p class="first sidebar-title"><strong>“formulas” for statistics in Python</strong></p>
+<p class="last"><a class="reference external" href="http://statsmodels.sourceforge.net/stable/example_formulas.html">See the statsmodels documentation</a></p>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Then we specify an OLS model and fit it:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">statsmodels.formula.api</span> <span class="k">import</span> <span class="n">ols</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s2">&quot;y ~ x&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>We can inspect the various statistics derived from the fit:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>  
+<div class="newline"></div><span class="go">                            OLS Regression Results</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div><span class="go">Dep. Variable:                      y   R-squared:                       0.804</span>
+<div class="newline"></div><span class="go">Model:                            OLS   Adj. R-squared:                  0.794</span>
+<div class="newline"></div><span class="go">Method:                 Least Squares   F-statistic:                     74.03</span>
+<div class="newline"></div><span class="go">Date:                ...                Prob (F-statistic):           8.56e-08</span>
+<div class="newline"></div><span class="go">Time:                        ...        Log-Likelihood:                -57.988</span>
+<div class="newline"></div><span class="go">No. Observations:                  20   AIC:                             120.0</span>
+<div class="newline"></div><span class="go">Df Residuals:                      18   BIC:                             122.0</span>
+<div class="newline"></div><span class="go">Df Model:                           1</span>
+<div class="newline"></div><span class="go">Covariance Type:            nonrobust</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div><span class="go">                 coef    std err          t      P&gt;|t|      [95.0% Conf. Int.]</span>
+<div class="newline"></div><span class="go">------------------------------------------...</span>
+<div class="newline"></div><span class="go">Intercept     -5.5335      1.036     -5.342      0.000        -7.710    -3.357</span>
+<div class="newline"></div><span class="go">x              2.9369      0.341      8.604      0.000         2.220     3.654</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div><span class="go">Omnibus:                        0.100   Durbin-Watson:                   2.956</span>
+<div class="newline"></div><span class="go">Prob(Omnibus):                  0.951   Jarque-Bera (JB):                0.322</span>
+<div class="newline"></div><span class="go">Skew:                          -0.058   Prob(JB):                        0.851</span>
+<div class="newline"></div><span class="go">Kurtosis:                       2.390   Cond. No.                         3.03</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="go">Warnings:</span>
+<div class="newline"></div><span class="go">[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="topic">
+<p class="topic-title first">Terminology:</p>
+<p>Statsmodels uses a statistical terminology: the <cite>y</cite> variable in
+statsmodels is called ‘endogenous’ while the <cite>x</cite> variable is called
+exogenous.  This is discussed in more detail <a class="reference external" href="http://statsmodels.sourceforge.net/devel/endog_exog.html">here</a>.</p>
+<p>To simplify, <cite>y</cite> (endogenous) is the value you are trying to predict,
+while <cite>x</cite> (exogenous) represents the features you are using to make
+the prediction.</p>
+</div>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong></p>
+<p>Retrieve the estimated parameters from the model above. <strong>Hint</strong>:
+use tab-completion to find the relevent attribute.</p>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="categorical-variables-comparing-groups-or-multiple-categories">
+<h4>Categorical variables: comparing groups or multiple categories<a class="headerlink" href="#categorical-variables-comparing-groups-or-multiple-categories" title="Permalink to this headline">¶</a></h4>
+<p>Let us go back the data on brain size:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/brain_size.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>We can write a comparison between IQ of male and female using a linear
+model:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s2">&quot;VIQ ~ Gender + 1&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>  
+<div class="newline"></div><span class="go">                            OLS Regression Results</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div><span class="go">Dep. Variable:                    VIQ   R-squared:                       0.015</span>
+<div class="newline"></div><span class="go">Model:                            OLS   Adj. R-squared:                 -0.010</span>
+<div class="newline"></div><span class="go">Method:                 Least Squares   F-statistic:                    0.5969</span>
+<div class="newline"></div><span class="go">Date:                ...                Prob (F-statistic):              0.445</span>
+<div class="newline"></div><span class="go">Time:                        ...        Log-Likelihood:                -182.42</span>
+<div class="newline"></div><span class="go">No. Observations:                  40   AIC:                             368.8</span>
+<div class="newline"></div><span class="go">Df Residuals:                      38   BIC:                             372.2</span>
+<div class="newline"></div><span class="go">Df Model:                           1</span>
+<div class="newline"></div><span class="go">Covariance Type:            nonrobust</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div><span class="go">                  coef    std err        t      P&gt;|t|      [95.0% Conf. Int.]</span>
+<div class="newline"></div><span class="go">-----------------------------------------------------------------------...</span>
+<div class="newline"></div><span class="go">Intercept        109.4500     5.308     20.619     0.000      98.704   120.196</span>
+<div class="newline"></div><span class="go">Gender[T.Male]     5.8000     7.507      0.773     0.445      -9.397    20.997</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div><span class="go">Omnibus:                       26.188   Durbin-Watson:                   1.709</span>
+<div class="newline"></div><span class="go">Prob(Omnibus):                  0.000   Jarque-Bera (JB):                3.703</span>
+<div class="newline"></div><span class="go">Skew:                           0.010   Prob(JB):                        0.157</span>
+<div class="newline"></div><span class="go">Kurtosis:                       1.510   Cond. No.                         2.62</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="go">Warnings:</span>
+<div class="newline"></div><span class="go">[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="topic">
+<p class="topic-title first"><strong>Tips on specifying model</strong></p>
+<p><strong>Forcing categorical</strong>: the ‘Gender’ is automatically detected as a
+categorical variable, and thus each of its different values are
+treated as different entities.</p>
+<p>An integer column can be forced to be treated as categorical using:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s1">&#39;VIQ ~ C(Gender)&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><strong>Intercept</strong>: We can remove the intercept using <cite>- 1</cite> in the formula,
+or force the use of an intercept using <cite>+ 1</cite>.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">By default, statsmodels treats a categorical variable with K possible
+values as K-1 ‘dummy’ boolean variables (the last level being
+absorbed into the intercept term).  This is almost always a good
+default choice - however, it is possible to specify different
+encodings for categorical variables
+(<a class="reference external" href="http://statsmodels.sourceforge.net/devel/contrasts.html">http://statsmodels.sourceforge.net/devel/contrasts.html</a>).</p>
+</div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="topic">
+<p class="topic-title first"><strong>Link to t-tests between different FSIQ and PIQ</strong></p>
+<p>To compare different types of IQ, we need to create a “long-form”
+table, listing IQs, where the type of IQ is indicated by a
+categorical variable:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data_fisq</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;iq&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;fsiq&#39;</span><span class="p">})</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data_piq</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;iq&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;piq&#39;</span><span class="p">})</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data_long</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">data_fisq</span><span class="p">,</span> <span class="n">data_piq</span><span class="p">))</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data_long</span><span class="p">)</span>  
+<div class="newline"></div><span class="go">         iq  type</span>
+<div class="newline"></div><span class="go">    0   133  fsiq</span>
+<div class="newline"></div><span class="go">    1   140  fsiq</span>
+<div class="newline"></div><span class="go">    2   139  fsiq</span>
+<div class="newline"></div><span class="go">    ...</span>
+<div class="newline"></div><span class="go">    31  137   piq</span>
+<div class="newline"></div><span class="go">    32  110   piq</span>
+<div class="newline"></div><span class="go">    33   86   piq</span>
+<div class="newline"></div><span class="go">    ...</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s2">&quot;iq ~ type&quot;</span><span class="p">,</span> <span class="n">data_long</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>  
+<div class="newline"></div><span class="go">                            OLS Regression Results</span>
+<div class="newline"></div><span class="gp">...</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div><span class="go">                 coef    std err          t      P&gt;|t|      [95.0% Conf. Int.]</span>
+<div class="newline"></div><span class="go">------------------------------------------...</span>
+<div class="newline"></div><span class="go">Intercept     113.4500      3.683     30.807      0.000       106.119   120.781</span>
+<div class="newline"></div><span class="go">type[T.piq]    -2.4250      5.208     -0.466      0.643       -12.793     7.943</span>
+<div class="newline"></div><span class="gp">...</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>We can see that we retrieve the same values for t-test and
+corresponding p-values for the effect of the type of iq than the
+previous t-test:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">])</span>   
+<div class="newline"></div><span class="go">Ttest_indResult(statistic=0.46563759638..., pvalue=0.64277250...)</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="multiple-regression-including-multiple-factors">
+<h3><a class="toc-backref" href="#id18">3.1.3.2. Multiple Regression: including multiple factors</a><a class="headerlink" href="#multiple-regression-including-multiple-factors" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_regression_3d.html"><img alt="../../_images/sphx_glr_plot_regression_3d_001.png" class="align-right" src="../../_images/sphx_glr_plot_regression_3d_001.png" style="width: 288.0px; height: 216.0px;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Consider a linear model explaining a variable <cite>z</cite> (the dependent
+variable) with 2 variables <cite>x</cite> and <cite>y</cite>:</p>
+<blockquote>
+<div><img class="math" src="../../_images/math/c614adc419681149b0169764207ca1a3edb8a1b7.png" alt="z = x \, c_1 + y \, c_2 + i + e"/></div></blockquote>
+<p>Such a model can be seen in 3D as fitting a plane to a cloud of (<cite>x</cite>,
+<cite>y</cite>, <cite>z</cite>) points.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p><strong>Example: the iris data</strong> (<a class="reference download internal" href="../../_downloads/iris.csv" download=""><code class="xref download docutils literal"><span class="pre">examples/iris.csv</span></code></a>)</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Sepal and petal size tend to be related: bigger flowers are bigger!
+But is there in addition a systematic effect of species?</p>
+</div>
+<a class="reference external image-reference" href="auto_examples/plot_iris_analysis_1.html"><img alt="../../_images/sphx_glr_plot_iris_analysis_001.png" class="align-center" src="../../_images/sphx_glr_plot_iris_analysis_001.png" style="width: 512.0px; height: 384.0px;" /></a>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/iris.csv&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s1">&#39;sepal_width ~ name + petal_length&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>  
+<div class="newline"></div><span class="go">                            OLS Regression Results</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div><span class="go">Dep. Variable:            sepal_width   R-squared:                       0.478</span>
+<div class="newline"></div><span class="go">Model:                            OLS   Adj. R-squared:                  0.468</span>
+<div class="newline"></div><span class="go">Method:                 Least Squares   F-statistic:                     44.63</span>
+<div class="newline"></div><span class="go">Date:                ...                Prob (F-statistic):           1.58e-20</span>
+<div class="newline"></div><span class="go">Time:                        ...        Log-Likelihood:                -38.185</span>
+<div class="newline"></div><span class="go">No. Observations:                 150   AIC:                             84.37</span>
+<div class="newline"></div><span class="go">Df Residuals:                     146   BIC:                             96.41</span>
+<div class="newline"></div><span class="go">Df Model:                           3</span>
+<div class="newline"></div><span class="go">Covariance Type:            nonrobust</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div><span class="go">                         coef    std err          t     P&gt;|t|  [95.0% Conf. Int.]</span>
+<div class="newline"></div><span class="go">------------------------------------------...</span>
+<div class="newline"></div><span class="go">Intercept              2.9813      0.099     29.989     0.000      2.785     3.178</span>
+<div class="newline"></div><span class="go">name[T.versicolor]    -1.4821      0.181     -8.190     0.000     -1.840    -1.124</span>
+<div class="newline"></div><span class="go">name[T.virginica]     -1.6635      0.256     -6.502     0.000     -2.169    -1.158</span>
+<div class="newline"></div><span class="go">petal_length           0.2983      0.061      4.920     0.000      0.178     0.418</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div><span class="go">Omnibus:                        2.868   Durbin-Watson:                   1.753</span>
+<div class="newline"></div><span class="go">Prob(Omnibus):                  0.238   Jarque-Bera (JB):                2.885</span>
+<div class="newline"></div><span class="go">Skew:                          -0.082   Prob(JB):                        0.236</span>
+<div class="newline"></div><span class="go">Kurtosis:                       3.659   Cond. No.                         54.0</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="go">Warnings:</span>
+<div class="newline"></div><span class="go">[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="post-hoc-hypothesis-testing-analysis-of-variance-anova">
+<h3><a class="toc-backref" href="#id19">3.1.3.3. Post-hoc hypothesis testing: analysis of variance (ANOVA)</a><a class="headerlink" href="#post-hoc-hypothesis-testing-analysis-of-variance-anova" title="Permalink to this headline">¶</a></h3>
+<p>In the above iris example, we wish to test if the petal length is
+different between versicolor and virginica, after removing the effect of
+sepal width. This can be formulated as testing the difference between the
+coefficient associated to versicolor and virginica in the linear model
+estimated above (it is an Analysis of Variance, <a class="reference external" href="https://en.wikipedia.org/wiki/Analysis_of_variance">ANOVA</a>). For this, we
+write a <strong>vector of ‘contrast’</strong> on the parameters estimated: we want to
+test <code class="docutils literal"><span class="pre">&quot;name[T.versicolor]</span> <span class="pre">-</span> <span class="pre">name[T.virginica]&quot;</span></code>, with an <a class="reference external" href="https://en.wikipedia.org/wiki/F-test">F-test</a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">f_test</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>  
+<div class="newline"></div><span class="go">&lt;F test: F=array([[ 3.24533535]]), p=0.07369..., df_denom=146, df_num=1&gt;</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Is this difference significant?</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong></p>
+<p>Going back to the brain size + IQ data, test if the VIQ of male and
+female are different after removing the effect of brain size, height
+and weight.</p>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+</div>
+<div class="section" id="more-visualization-seaborn-for-statistical-exploration">
+<h2><a class="toc-backref" href="#id20">3.1.4. More visualization: seaborn for statistical exploration</a><a class="headerlink" href="#more-visualization-seaborn-for-statistical-exploration" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://stanford.edu/~mwaskom/software/seaborn/">Seaborn</a> combines
+simple statistical fits with plotting on pandas dataframes.</p>
+<p>Let us consider a data giving wages and many other personal information
+on 500 individuals (<a class="reference external" href="http://lib.stat.cmu.edu/datasets/CPS_85_Wages">Berndt, ER. The Practice of Econometrics. 1991. NY:
+Addison-Wesley</a>).</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The full code loading and plotting of the wages data is found in
+<span class="xref std std-ref">corresponding example</span>.</p>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">data</span>  
+<div class="newline"></div><span class="go">     EDUCATION  SOUTH  SEX  EXPERIENCE  UNION      WAGE  AGE  RACE  \</span>
+<div class="newline"></div><span class="go">0            8      0    1          21      0  0.707570   35     2</span>
+<div class="newline"></div><span class="go">1            9      0    1          42      0  0.694605   57     3</span>
+<div class="newline"></div><span class="go">2           12      0    0           1      0  0.824126   19     3</span>
+<div class="newline"></div><span class="go">3           12      0    0           4      0  0.602060   22     3</span>
+<div class="newline"></div><span class="gp">...</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="section" id="pairplot-scatter-matrices">
+<h3><a class="toc-backref" href="#id21">3.1.4.1. Pairplot: scatter matrices</a><a class="headerlink" href="#pairplot-scatter-matrices" title="Permalink to this headline">¶</a></h3>
+<p>We can easily have an intuition on the interactions between continuous
+variables using <a class="reference external" href="http://seaborn.pydata.org/generated/seaborn.pairplot.html#seaborn.pairplot" title="(in seaborn v0.8.1)"><code class="xref py py-func docutils literal"><span class="pre">seaborn.pairplot()</span></code></a> to display a scatter matrix:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">seaborn</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">seaborn</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;WAGE&#39;</span><span class="p">,</span> <span class="s1">&#39;AGE&#39;</span><span class="p">,</span> <span class="s1">&#39;EDUCATION&#39;</span><span class="p">],</span>
+<div class="newline"></div><span class="gp">... </span>                 <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;reg&#39;</span><span class="p">)</span>  
+<div class="newline"></div></pre></div>
+</div>
+<a class="reference external image-reference" href="auto_examples/plot_wage_data.html"><img alt="../../_images/sphx_glr_plot_wage_data_001.png" class="align-center" src="../../_images/sphx_glr_plot_wage_data_001.png" style="width: 450.0px; height: 450.0px;" /></a>
+<p>Categorical variables can be plotted as the hue:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seaborn</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;WAGE&#39;</span><span class="p">,</span> <span class="s1">&#39;AGE&#39;</span><span class="p">,</span> <span class="s1">&#39;EDUCATION&#39;</span><span class="p">],</span>
+<div class="newline"></div><span class="gp">... </span>                 <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;reg&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;SEX&#39;</span><span class="p">)</span>  
+<div class="newline"></div></pre></div>
+</div>
+<a class="reference external image-reference" href="auto_examples/plot_wage_data.html"><img alt="../../_images/sphx_glr_plot_wage_data_002.png" class="align-center" src="../../_images/sphx_glr_plot_wage_data_002.png" style="width: 484.2px; height: 450.0px;" /></a>
+<div class="topic">
+<p class="topic-title first"><strong>Look and feel and matplotlib settings</strong></p>
+<p>Seaborn changes the default of matplotlib figures to achieve a more
+“modern”, “excel-like” look. It does that upon import. You can reset
+the default using:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">rcdefaults</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">To switch back to seaborn settings, or understand better styling in
+seaborn, see the <a class="reference external" href="http://stanford.edu/~mwaskom/software/seaborn/tutorial/aesthetics.html">relevent section of the seaborn documentation</a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="lmplot-plotting-a-univariate-regression">
+<h3><a class="toc-backref" href="#id22">3.1.4.2. lmplot: plotting a univariate regression</a><a class="headerlink" href="#lmplot-plotting-a-univariate-regression" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_wage_data.html"><img alt="../../_images/sphx_glr_plot_wage_data_005.png" class="align-right" src="../../_images/sphx_glr_plot_wage_data_005.png" style="width: 300.0px; height: 300.0px;" /></a>
+<p>A regression capturing the relation between one variable and another, eg
+wage and eduction, can be plotted using <a class="reference external" href="http://seaborn.pydata.org/generated/seaborn.lmplot.html#seaborn.lmplot" title="(in seaborn v0.8.1)"><code class="xref py py-func docutils literal"><span class="pre">seaborn.lmplot()</span></code></a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seaborn</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;WAGE&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;EDUCATION&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>  
+<div class="newline"></div></pre></div>
+</div>
+<div style="clear: both"></div><div class="topic">
+<p class="topic-title first"><strong>Robust regression</strong></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Given that, in the above plot, there seems to be a couple of data
+points that are outside of the main cloud to the right, they might be
+outliers, not representative of the population, but driving the
+regression.</p>
+</div>
+<p>To compute a regression that is less sentive to outliers, one must
+use a <a class="reference external" href="https://en.wikipedia.org/wiki/Robust_statistics">robust model</a>. This is done in
+seaborn using <code class="docutils literal"><span class="pre">robust=True</span></code> in the plotting functions, or in
+statsmodels by replacing the use of the OLS by a “Robust Linear
+Model”, <code class="xref py py-func docutils literal"><span class="pre">statsmodels.formula.api.rlm()</span></code>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="testing-for-interactions">
+<h2><a class="toc-backref" href="#id23">3.1.5. Testing for interactions</a><a class="headerlink" href="#testing-for-interactions" title="Permalink to this headline">¶</a></h2>
+<a class="reference external image-reference" href="auto_examples/plot_wage_education_gender.html"><img alt="../../_images/sphx_glr_plot_wage_education_gender_001.png" class="align-center" src="../../_images/sphx_glr_plot_wage_education_gender_001.png" style="width: 413.7px; height: 350.0px;" /></a>
+<p>Do wages increase more with education for males than females?</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The plot above is made of two different fits. We need to formulate a
+single model that tests for a variance of slope across the two
+populations. This is done via an <a class="reference external" href="http://statsmodels.sourceforge.net/devel/example_formulas.html#multiplicative-interactions">“interaction”</a>.</p>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;wage ~ education + gender + education * gender&#39;</span><span class="p">,</span>
+<div class="newline"></div><span class="gp">... </span>                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>    
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>    
+<div class="newline"></div><span class="gp">...</span>
+<div class="newline"></div><span class="go">                            coef    std err    t     P&gt;|t|  [95.0% Conf. Int.]</span>
+<div class="newline"></div><span class="go">------------------------------------------------------------------------------</span>
+<div class="newline"></div><span class="go">Intercept                   0.2998   0.072    4.173   0.000     0.159   0.441</span>
+<div class="newline"></div><span class="go">gender[T.male]              0.2750   0.093    2.972   0.003     0.093   0.457</span>
+<div class="newline"></div><span class="go">education                   0.0415   0.005    7.647   0.000     0.031   0.052</span>
+<div class="newline"></div><span class="go">education:gender[T.male]   -0.0134   0.007   -1.919   0.056    -0.027   0.000</span>
+<div class="newline"></div><span class="go">==========================...</span>
+<div class="newline"></div><span class="gp">...</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Can we conclude that education benefits males more than females?</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="topic">
+<p class="topic-title first"><strong>Take home messages</strong></p>
+<ul class="simple">
+<li>Hypothesis testing and p-values give you the <strong>significance</strong> of an
+effect / difference.</li>
+<li><strong>Formulas</strong> (with categorical variables) enable you to express rich
+links in your data.</li>
+<li><strong>Visualizing</strong> your data and fitting simple models give insight into the
+data.</li>
+<li><strong>Conditionning</strong> (adding factors that can explain all or part of
+the variation) is an important modeling aspect that changes the
+interpretation.</li>
+</ul>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="full-code-for-the-figures">
+<h2><a class="toc-backref" href="#id24">3.1.6. Full code for the figures</a><a class="headerlink" href="#full-code-for-the-figures" title="Permalink to this headline">¶</a></h2>
+<p>Code examples for the statistics chapter.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="Plot boxplots for FSIQ, PIQ, and the paired difference between the two: while the spread (error..."><div class="figure" id="id1">
+<img alt="../../_images/sphx_glr_plot_paired_boxplots_thumb.png" src="../../_images/sphx_glr_plot_paired_boxplots_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_paired_boxplots.html#sphx-glr-packages-statistics-auto-examples-plot-paired-boxplots-py"><span class="std std-ref">Boxplots and paired differences</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example loads from a CSV file data with mixed numerical and categorical entries, and plots..."><div class="figure" id="id2">
+<img alt="../../_images/sphx_glr_plot_pandas_thumb.png" src="../../_images/sphx_glr_plot_pandas_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_pandas.html#sphx-glr-packages-statistics-auto-examples-plot-pandas-py"><span class="std std-ref">Plotting simple quantities of a pandas dataframe</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Ilustrate an analysis on a real dataset:"><div class="figure" id="id3">
+<img alt="../../_images/sphx_glr_plot_iris_analysis_thumb.png" src="../../_images/sphx_glr_plot_iris_analysis_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_iris_analysis.html#sphx-glr-packages-statistics-auto-examples-plot-iris-analysis-py"><span class="std std-ref">Analysis of Iris petal and sepal sizes</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Fit a simple linear regression using 'statsmodels', compute corresponding p-values. "><div class="figure" id="id4">
+<img alt="../../_images/sphx_glr_plot_regression_thumb.png" src="../../_images/sphx_glr_plot_regression_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_regression.html#sphx-glr-packages-statistics-auto-examples-plot-regression-py"><span class="std std-ref">Simple Regression</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Calculate using 'statsmodels' just the best fit, or all the corresponding statistical parameter..."><div class="figure" id="id5">
+<img alt="../../_images/sphx_glr_plot_regression_3d_thumb.png" src="../../_images/sphx_glr_plot_regression_3d_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_regression_3d.html#sphx-glr-packages-statistics-auto-examples-plot-regression-3d-py"><span class="std std-ref">Multiple Regression</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Wages depend mostly on education. Here we investigate how this dependence is related to gender:..."><div class="figure" id="id6">
+<img alt="../../_images/sphx_glr_plot_wage_education_gender_thumb.png" src="../../_images/sphx_glr_plot_wage_education_gender_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_wage_education_gender.html#sphx-glr-packages-statistics-auto-examples-plot-wage-education-gender-py"><span class="std std-ref">Test for an education/gender interaction in wages</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example uses seaborn to quickly plot various factors relating wages, experience and educti..."><div class="figure" id="id7">
+<img alt="../../_images/sphx_glr_plot_wage_data_thumb.png" src="../../_images/sphx_glr_plot_wage_data_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_wage_data.html#sphx-glr-packages-statistics-auto-examples-plot-wage-data-py"><span class="std std-ref">Visualizing factors influencing wages</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This is a business-intelligence (BI) like application."><div class="figure" id="id8">
+<img alt="../../_images/sphx_glr_plot_airfare_thumb.png" src="../../_images/sphx_glr_plot_airfare_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_airfare.html#sphx-glr-packages-statistics-auto-examples-plot-airfare-py"><span class="std std-ref">Air fares before and after 9/11</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div></div>
+<div class="section" id="solutions-to-this-chapter-s-exercises">
+<h2><a class="toc-backref" href="#id25">3.1.7. Solutions to this chapter’s exercises</a><a class="headerlink" href="#solutions-to-this-chapter-s-exercises" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Going back to the brain size + IQ data, test if the VIQ of male and female are different after ..."><div class="figure" id="id9">
+<img alt="../../_images/sphx_glr_plot_brain_size_thumb.png" src="../../_images/sphx_glr_plot_brain_size_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/solutions/plot_brain_size.html#sphx-glr-packages-statistics-auto-examples-solutions-plot-brain-size-py"><span class="std std-ref">Relating Gender and IQ</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/auto_examples_python10.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/auto_examples_jupyter10.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.1. Statistics in Python</a><ul>
+<li><a class="reference internal" href="#data-representation-and-interaction">3.1.1. Data representation and interaction</a><ul>
+<li><a class="reference internal" href="#data-as-a-table">3.1.1.1. Data as a table</a></li>
+<li><a class="reference internal" href="#the-pandas-data-frame">3.1.1.2. The pandas data-frame</a><ul>
+<li><a class="reference internal" href="#creating-dataframes-reading-data-files-or-converting-arrays">Creating dataframes: reading data files or converting arrays</a></li>
+<li><a class="reference internal" href="#manipulating-data">Manipulating data</a></li>
+<li><a class="reference internal" href="#plotting-data">Plotting data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#hypothesis-testing-comparing-two-groups">3.1.2. Hypothesis testing: comparing two groups</a><ul>
+<li><a class="reference internal" href="#student-s-t-test-the-simplest-statistical-test">3.1.2.1. Student’s t-test: the simplest statistical test</a><ul>
+<li><a class="reference internal" href="#sample-t-test-testing-the-value-of-a-population-mean">1-sample t-test: testing the value of a population mean</a></li>
+<li><a class="reference internal" href="#sample-t-test-testing-for-difference-across-populations">2-sample t-test: testing for difference across populations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#paired-tests-repeated-measurements-on-the-same-indivuals">3.1.2.2. Paired tests: repeated measurements on the same indivuals</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#linear-models-multiple-factors-and-analysis-of-variance">3.1.3. Linear models, multiple factors, and analysis of variance</a><ul>
+<li><a class="reference internal" href="#formulas-to-specify-statistical-models-in-python">3.1.3.1. “formulas” to specify statistical models in Python</a><ul>
+<li><a class="reference internal" href="#a-simple-linear-regression">A simple linear regression</a></li>
+<li><a class="reference internal" href="#categorical-variables-comparing-groups-or-multiple-categories">Categorical variables: comparing groups or multiple categories</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#multiple-regression-including-multiple-factors">3.1.3.2. Multiple Regression: including multiple factors</a></li>
+<li><a class="reference internal" href="#post-hoc-hypothesis-testing-analysis-of-variance-anova">3.1.3.3. Post-hoc hypothesis testing: analysis of variance (ANOVA)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#more-visualization-seaborn-for-statistical-exploration">3.1.4. More visualization: seaborn for statistical exploration</a><ul>
+<li><a class="reference internal" href="#pairplot-scatter-matrices">3.1.4.1. Pairplot: scatter matrices</a></li>
+<li><a class="reference internal" href="#lmplot-plotting-a-univariate-regression">3.1.4.2. lmplot: plotting a univariate regression</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing-for-interactions">3.1.5. Testing for interactions</a></li>
+<li><a class="reference internal" href="#full-code-for-the-figures">3.1.6. Full code for the figures</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#solutions-to-this-chapter-s-exercises">3.1.7. Solutions to this chapter’s exercises</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="auto_examples/plot_paired_boxplots.html" title="3.1.6.1. Boxplots and paired differences"
+             >next</a></li>
+        <li class="right" >
+          <a href="../index.html" title="3. Packages and applications"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >3. Packages and applications</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/statistics/index.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

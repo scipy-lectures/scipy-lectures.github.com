@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SDSS Filters &#8212; Scipy lecture notes</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2016.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../../index.html" />
+   
+    <link rel="stylesheet"
+	  href="http://yui.yahooapis.com/pure/0.6.0/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body role="document">
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/scikit-learn/auto_examples/sdss_filters.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sdss-filters">
+<span id="sphx-glr-packages-scikit-learn-auto-examples-sdss-filters-py"></span><h1>SDSS Filters<a class="headerlink" href="#sdss-filters" title="Permalink to this headline">¶</a></h1>
+<p>This example downloads and plots the filters from the Sloan Digital Sky
+Survey, along with a reference spectrum.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+<div class="newline"></div><span class="k">try</span><span class="p">:</span>
+<div class="newline"></div>    <span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span>
+<div class="newline"></div><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+<div class="newline"></div>    <span class="c1"># Python n2</span>
+<div class="newline"></div>    <span class="kn">from</span> <span class="nn">urllib2</span> <span class="kn">import</span> <span class="n">urlopen</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <a href="http://matplotlib.org/api/patches_api.html#matplotlib.patches.Arrow" class="sphx-glr-code-links" tooltip="Link to documentation for matplotlib.patches.Arrow"><span class="n">Arrow</span></a>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">DOWNLOAD_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)),</span>
+<div class="newline"></div>                            <span class="s1">&#39;downloads&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">REFSPEC_URL</span> <span class="o">=</span> <span class="s1">&#39;ftp://ftp.stsci.edu/cdbs/current_calspec/1732526_nic_002.ascii&#39;</span>
+<div class="newline"></div><span class="n">FILTER_URL</span> <span class="o">=</span> <span class="s1">&#39;http://www.sdss.org/dr7/instruments/imager/filters/</span><span class="si">%s</span><span class="s1">.dat&#39;</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">fetch_filter</span><span class="p">(</span><span class="n">filt</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">assert</span> <span class="n">filt</span> <span class="ow">in</span> <span class="s1">&#39;ugriz&#39;</span>
+<div class="newline"></div>    <span class="n">url</span> <span class="o">=</span> <span class="n">FILTER_URL</span> <span class="o">%</span> <span class="n">filt</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">DOWNLOAD_DIR</span><span class="p">):</span>
+<div class="newline"></div>        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">DOWNLOAD_DIR</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DOWNLOAD_DIR</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.dat&#39;</span> <span class="o">%</span> <span class="n">filt</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">loc</span><span class="p">):</span>
+<div class="newline"></div>        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;downloading from </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">url</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">F</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<div class="newline"></div>        <span class="nb">open</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">F</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">data</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html#numpy.loadtxt" class="sphx-glr-code-links" tooltip="Link to documentation for numpy.loadtxt"><span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span></a><span class="p">(</span><span class="n">F</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">data</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">fetch_vega_spectrum</span><span class="p">():</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">DOWNLOAD_DIR</span><span class="p">):</span>
+<div class="newline"></div>        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">DOWNLOAD_DIR</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">refspec_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DOWNLOAD_DIR</span><span class="p">,</span> <span class="n">REFSPEC_URL</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">if</span>  <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">refspec_file</span><span class="p">):</span>
+<div class="newline"></div>        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;downloading from </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">REFSPEC_URL</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">F</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">REFSPEC_URL</span><span class="p">)</span>
+<div class="newline"></div>        <span class="nb">open</span><span class="p">(</span><span class="n">refspec_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">F</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">refspec_file</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">data</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html#numpy.loadtxt" class="sphx-glr-code-links" tooltip="Link to documentation for numpy.loadtxt"><span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span></a><span class="p">(</span><span class="n">F</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">data</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">plot_sdss_filters</span><span class="p">():</span>
+<div class="newline"></div>    <span class="n">Xref</span> <span class="o">=</span> <span class="n">fetch_vega_spectrum</span><span class="p">()</span>
+<div class="newline"></div>    <span class="n">Xref</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="mf">2.1</span> <span class="o">*</span> <span class="n">Xref</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c1">#----------------------------------------------------------------------</span>
+<div class="newline"></div>    <span class="c1"># Plot filters in color with a single spectrum</span>
+<div class="newline"></div>    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Xref</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xref</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">for</span> <span class="n">f</span><span class="p">,</span><span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="s1">&#39;ugriz&#39;</span><span class="p">,</span> <span class="s1">&#39;bgrmk&#39;</span><span class="p">):</span>
+<div class="newline"></div>        <span class="n">X</span> <span class="o">=</span> <span class="n">fetch_filter</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">ax</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">ec</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">3500</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">4600</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">6100</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">7500</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">8800</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="mi">11000</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;SDSS Filters and Reference Spectrum&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (Angstroms)&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;normalized flux / filter transmission&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">plot_redshifts</span><span class="p">():</span>
+<div class="newline"></div>    <span class="n">Xref</span> <span class="o">=</span> <span class="n">fetch_vega_spectrum</span><span class="p">()</span>
+<div class="newline"></div>    <span class="n">Xref</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="mf">2.1</span> <span class="o">*</span> <span class="n">Xref</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c1">#----------------------------------------------------------------------</span>
+<div class="newline"></div>    <span class="c1"># Plot filters in gray with several redshifted spectra</span>
+<div class="newline"></div>    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">redshifts</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;bgr&#39;</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">for</span> <span class="n">z</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">redshifts</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+<div class="newline"></div>        <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.plot" class="sphx-glr-code-links" tooltip="Link to documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">((</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">Xref</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xref</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><a href="http://matplotlib.org/api/patches_api.html#matplotlib.patches.Arrow" class="sphx-glr-code-links" tooltip="Link to documentation for matplotlib.patches.Arrow"><span class="n">Arrow</span></a><span class="p">(</span><span class="mi">4200</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">,</span> <span class="mi">1300</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><a href="http://matplotlib.org/api/patches_api.html#matplotlib.patches.Arrow" class="sphx-glr-code-links" tooltip="Link to documentation for matplotlib.patches.Arrow"><span class="n">Arrow</span></a><span class="p">(</span><span class="mi">5800</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">,</span> <span class="mi">1250</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">3800</span><span class="p">,</span> <span class="mf">0.49</span><span class="p">,</span> <span class="s1">&#39;z = 0.0&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5500</span><span class="p">,</span> <span class="mf">0.49</span><span class="p">,</span> <span class="s1">&#39;z = 0.4&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">7300</span><span class="p">,</span> <span class="mf">0.49</span><span class="p">,</span> <span class="s1">&#39;z = 0.8&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="s1">&#39;ugriz&#39;</span><span class="p">:</span>
+<div class="newline"></div>        <span class="n">X</span> <span class="o">=</span> <span class="n">fetch_filter</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">ax</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">3500</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">4600</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">6100</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">7500</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">8800</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="mi">11000</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Redshifting of a Spectrum&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Observed Wavelength (Angstroms)&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;normalized flux / filter transmission&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<div class="newline"></div>    <span class="n">plot_sdss_filters</span><span class="p">()</span>
+<div class="newline"></div>    <span class="n">plot_redshifts</span><span class="p">()</span>
+<div class="newline"></div>    <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.show" class="sphx-glr-code-links" tooltip="Link to documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
+<div class="sphx-glr-footer container">
+<div class="sphx-glr-download container">
+<a class="reference download internal" href="../../../_downloads/sdss_filters.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">sdss_filters.py</span></code></a></div>
+<div class="sphx-glr-download container">
+<a class="reference download internal" href="../../../_downloads/sdss_filters.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sdss_filters.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="http://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc"></div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/scikit-learn/auto_examples/sdss_filters.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.6.
+    </div>
+  </body>
+</html>

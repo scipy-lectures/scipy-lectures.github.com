@@ -1,0 +1,373 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>1.3. NumPy: creating and manipulating numerical data &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1.3.1. The NumPy array object" href="array_object.html" />
+    <link rel="prev" title="1.2.9. Object-oriented programming (OOP)" href="../language/oop.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="array_object.html" title="1.3.1. The NumPy array object"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../language/oop.html" title="1.2.9. Object-oriented programming (OOP)"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">1. Getting started with Python for science</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/numpy/index.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="numpy-creating-and-manipulating-numerical-data">
+<span id="numpy"></span><h1>1.3. NumPy: creating and manipulating numerical data<a class="headerlink" href="#numpy-creating-and-manipulating-numerical-data" title="Permalink to this headline">¶</a></h1>
+<p><strong>Authors</strong>: <em>Emmanuelle Gouillart, Didrik Pinte, Gaël Varoquaux, and
+Pauli Virtanen</em></p>
+<p>This chapter gives an overview of NumPy, the core tool for performant
+numerical computing with Python.</p>
+<hr class="docutils" />
+<style type="text/css">
+  div.bodywrapper blockquote {
+      margin: 0 ;
+  }
+
+  div.toctree-wrapper ul {
+      margin-top: 0 ;
+      margin-bottom: 0 ;
+      padding-left: 10px ;
+  }
+
+  li.toctree-l1 {
+      padding: 0 0 0.5em 0 ;
+      list-style-type: none;
+      font-size: 150% ;
+      font-weight: bold;
+      }
+
+  li.toctree-l1 ul {
+      padding-left: 40px ;
+  }
+
+  li.toctree-l2 {
+      font-size: 70% ;
+      list-style-type: square;
+      font-weight: normal;
+      }
+
+  li.toctree-l3 {
+      font-size: 85% ;
+      list-style-type: circle;
+      font-weight: normal;
+      }
+
+</style><div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="array_object.html">1.3.1. The NumPy array object</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="array_object.html#what-are-numpy-and-numpy-arrays">1.3.1.1. What are NumPy and NumPy arrays?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="array_object.html#numpy-arrays">NumPy arrays</a></li>
+<li class="toctree-l3"><a class="reference internal" href="array_object.html#numpy-reference-documentation">NumPy Reference documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="array_object.html#import-conventions">Import conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="array_object.html#creating-arrays">1.3.1.2. Creating arrays</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="array_object.html#manual-construction-of-arrays">Manual construction of arrays</a></li>
+<li class="toctree-l3"><a class="reference internal" href="array_object.html#functions-for-creating-arrays">Functions for creating arrays</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="array_object.html#basic-data-types">1.3.1.3. Basic data types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array_object.html#basic-visualization">1.3.1.4. Basic visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array_object.html#indexing-and-slicing">1.3.1.5. Indexing and slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array_object.html#copies-and-views">1.3.1.6. Copies and views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array_object.html#fancy-indexing">1.3.1.7. Fancy indexing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="array_object.html#using-boolean-masks">Using boolean masks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="array_object.html#indexing-with-an-array-of-integers">Indexing with an array of integers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operations.html">1.3.2. Numerical operations on arrays</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operations.html#elementwise-operations">1.3.2.1. Elementwise operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operations.html#basic-operations">Basic operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="operations.html#other-operations">Other operations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html#basic-reductions">1.3.2.2. Basic reductions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operations.html#computing-sums">Computing sums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="operations.html#other-reductions">Other reductions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html#broadcasting">1.3.2.3. Broadcasting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html#array-shape-manipulation">1.3.2.4. Array shape manipulation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operations.html#flattening">Flattening</a></li>
+<li class="toctree-l3"><a class="reference internal" href="operations.html#reshaping">Reshaping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="operations.html#adding-a-dimension">Adding a dimension</a></li>
+<li class="toctree-l3"><a class="reference internal" href="operations.html#dimension-shuffling">Dimension shuffling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="operations.html#resizing">Resizing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html#sorting-data">1.3.2.5. Sorting data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html#summary">1.3.2.6. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="elaborate_arrays.html">1.3.3. More elaborate arrays</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="elaborate_arrays.html#more-data-types">1.3.3.1. More data types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elaborate_arrays.html#casting">Casting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="elaborate_arrays.html#different-data-type-sizes">Different data type sizes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elaborate_arrays.html#structured-data-types">1.3.3.2. Structured data types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elaborate_arrays.html#maskedarray-dealing-with-propagation-of-missing-data">1.3.3.3. <code class="docutils literal"><span class="pre">maskedarray</span></code>: dealing with (propagation of) missing data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_operations.html">1.3.4. Advanced operations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced_operations.html#polynomials">1.3.4.1. Polynomials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced_operations.html#more-polynomials-with-more-bases">More polynomials (with more bases)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_operations.html#loading-data-files">1.3.4.2. Loading data files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced_operations.html#text-files">Text files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_operations.html#images">Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_operations.html#numpy-s-own-format">NumPy’s own format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_operations.html#well-known-more-obscure-file-formats">Well-known (&amp; more obscure) file formats</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exercises.html">1.3.5. Some exercises</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="exercises.html#array-manipulations">1.3.5.1. Array manipulations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises.html#picture-manipulation-framing-a-face">1.3.5.2. Picture manipulation: Framing a Face</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises.html#data-statistics">1.3.5.3. Data statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises.html#crude-integral-approximations">1.3.5.4. Crude integral approximations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises.html#mandelbrot-set">1.3.5.5. Mandelbrot set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises.html#markov-chain">1.3.5.6. Markov chain</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gallery.html">1.3.6. Full code examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gallery.html#full-code-examples-for-the-numpy-chapter">1.3.6.1. Full code examples for the numpy chapter</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc"></div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="array_object.html" title="1.3.1. The NumPy array object"
+             >next</a></li>
+        <li class="right" >
+          <a href="../language/oop.html" title="1.2.9. Object-oriented programming (OOP)"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >1. Getting started with Python for science</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/numpy/index.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

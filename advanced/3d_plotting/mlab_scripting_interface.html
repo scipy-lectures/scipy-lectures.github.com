@@ -1,0 +1,386 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mlab: the scripting interface &mdash; Scipy lecture notes</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2013.2 beta (euroscipy 2013)',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" /> 
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+    
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="mlab-the-scripting-interface">
+<h1>Mlab: the scripting interface<a class="headerlink" href="#mlab-the-scripting-interface" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference external" href="http://docs.enthought.com/mayavi/mayavi/auto/mlab_reference.html#mayavi.mlab" title="(in mayavi v4.2.1)"><tt class="xref py py-mod docutils literal"><span class="pre">mayavi.mlab</span></tt></a> module provides simple plotting functions to apply
+to numpy arrays. Try them using in IPython, by starting IPython with the
+switch <tt class="docutils literal"><span class="pre">--gui=wx</span></tt>.</p>
+<div class="section" id="d-plotting-functions">
+<h2>3D plotting functions<a class="headerlink" href="#d-plotting-functions" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="../../_images/points3d.png"><img alt="../../_images/points3d.png" class="align-right" src="../../_images/points3d.png" style="width: 200.0px; height: 135.0px;" /></a>
+<div class="section" id="points">
+<h3>Points<a class="headerlink" href="#points" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>
+<div class="newline"></div><span class="n">mlab</span><span class="o">.</span><span class="n">points3d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><div style="clear: both"></div></p>
+<a class="reference internal image-reference" href="../../_images/plot3d.png"><img alt="../../_images/plot3d.png" class="align-right" src="../../_images/plot3d.png" style="width: 200.0px; height: 135.0px;" /></a>
+</div>
+<div class="section" id="lines">
+<h3>Lines<a class="headerlink" href="#lines" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mlab</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>  <span class="c"># Clear the figure</span>
+<div class="newline"></div><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<div class="newline"></div><span class="n">mlab</span><span class="o">.</span><span class="n">plot3d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><div style="clear: both"></div></p>
+<a class="reference internal image-reference" href="../../_images/surf.png"><img alt="../../_images/surf.png" class="align-right" src="../../_images/surf.png" style="width: 200.0px; height: 135.0px;" /></a>
+</div>
+<div class="section" id="elevation-surface">
+<h3>Elevation surface<a class="headerlink" href="#elevation-surface" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mlab</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+<div class="newline"></div><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">100j</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">100j</span><span class="p">]</span>
+<div class="newline"></div><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">/</span><span class="n">r</span>
+<div class="newline"></div><span class="n">mlab</span><span class="o">.</span><span class="n">surf</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">warp_scale</span><span class="o">=</span><span class="s">&#39;auto&#39;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><div style="clear: both"></div></p>
+<a class="reference internal image-reference" href="../../_images/mesh.png"><img alt="../../_images/mesh.png" class="align-right" src="../../_images/mesh.png" style="width: 200.0px; height: 135.0px;" /></a>
+</div>
+<div class="section" id="arbitrary-regular-mesh">
+<h3>Arbitrary regular mesh<a class="headerlink" href="#arbitrary-regular-mesh" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mlab</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+<div class="newline"></div><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span><span class="mi">11j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span><span class="mi">11j</span><span class="p">]</span>
+<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<div class="newline"></div><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+<div class="newline"></div><span class="n">mlab</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+<div class="newline"></div><span class="n">mlab</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">representation</span><span class="o">=</span><span class="s">&#39;wireframe&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A surface is defined by points <strong>connected</strong> to form triangles or
+polygones. In <cite>mlab.surf</cite> and <cite>mlab.mesh</cite>, the connectivity is
+implicity given by the layout of the arrays. See also
+<cite>mlab.triangular_mesh</cite>.</p>
+</div>
+<p><strong>Our data is often more than points and values: it needs some
+connectivity information</strong></p>
+<a class="reference internal image-reference" href="../../_images/contour3d.png" id="mayavi-voldata-label"><img alt="../../_images/contour3d.png" class="align-right" id="mayavi-voldata-label" src="../../_images/contour3d.png" style="width: 200.0px; height: 135.0px;" /></a>
+</div>
+<div class="section" id="volumetric-data">
+<h3>Volumetric data<a class="headerlink" href="#volumetric-data" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mlab</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+<div class="newline"></div><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="mi">64j</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="mi">64j</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="mi">64j</span><span class="p">]</span>
+<div class="newline"></div><span class="n">values</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="mf">0.5</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="o">*</span><span class="n">z</span><span class="o">*</span><span class="mf">2.0</span>
+<div class="newline"></div><span class="n">mlab</span><span class="o">.</span><span class="n">contour3d</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/viz_volume_structure1.png"><img alt="../../_images/viz_volume_structure1.png" class="align-right" src="../../_images/viz_volume_structure1.png" style="width: 200.0px; height: 160.0px;" /></a>
+<p><strong>This function works with a regular orthogonal grid:</strong> the <cite>value</cite> array
+is a 3D array that gives the shape of the grid.</p>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+<div class="section" id="figures-and-decorations">
+<h2>Figures and decorations<a class="headerlink" href="#figures-and-decorations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="figure-management">
+<h3>Figure management<a class="headerlink" href="#figure-management" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Get the current figure:</td>
+<td><cite>mlab.gcf()</cite></td>
+</tr>
+<tr class="row-even"><td>Clear the current figure:</td>
+<td><cite>mlab.clf()</cite></td>
+</tr>
+<tr class="row-odd"><td>Set the current figure:</td>
+<td><cite>mlab.figure(1, bgcolor=(1, 1, 1), fgcolor=(0.5, 0.5, 0.5)</cite></td>
+</tr>
+<tr class="row-even"><td>Save figure to image file:</td>
+<td><cite>mlab.savefig(&#8216;foo.png&#8217;, size=(300, 300))</cite></td>
+</tr>
+<tr class="row-odd"><td>Change the view:</td>
+<td>mlab.view(azimuth=45, elevation=54, distance=1.)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="changing-plot-properties">
+<h3>Changing plot properties<a class="headerlink" href="#changing-plot-properties" title="Permalink to this headline">¶</a></h3>
+<div class="topic">
+<p class="topic-title first"><strong>Example docstring:</strong> <cite>mlab.mesh</cite></p>
+<p>Plots a surface using grid-spaced data supplied as 2D arrays.</p>
+<p><strong>Function signatures</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>x, y, z are 2D arrays, all of the same shape, giving the positions of
+the vertices of the surface. The connectivity between these points is
+implied by the connectivity on the arrays.</p>
+<p>For simple structures (such as orthogonal grids) prefer the surf function,
+as it will create more efficient data structures.</p>
+<p><strong>Keyword arguments:</strong></p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">color:</th><td class="field-body">the color of the vtk object. Overides the colormap,
+if any, when specified. This is specified as a
+triplet of float ranging from 0 to 1, eg (1, 1,
+1) for white.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">colormap:</th><td class="field-body">type of colormap to use.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">extent:</th><td class="field-body">[xmin, xmax, ymin, ymax, zmin, zmax]
+Default is the x, y, z arrays extents. Use
+this to change the extent of the object
+created.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">figure:</th><td class="field-body">Figure to populate.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">line_width:</th><td class="field-body">The with of the lines, if any used. Must be a float.
+Default: 2.0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">mask:</th><td class="field-body">boolean mask array to suppress some data points.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">mask_points:</th><td class="field-body">If supplied, only one out of &#8216;mask_points&#8217; data point is
+displayed. This option is usefull to reduce the number
+of points displayed on large datasets Must be an integer
+or None.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">mode:</th><td class="field-body">the mode of the glyphs. Must be &#8216;2darrow&#8217; or &#8216;2dcircle&#8217; or
+&#8216;2dcross&#8217; or &#8216;2ddash&#8217; or &#8216;2ddiamond&#8217; or &#8216;2dhooked_arrow&#8217; or
+&#8216;2dsquare&#8217; or &#8216;2dthick_arrow&#8217; or &#8216;2dthick_cross&#8217; or
+&#8216;2dtriangle&#8217; or &#8216;2dvertex&#8217; or &#8216;arrow&#8217; or &#8216;cone&#8217; or &#8216;cube&#8217; or
+&#8216;cylinder&#8217; or &#8216;point&#8217; or &#8216;sphere&#8217;. Default: sphere</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">the name of the vtk object created.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">representation:</th><td class="field-body">the representation type used for the surface. Must be
+&#8216;surface&#8217; or &#8216;wireframe&#8217; or &#8216;points&#8217; or &#8216;mesh&#8217; or
+&#8216;fancymesh&#8217;. Default: surface</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">resolution:</th><td class="field-body">The resolution of the glyph created. For spheres, for
+instance, this is the number of divisions along theta and
+phi. Must be an integer. Default: 8</td>
+</tr>
+<tr class="field-even field"><th class="field-name">scalars:</th><td class="field-body">optional scalar data.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">scale_factor:</th><td class="field-body">scale factor of the glyphs used to represent
+the vertices, in fancy_mesh mode. Must be a float.
+Default: 0.05</td>
+</tr>
+<tr class="field-even field"><th class="field-name">scale_mode:</th><td class="field-body">the scaling mode for the glyphs
+(&#8216;vector&#8217;, &#8216;scalar&#8217;, or &#8216;none&#8217;).</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">transparent:</th><td class="field-body">make the opacity of the actor depend on the
+scalar.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">tube_radius:</th><td class="field-body">radius of the tubes used to represent the
+lines, in mesh mode. If None, simple lines are used.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">tube_sides:</th><td class="field-body">number of sides of the tubes used to
+represent the lines. Must be an integer. Default: 6</td>
+</tr>
+<tr class="field-even field"><th class="field-name">vmax:</th><td class="field-body">vmax is used to scale the colormap
+If None, the max of the data will be used</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">vmin:</th><td class="field-body">vmin is used to scale the colormap
+If None, the min of the data will be used</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<p>Example:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [2]: </span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span><span class="mi">10j</span><span class="p">]</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [3]: </span><span class="n">x</span> <span class="o">=</span> <span class="n">r</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [4]: </span><span class="n">y</span> <span class="o">=</span> <span class="n">r</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [5]: </span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">/</span><span class="n">r</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [6]: </span><span class="kn">from</span> <span class="nn">enthought.mayavi</span> <span class="kn">import</span> <span class="n">mlab</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [7]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s">&#39;gist_earth&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<div class="newline"></div><span class="gr">Out[7]: </span><span class="o">&lt;</span><span class="n">enthought</span><span class="o">.</span><span class="n">mayavi</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">Surface</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xde6f08c</span><span class="o">&gt;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [8]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<div class="newline"></div><span class="gp">   ...:</span> <span class="n">representation</span><span class="o">=</span><span class="s">&#39;wireframe&#39;</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+<div class="newline"></div><span class="gr">Out[8]: </span><span class="o">&lt;</span><span class="n">enthought</span><span class="o">.</span><span class="n">mayavi</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">Surface</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xdd6a71c</span><span class="o">&gt;</span>
+<div class="newline"></div></pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/polar_mesh.png"><img alt="../../_images/polar_mesh.png" class="align-center" src="../../_images/polar_mesh.png" style="width: 174.3px; height: 196.7px;" /></a>
+</div>
+<div class="section" id="decorations">
+<h3>Decorations<a class="headerlink" href="#decorations" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [9]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">orientation</span><span class="o">=</span><span class="s">&#39;vertical&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[9]: </span><span class="o">&lt;</span><span class="n">tvtk_classes</span><span class="o">.</span><span class="n">scalar_bar_actor</span><span class="o">.</span><span class="n">ScalarBarActor</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xd897f8c</span><span class="o">&gt;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [10]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;polar mesh&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[10]: </span><span class="o">&lt;</span><span class="n">enthought</span><span class="o">.</span><span class="n">mayavi</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Text</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xd8ed38c</span><span class="o">&gt;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [11]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">outline</span><span class="p">(</span><span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+<div class="newline"></div><span class="gr">Out[11]: </span><span class="o">&lt;</span><span class="n">enthought</span><span class="o">.</span><span class="n">mayavi</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">outline</span><span class="o">.</span><span class="n">Outline</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xdd21b6c</span><span class="o">&gt;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [12]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+<div class="newline"></div><span class="gr">Out[12]: </span><span class="o">&lt;</span><span class="n">enthought</span><span class="o">.</span><span class="n">mayavi</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xd2e4bcc</span><span class="o">&gt;</span>
+<div class="newline"></div></pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/decorations.png"><img alt="../../_images/decorations.png" class="align-center" src="../../_images/decorations.png" style="width: 480.0px; height: 339.2px;" /></a>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><strong>extent:</strong> If we specified extents for a plotting object,
+<cite>mlab.outline&#8217; and `mlab.axes</cite> don&#8217;t get them by default.</p>
+</div>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012,2013.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

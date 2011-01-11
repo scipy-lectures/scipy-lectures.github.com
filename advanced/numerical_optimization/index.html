@@ -1,0 +1,156 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.8. Mathematical optimization &mdash; Scipy lecture notes</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2012.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="2. Advanced topics" href="../index.html" />
+    <link rel="next" title="2.9. Traits" href="../traits/index.html" />
+    <link rel="prev" title="2.7. Image manipulation and processing using Numpy and Scipy" href="../image_processing/index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../traits/index.html" title="2.9. Traits"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../image_processing/index.html" title="2.7. Image manipulation and processing using Numpy and Scipy"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">2. Advanced topics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="mathematical-optimization">
+<h1>2.8. Mathematical optimization<a class="headerlink" href="#mathematical-optimization" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">authors:</th><td class="field-body">Gaël Varoquaux</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Mathematical_optimization">Mathematical optimization</a> deals with the
+problem of finding numerically minimums (or maximums or zeros) of
+a function. In this context, the function is called <em>cost function</em>, or
+<em>objective function</em>, or <em>energy</em>.</p>
+<div class="topic">
+<p class="topic-title first">Prerequisites</p>
+<ul class="simple">
+<li>Numpy, Scipy</li>
+<li>IPython</li>
+<li>matplotlib</li>
+</ul>
+</div>
+<div class="contents local topic" id="chapters-contents">
+<p class="topic-title first">Chapters contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#knowning-your-problem" id="id2">Knowning your problem</a><ul>
+<li><a class="reference internal" href="#convex-versus-non-convex-optimization" id="id3">Convex versus non-convex optimization</a></li>
+<li><a class="reference internal" href="#smooth-and-non-smooth-problems" id="id4">Smooth and non-smooth problems</a></li>
+<li><a class="reference internal" href="#noisy-versus-exact-cost-functions" id="id5">Noisy versus exact cost functions</a></li>
+<li><a class="reference internal" href="#constraints" id="id6">Constraints</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#special-case-least-squares" id="id7">Special case: least-squares</a></li>
+<li><a class="reference internal" href="#gradient-and-conjugate-gradient-methods" id="id8">Gradient and conjugate gradient methods</a></li>
+<li><a class="reference internal" href="#newton-and-quasy-newton-methods" id="id9">Newton and quasy-newton methods</a></li>
+<li><a class="reference internal" href="#simplex-methods" id="id10">Simplex methods</a></li>
+<li><a class="reference internal" href="#alternate-optimization-block-coordinate-methods" id="id11">Alternate optimization: block coordinate methods</a></li>
+<li><a class="reference internal" href="#global-optimizers" id="id12">Global optimizers</a></li>
+<li><a class="reference internal" href="#optimization-with-constraints" id="id13">Optimization with constraints</a></li>
+</ul>
+</div>
+<div class="section" id="knowning-your-problem">
+<h2><a class="toc-backref" href="#id2">2.8.1. Knowning your problem</a><a class="headerlink" href="#knowning-your-problem" title="Permalink to this headline">¶</a></h2>
+<p>Not all optimization problems are equal. Knowing your problem enables you
+to choose the right tool.</p>
+<div class="section" id="convex-versus-non-convex-optimization">
+<h3><a class="toc-backref" href="#id3">2.8.1.1. Convex versus non-convex optimization</a><a class="headerlink" href="#convex-versus-non-convex-optimization" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="smooth-and-non-smooth-problems">
+<h3><a class="toc-backref" href="#id4">2.8.1.2. Smooth and non-smooth problems</a><a class="headerlink" href="#smooth-and-non-smooth-problems" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="noisy-versus-exact-cost-functions">
+<h3><a class="toc-backref" href="#id5">2.8.1.3. Noisy versus exact cost functions</a><a class="headerlink" href="#noisy-versus-exact-cost-functions" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="constraints">
+<h3><a class="toc-backref" href="#id6">2.8.1.4. Constraints</a><a class="headerlink" href="#constraints" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="special-case-least-squares">
+<h2><a class="toc-backref" href="#id7">2.8.2. Special case: least-squares</a><a class="headerlink" href="#special-case-least-squares" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="gradient-and-conjugate-gradient-methods">
+<h2><a class="toc-backref" href="#id8">2.8.3. Gradient and conjugate gradient methods</a><a class="headerlink" href="#gradient-and-conjugate-gradient-methods" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="newton-and-quasy-newton-methods">
+<h2><a class="toc-backref" href="#id9">2.8.4. Newton and quasy-newton methods</a><a class="headerlink" href="#newton-and-quasy-newton-methods" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="simplex-methods">
+<h2><a class="toc-backref" href="#id10">2.8.5. Simplex methods</a><a class="headerlink" href="#simplex-methods" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="alternate-optimization-block-coordinate-methods">
+<h2><a class="toc-backref" href="#id11">2.8.6. Alternate optimization: block coordinate methods</a><a class="headerlink" href="#alternate-optimization-block-coordinate-methods" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="global-optimizers">
+<h2><a class="toc-backref" href="#id12">2.8.7. Global optimizers</a><a class="headerlink" href="#global-optimizers" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="optimization-with-constraints">
+<h2><a class="toc-backref" href="#id13">2.8.8. Optimization with constraints</a><a class="headerlink" href="#optimization-with-constraints" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../traits/index.html" title="2.9. Traits"
+             >next</a></li>
+        <li class="right" >
+          <a href="../image_processing/index.html" title="2.7. Image manipulation and processing using Numpy and Scipy"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

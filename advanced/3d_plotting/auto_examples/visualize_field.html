@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Scipy lecture notes</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2013.2 beta (euroscipy 2013)',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../../index.html" /> 
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+    
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../../index.html">Scipy lecture notes</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <p id="example-visualize-field-py">Visualize the field created by a pair of Helmoltz coils</p>
+<p><strong>Python source code:</strong> <a class="reference download internal" href="../../../_downloads/visualize_field.py"><tt class="xref download docutils literal"><span class="pre">visualize_field.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">mayavi</span> <span class="kn">import</span> <span class="n">mlab</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># &quot;import&quot; our data from our previous script (the import actually runs</span>
+<div class="newline"></div><span class="c"># the script and computes B)</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">compute_field</span> <span class="kn">import</span> <span class="n">B</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c">###############################################################################</span>
+<div class="newline"></div><span class="c"># Data massaging</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Reshape the data to put it in a form that can be fed in Mayavi</span>
+<div class="newline"></div><span class="n">Bx</span> <span class="o">=</span> <span class="n">B</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<div class="newline"></div><span class="n">By</span> <span class="o">=</span> <span class="n">B</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<div class="newline"></div><span class="n">Bz</span> <span class="o">=</span> <span class="n">B</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+<div class="newline"></div><span class="n">Bx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Bx</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div><span class="n">By</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">By</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div><span class="n">Bz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Bz</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">Bnorm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Bx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">By</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">Bz</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Threshold, to avoid the very high values</span>
+<div class="newline"></div><span class="n">Bmax</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">scoreatpercentile</span><span class="p">(</span><span class="n">Bnorm</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="mi">99</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">Bx</span><span class="p">[</span><span class="n">Bnorm</span> <span class="o">&gt;</span> <span class="n">Bmax</span><span class="p">]</span> <span class="o">=</span> <span class="n">Bmax</span> <span class="o">*</span> <span class="p">(</span><span class="n">Bx</span> <span class="o">/</span> <span class="n">Bnorm</span><span class="p">)[</span><span class="n">Bnorm</span> <span class="o">&gt;</span> <span class="n">Bmax</span><span class="p">]</span>
+<div class="newline"></div><span class="n">By</span><span class="p">[</span><span class="n">Bnorm</span> <span class="o">&gt;</span> <span class="n">Bmax</span><span class="p">]</span> <span class="o">=</span> <span class="n">Bmax</span> <span class="o">*</span> <span class="p">(</span><span class="n">By</span> <span class="o">/</span> <span class="n">Bnorm</span><span class="p">)[</span><span class="n">Bnorm</span> <span class="o">&gt;</span> <span class="n">Bmax</span><span class="p">]</span>
+<div class="newline"></div><span class="n">Bz</span><span class="p">[</span><span class="n">Bnorm</span> <span class="o">&gt;</span> <span class="n">Bmax</span><span class="p">]</span> <span class="o">=</span> <span class="n">Bmax</span> <span class="o">*</span> <span class="p">(</span><span class="n">Bz</span> <span class="o">/</span> <span class="n">Bnorm</span><span class="p">)[</span><span class="n">Bnorm</span> <span class="o">&gt;</span> <span class="n">Bmax</span><span class="p">]</span>
+<div class="newline"></div><span class="n">Bnorm</span><span class="p">[</span><span class="n">Bnorm</span> <span class="o">&gt;</span> <span class="n">Bmax</span><span class="p">]</span> <span class="o">=</span> <span class="n">Bmax</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c">###############################################################################</span>
+<div class="newline"></div><span class="c"># Visualization proper</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Create a mayavi figure black on white</span>
+<div class="newline"></div><span class="n">mlab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">bgcolor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="n">fgcolor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">640</span><span class="p">,</span> <span class="mi">480</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Create a vector_field: a data source that we can slice and dice</span>
+<div class="newline"></div><span class="n">field</span> <span class="o">=</span> <span class="n">mlab</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">vector_field</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">Bx</span><span class="p">,</span> <span class="n">By</span><span class="p">,</span> <span class="n">Bz</span><span class="p">,</span>
+<div class="newline"></div>                                   <span class="n">scalars</span><span class="o">=</span><span class="n">Bnorm</span><span class="p">,</span>
+<div class="newline"></div>                                   <span class="n">name</span><span class="o">=</span><span class="s">&#39;B field&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="c"># Plot the vectors</span>
+<div class="newline"></div><span class="n">vectors</span> <span class="o">=</span> <span class="n">mlab</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">vectors</span><span class="p">(</span><span class="n">field</span><span class="p">,</span>
+<div class="newline"></div>                                <span class="n">scale_factor</span><span class="o">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+<div class="newline"></div>                                <span class="n">colormap</span><span class="o">=</span><span class="s">&#39;hot&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">mlab</span><span class="o">.</span><span class="n">axes</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Mask 7 data points out of 8</span>
+<div class="newline"></div><span class="n">vectors</span><span class="o">.</span><span class="n">glyph</span><span class="o">.</span><span class="n">mask_input_points</span> <span class="o">=</span> <span class="bp">True</span>
+<div class="newline"></div><span class="n">vectors</span><span class="o">.</span><span class="n">glyph</span><span class="o">.</span><span class="n">mask_points</span><span class="o">.</span><span class="n">on_ratio</span> <span class="o">=</span> <span class="mi">8</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">mlab</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">vector_cut_plane</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">scale_factor</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s">&#39;hot&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Add an iso_surface of the norm of the field</span>
+<div class="newline"></div><span class="n">mlab</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">iso_surface</span><span class="p">(</span><span class="n">mlab</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">extract_vector_norm</span><span class="p">(</span><span class="n">field</span><span class="p">),</span>
+<div class="newline"></div>                          <span class="n">contours</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="o">*</span><span class="n">Bmax</span><span class="p">,</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">Bmax</span><span class="p">],</span>
+<div class="newline"></div>                          <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">mlab</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mf">0.71</span><span class="p">)</span>
+<div class="newline"></div><span class="n">mlab</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&#39;visualize_field.png&#39;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><div style="clear: both"></div></p>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../../index.html">Scipy lecture notes</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012,2013.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

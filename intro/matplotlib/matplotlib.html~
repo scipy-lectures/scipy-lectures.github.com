@@ -1,0 +1,1148 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.4. Matplotlib: plotting &mdash; Scipy lecture notes</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2013.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="1. Getting started with Python for science" href="../index.html" />
+    <link rel="next" title="1.5. Scipy : high-level scientific computing" href="../scipy.html" />
+    <link rel="prev" title="1.3.4. Advanced operations" href="../numpy/advanced_operations.html" /> 
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+   <script type="text/javascript">
+   // Function to make the tip divs collapsible
+   $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).children().toggle();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+    
+		    if(content.length > 40) {
+			// We start at '5' to avoid 'tip '
+			var content = content.substr(5, 50);
+		    }
+		    $(this).html('<p class="summary">' + content + '...</p>' + html);
+		} else {
+		    $("p.summary").remove();
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../scipy.html" title="1.5. Scipy : high-level scientific computing"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../numpy/advanced_operations.html" title="1.3.4. Advanced operations"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">1. Getting started with Python for science</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+    </a></li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="matplotlib-plotting">
+<span id="matplotlib"></span><h1>1.4. Matplotlib: plotting<a class="headerlink" href="#matplotlib-plotting" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">authors:</th><td class="field-body">Nicolas Rougier, Mike Müller, Gaël Varoquaux</td>
+</tr>
+</tbody>
+</table>
+<div class="sidebar">
+<p class="first sidebar-title"><strong>Thanks</strong></p>
+<p class="last">Many thanks to <strong>Bill Wing</strong> and <strong>Christoph Deil</strong> for review and
+corrections.</p>
+</div>
+<div class="contents local topic" id="chapters-contents">
+<p class="topic-title first">Chapters contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id4">Introduction</a><ul>
+<li><a class="reference internal" href="#ipython-and-the-pylab-mode" id="id5">IPython and the pylab mode</a></li>
+<li><a class="reference internal" href="#pylab" id="id6">pylab</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#simple-plot" id="id7">Simple plot</a><ul>
+<li><a class="reference internal" href="#plotting-with-default-settings" id="id8">Plotting with default settings</a></li>
+<li><a class="reference internal" href="#instantiating-defaults" id="id9">Instantiating defaults</a></li>
+<li><a class="reference internal" href="#changing-colors-and-line-widths" id="id10">Changing colors and line widths</a></li>
+<li><a class="reference internal" href="#setting-limits" id="id11">Setting limits</a></li>
+<li><a class="reference internal" href="#setting-ticks" id="id12">Setting ticks</a></li>
+<li><a class="reference internal" href="#setting-tick-labels" id="id13">Setting tick labels</a></li>
+<li><a class="reference internal" href="#moving-spines" id="id14">Moving spines</a></li>
+<li><a class="reference internal" href="#adding-a-legend" id="id15">Adding a legend</a></li>
+<li><a class="reference internal" href="#annotate-some-points" id="id16">Annotate some points</a></li>
+<li><a class="reference internal" href="#devil-is-in-the-details" id="id17">Devil is in the details</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#figures-subplots-axes-and-ticks" id="id18">Figures, Subplots, Axes and Ticks</a><ul>
+<li><a class="reference internal" href="#figures" id="id19">Figures</a></li>
+<li><a class="reference internal" href="#subplots" id="id20">Subplots</a></li>
+<li><a class="reference internal" href="#axes" id="id21">Axes</a></li>
+<li><a class="reference internal" href="#ticks" id="id22">Ticks</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-types-of-plots-examples-and-exercises" id="id23">Other Types of Plots: examples and exercises</a><ul>
+<li><a class="reference internal" href="#regular-plots" id="id24">Regular Plots</a></li>
+<li><a class="reference internal" href="#scatter-plots" id="id25">Scatter Plots</a></li>
+<li><a class="reference internal" href="#bar-plots" id="id26">Bar Plots</a></li>
+<li><a class="reference internal" href="#contour-plots" id="id27">Contour Plots</a></li>
+<li><a class="reference internal" href="#imshow" id="id28">Imshow</a></li>
+<li><a class="reference internal" href="#pie-charts" id="id29">Pie Charts</a></li>
+<li><a class="reference internal" href="#quiver-plots" id="id30">Quiver Plots</a></li>
+<li><a class="reference internal" href="#grids" id="id31">Grids</a></li>
+<li><a class="reference internal" href="#multi-plots" id="id32">Multi Plots</a></li>
+<li><a class="reference internal" href="#polar-axis" id="id33">Polar Axis</a></li>
+<li><a class="reference internal" href="#d-plots" id="id34">3D Plots</a></li>
+<li><a class="reference internal" href="#text" id="id35">Text</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#beyond-this-tutorial" id="id36">Beyond this tutorial</a><ul>
+<li><a class="reference internal" href="#tutorials" id="id37">Tutorials</a></li>
+<li><a class="reference internal" href="#matplotlib-documentation" id="id38">Matplotlib documentation</a></li>
+<li><a class="reference internal" href="#code-documentation" id="id39">Code documentation</a></li>
+<li><a class="reference internal" href="#galleries" id="id40">Galleries</a></li>
+<li><a class="reference internal" href="#mailing-lists" id="id41">Mailing lists</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#quick-references" id="id42">Quick references</a><ul>
+<li><a class="reference internal" href="#line-properties" id="id43">Line properties</a></li>
+<li><a class="reference internal" href="#line-styles" id="id44">Line styles</a></li>
+<li><a class="reference internal" href="#markers" id="id45">Markers</a></li>
+<li><a class="reference internal" href="#colormaps" id="id46">Colormaps</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id4">1.4.1. Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<div class="admonition tip"> 
+<p class="first admonition-title">Tip</p>
+<p class="last"><a class="reference external" href="http://matplotlib.org/">Matplotlib</a> is probably the single most
+used Python package for 2D-graphics. It provides both a very quick
+way to visualize data from Python and publication-quality figures in
+many formats.  We are going to explore matplotlib in interactive mode
+covering most common cases.</p>
+</div>
+<div class="section" id="ipython-and-the-pylab-mode">
+<h3><a class="toc-backref" href="#id5">1.4.1.1. IPython and the pylab mode</a><a class="headerlink" href="#ipython-and-the-pylab-mode" title="Permalink to this headline">¶</a></h3>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last"><a class="reference external" href="http://ipython.org/">IPython</a> is an enhanced interactive Python
+shell that has lots of interesting features including named inputs
+and outputs, access to shell commands, improved debugging and many
+more. It is central to the scientific-computing workflow in Python
+for its use in combination with Matplotlib:</p>
+</div>
+<p>We start IPython with the command line argument <tt class="docutils literal"><span class="pre">-pylab</span></tt> (<tt class="docutils literal"><span class="pre">--pylab</span></tt>
+since IPython version 0.12), for interactive matplotlib sessions with
+Matlab/Mathematica-like functionality.</p>
+</div>
+<div class="section" id="pylab">
+<h3><a class="toc-backref" href="#id6">1.4.1.2. pylab</a><a class="headerlink" href="#pylab" title="Permalink to this headline">¶</a></h3>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last"><em>pylab</em> provides a procedural interface to the matplotlib
+object-oriented plotting library. It is modeled closely after
+Matlab™. Therefore, the majority of plotting commands in pylab have
+Matlab™ analogs with similar arguments.  Important commands are
+explained with interactive examples.</p>
+</div>
+</div>
+</div>
+<div class="section" id="simple-plot">
+<h2><a class="toc-backref" href="#id7">1.4.2. Simple plot</a><a class="headerlink" href="#simple-plot" title="Permalink to this headline">¶</a></h2>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>In this section, we want to draw the cosine and sine functions on the
+same plot. Starting from the default settings, we&#8217;ll enrich the
+figure step by step to make it nicer.</p>
+<p class="last">First step is to get the data for the sine and cosine functions:</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="newline"></div><span class="n">C</span><span class="p">,</span> <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">X</span></tt> is now a numpy array with 256 values ranging from -π to +π
+(included). <tt class="docutils literal"><span class="pre">C</span></tt> is the cosine (256 values) and <tt class="docutils literal"><span class="pre">S</span></tt> is the sine (256
+values).</p>
+<p>To run the example, you can type them in an IPython interactive session:</p>
+<div class="highlight-python"><pre>$ ipython --pylab</pre>
+</div>
+<p>This brings us to the IPython prompt:</p>
+<div class="highlight-python"><pre>IPython 0.13 -- An enhanced Interactive Python.
+?       -&gt; Introduction to IPython's features.
+%magic  -&gt; Information about IPython's 'magic' % functions.
+help    -&gt; Python's own help system.
+object? -&gt; Details about 'object'. ?object also works, ?? prints more.
+
+Welcome to pylab, a matplotlib-based Python environment.
+For more information, type 'help(pylab)'.</pre>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>You can also download each of the examples and run it using regular
+python, but you will loose interactive data manipulation:</p>
+<div class="highlight-python"><pre>$ python exercice_1.py</pre>
+</div>
+<p class="last">You can get source for each step by clicking on the corresponding figure.</p>
+</div>
+<div class="section" id="plotting-with-default-settings">
+<h3><a class="toc-backref" href="#id8">1.4.2.1. Plotting with default settings</a><a class="headerlink" href="#plotting-with-default-settings" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_exercice_1.html"><img alt="../../_images/plot_exercice_1_1.png" class="align-right" src="../../_images/plot_exercice_1_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p>Documentation</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/pyplot_tutorial.html">plot tutorial</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.plot">plot() command</a></li>
+</ul>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>Matplotlib comes with a set of default settings that allow
+customizing all kinds of properties. You can control the defaults of
+almost every property in matplotlib: figure size and dpi, line width,
+color and style, axes, axis and grid properties, text and font
+properties and so on.</p>
+<p class="last">Baz bar foobar</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="newline"></div><span class="n">C</span><span class="p">,</span> <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="instantiating-defaults">
+<h3><a class="toc-backref" href="#id9">1.4.2.2. Instantiating defaults</a><a class="headerlink" href="#instantiating-defaults" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_exercice_2.html"><img alt="../../_images/plot_exercice_2_1.png" class="align-right" src="../../_images/plot_exercice_2_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p>Documentation</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/customizing.html">Customizing matplotlib</a></li>
+</ul>
+</div>
+<p>In the script below, we&#8217;ve instantiated (and commented) all the figure settings
+that influence the appearance of the plot. The settings have been explicitly
+set to their default values, but now you can interactively play with the values
+to explore their affect (see <a class="reference internal" href="#line-properties">Line properties</a> and <a class="reference internal" href="#line-styles">Line styles</a> below).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Create a figure of size 8x6 points, 80 dots per inch</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Create a new subplot from a grid of 1x1</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="newline"></div><span class="n">C</span><span class="p">,</span> <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Plot cosine with a blue continuous line of width 1 (pixels)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Plot sine with a green continuous line of width 1 (pixels)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Set x limits</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Set x ticks</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Set y limits</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Set y ticks</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Save figure using 72 dots per inch</span>
+<div class="newline"></div><span class="c"># savefig(&quot;exercice_2.png&quot;, dpi=72)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># Show result on screen</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="changing-colors-and-line-widths">
+<h3><a class="toc-backref" href="#id10">1.4.2.3. Changing colors and line widths</a><a class="headerlink" href="#changing-colors-and-line-widths" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_exercice_3.html"><img alt="../../_images/plot_exercice_3_1.png" class="align-right" src="../../_images/plot_exercice_3_1.png" style="width: 280.0px; height: 175.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p>Documentation</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/pyplot_tutorial.html#controlling-line-properties">Controlling line properties</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/artist_api.html#matplotlib.lines.Line2D">Line API</a></li>
+</ul>
+</div>
+<p>First step, we want to have the cosine in blue and the sine in red and a
+slighty thicker line for both of them. We&#8217;ll also slightly alter the figure
+size to make it more horizontal.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">...</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span>  <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">)</span>
+<div class="newline"></div><span class="o">...</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="setting-limits">
+<h3><a class="toc-backref" href="#id11">1.4.2.4. Setting limits</a><a class="headerlink" href="#setting-limits" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_exercice_4.html"><img alt="../../_images/plot_exercice_4_1.png" class="align-right" src="../../_images/plot_exercice_4_1.png" style="width: 280.0px; height: 175.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p>Documentation</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.xlim">xlim() command</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.ylim">ylim() command</a></li>
+</ul>
+</div>
+<p>Current limits of the figure are a bit too tight and we want to make some space
+in order to clearly see all data points.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">...</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">C</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">)</span>
+<div class="newline"></div><span class="o">...</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="setting-ticks">
+<h3><a class="toc-backref" href="#id12">1.4.2.5. Setting ticks</a><a class="headerlink" href="#setting-ticks" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_exercice_5.html"><img alt="../../_images/plot_exercice_5_1.png" class="align-right" src="../../_images/plot_exercice_5_1.png" style="width: 280.0px; height: 175.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p>Documentation</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.xticks">xticks() command</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.yticks">yticks() command</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/artists.html#axis-container">Tick container</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/ticker_api.html">Tick locating and formatting</a></li>
+</ul>
+</div>
+<p>Current ticks are not ideal because they do not show the interesting values
+(+/-π,+/-π/2) for sine and cosine. We&#8217;ll change them such that they show only
+these values.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">...</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">])</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+<div class="newline"></div><span class="o">...</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="setting-tick-labels">
+<h3><a class="toc-backref" href="#id13">1.4.2.6. Setting tick labels</a><a class="headerlink" href="#setting-tick-labels" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_exercice_6.html"><img alt="../../_images/plot_exercice_6_1.png" class="align-right" src="../../_images/plot_exercice_6_1.png" style="width: 280.0px; height: 175.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p>Documentation</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/index_text.html">Working with text</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.xticks">xticks() command</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.yticks">yticks() command</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/axes_api.html?#matplotlib.axes.Axes.set_xticklabels">set_xticklabels()</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/axes_api.html?#matplotlib.axes.Axes.set_yticklabels">set_yticklabels()</a></li>
+</ul>
+</div>
+<p>Ticks are now properly placed but their label is not very explicit. We could
+guess that 3.142 is π but it would be better to make it explicit. When we set
+tick values, we can also provide a corresponding label in the second argument
+list. Note that we&#8217;ll use latex to allow for nice rendering of the label.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">...</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">],</span>
+<div class="newline"></div>          <span class="p">[</span><span class="s">r&#39;$-\pi$&#39;</span><span class="p">,</span> <span class="s">r&#39;$-\pi/2$&#39;</span><span class="p">,</span> <span class="s">r&#39;$0$&#39;</span><span class="p">,</span> <span class="s">r&#39;$+\pi/2$&#39;</span><span class="p">,</span> <span class="s">r&#39;$+\pi$&#39;</span><span class="p">])</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">],</span>
+<div class="newline"></div>          <span class="p">[</span><span class="s">r&#39;$-1$&#39;</span><span class="p">,</span> <span class="s">r&#39;$0$&#39;</span><span class="p">,</span> <span class="s">r&#39;$+1$&#39;</span><span class="p">])</span>
+<div class="newline"></div><span class="o">...</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="moving-spines">
+<h3><a class="toc-backref" href="#id14">1.4.2.7. Moving spines</a><a class="headerlink" href="#moving-spines" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_exercice_7.html"><img alt="../../_images/plot_exercice_7_1.png" class="align-right" src="../../_images/plot_exercice_7_1.png" style="width: 280.0px; height: 175.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p>Documentation</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/spines_api.html#matplotlib.spines">Spines</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/artists.html#axis-container">Axis container</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/transforms_tutorial.html">Transformations tutorial</a></li>
+</ul>
+</div>
+<p>Spines are the lines connecting the axis tick marks and noting the boundaries
+of the data area. They can be placed at arbitrary positions and until now, they
+were on the border of the axis. We&#8217;ll change that since we want to have them in
+the middle. Since there are four of them (top/bottom/left/right), we&#8217;ll discard
+the top and right by setting their color to none and we&#8217;ll move the bottom and
+left ones to coordinate 0 in data space coordinates.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">...</span>
+<div class="newline"></div><span class="n">ax</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>  <span class="c"># gca stands for &#39;get current axis&#39;</span>
+<div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticks_position</span><span class="p">(</span><span class="s">&#39;bottom&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s">&#39;bottom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="s">&#39;data&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_ticks_position</span><span class="p">(</span><span class="s">&#39;left&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="s">&#39;data&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<div class="newline"></div><span class="o">...</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="adding-a-legend">
+<h3><a class="toc-backref" href="#id15">1.4.2.8. Adding a legend</a><a class="headerlink" href="#adding-a-legend" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_exercice_8.html"><img alt="../../_images/plot_exercice_8_1.png" class="align-right" src="../../_images/plot_exercice_8_1.png" style="width: 280.0px; height: 175.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p>Documentation</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/legend_guide.html">Legend guide</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.legend">legend() command</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/legend_api.html#matplotlib.legend.Legend">Legend API</a></li>
+</ul>
+</div>
+<p>Let&#8217;s add a legend in the upper left corner. This only requires adding the
+keyword argument label (that will be used in the legend box) to the plot
+commands.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">...</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;cosine&quot;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span>  <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;sine&quot;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&#39;upper left&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="o">...</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="annotate-some-points">
+<h3><a class="toc-backref" href="#id16">1.4.2.9. Annotate some points</a><a class="headerlink" href="#annotate-some-points" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_exercice_9.html"><img alt="../../_images/plot_exercice_9_1.png" class="align-right" src="../../_images/plot_exercice_9_1.png" style="width: 280.0px; height: 175.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p>Documentation</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/annotations_guide.html">Annotating axis</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.annotate">annotate() command</a></li>
+</ul>
+</div>
+<p>Let&#8217;s annotate some interesting points using the annotate command. We chose the
+2π/3 value and we want to annotate both the sine and the cosine. We&#8217;ll first
+draw a marker on the curve as well as a straight dotted line. Then, we&#8217;ll use
+the annotate command to display some text with an arrow.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">...</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">t</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)],</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&quot;--&quot;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="p">],</span> <span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;blue&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">r&#39;$sin(\frac{2\pi}{3})=\frac{\sqrt{3}}{2}$&#39;</span><span class="p">,</span>
+<div class="newline"></div>            <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s">&#39;data&#39;</span><span class="p">,</span>
+<div class="newline"></div>            <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="o">+</span><span class="mi">30</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s">&#39;offset points&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+<div class="newline"></div>            <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">connectionstyle</span><span class="o">=</span><span class="s">&quot;arc3,rad=.2&quot;</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)],</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&quot;--&quot;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="p">],[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="p">],</span> <span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">r&#39;$cos(\frac{2\pi}{3})=-\frac{1}{2}$&#39;</span><span class="p">,</span>
+<div class="newline"></div>            <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s">&#39;data&#39;</span><span class="p">,</span>
+<div class="newline"></div>            <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s">&#39;offset points&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+<div class="newline"></div>            <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">connectionstyle</span><span class="o">=</span><span class="s">&quot;arc3,rad=.2&quot;</span><span class="p">))</span>
+<div class="newline"></div><span class="o">...</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="devil-is-in-the-details">
+<h3><a class="toc-backref" href="#id17">1.4.2.10. Devil is in the details</a><a class="headerlink" href="#devil-is-in-the-details" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_exercice_10.html"><img alt="../../_images/plot_exercice_10_1.png" class="align-right" src="../../_images/plot_exercice_10_1.png" style="width: 280.0px; height: 175.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p>Documentation</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/artist_api.html">Artists</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/api/artist_api.html#matplotlib.text.Text.set_bbox">BBox</a></li>
+</ul>
+</div>
+<p>The tick labels are now hardly visible because of the blue and red lines. We can
+make them bigger and we can also adjust their properties such that they&#8217;ll be
+rendered on a semi-transparent white background. This will allow us to see both
+the data and the labels.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">...</span>
+<div class="newline"></div><span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">()</span> <span class="o">+</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">():</span>
+<div class="newline"></div>    <span class="n">label</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">label</span><span class="o">.</span><span class="n">set_bbox</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&#39;None&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.65</span><span class="p">))</span>
+<div class="newline"></div><span class="o">...</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="figures-subplots-axes-and-ticks">
+<h2><a class="toc-backref" href="#id18">1.4.3. Figures, Subplots, Axes and Ticks</a><a class="headerlink" href="#figures-subplots-axes-and-ticks" title="Permalink to this headline">¶</a></h2>
+<p>So far we have used implicit figure and axes creation. This is handy for fast
+plots. We can have more control over the display using figure, subplot, and
+axes explicitly. A figure in matplotlib means the whole window in the user
+interface. Within this figure there can be subplots. While subplot positions
+the plots in a regular grid, axes allows free placement within the figure. Both
+can be useful depending on your intention. We&#8217;ve already worked with figures
+and subplots without explicitly calling them. When we call plot, matplotlib
+calls <tt class="docutils literal"><span class="pre">gca()</span></tt> to get the current axes and gca in turn calls <tt class="docutils literal"><span class="pre">gcf()</span></tt> to get the
+current figure. If there is none it calls <tt class="docutils literal"><span class="pre">figure()</span></tt> to make one, strictly
+speaking, to make a <tt class="docutils literal"><span class="pre">subplot(111)</span></tt>. Let&#8217;s look at the details.</p>
+<div class="section" id="figures">
+<h3><a class="toc-backref" href="#id19">1.4.3.1. Figures</a><a class="headerlink" href="#figures" title="Permalink to this headline">¶</a></h3>
+<p>A figure is the windows in the GUI that has &#8220;Figure #&#8221; as title. Figures
+are numbered starting from 1 as opposed to the normal Python way starting
+from 0. This is clearly MATLAB-style.  There are several parameters that
+determine what the figure looks like:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="28%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">num</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">1</span></tt></td>
+<td>number of figure</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">figsize</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">figure.figsize</span></tt></td>
+<td>figure size in in inches (width, height)</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">dpi</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">figure.dpi</span></tt></td>
+<td>resolution in dots per inch</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">facecolor</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">figure.facecolor</span></tt></td>
+<td>color of the drawing background</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">edgecolor</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">figure.edgecolor</span></tt></td>
+<td>color of edge around the drawing background</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">frameon</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">True</span></tt></td>
+<td>draw figure frame or not</td>
+</tr>
+</tbody>
+</table>
+<p>The defaults can be specified in the resource file and will be used most of the
+time. Only the number of the figure is frequently changed.</p>
+<p>When you work with the GUI you can close a figure by clicking on the x in the
+upper right corner. But you can close a figure programmatically by calling
+close. Depending on the argument it closes (1) the current figure (no
+argument), (2) a specific figure (figure number or figure instance as
+argument), or (3) all figures (all as argument).</p>
+<p>As with other objects, you can set figure properties also setp or with the
+set_something methods.</p>
+</div>
+<div class="section" id="subplots">
+<h3><a class="toc-backref" href="#id20">1.4.3.2. Subplots</a><a class="headerlink" href="#subplots" title="Permalink to this headline">¶</a></h3>
+<p>With subplot you can arrange plots in a regular grid. You need to specify the
+number of rows and columns and the number of the plot. Note that the <a class="reference external" href="http://matplotlib.sourceforge.net/users/gridspec.html">gridspec</a> command is a more
+powerful alternative.</p>
+<a class="reference external image-reference" href="auto_examples/plot_subplot-horizontal.html"><img alt="../../_images/plot_subplot-horizontal_1.png" src="../../_images/plot_subplot-horizontal_1.png" style="width: 168.0px; height: 112.0px;" /></a>
+<a class="reference external image-reference" href="auto_examples/plot_subplot-vertical.html"><img alt="../../_images/plot_subplot-vertical_1.png" src="../../_images/plot_subplot-vertical_1.png" style="width: 168.0px; height: 112.0px;" /></a>
+<a class="reference external image-reference" href="auto_examples/plot_subplot-grid.html"><img alt="../../_images/plot_subplot-grid_1.png" src="../../_images/plot_subplot-grid_1.png" style="width: 168.0px; height: 112.0px;" /></a>
+<a class="reference external image-reference" href="auto_examples/plot_gridspec.html"><img alt="../../_images/plot_gridspec_1.png" src="../../_images/plot_gridspec_1.png" style="width: 168.0px; height: 112.0px;" /></a>
+</div>
+<div class="section" id="axes">
+<h3><a class="toc-backref" href="#id21">1.4.3.3. Axes</a><a class="headerlink" href="#axes" title="Permalink to this headline">¶</a></h3>
+<p>Axes are very similar to subplots but allow placement of plots at any location
+in the figure. So if we want to put a smaller plot inside a bigger one we do
+so with axes.</p>
+<a class="reference external image-reference" href="auto_examples/plot_axes.html"><img alt="../../_images/plot_axes_1.png" src="../../_images/plot_axes_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<a class="reference external image-reference" href="auto_examples/plot_axes-2.html"><img alt="../../_images/plot_axes-2_1.png" src="../../_images/plot_axes-2_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+</div>
+<div class="section" id="ticks">
+<h3><a class="toc-backref" href="#id22">1.4.3.4. Ticks</a><a class="headerlink" href="#ticks" title="Permalink to this headline">¶</a></h3>
+<p>Well formatted ticks are an important part of publishing-ready
+figures. Matplotlib provides a totally configurable system for ticks. There are
+tick locators to specify where ticks should appear and tick formatters to give
+ticks the appearance you want. Major and minor ticks can be located and
+formatted independently from each other. Per default minor ticks are not shown,
+i.e. there is only an empty list for them because it is as <tt class="docutils literal"><span class="pre">NullLocator</span></tt> (see
+below).</p>
+<div class="section" id="tick-locators">
+<h4>1.4.3.4.1. Tick Locators<a class="headerlink" href="#tick-locators" title="Permalink to this headline">¶</a></h4>
+<p>Tick locators control the positions of the ticks. They are set as
+follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ax</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">locator</span><span class="p">))</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>There are several locators for different kind of requirements:</p>
+<a class="reference external image-reference" href="auto_examples/plot_ticks.html"><img alt="../../_images/plot_ticks_1.png" src="../../_images/plot_ticks_1.png" style="width: 426.6px; height: 232.8px;" /></a>
+<p>All of these locators derive from the base class <tt class="xref py py-class docutils literal"><span class="pre">matplotlib.ticker.Locator</span></tt>.
+You can make your own locator deriving from it. Handling dates as ticks can be
+especially tricky. Therefore, matplotlib provides special locators in
+matplotlib.dates.</p>
+</div>
+</div>
+</div>
+<div class="section" id="other-types-of-plots-examples-and-exercises">
+<h2><a class="toc-backref" href="#id23">1.4.4. Other Types of Plots: examples and exercises</a><a class="headerlink" href="#other-types-of-plots-examples-and-exercises" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="#regular-plots"><img alt="../../_images/plot_plot_1.png" src="../../_images/plot_plot_1.png" style="width: 312.0px; height: 234.0px;" /></a>
+<a class="reference internal image-reference" href="#scatter-plots"><img alt="../../_images/plot_scatter_1.png" src="../../_images/plot_scatter_1.png" style="width: 312.0px; height: 234.0px;" /></a>
+<a class="reference internal image-reference" href="#bar-plots"><img alt="../../_images/plot_bar_1.png" src="../../_images/plot_bar_1.png" style="width: 312.0px; height: 234.0px;" /></a>
+<a class="reference internal image-reference" href="#contour-plots"><img alt="../../_images/plot_contour_1.png" src="../../_images/plot_contour_1.png" style="width: 312.0px; height: 234.0px;" /></a>
+<a class="reference internal image-reference" href="#imshow"><img alt="../../_images/plot_imshow_1.png" src="../../_images/plot_imshow_1.png" style="width: 312.0px; height: 234.0px;" /></a>
+<a class="reference internal image-reference" href="#quiver-plots"><img alt="../../_images/plot_quiver_1.png" src="../../_images/plot_quiver_1.png" style="width: 312.0px; height: 234.0px;" /></a>
+<a class="reference internal image-reference" href="#pie-charts"><img alt="../../_images/plot_pie_1.png" src="../../_images/plot_pie_1.png" style="width: 312.0px; height: 234.0px;" /></a>
+<a class="reference internal image-reference" href="#grids"><img alt="../../_images/plot_grid_1.png" src="../../_images/plot_grid_1.png" style="width: 312.0px; height: 234.0px;" /></a>
+<a class="reference internal image-reference" href="#multi-plots"><img alt="../../_images/plot_multiplot_1.png" src="../../_images/plot_multiplot_1.png" style="width: 312.0px; height: 234.0px;" /></a>
+<a class="reference internal image-reference" href="#polar-axis"><img alt="../../_images/plot_polar_1.png" src="../../_images/plot_polar_1.png" style="width: 312.0px; height: 234.0px;" /></a>
+<a class="reference internal image-reference" href="#d-plots"><img alt="../../_images/plot_plot3d_1.png" src="../../_images/plot_plot3d_1.png" style="width: 312.0px; height: 234.0px;" /></a>
+<a class="reference internal image-reference" href="#text"><img alt="../../_images/plot_text_1.png" src="../../_images/plot_text_1.png" style="width: 312.0px; height: 234.0px;" /></a>
+<div class="section" id="regular-plots">
+<h3><a class="toc-backref" href="#id24">1.4.4.1. Regular Plots</a><a class="headerlink" href="#regular-plots" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_plot_ex.html"><img alt="../../_images/plot_plot_ex_1.png" class="align-right" src="../../_images/plot_plot_ex_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">You need to use the <a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.fill_between">fill_between</a>
+command.</p>
+</div>
+<p>Starting from the code below, try to reproduce the graphic on the right taking
+care of filled areas:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">n</span> <span class="o">=</span> <span class="mi">256</span>
+<div class="newline"></div><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="newline"></div><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">X</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.00</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.00</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Click on the figure for solution.</p>
+</div>
+<div class="section" id="scatter-plots">
+<h3><a class="toc-backref" href="#id25">1.4.4.2. Scatter Plots</a><a class="headerlink" href="#scatter-plots" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_scatter_ex.html"><img alt="../../_images/plot_scatter_ex_1.png" class="align-right" src="../../_images/plot_scatter_ex_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">Color is given by angle of (X,Y).</p>
+</div>
+<p>Starting from the code below, try to reproduce the graphic on the right taking
+care of marker size, color and transparency.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">n</span> <span class="o">=</span> <span class="mi">1024</span>
+<div class="newline"></div><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<div class="newline"></div><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Click on figure for solution.</p>
+</div>
+<div class="section" id="bar-plots">
+<h3><a class="toc-backref" href="#id26">1.4.4.3. Bar Plots</a><a class="headerlink" href="#bar-plots" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_bar_ex.html"><img alt="../../_images/plot_bar_ex_1.png" class="align-right" src="../../_images/plot_bar_ex_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">You need to take care of text alignment.</p>
+</div>
+<p>Starting from the code below, try to reproduce the graphic on the right by
+adding labels for red bars.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">n</span> <span class="o">=</span> <span class="mi">12</span>
+<div class="newline"></div><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<div class="newline"></div><span class="n">Y1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">X</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<div class="newline"></div><span class="n">Y2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">X</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">+</span><span class="n">Y1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;#9999ff&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">-</span><span class="n">Y2</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;#ff9999&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y1</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%.2f</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">y</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&#39;bottom&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.25</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.25</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Click on figure for solution.</p>
+</div>
+<div class="section" id="contour-plots">
+<h3><a class="toc-backref" href="#id27">1.4.4.4. Contour Plots</a><a class="headerlink" href="#contour-plots" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_contour_ex.html"><img alt="../../_images/plot_contour_ex_1.png" class="align-right" src="../../_images/plot_contour_ex_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">You need to use the <a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.clabel">clabel</a>
+command.</p>
+</div>
+<p>Starting from the code below, try to reproduce the graphic on the right taking
+care of the colormap (see <a class="reference internal" href="#colormaps">Colormaps</a> below).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span><span class="n">y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">n</span> <span class="o">=</span> <span class="mi">256</span>
+<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<div class="newline"></div><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="mi">8</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">75</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">&#39;jet&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">C</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="mi">8</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Click on figure for solution.</p>
+</div>
+<div class="section" id="imshow">
+<h3><a class="toc-backref" href="#id28">1.4.4.5. Imshow</a><a class="headerlink" href="#imshow" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_imshow_ex.html"><img alt="../../_images/plot_imshow_ex_1.png" class="align-right" src="../../_images/plot_imshow_ex_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">You need to take care of the <tt class="docutils literal"><span class="pre">origin</span></tt> of the image in the imshow command and
+use a <a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.colorbar">colorbar</a></p>
+</div>
+<p>Starting from the code below, try to reproduce the graphic on the right taking
+care of colormap, image interpolation and origin.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+<div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+<div class="newline"></div><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Click on the figure for the solution.</p>
+</div>
+<div class="section" id="pie-charts">
+<h3><a class="toc-backref" href="#id29">1.4.4.6. Pie Charts</a><a class="headerlink" href="#pie-charts" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_pie_ex.html"><img alt="../../_images/plot_pie_ex_1.png" class="align-right" src="../../_images/plot_pie_ex_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">You need to modify Z.</p>
+</div>
+<p>Starting from the code below, try to reproduce the graphic on the right taking
+care of colors and slices size.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Click on the figure for the solution.</p>
+</div>
+<div class="section" id="quiver-plots">
+<h3><a class="toc-backref" href="#id30">1.4.4.7. Quiver Plots</a><a class="headerlink" href="#quiver-plots" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_quiver_ex.html"><img alt="../../_images/plot_quiver_ex_1.png" class="align-right" src="../../_images/plot_quiver_ex_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">You need to draw arrows twice.</p>
+</div>
+<p>Starting from the code above, try to reproduce the graphic on the right taking
+care of colors and orientations.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">n</span> <span class="o">=</span> <span class="mi">8</span>
+<div class="newline"></div><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Click on figure for solution.</p>
+</div>
+<div class="section" id="grids">
+<h3><a class="toc-backref" href="#id31">1.4.4.8. Grids</a><a class="headerlink" href="#grids" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_grid_ex.html"><img alt="../../_images/plot_grid_ex_1.png" class="align-right" src="../../_images/plot_grid_ex_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<p>Starting from the code below, try to reproduce the graphic on the right taking
+care of line styles.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">axes</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<div class="newline"></div><span class="n">axes</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<div class="newline"></div><span class="n">axes</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<div class="newline"></div><span class="n">axes</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+<div class="newline"></div><span class="n">axes</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Click on figure for solution.</p>
+</div>
+<div class="section" id="multi-plots">
+<h3><a class="toc-backref" href="#id32">1.4.4.9. Multi Plots</a><a class="headerlink" href="#multi-plots" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_multiplot_ex.html"><img alt="../../_images/plot_multiplot_ex_1.png" class="align-right" src="../../_images/plot_multiplot_ex_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">You can use several subplots with different partition.</p>
+</div>
+<p>Starting from the code below, try to reproduce the graphic on the right.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Click on figure for solution.</p>
+</div>
+<div class="section" id="polar-axis">
+<h3><a class="toc-backref" href="#id33">1.4.4.10. Polar Axis</a><a class="headerlink" href="#polar-axis" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_polar_ex.html"><img alt="../../_images/plot_polar_ex_1.png" class="align-right" src="../../_images/plot_polar_ex_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">You only need to modify the <tt class="docutils literal"><span class="pre">axes</span></tt> line</p>
+</div>
+<p>Starting from the code below, try to reproduce the graphic on the right.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pl</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">N</span> <span class="o">=</span> <span class="mi">20</span>
+<div class="newline"></div><span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
+<div class="newline"></div><span class="n">radii</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<div class="newline"></div><span class="n">width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<div class="newline"></div><span class="n">bars</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">bar</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">radii</span><span class="p">,</span> <span class="n">bars</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">bar</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="mf">10.</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">bar</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Click on figure for solution.</p>
+</div>
+<div class="section" id="d-plots">
+<h3><a class="toc-backref" href="#id34">1.4.4.11. 3D Plots</a><a class="headerlink" href="#d-plots" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_plot3d_ex.html"><img alt="../../_images/plot_plot3d_ex_1.png" class="align-right" src="../../_images/plot_plot3d_ex_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">You need to use <a class="reference external" href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.contourf">contourf</a></p>
+</div>
+<p>Starting from the code below, try to reproduce the graphic on the right.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="newline"></div><span class="n">ax</span> <span class="o">=</span> <span class="n">Axes3D</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+<div class="newline"></div><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+<div class="newline"></div><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+<div class="newline"></div><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">Y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div><span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">rstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">&#39;hot&#39;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Click on figure for solution.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="../../advanced/3d_plotting/index.html#mayavi-label"><em>3D plotting with Mayavi</em></a></p>
+</div>
+</div>
+<div class="section" id="text">
+<h3><a class="toc-backref" href="#id35">1.4.4.12. Text</a><a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_text_ex.html"><img alt="../../_images/plot_text_ex_1.png" class="align-right" src="../../_images/plot_text_ex_1.png" style="width: 280.0px; height: 210.0px;" /></a>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">Have a look at the <a class="reference external" href="http://matplotlib.sourceforge.net/examples/api/logo2.html">matplotlib logo</a>.</p>
+</div>
+<p>Try to do the same from scratch !</p>
+<p>Click on figure for solution.</p>
+</div>
+</div>
+<div class="section" id="beyond-this-tutorial">
+<h2><a class="toc-backref" href="#id36">1.4.5. Beyond this tutorial</a><a class="headerlink" href="#beyond-this-tutorial" title="Permalink to this headline">¶</a></h2>
+<p>Matplotlib benefits from extensive documentation as well as a large
+community of users and developpers. Here are some links of interest:</p>
+<div class="section" id="tutorials">
+<h3><a class="toc-backref" href="#id37">1.4.5.1. Tutorials</a><a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h3>
+<table class="hlist"><tr><td><ul class="simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/pyplot_tutorial.html">Pyplot tutorial</a><ul>
+<li>Introduction</li>
+<li>Controlling line properties</li>
+<li>Working with multiple figures and axes</li>
+<li>Working with text</li>
+</ul>
+</li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/image_tutorial.html">Image tutorial</a><ul>
+<li>Startup commands</li>
+<li>Importing image data into Numpy arrays</li>
+<li>Plotting numpy arrays as images</li>
+</ul>
+</li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/index_text.html">Text tutorial</a><ul>
+<li>Text introduction</li>
+<li>Basic text commands</li>
+<li>Text properties and layout</li>
+<li>Writing mathematical expressions</li>
+<li>Text rendering With LaTeX</li>
+<li>Annotating text</li>
+</ul>
+</li>
+</ul>
+</td><td><ul class="simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/artists.html">Artist tutorial</a><ul>
+<li>Introduction</li>
+<li>Customizing your objects</li>
+<li>Object containers</li>
+<li>Figure container</li>
+<li>Axes container</li>
+<li>Axis containers</li>
+<li>Tick containers</li>
+</ul>
+</li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/path_tutorial.html">Path tutorial</a><ul>
+<li>Introduction</li>
+<li>Bézier example</li>
+<li>Compound paths</li>
+</ul>
+</li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/transforms_tutorial.html">Transforms tutorial</a><ul>
+<li>Introduction</li>
+<li>Data coordinates</li>
+<li>Axes coordinates</li>
+<li>Blended transformations</li>
+<li>Using offset transforms to create a shadow effect</li>
+<li>The transformation pipeline</li>
+</ul>
+</li>
+</ul>
+</td></tr></table>
+</div>
+<div class="section" id="matplotlib-documentation">
+<h3><a class="toc-backref" href="#id38">1.4.5.2. Matplotlib documentation</a><a class="headerlink" href="#matplotlib-documentation" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/index.html">User guide</a></li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/faq/index.html">FAQ</a><ul>
+<li>Installation</li>
+<li>Usage</li>
+<li>How-To</li>
+<li>Troubleshooting</li>
+<li>Environment Variables</li>
+</ul>
+</li>
+<li><a class="reference external" href="http://matplotlib.sourceforge.net/users/screenshots.html">Screenshots</a></li>
+</ul>
+</div>
+<div class="section" id="code-documentation">
+<h3><a class="toc-backref" href="#id39">1.4.5.3. Code documentation</a><a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h3>
+<p>The code is well documented and you can quickly access a specific command
+from within a python session:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">)</span>
+<div class="newline"></div><span class="go">Help on function plot in module matplotlib.pyplot:</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="go">plot(*args, **kwargs)</span>
+<div class="newline"></div><span class="go">   Plot lines and/or markers to the</span>
+<div class="newline"></div><span class="go">   :class:`~matplotlib.axes.Axes`.  *args* is a variable length</span>
+<div class="newline"></div><span class="go">   argument, allowing for multiple *x*, *y* pairs with an</span>
+<div class="newline"></div><span class="go">   optional format string.  For example, each of the following is</span>
+<div class="newline"></div><span class="go">   legal::</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="go">       plot(x, y)         # plot x and y using default line style and color</span>
+<div class="newline"></div><span class="go">       plot(x, y, &#39;bo&#39;)   # plot x and y using blue circle markers</span>
+<div class="newline"></div><span class="go">       plot(y)            # plot y using x as index array 0..N-1</span>
+<div class="newline"></div><span class="go">       plot(y, &#39;r+&#39;)      # ditto, but with red plusses</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="go">   If *x* and/or *y* is 2-dimensional, then the corresponding columns</span>
+<div class="newline"></div><span class="go">   will be plotted.</span>
+<div class="newline"></div><span class="go">   ...</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="galleries">
+<h3><a class="toc-backref" href="#id40">1.4.5.4. Galleries</a><a class="headerlink" href="#galleries" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="http://matplotlib.sourceforge.net/gallery.html">matplotlib gallery</a> is
+also incredibly useful when you search how to render a given graphic. Each
+example comes with its source.</p>
+<p>A smaller gallery is also available <a class="reference external" href="http://www.loria.fr/~rougier/coding/gallery/">here</a>.</p>
+</div>
+<div class="section" id="mailing-lists">
+<h3><a class="toc-backref" href="#id41">1.4.5.5. Mailing lists</a><a class="headerlink" href="#mailing-lists" title="Permalink to this headline">¶</a></h3>
+<p>Finally, there is a <a class="reference external" href="https://lists.sourceforge.net/lists/listinfo/matplotlib-users">user mailing list</a> where you can
+ask for help and a <a class="reference external" href="https://lists.sourceforge.net/lists/listinfo/matplotlib-devel">developers mailing list</a> that is more
+technical.</p>
+</div>
+</div>
+<div class="section" id="quick-references">
+<h2><a class="toc-backref" href="#id42">1.4.6. Quick references</a><a class="headerlink" href="#quick-references" title="Permalink to this headline">¶</a></h2>
+<p>Here is a set of tables that show main properties and styles.</p>
+<div class="section" id="line-properties">
+<h3><a class="toc-backref" href="#id43">1.4.6.1. Line properties</a><a class="headerlink" href="#line-properties" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="30%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Description</th>
+<th class="head">Appearance</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>alpha (or a)</td>
+<td>alpha transparency on 0-1 scale</td>
+<td><img alt="../../_images/plot_alpha_1.png" class="first last" src="../../_images/plot_alpha_1.png" />
+</td>
+</tr>
+<tr class="row-odd"><td>antialiased</td>
+<td>True or False - use antialised rendering</td>
+<td><img alt="../../_images/plot_aliased_1.png" class="first" src="../../_images/plot_aliased_1.png" />
+<img alt="../../_images/plot_antialiased_1.png" class="last" src="../../_images/plot_antialiased_1.png" />
+</td>
+</tr>
+<tr class="row-even"><td>color (or c)</td>
+<td>matplotlib color arg</td>
+<td><img alt="../../_images/plot_color_1.png" class="first last" src="../../_images/plot_color_1.png" />
+</td>
+</tr>
+<tr class="row-odd"><td>linestyle (or ls)</td>
+<td>see <a class="reference internal" href="#line-properties">Line properties</a></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>linewidth (or lw)</td>
+<td>float, the line width in points</td>
+<td><img alt="../../_images/plot_linewidth_1.png" class="first last" src="../../_images/plot_linewidth_1.png" />
+</td>
+</tr>
+<tr class="row-odd"><td>solid_capstyle</td>
+<td>Cap style for solid lines</td>
+<td><img alt="../../_images/plot_solid_capstyle_1.png" class="first last" src="../../_images/plot_solid_capstyle_1.png" />
+</td>
+</tr>
+<tr class="row-even"><td>solid_joinstyle</td>
+<td>Join style for solid lines</td>
+<td><img alt="../../_images/plot_solid_joinstyle_1.png" class="first last" src="../../_images/plot_solid_joinstyle_1.png" />
+</td>
+</tr>
+<tr class="row-odd"><td>dash_capstyle</td>
+<td>Cap style for dashes</td>
+<td><img alt="../../_images/plot_dash_capstyle_1.png" class="first last" src="../../_images/plot_dash_capstyle_1.png" />
+</td>
+</tr>
+<tr class="row-even"><td>dash_joinstyle</td>
+<td>Join style for dashes</td>
+<td><img alt="../../_images/plot_dash_joinstyle_1.png" class="first last" src="../../_images/plot_dash_joinstyle_1.png" />
+</td>
+</tr>
+<tr class="row-odd"><td>marker</td>
+<td>see <a class="reference internal" href="#markers">Markers</a></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>markeredgewidth (mew)</td>
+<td>line width around the marker symbol</td>
+<td><img alt="../../_images/plot_mew_1.png" class="first last" src="../../_images/plot_mew_1.png" />
+</td>
+</tr>
+<tr class="row-odd"><td>markeredgecolor (mec)</td>
+<td>edge color if a marker is used</td>
+<td><img alt="../../_images/plot_mec_1.png" class="first last" src="../../_images/plot_mec_1.png" />
+</td>
+</tr>
+<tr class="row-even"><td>markerfacecolor (mfc)</td>
+<td>face color if a marker is used</td>
+<td><img alt="../../_images/plot_mfc_1.png" class="first last" src="../../_images/plot_mfc_1.png" />
+</td>
+</tr>
+<tr class="row-odd"><td>markersize (ms)</td>
+<td>size of the marker in points</td>
+<td><img alt="../../_images/plot_ms_1.png" class="first last" src="../../_images/plot_ms_1.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="line-styles">
+<h3><a class="toc-backref" href="#id44">1.4.6.2. Line styles</a><a class="headerlink" href="#line-styles" title="Permalink to this headline">¶</a></h3>
+<img alt="../../_images/plot_linestyles_1.png" src="../../_images/plot_linestyles_1.png" />
+</div>
+<div class="section" id="markers">
+<h3><a class="toc-backref" href="#id45">1.4.6.3. Markers</a><a class="headerlink" href="#markers" title="Permalink to this headline">¶</a></h3>
+<img alt="../../_images/plot_markers_1.png" src="../../_images/plot_markers_1.png" />
+</div>
+<div class="section" id="colormaps">
+<h3><a class="toc-backref" href="#id46">1.4.6.4. Colormaps</a><a class="headerlink" href="#colormaps" title="Permalink to this headline">¶</a></h3>
+<p>All colormaps can be reversed by appending <tt class="docutils literal"><span class="pre">_r</span></tt>. For instance, <tt class="docutils literal"><span class="pre">gray_r</span></tt> is
+the reverse of <tt class="docutils literal"><span class="pre">gray</span></tt>.</p>
+<p>If you want to know more about colormaps, checks <a class="reference external" href="https://gist.github.com/2719900">Documenting the matplotlib
+colormaps</a>.</p>
+<img alt="../../_images/plot_colormaps_1.png" src="../../_images/plot_colormaps_1.png" />
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../scipy.html" title="1.5. Scipy : high-level scientific computing"
+             >next</a></li>
+        <li class="right" >
+          <a href="../numpy/advanced_operations.html" title="1.3.4. Advanced operations"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+    </a></li>
+
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012,2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

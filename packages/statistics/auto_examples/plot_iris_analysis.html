@@ -1,0 +1,331 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3.1.6.3. Analysis of Iris petal and sepal sizes &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="3.1.6.4. Simple Regression" href="plot_regression.html" />
+    <link rel="prev" title="3.1.6.2. Plotting simple quantities of a pandas dataframe" href="plot_pandas.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="plot_regression.html" title="3.1.6.4. Simple Regression"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="plot_pandas.html" title="3.1.6.2. Plotting simple quantities of a pandas dataframe"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">3.1. Statistics in Python</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/statistics/auto_examples/plot_iris_analysis.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="analysis-of-iris-petal-and-sepal-sizes">
+<span id="sphx-glr-packages-statistics-auto-examples-plot-iris-analysis-py"></span><h1>3.1.6.3. Analysis of Iris petal and sepal sizes<a class="headerlink" href="#analysis-of-iris-petal-and-sepal-sizes" title="Permalink to this headline">¶</a></h1>
+<p>Ilustrate an analysis on a real dataset:</p>
+<ul class="simple">
+<li>Visualizing the data to formulate intuitions</li>
+<li>Fitting of a linear model</li>
+<li>Hypothesis test of the effect of a categorical variable in the presence
+of a continuous confound</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">pandas</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">pandas.tools</span> <span class="kn">import</span> <span class="n">plotting</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">import</span> <span class="n">ols</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Load the data</span>
+<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.html#pandas.read_csv" title="View documentation for pandas.read_csv"><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="s1">&#39;iris.csv&#39;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Plot a scatter matrix</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Express the names as categories</span>
+<div class="newline"></div><span class="n">categories</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.html#pandas.Categorical" title="View documentation for pandas.Categorical"><span class="n">pandas</span><span class="o">.</span><span class="n">Categorical</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># The parameter &#39;c&#39; is passed to plt.scatter and will control the color</span>
+<div class="newline"></div><span class="n">plotting</span><span class="o">.</span><span class="n">scatter_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">categories</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.gcf.html#matplotlib.pyplot.gcf" title="View documentation for matplotlib.pyplot.gcf"><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span></a><span class="p">()</span>
+<div class="newline"></div><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;blue: setosa, green: versicolor, red: virginica&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<img alt="../../../_images/sphx_glr_plot_iris_analysis_001.png" class="align-center" src="../../../_images/sphx_glr_plot_iris_analysis_001.png" />
+<p>Statistical analysis</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Let us try to explain the sepal length as a function of the petal</span>
+<div class="newline"></div><span class="c1"># width and the category of iris</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s1">&#39;sepal_width ~ name + petal_length&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Now formulate a &quot;contrast&quot;, to test if the offset for versicolor and</span>
+<div class="newline"></div><span class="c1"># virginica are identical</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Testing the difference between effect of versicolor and virginica&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">f_test</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">OLS</span> <span class="n">Regression</span> <span class="n">Results</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div><span class="n">Dep</span><span class="o">.</span> <span class="n">Variable</span><span class="p">:</span>            <span class="n">sepal_width</span>   <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                       <span class="mf">0.478</span>
+<div class="newline"></div><span class="n">Model</span><span class="p">:</span>                            <span class="n">OLS</span>   <span class="n">Adj</span><span class="o">.</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                  <span class="mf">0.468</span>
+<div class="newline"></div><span class="n">Method</span><span class="p">:</span>                 <span class="n">Least</span> <span class="n">Squares</span>   <span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">:</span>                     <span class="mf">44.63</span>
+<div class="newline"></div><span class="n">Date</span><span class="p">:</span>                <span class="n">Tue</span><span class="p">,</span> <span class="mi">25</span> <span class="n">Apr</span> <span class="mi">2017</span>   <span class="n">Prob</span> <span class="p">(</span><span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">):</span>           <span class="mf">1.58e-20</span>
+<div class="newline"></div><span class="n">Time</span><span class="p">:</span>                        <span class="mi">10</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">29</span>   <span class="n">Log</span><span class="o">-</span><span class="n">Likelihood</span><span class="p">:</span>                <span class="o">-</span><span class="mf">38.185</span>
+<div class="newline"></div><span class="n">No</span><span class="o">.</span> <span class="n">Observations</span><span class="p">:</span>                 <span class="mi">150</span>   <span class="n">AIC</span><span class="p">:</span>                             <span class="mf">84.37</span>
+<div class="newline"></div><span class="n">Df</span> <span class="n">Residuals</span><span class="p">:</span>                     <span class="mi">146</span>   <span class="n">BIC</span><span class="p">:</span>                             <span class="mf">96.41</span>
+<div class="newline"></div><span class="n">Df</span> <span class="n">Model</span><span class="p">:</span>                           <span class="mi">3</span>
+<div class="newline"></div><span class="n">Covariance</span> <span class="n">Type</span><span class="p">:</span>            <span class="n">nonrobust</span>
+<div class="newline"></div><span class="o">======================================================================================</span>
+<div class="newline"></div>                         <span class="n">coef</span>    <span class="n">std</span> <span class="n">err</span>          <span class="n">t</span>      <span class="n">P</span><span class="o">&gt;|</span><span class="n">t</span><span class="o">|</span>      <span class="p">[</span><span class="mf">0.025</span>      <span class="mf">0.975</span><span class="p">]</span>
+<div class="newline"></div><span class="o">--------------------------------------------------------------------------------------</span>
+<div class="newline"></div><span class="n">Intercept</span>              <span class="mf">2.9813</span>      <span class="mf">0.099</span>     <span class="mf">29.989</span>      <span class="mf">0.000</span>       <span class="mf">2.785</span>       <span class="mf">3.178</span>
+<div class="newline"></div><span class="n">name</span><span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">versicolor</span><span class="p">]</span>    <span class="o">-</span><span class="mf">1.4821</span>      <span class="mf">0.181</span>     <span class="o">-</span><span class="mf">8.190</span>      <span class="mf">0.000</span>      <span class="o">-</span><span class="mf">1.840</span>      <span class="o">-</span><span class="mf">1.124</span>
+<div class="newline"></div><span class="n">name</span><span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">virginica</span><span class="p">]</span>     <span class="o">-</span><span class="mf">1.6635</span>      <span class="mf">0.256</span>     <span class="o">-</span><span class="mf">6.502</span>      <span class="mf">0.000</span>      <span class="o">-</span><span class="mf">2.169</span>      <span class="o">-</span><span class="mf">1.158</span>
+<div class="newline"></div><span class="n">petal_length</span>           <span class="mf">0.2983</span>      <span class="mf">0.061</span>      <span class="mf">4.920</span>      <span class="mf">0.000</span>       <span class="mf">0.178</span>       <span class="mf">0.418</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div><span class="n">Omnibus</span><span class="p">:</span>                        <span class="mf">2.868</span>   <span class="n">Durbin</span><span class="o">-</span><span class="n">Watson</span><span class="p">:</span>                   <span class="mf">1.753</span>
+<div class="newline"></div><span class="n">Prob</span><span class="p">(</span><span class="n">Omnibus</span><span class="p">):</span>                  <span class="mf">0.238</span>   <span class="n">Jarque</span><span class="o">-</span><span class="n">Bera</span> <span class="p">(</span><span class="n">JB</span><span class="p">):</span>                <span class="mf">2.885</span>
+<div class="newline"></div><span class="n">Skew</span><span class="p">:</span>                          <span class="o">-</span><span class="mf">0.082</span>   <span class="n">Prob</span><span class="p">(</span><span class="n">JB</span><span class="p">):</span>                        <span class="mf">0.236</span>
+<div class="newline"></div><span class="n">Kurtosis</span><span class="p">:</span>                       <span class="mf">3.659</span>   <span class="n">Cond</span><span class="o">.</span> <span class="n">No</span><span class="o">.</span>                         <span class="mf">54.0</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">Warnings</span><span class="p">:</span>
+<div class="newline"></div><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">Standard</span> <span class="n">Errors</span> <span class="n">assume</span> <span class="n">that</span> <span class="n">the</span> <span class="n">covariance</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">the</span> <span class="n">errors</span> <span class="ow">is</span> <span class="n">correctly</span> <span class="n">specified</span><span class="o">.</span>
+<div class="newline"></div><span class="n">Testing</span> <span class="n">the</span> <span class="n">difference</span> <span class="n">between</span> <span class="n">effect</span> <span class="n">of</span> <span class="n">versicolor</span> <span class="ow">and</span> <span class="n">virginica</span>
+<div class="newline"></div><span class="o">&lt;</span><span class="n">F</span> <span class="n">test</span><span class="p">:</span> <span class="n">F</span><span class="o">=</span><span class="n">array</span><span class="p">([[</span> <span class="mf">3.24533535</span><span class="p">]]),</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.073690587817</span><span class="p">,</span> <span class="n">df_denom</span><span class="o">=</span><span class="mi">146</span><span class="p">,</span> <span class="n">df_num</span><span class="o">=</span><span class="mi">1</span><span class="o">&gt;</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  1.404 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/plot_iris_analysis.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_iris_analysis.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/plot_iris_analysis.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_iris_analysis.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="http://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc"></div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="plot_regression.html" title="3.1.6.4. Simple Regression"
+             >next</a></li>
+        <li class="right" >
+          <a href="plot_pandas.html" title="3.1.6.2. Plotting simple quantities of a pandas dataframe"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >3.1. Statistics in Python</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/statistics/auto_examples/plot_iris_analysis.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

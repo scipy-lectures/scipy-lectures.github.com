@@ -1,0 +1,94 @@
+
+
+.. _example_plot_wage_education_gender.py:
+
+
+Test for an education/gender interaction in wages
+==================================================
+
+Wages depend mostly on education. Here we investigate how this dependence
+is related to gender: not only does gender create an offset in wages, it
+also seems that wages increase more with education for males than
+females.
+
+Does our data support this last hypothesis? We will test this using
+statsmodels' formulas
+(http://statsmodels.sourceforge.net/stable/example_formulas.html).
+
+
+
+
+.. image:: images/plot_wage_education_gender_1.png
+    :align: center
+
+
+**Script output**:
+
+.. rst-class:: max_height
+
+ ::
+
+    OLS Regression Results                            
+  ==============================================================================
+  Dep. Variable:                   wage   R-squared:                       0.193
+  Model:                            OLS   Adj. R-squared:                  0.190
+  Method:                 Least Squares   F-statistic:                     63.42
+  Date:                Mon, 10 Oct 2016   Prob (F-statistic):           2.01e-25
+  Time:                        22:42:56   Log-Likelihood:                 86.654
+  No. Observations:                 534   AIC:                            -167.3
+  Df Residuals:                     531   BIC:                            -154.5
+  Df Model:                           2                                         
+  Covariance Type:            nonrobust                                         
+  ==================================================================================
+                       coef    std err          t      P>|t|      [0.025      0.975]
+  ----------------------------------------------------------------------------------
+  Intercept          0.4053      0.046      8.732      0.000       0.314       0.496
+  gender[T.male]     0.1008      0.018      5.625      0.000       0.066       0.136
+  education          0.0334      0.003      9.768      0.000       0.027       0.040
+  ==============================================================================
+  Omnibus:                        4.675   Durbin-Watson:                   1.792
+  Prob(Omnibus):                  0.097   Jarque-Bera (JB):                4.876
+  Skew:                          -0.147   Prob(JB):                       0.0873
+  Kurtosis:                       3.365   Cond. No.                         69.7
+  ==============================================================================
+  
+  Warnings:
+  [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+                              OLS Regression Results                            
+  ==============================================================================
+  Dep. Variable:                   wage   R-squared:                       0.198
+  Model:                            OLS   Adj. R-squared:                  0.194
+  Method:                 Least Squares   F-statistic:                     43.72
+  Date:                Mon, 10 Oct 2016   Prob (F-statistic):           2.94e-25
+  Time:                        22:42:56   Log-Likelihood:                 88.503
+  No. Observations:                 534   AIC:                            -169.0
+  Df Residuals:                     530   BIC:                            -151.9
+  Df Model:                           3                                         
+  Covariance Type:            nonrobust                                         
+  ============================================================================================
+                                 coef    std err          t      P>|t|      [0.025      0.975]
+  --------------------------------------------------------------------------------------------
+  Intercept                    0.2998      0.072      4.173      0.000       0.159       0.441
+  gender[T.male]               0.2750      0.093      2.972      0.003       0.093       0.457
+  education                    0.0415      0.005      7.647      0.000       0.031       0.052
+  education:gender[T.male]    -0.0134      0.007     -1.919      0.056      -0.027       0.000
+  ==============================================================================
+  Omnibus:                        4.838   Durbin-Watson:                   1.825
+  Prob(Omnibus):                  0.089   Jarque-Bera (JB):                5.000
+  Skew:                          -0.156   Prob(JB):                       0.0821
+  Kurtosis:                       3.356   Cond. No.                         194.
+  ==============================================================================
+  
+  Warnings:
+  [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+
+
+**Python source code:** :download:`plot_wage_education_gender.py <plot_wage_education_gender.py>`
+
+.. literalinclude:: plot_wage_education_gender.py
+    :lines: 15-
+
+**Total running time of the example:**  0.99 seconds
+( 0 minutes  0.99 seconds)
+    

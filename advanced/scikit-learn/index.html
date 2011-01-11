@@ -1,0 +1,688 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.11. scikit-learn: machine learning in Python &mdash; Scipy lecture notes</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2013.2 beta (euroscipy 2013)',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="2. Advanced topics" href="../index.html" />
+    <link rel="next" title="2.12. Interfacing with C" href="../interfacing_with_c/interfacing_with_c.html" />
+    <link rel="prev" title="2.10. Sympy : Symbolic Mathematics in Python" href="../sympy.html" /> 
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+    
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../interfacing_with_c/interfacing_with_c.html" title="2.12. Interfacing with C"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../sympy.html" title="2.10. Sympy : Symbolic Mathematics in Python"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">2. Advanced topics</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="scikit-learn-machine-learning-in-python">
+<h1>2.11. scikit-learn: machine learning in Python<a class="headerlink" href="#scikit-learn-machine-learning-in-python" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Fabian Pedregosa, Gael Varoquaux</td>
+</tr>
+</tbody>
+</table>
+<a class="reference internal image-reference" href="../../_images/scikit-learn-logo.png"><img alt="../../_images/scikit-learn-logo.png" class="align-right" src="../../_images/scikit-learn-logo.png" style="width: 226.4px; height: 80.8px;" /></a>
+<div class="topic">
+<p class="topic-title first">Prerequisites</p>
+<ul class="simple">
+<li>Numpy, Scipy</li>
+<li>IPython</li>
+<li>matplotlib</li>
+<li>scikit-learn (<a class="reference external" href="http://scikit-learn.org">http://scikit-learn.org</a>)</li>
+</ul>
+</div>
+<div class="contents local topic" id="chapters-contents">
+<p class="topic-title first">Chapters contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#loading-an-example-dataset" id="id1">Loading an example dataset</a><ul>
+<li><a class="reference internal" href="#learning-and-predicting" id="id2">Learning and Predicting</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classification" id="id3">Classification</a><ul>
+<li><a class="reference internal" href="#k-nearest-neighbors-classifier" id="id4">k-Nearest neighbors classifier</a></li>
+<li><a class="reference internal" href="#support-vector-machines-svms-for-classification" id="id5">Support vector machines (SVMs) for classification</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#clustering-grouping-observations-together" id="id6">Clustering: grouping observations together</a><ul>
+<li><a class="reference internal" href="#k-means-clustering" id="id7">K-means clustering</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dimension-reduction-with-principal-component-analysis" id="id8">Dimension Reduction with Principal Component Analysis</a></li>
+<li><a class="reference internal" href="#putting-it-all-together-face-recognition" id="id9">Putting it all together: face recognition</a></li>
+<li><a class="reference internal" href="#linear-model-from-regression-to-sparsity" id="id10">Linear model: from regression to sparsity</a><ul>
+<li><a class="reference internal" href="#sparse-models" id="id11">Sparse models</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#model-selection-choosing-estimators-and-their-parameters" id="id12">Model selection: choosing estimators and their parameters</a><ul>
+<li><a class="reference internal" href="#grid-search-and-cross-validated-estimators" id="id13">Grid-search and cross-validated estimators</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">As of version 0.9 (released in September 2011), the import path for
+scikit-learn has changed from <tt class="xref py py-obj docutils literal"><span class="pre">scikits.learn</span></tt> to <tt class="xref py py-obj docutils literal"><span class="pre">sklearn</span></tt></p>
+</div>
+<div class="section" id="loading-an-example-dataset">
+<h2><a class="toc-backref" href="#id1">2.11.1. Loading an example dataset</a><a class="headerlink" href="#loading-an-example-dataset" title="Permalink to this headline">¶</a></h2>
+<div style='float: right; margin: 35px;'><img alt="Photo of Iris Virginia" class="align-right" src="../../_images/Virginia_Iris.png" />
+</div><p>First we will load some data to play with. The data we will use is a
+very simple flower database known as the Iris dataset.</p>
+<p>We have 150 observations of the iris flower specifying some
+measurements: sepal length, sepal width, petal length and petal width
+together with its subtype: <em>Iris setosa</em>, <em>Iris versicolor</em>, <em>Iris
+virginica</em>.</p>
+<p>To load the dataset into a Python object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>This data is stored in the <tt class="docutils literal"><span class="pre">.data</span></tt> member, which
+is a <tt class="docutils literal"><span class="pre">(n_samples,</span> <span class="pre">n_features)</span></tt> array.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+<div class="newline"></div><span class="go">(150, 4)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>The class of each observation is stored in the <tt class="docutils literal"><span class="pre">.target</span></tt> attribute of the
+dataset. This is an integer 1D array of length <tt class="docutils literal"><span class="pre">n_samples</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span>
+<div class="newline"></div><span class="go">(150,)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<div class="newline"></div><span class="go">array([0, 1, 2])</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="topic">
+<p class="topic-title first">An example of reshaping data: the digits dataset</p>
+<a class="reference internal image-reference" href="../../_images/digits_first_image.png"><img alt="../../_images/digits_first_image.png" class="align-right" src="../../_images/digits_first_image.png" style="width: 166.0px; height: 150.0px;" /></a>
+<p>The digits dataset consists of 1797 images, where each one is an 8x8
+pixel image representing a hand-written digit</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">digits</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_digits</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">digits</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">shape</span>
+<div class="newline"></div><span class="go">(1797, 8, 8)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">pl</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray_r</span><span class="p">)</span> 
+<div class="newline"></div><span class="go">&lt;matplotlib.image.AxesImage object at ...&gt;</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>To use this dataset with the scikit, we transform each 8x8 image
+into a vector of length 64</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">digits</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="learning-and-predicting">
+<h3><a class="toc-backref" href="#id2">2.11.1.1. Learning and Predicting</a><a class="headerlink" href="#learning-and-predicting" title="Permalink to this headline">¶</a></h3>
+<p>Now that we&#8217;ve got some data, we would like to learn from it and
+predict on new one. In <tt class="docutils literal"><span class="pre">scikit-learn</span></tt>, we learn from existing
+data by creating an <tt class="docutils literal"><span class="pre">estimator</span></tt> and calling its <tt class="docutils literal"><span class="pre">fit(X,</span> <span class="pre">Y)</span></tt> method.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">LinearSVC</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span> <span class="c"># learn from the data </span>
+<div class="newline"></div><span class="go">LinearSVC(...)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Once we have learned from the data, we can use our model to predict the
+most likely outcome on unseen data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span> <span class="mf">5.0</span><span class="p">,</span>  <span class="mf">3.6</span><span class="p">,</span>  <span class="mf">1.3</span><span class="p">,</span>  <span class="mf">0.25</span><span class="p">]])</span>
+<div class="newline"></div><span class="go">array([0], dtype=int32)</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>We can access the parameters of the model via its attributes ending
+with an underscore:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">coef_</span>   
+<div class="newline"></div><span class="go">array([[ 0...]])</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="classification">
+<h2><a class="toc-backref" href="#id3">2.11.2. Classification</a><a class="headerlink" href="#classification" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="k-nearest-neighbors-classifier">
+<h3><a class="toc-backref" href="#id4">2.11.2.1. k-Nearest neighbors classifier</a><a class="headerlink" href="#k-nearest-neighbors-classifier" title="Permalink to this headline">¶</a></h3>
+<p>The simplest possible classifier is the nearest neighbor: given a new
+observation, take the label of the training samples closest to it
+in <em>n</em>-dimensional space, where <em>n</em> is the number of <em>features</em>
+in each sample.</p>
+<a class="reference internal image-reference" href="../../_images/iris_knn.png"><img alt="../../_images/iris_knn.png" class="align-right" src="../../_images/iris_knn.png" style="width: 360.0px; height: 270.0px;" /></a>
+<p>The k-nearest neighbors classifier internally uses an algorithm
+based on ball trees to represent the samples it is trained on.</p>
+<p><strong>KNN (k-nearest neighbors) classification example</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># Create and fit a nearest-neighbor classifier</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">neighbors</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">knn</span> <span class="o">=</span> <span class="n">neighbors</span><span class="o">.</span><span class="n">KNeighborsClassifier</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span> 
+<div class="newline"></div><span class="go">KNeighborsClassifier(...)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">knn</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]])</span>
+<div class="newline"></div><span class="go">array([0])</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="topic">
+<p class="topic-title first">Training set and testing set</p>
+<p>When experimenting with learning algorithms, it is important not to
+test the prediction of an estimator on the data used to fit the
+estimator. Indeed, with the kNN estimator, we would always get perfect
+prediction on the training set.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">perm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">100</span><span class="p">],</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="mi">100</span><span class="p">])</span> 
+<div class="newline"></div><span class="go">KNeighborsClassifier(...)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">knn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">100</span><span class="p">:],</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="mi">100</span><span class="p">:])</span> 
+<div class="newline"></div><span class="go">0.95999...</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Bonus question: why did we use a random permutation?</p>
+</div>
+</div>
+<div class="section" id="support-vector-machines-svms-for-classification">
+<h3><a class="toc-backref" href="#id5">2.11.2.2. Support vector machines (SVMs) for classification</a><a class="headerlink" href="#support-vector-machines-svms-for-classification" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="linear-support-vector-machines">
+<h4>2.11.2.2.1. Linear Support Vector Machines<a class="headerlink" href="#linear-support-vector-machines" title="Permalink to this headline">¶</a></h4>
+<p>SVMs try to construct a hyperplane maximizing the margin between the two
+classes. It selects a subset of the input, called the support vectors,
+which are the observations closest to the separating hyperplane.</p>
+<a class="reference internal image-reference" href="../../_images/svm_margin.png"><img alt="../../_images/svm_margin.png" class="align-right" src="../../_images/svm_margin.png" style="width: 320.0px; height: 240.0px;" /></a>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span> 
+<div class="newline"></div><span class="go">SVC(...)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>There are several support vector machine implementations in <tt class="docutils literal"><span class="pre">scikit-learn</span></tt>.
+The most commonly used ones are <tt class="docutils literal"><span class="pre">svm.SVC</span></tt>, <tt class="docutils literal"><span class="pre">svm.NuSVC</span></tt> and <tt class="docutils literal"><span class="pre">svm.LinearSVC</span></tt>;
+&#8220;SVC&#8221; stands for Support Vector Classifier (there also exist SVMs for regression,
+which are called &#8220;SVR&#8221; in <tt class="docutils literal"><span class="pre">scikit-learn</span></tt>).</p>
+<div class="green topic">
+<p class="topic-title first"><strong>Excercise</strong></p>
+<p>Train an <tt class="docutils literal"><span class="pre">svm.SVC</span></tt> on the digits dataset. Leave out the
+last 10% and test prediction performance on these observations.</p>
+</div>
+</div>
+<div class="section" id="using-kernels">
+<h4>2.11.2.2.2. Using kernels<a class="headerlink" href="#using-kernels" title="Permalink to this headline">¶</a></h4>
+<p>Classes are not always separable by a hyperplane, so it would be
+desirable to have a decision function that is not linear but that may
+be for instance polynomial or exponential:</p>
+<table border="1" class="centered docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Linear kernel</strong></td>
+<td><strong>Polynomial kernel</strong></td>
+<td><strong>RBF kernel (Radial Basis Function)</strong></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../../_images/svm_kernel_linear.png"><img alt="svm_kernel_linear" src="../../_images/svm_kernel_linear.png" style="width: 260.0px; height: 195.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/svm_kernel_poly.png"><img alt="svm_kernel_poly" src="../../_images/svm_kernel_poly.png" style="width: 260.0px; height: 195.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/svm_kernel_rbf.png"><img alt="svm_kernel_rbf" src="../../_images/svm_kernel_rbf.png" style="width: 260.0px; height: 195.0px;" /></a></td>
+</tr>
+<tr class="row-odd"><td><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+</td>
+<td><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s">&#39;poly&#39;</span><span class="p">,</span>
+<div class="newline"></div><span class="gp">... </span>              <span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c"># degree: polynomial degree</span>
+<div class="newline"></div></pre></div>
+</div>
+</td>
+<td><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s">&#39;rbf&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c"># gamma: inverse of size of</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c"># radial kernel</span>
+<div class="newline"></div></pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong></p>
+<p>Which of the kernels noted above has a better prediction
+performance on the digits dataset?</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="clustering-grouping-observations-together">
+<h2><a class="toc-backref" href="#id6">2.11.3. Clustering: grouping observations together</a><a class="headerlink" href="#clustering-grouping-observations-together" title="Permalink to this headline">¶</a></h2>
+<p>Given the iris dataset, if we knew that there were 3 types of iris,
+but did not have access to their labels, we could try <strong>unsupervised
+learning</strong>: we could <strong>cluster</strong> the observations into several groups
+by some criterion.</p>
+<div class="section" id="k-means-clustering">
+<h3><a class="toc-backref" href="#id7">2.11.3.1. K-means clustering</a><a class="headerlink" href="#k-means-clustering" title="Permalink to this headline">¶</a></h3>
+<p>The simplest clustering algorithm is k-means. This divides a set into
+<em>k</em> clusters, assigning each observation to a cluster so as to minimize
+the distance of that observation (in <em>n</em>-dimensional space) to the cluster&#8217;s
+mean; the means are then recomputed. This operation is run iteratively until
+the clusters converge, for a maximum for <tt class="docutils literal"><span class="pre">max_iter</span></tt> rounds.</p>
+<p>(An alternative implementation of k-means is available in SciPy&#8217;s <tt class="docutils literal"><span class="pre">cluster</span></tt>
+package. The <tt class="docutils literal"><span class="pre">scikit-learn</span></tt> implementation differs from that by offering an
+object API and several additional features, including smart initialization.)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">datasets</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">k_means</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">KMeans</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">k_means</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> 
+<div class="newline"></div><span class="go">KMeans(copy_x=True, init=&#39;k-means++&#39;, k=3, ...</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">k_means</span><span class="o">.</span><span class="n">labels_</span><span class="p">[::</span><span class="mi">10</span><span class="p">]</span>
+<div class="newline"></div><span class="go">[1 1 1 1 1 0 0 0 0 0 2 2 2 2 2]</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">[::</span><span class="mi">10</span><span class="p">]</span>
+<div class="newline"></div><span class="go">[0 0 0 0 0 1 1 1 1 1 2 2 2 2 2]</span>
+<div class="newline"></div></pre></div>
+</div>
+<table border="1" class="centered docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="../../_images/cluster_iris_truth.png"><img alt="cluster_iris_truth" src="../../_images/cluster_iris_truth.png" style="width: 308.0px; height: 231.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/k_means_iris_3.png"><img alt="cluster_iris_kmeans" src="../../_images/k_means_iris_3.png" style="width: 320.0px; height: 240.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/k_means_iris_8.png"><img alt="k_means_iris_8" src="../../_images/k_means_iris_8.png" style="width: 308.0px; height: 231.0px;" /></a></td>
+</tr>
+<tr class="row-even"><td><strong>Ground truth</strong></td>
+<td><strong>K-means (3 clusters)</strong></td>
+<td><strong>K-means (8 clusters)</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="topic">
+<p class="topic-title first"><strong>Application to Image Compression</strong></p>
+<p>Clustering can be seen as a way of choosing a small number of
+observations from the information. For instance, this can be used
+to posterize an image (conversion of a continuous gradation of
+tone to several regions of fewer tones):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">misc</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">lena</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">lena</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">lena</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c"># We need an (n_sample, n_feature) array</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">k_means</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">k_means</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
+<div class="newline"></div><span class="go">KMeans(...)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="n">k_means</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">k_means</span><span class="o">.</span><span class="n">labels_</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">lena_compressed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">choose</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">lena_compressed</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">lena</span><span class="o">.</span><span class="n">shape</span>
+<div class="newline"></div></pre></div>
+</div>
+<table border="1" class="centered docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="../../_images/lena1.png"><img alt="lena" src="../../_images/lena1.png" style="width: 256.0px; height: 256.0px;" /></a></td>
+<td><a class="reference internal" href="../../_images/lena_compressed.png"><img alt="lena_compressed" src="../../_images/lena_compressed.png" style="width: 256.0px; height: 256.0px;" /></a></td>
+</tr>
+<tr class="row-even"><td>Raw image</td>
+<td>K-means quantization</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="section" id="dimension-reduction-with-principal-component-analysis">
+<h2><a class="toc-backref" href="#id8">2.11.4. Dimension Reduction with Principal Component Analysis</a><a class="headerlink" href="#dimension-reduction-with-principal-component-analysis" title="Permalink to this headline">¶</a></h2>
+<p class="centered"><a class="reference internal" href="../../_images/pca_3d_axis.jpg"><img alt="pca_3d_axis" src="../../_images/pca_3d_axis.jpg" style="width: 280.0px; height: 224.0px;" /></a> <a class="reference internal" href="../../_images/pca_3d_aligned.jpg"><img alt="pca_3d_aligned" src="../../_images/pca_3d_aligned.jpg" style="width: 280.0px; height: 224.0px;" /></a></p>
+<p>The cloud of points spanned by the observations above is very flat in
+one direction, so that one feature can almost be exactly computed
+using the 2 other. PCA finds the directions in which the data is not
+<em>flat</em> and it can reduce the dimensionality of the data by projecting
+on a subspace.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Depending on your version of scikit-learn PCA will be in module
+<tt class="docutils literal"><span class="pre">decomposition</span></tt> or <tt class="docutils literal"><span class="pre">pca</span></tt>.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">decomposition</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<div class="newline"></div><span class="go">PCA(copy=True, n_components=2, whiten=False)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Now we can visualize the (transformed) iris dataset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">pl</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span> 
+<div class="newline"></div><span class="go">&lt;matplotlib.collections...Collection object at ...&gt;</span>
+<div class="newline"></div></pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/pca_iris.png"><img alt="../../_images/pca_iris.png" class="align-center" src="../../_images/pca_iris.png" style="width: 400.0px; height: 300.0px;" /></a>
+<p>PCA is not just useful for visualization of high dimensional
+datasets. It can also be used as a preprocessing step to help speed up
+supervised methods that are not efficient with high
+dimensions.</p>
+</div>
+<div class="section" id="putting-it-all-together-face-recognition">
+<h2><a class="toc-backref" href="#id9">2.11.5. Putting it all together: face recognition</a><a class="headerlink" href="#putting-it-all-together-face-recognition" title="Permalink to this headline">¶</a></h2>
+<p>An example showcasing face recognition using Principal Component
+Analysis for dimension reduction and Support Vector Machines for
+classification.</p>
+<a class="reference internal image-reference" href="../../_images/faces.png"><img alt="../../_images/faces.png" class="align-center" src="../../_images/faces.png" style="width: 504.0px; height: 504.0px;" /></a>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="sd">Stripped-down version of the face recognition example by Olivier Grisel</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">http://scikit-learn.org/dev/auto_examples/applications/face_recognition.html</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">## original shape of images: 50, 37</span>
+<div class="newline"></div><span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">cross_val</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">decomposition</span><span class="p">,</span> <span class="n">svm</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># ..</span>
+<div class="newline"></div><span class="c"># .. load data ..</span>
+<div class="newline"></div><span class="n">lfw_people</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">fetch_lfw_people</span><span class="p">(</span><span class="n">min_faces_per_person</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">resize</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<div class="newline"></div><span class="n">perm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">lfw_people</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<div class="newline"></div><span class="n">lfw_people</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">lfw_people</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span>
+<div class="newline"></div><span class="n">lfw_people</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">lfw_people</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span>
+<div class="newline"></div><span class="n">faces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">lfw_people</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">lfw_people</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<div class="newline"></div><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">cross_val</span><span class="o">.</span><span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">lfw_people</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<div class="newline"></div><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="n">train</span><span class="p">],</span> <span class="n">faces</span><span class="p">[</span><span class="n">test</span><span class="p">]</span>
+<div class="newline"></div><span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">lfw_people</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">train</span><span class="p">],</span> <span class="n">lfw_people</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">test</span><span class="p">]</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># ..</span>
+<div class="newline"></div><span class="c"># .. dimension reduction ..</span>
+<div class="newline"></div><span class="n">pca</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">RandomizedPCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<div class="newline"></div><span class="n">X_train_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<div class="newline"></div><span class="n">X_test_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># ..</span>
+<div class="newline"></div><span class="c"># .. classification ..</span>
+<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<div class="newline"></div><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_pca</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># ..</span>
+<div class="newline"></div><span class="c"># .. predict on new images ..</span>
+<div class="newline"></div><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">print</span> <span class="n">lfw_people</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_pca</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">_</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">_</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Full code: <a class="reference download internal" href="../../_downloads/faces.py"><tt class="xref download docutils literal"><span class="pre">faces.py</span></tt></a></p>
+</div>
+<div class="section" id="linear-model-from-regression-to-sparsity">
+<h2><a class="toc-backref" href="#id10">2.11.6. Linear model: from regression to sparsity</a><a class="headerlink" href="#linear-model-from-regression-to-sparsity" title="Permalink to this headline">¶</a></h2>
+<div class="topic">
+<p class="topic-title first">Diabetes dataset</p>
+<p>The diabetes dataset consists of 10 physiological variables (age,
+sex, weight, blood pressure) measure on 442 patients, and an
+indication of disease progression after one year:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">diabetes</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_diabetes</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">diabetes_X_train</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">20</span><span class="p">]</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">diabetes_X_test</span>  <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">:]</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">diabetes_y_train</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="o">-</span><span class="mi">20</span><span class="p">]</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">diabetes_y_test</span>  <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">:]</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>The task at hand is to predict disease prediction from physiological
+variables.</p>
+</div>
+<div class="section" id="sparse-models">
+<h3><a class="toc-backref" href="#id11">2.11.6.1. Sparse models</a><a class="headerlink" href="#sparse-models" title="Permalink to this headline">¶</a></h3>
+<p>To improve the conditioning of the problem (uninformative variables,
+mitigate the curse of dimensionality, as a feature selection
+preprocessing, etc.), it would be interesting to select only the
+informative features and set non-informative ones to 0. This
+penalization approach, called <strong>Lasso</strong>, can set some coefficients to
+zero.  Such methods are called <strong>sparse method</strong>, and sparsity can be
+seen as an application of Occam&#8217;s razor: prefer simpler models to
+complex ones.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">diabetes_X_train</span><span class="p">,</span> <span class="n">diabetes_y_train</span><span class="p">)</span> 
+<div class="newline"></div><span class="go">Lasso(...)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span><span class="o">.</span><span class="n">coef_</span> <span class="c"># very sparse coefficients</span>
+<div class="newline"></div><span class="go">array([   0.        ,   -0.        ,  497.34075682,  199.17441034,</span>
+<div class="newline"></div><span class="go">         -0.        ,   -0.        , -118.89291545,    0.        ,</span>
+<div class="newline"></div><span class="go">        430.9379595 ,    0.        ])</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">diabetes_X_test</span><span class="p">,</span> <span class="n">diabetes_y_test</span><span class="p">)</span> 
+<div class="newline"></div><span class="go">0.5510835453...</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>being the score very similar to linear regression (Least Squares):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">lin</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">lin</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">diabetes_X_train</span><span class="p">,</span> <span class="n">diabetes_y_train</span><span class="p">)</span> 
+<div class="newline"></div><span class="go">LinearRegression(...)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">lin</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">diabetes_X_test</span><span class="p">,</span> <span class="n">diabetes_y_test</span><span class="p">)</span> 
+<div class="newline"></div><span class="go">0.5850753022...</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="topic">
+<p class="topic-title first"><strong>Different algorithms for a same problem</strong></p>
+<p>Different algorithms can be used to solve the same mathematical
+problem. For instance the <tt class="xref py py-obj docutils literal"><span class="pre">Lasso</span></tt> object in the <tt class="xref py py-obj docutils literal"><span class="pre">sklearn</span></tt>
+solves the lasso regression using a <em>coordinate descent</em> method, that
+is efficient on large datasets. However, the <tt class="xref py py-obj docutils literal"><span class="pre">sklearn</span></tt> also
+provides the <tt class="xref py py-obj docutils literal"><span class="pre">LassoLARS</span></tt> object, using the <em>LARS</em> which is very
+efficient for problems in which the weight vector estimated is very
+sparse, that is problems with very few observations.</p>
+</div>
+</div>
+</div>
+<div class="section" id="model-selection-choosing-estimators-and-their-parameters">
+<h2><a class="toc-backref" href="#id12">2.11.7. Model selection: choosing estimators and their parameters</a><a class="headerlink" href="#model-selection-choosing-estimators-and-their-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="grid-search-and-cross-validated-estimators">
+<h3><a class="toc-backref" href="#id13">2.11.7.1. Grid-search and cross-validated estimators</a><a class="headerlink" href="#grid-search-and-cross-validated-estimators" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="grid-search">
+<h4>2.11.7.1.1. Grid-search<a class="headerlink" href="#grid-search" title="Permalink to this headline">¶</a></h4>
+<p>The scikit-learn provides an object that, given data, computes the score
+during the fit of an estimator on a parameter grid and chooses the
+parameters to maximize the cross-validation score. This object takes an
+estimator during the construction and exposes an estimator API:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span><span class="p">,</span> <span class="n">grid_search</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">gammas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">svc</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="n">gammas</span><span class="p">),</span>
+<div class="newline"></div><span class="gp">... </span>                   <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">1000</span><span class="p">],</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="mi">1000</span><span class="p">])</span> 
+<div class="newline"></div><span class="go">GridSearchCV(cv=None,</span>
+<div class="newline"></div><span class="go">       estimator=SVC(C=1.0, ...</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">best_score</span>
+<div class="newline"></div><span class="go">0.98899798001594419</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">best_estimator</span><span class="o">.</span><span class="n">gamma</span>
+<div class="newline"></div><span class="go">0.00059948425031894088</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>By default the <tt class="xref py py-obj docutils literal"><span class="pre">GridSearchCV</span></tt> uses a 3-fold cross-validation. However, if
+it detects that a classifier is passed, rather than a regressor, it uses
+a stratified 3-fold.</p>
+</div>
+<div class="section" id="cross-validated-estimators">
+<h4>2.11.7.1.2. Cross-validated estimators<a class="headerlink" href="#cross-validated-estimators" title="Permalink to this headline">¶</a></h4>
+<p>Cross-validation to set a parameter can be done more efficiently on an
+algorithm-by-algorithm basis. This is why, for certain estimators, the
+scikit-learn exposes &#8220;CV&#8221; estimators, that set their parameter
+automatically by cross-validation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span><span class="p">,</span> <span class="n">datasets</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">lasso</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LassoCV</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">diabetes</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_diabetes</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X_diabetes</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">data</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y_diabetes</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">target</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">lasso</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_diabetes</span><span class="p">,</span> <span class="n">y_diabetes</span><span class="p">)</span>
+<div class="newline"></div><span class="go">LassoCV(alphas=array([ 2.14804,  2.00327, ...,  0.0023 ,  0.00215]),</span>
+<div class="newline"></div><span class="go">    copy_X=True, cv=None, eps=0.001, fit_intercept=True, max_iter=1000,</span>
+<div class="newline"></div><span class="go">    n_alphas=100, normalize=False, precompute=&#39;auto&#39;, tol=0.0001,</span>
+<div class="newline"></div><span class="go">    verbose=False)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c"># The estimator chose automatically its lambda:</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">lasso</span><span class="o">.</span><span class="n">alpha</span> 
+<div class="newline"></div><span class="go">0.013...</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>These estimators are called similarly to their counterparts, with &#8216;CV&#8217;
+appended to their name.</p>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong></p>
+<p>On the diabetes dataset, find the optimal regularization parameter
+alpha.</p>
+</div>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../interfacing_with_c/interfacing_with_c.html" title="2.12. Interfacing with C"
+             >next</a></li>
+        <li class="right" >
+          <a href="../sympy.html" title="2.10. Sympy : Symbolic Mathematics in Python"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012,2013.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

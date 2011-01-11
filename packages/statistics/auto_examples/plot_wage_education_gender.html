@@ -1,0 +1,382 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3.1.6.6. Test for an education/gender interaction in wages &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="3.1.6.7. Visualizing factors influencing wages" href="plot_wage_data.html" />
+    <link rel="prev" title="3.1.6.5. Multiple Regression" href="plot_regression_3d.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="plot_wage_data.html" title="3.1.6.7. Visualizing factors influencing wages"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="plot_regression_3d.html" title="3.1.6.5. Multiple Regression"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">3.1. Statistics in Python</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/statistics/auto_examples/plot_wage_education_gender.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="test-for-an-education-gender-interaction-in-wages">
+<span id="sphx-glr-packages-statistics-auto-examples-plot-wage-education-gender-py"></span><h1>3.1.6.6. Test for an education/gender interaction in wages<a class="headerlink" href="#test-for-an-education-gender-interaction-in-wages" title="Permalink to this headline">¶</a></h1>
+<p>Wages depend mostly on education. Here we investigate how this dependence
+is related to gender: not only does gender create an offset in wages, it
+also seems that wages increase more with education for males than
+females.</p>
+<p>Does our data support this last hypothesis? We will test this using
+statsmodels’ formulas
+(<a class="reference external" href="http://statsmodels.sourceforge.net/stable/example_formulas.html">http://statsmodels.sourceforge.net/stable/example_formulas.html</a>).</p>
+<p>Load and massage the data</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">urllib</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">os</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;wages.txt&#39;</span><span class="p">):</span>
+<div class="newline"></div>    <span class="c1"># Download the file if it is not present</span>
+<div class="newline"></div>    <span class="n">urllib</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="s1">&#39;http://lib.stat.cmu.edu/datasets/CPS_85_Wages&#39;</span><span class="p">,</span>
+<div class="newline"></div>                       <span class="s1">&#39;wages.txt&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># EDUCATION: Number of years of education</span>
+<div class="newline"></div><span class="c1"># SEX: 1=Female, 0=Male</span>
+<div class="newline"></div><span class="c1"># WAGE: Wage (dollars per hour)</span>
+<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.html#pandas.read_csv" title="View documentation for pandas.read_csv"><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="s1">&#39;wages.txt&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">skipfooter</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<div class="newline"></div>                       <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;education&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;wage&#39;</span><span class="p">],</span>
+<div class="newline"></div>                       <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+<div class="newline"></div>                       <span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Convert genders to strings (this is particulary useful so that the</span>
+<div class="newline"></div><span class="c1"># statsmodels formulas detects that gender is a categorical variable)</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.choose" title="View documentation for numpy.choose"><span class="n">np</span><span class="o">.</span><span class="n">choose</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">])</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Log-transform the wages, because they typically are increased with</span>
+<div class="newline"></div><span class="c1"># multiplicative factors</span>
+<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;wage&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;wage&#39;</span><span class="p">])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>simple plotting</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Plot 2 linear fits for male and female.</span>
+<div class="newline"></div><a href="http://seaborn.pydata.org/generated/seaborn.html#seaborn.lmplot" title="View documentation for seaborn.lmplot"><span class="n">seaborn</span><span class="o">.</span><span class="n">lmplot</span></a><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;wage&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;education&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<img alt="../../../_images/sphx_glr_plot_wage_education_gender_001.png" class="align-center" src="../../../_images/sphx_glr_plot_wage_education_gender_001.png" />
+<p>statistical analysis</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">as</span> <span class="nn">sm</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Note that this model is not the plot displayed above: it is one</span>
+<div class="newline"></div><span class="c1"># joined model for male and female, not separate models for male and</span>
+<div class="newline"></div><span class="c1"># female. The reason is that a single model enables statistical testing</span>
+<div class="newline"></div><span class="n">result</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;wage ~ education + gender&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div></pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">OLS</span> <span class="n">Regression</span> <span class="n">Results</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div><span class="n">Dep</span><span class="o">.</span> <span class="n">Variable</span><span class="p">:</span>                   <span class="n">wage</span>   <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                       <span class="mf">0.193</span>
+<div class="newline"></div><span class="n">Model</span><span class="p">:</span>                            <span class="n">OLS</span>   <span class="n">Adj</span><span class="o">.</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                  <span class="mf">0.190</span>
+<div class="newline"></div><span class="n">Method</span><span class="p">:</span>                 <span class="n">Least</span> <span class="n">Squares</span>   <span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">:</span>                     <span class="mf">63.42</span>
+<div class="newline"></div><span class="n">Date</span><span class="p">:</span>                <span class="n">Tue</span><span class="p">,</span> <span class="mi">25</span> <span class="n">Apr</span> <span class="mi">2017</span>   <span class="n">Prob</span> <span class="p">(</span><span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">):</span>           <span class="mf">2.01e-25</span>
+<div class="newline"></div><span class="n">Time</span><span class="p">:</span>                        <span class="mi">10</span><span class="p">:</span><span class="mi">42</span><span class="p">:</span><span class="mi">36</span>   <span class="n">Log</span><span class="o">-</span><span class="n">Likelihood</span><span class="p">:</span>                 <span class="mf">86.654</span>
+<div class="newline"></div><span class="n">No</span><span class="o">.</span> <span class="n">Observations</span><span class="p">:</span>                 <span class="mi">534</span>   <span class="n">AIC</span><span class="p">:</span>                            <span class="o">-</span><span class="mf">167.3</span>
+<div class="newline"></div><span class="n">Df</span> <span class="n">Residuals</span><span class="p">:</span>                     <span class="mi">531</span>   <span class="n">BIC</span><span class="p">:</span>                            <span class="o">-</span><span class="mf">154.5</span>
+<div class="newline"></div><span class="n">Df</span> <span class="n">Model</span><span class="p">:</span>                           <span class="mi">2</span>
+<div class="newline"></div><span class="n">Covariance</span> <span class="n">Type</span><span class="p">:</span>            <span class="n">nonrobust</span>
+<div class="newline"></div><span class="o">==================================================================================</span>
+<div class="newline"></div>                     <span class="n">coef</span>    <span class="n">std</span> <span class="n">err</span>          <span class="n">t</span>      <span class="n">P</span><span class="o">&gt;|</span><span class="n">t</span><span class="o">|</span>      <span class="p">[</span><span class="mf">0.025</span>      <span class="mf">0.975</span><span class="p">]</span>
+<div class="newline"></div><span class="o">----------------------------------------------------------------------------------</span>
+<div class="newline"></div><span class="n">Intercept</span>          <span class="mf">0.4053</span>      <span class="mf">0.046</span>      <span class="mf">8.732</span>      <span class="mf">0.000</span>       <span class="mf">0.314</span>       <span class="mf">0.496</span>
+<div class="newline"></div><span class="n">gender</span><span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">male</span><span class="p">]</span>     <span class="mf">0.1008</span>      <span class="mf">0.018</span>      <span class="mf">5.625</span>      <span class="mf">0.000</span>       <span class="mf">0.066</span>       <span class="mf">0.136</span>
+<div class="newline"></div><span class="n">education</span>          <span class="mf">0.0334</span>      <span class="mf">0.003</span>      <span class="mf">9.768</span>      <span class="mf">0.000</span>       <span class="mf">0.027</span>       <span class="mf">0.040</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div><span class="n">Omnibus</span><span class="p">:</span>                        <span class="mf">4.675</span>   <span class="n">Durbin</span><span class="o">-</span><span class="n">Watson</span><span class="p">:</span>                   <span class="mf">1.792</span>
+<div class="newline"></div><span class="n">Prob</span><span class="p">(</span><span class="n">Omnibus</span><span class="p">):</span>                  <span class="mf">0.097</span>   <span class="n">Jarque</span><span class="o">-</span><span class="n">Bera</span> <span class="p">(</span><span class="n">JB</span><span class="p">):</span>                <span class="mf">4.876</span>
+<div class="newline"></div><span class="n">Skew</span><span class="p">:</span>                          <span class="o">-</span><span class="mf">0.147</span>   <span class="n">Prob</span><span class="p">(</span><span class="n">JB</span><span class="p">):</span>                       <span class="mf">0.0873</span>
+<div class="newline"></div><span class="n">Kurtosis</span><span class="p">:</span>                       <span class="mf">3.365</span>   <span class="n">Cond</span><span class="o">.</span> <span class="n">No</span><span class="o">.</span>                         <span class="mf">69.7</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">Warnings</span><span class="p">:</span>
+<div class="newline"></div><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">Standard</span> <span class="n">Errors</span> <span class="n">assume</span> <span class="n">that</span> <span class="n">the</span> <span class="n">covariance</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">the</span> <span class="n">errors</span> <span class="ow">is</span> <span class="n">correctly</span> <span class="n">specified</span><span class="o">.</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>The plots above highlight that there is not only a different offset in
+wage but also a different slope</p>
+<p>We need to model this using an interaction</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;wage ~ education + gender + education * gender&#39;</span><span class="p">,</span>
+<div class="newline"></div>                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div></pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">OLS</span> <span class="n">Regression</span> <span class="n">Results</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div><span class="n">Dep</span><span class="o">.</span> <span class="n">Variable</span><span class="p">:</span>                   <span class="n">wage</span>   <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                       <span class="mf">0.198</span>
+<div class="newline"></div><span class="n">Model</span><span class="p">:</span>                            <span class="n">OLS</span>   <span class="n">Adj</span><span class="o">.</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                  <span class="mf">0.194</span>
+<div class="newline"></div><span class="n">Method</span><span class="p">:</span>                 <span class="n">Least</span> <span class="n">Squares</span>   <span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">:</span>                     <span class="mf">43.72</span>
+<div class="newline"></div><span class="n">Date</span><span class="p">:</span>                <span class="n">Tue</span><span class="p">,</span> <span class="mi">25</span> <span class="n">Apr</span> <span class="mi">2017</span>   <span class="n">Prob</span> <span class="p">(</span><span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">):</span>           <span class="mf">2.94e-25</span>
+<div class="newline"></div><span class="n">Time</span><span class="p">:</span>                        <span class="mi">10</span><span class="p">:</span><span class="mi">42</span><span class="p">:</span><span class="mi">36</span>   <span class="n">Log</span><span class="o">-</span><span class="n">Likelihood</span><span class="p">:</span>                 <span class="mf">88.503</span>
+<div class="newline"></div><span class="n">No</span><span class="o">.</span> <span class="n">Observations</span><span class="p">:</span>                 <span class="mi">534</span>   <span class="n">AIC</span><span class="p">:</span>                            <span class="o">-</span><span class="mf">169.0</span>
+<div class="newline"></div><span class="n">Df</span> <span class="n">Residuals</span><span class="p">:</span>                     <span class="mi">530</span>   <span class="n">BIC</span><span class="p">:</span>                            <span class="o">-</span><span class="mf">151.9</span>
+<div class="newline"></div><span class="n">Df</span> <span class="n">Model</span><span class="p">:</span>                           <span class="mi">3</span>
+<div class="newline"></div><span class="n">Covariance</span> <span class="n">Type</span><span class="p">:</span>            <span class="n">nonrobust</span>
+<div class="newline"></div><span class="o">============================================================================================</span>
+<div class="newline"></div>                               <span class="n">coef</span>    <span class="n">std</span> <span class="n">err</span>          <span class="n">t</span>      <span class="n">P</span><span class="o">&gt;|</span><span class="n">t</span><span class="o">|</span>      <span class="p">[</span><span class="mf">0.025</span>      <span class="mf">0.975</span><span class="p">]</span>
+<div class="newline"></div><span class="o">--------------------------------------------------------------------------------------------</span>
+<div class="newline"></div><span class="n">Intercept</span>                    <span class="mf">0.2998</span>      <span class="mf">0.072</span>      <span class="mf">4.173</span>      <span class="mf">0.000</span>       <span class="mf">0.159</span>       <span class="mf">0.441</span>
+<div class="newline"></div><span class="n">gender</span><span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">male</span><span class="p">]</span>               <span class="mf">0.2750</span>      <span class="mf">0.093</span>      <span class="mf">2.972</span>      <span class="mf">0.003</span>       <span class="mf">0.093</span>       <span class="mf">0.457</span>
+<div class="newline"></div><span class="n">education</span>                    <span class="mf">0.0415</span>      <span class="mf">0.005</span>      <span class="mf">7.647</span>      <span class="mf">0.000</span>       <span class="mf">0.031</span>       <span class="mf">0.052</span>
+<div class="newline"></div><span class="n">education</span><span class="p">:</span><span class="n">gender</span><span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">male</span><span class="p">]</span>    <span class="o">-</span><span class="mf">0.0134</span>      <span class="mf">0.007</span>     <span class="o">-</span><span class="mf">1.919</span>      <span class="mf">0.056</span>      <span class="o">-</span><span class="mf">0.027</span>       <span class="mf">0.000</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div><span class="n">Omnibus</span><span class="p">:</span>                        <span class="mf">4.838</span>   <span class="n">Durbin</span><span class="o">-</span><span class="n">Watson</span><span class="p">:</span>                   <span class="mf">1.825</span>
+<div class="newline"></div><span class="n">Prob</span><span class="p">(</span><span class="n">Omnibus</span><span class="p">):</span>                  <span class="mf">0.089</span>   <span class="n">Jarque</span><span class="o">-</span><span class="n">Bera</span> <span class="p">(</span><span class="n">JB</span><span class="p">):</span>                <span class="mf">5.000</span>
+<div class="newline"></div><span class="n">Skew</span><span class="p">:</span>                          <span class="o">-</span><span class="mf">0.156</span>   <span class="n">Prob</span><span class="p">(</span><span class="n">JB</span><span class="p">):</span>                       <span class="mf">0.0821</span>
+<div class="newline"></div><span class="n">Kurtosis</span><span class="p">:</span>                       <span class="mf">3.356</span>   <span class="n">Cond</span><span class="o">.</span> <span class="n">No</span><span class="o">.</span>                         <span class="mf">194.</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">Warnings</span><span class="p">:</span>
+<div class="newline"></div><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">Standard</span> <span class="n">Errors</span> <span class="n">assume</span> <span class="n">that</span> <span class="n">the</span> <span class="n">covariance</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">the</span> <span class="n">errors</span> <span class="ow">is</span> <span class="n">correctly</span> <span class="n">specified</span><span class="o">.</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Looking at the p-value of the interaction of gender and education, the
+data does not support the hypothesis that education benefits males
+more than female (p-value &gt; 0.05).</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.553 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/plot_wage_education_gender.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_wage_education_gender.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/plot_wage_education_gender.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_wage_education_gender.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="http://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc"></div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="plot_wage_data.html" title="3.1.6.7. Visualizing factors influencing wages"
+             >next</a></li>
+        <li class="right" >
+          <a href="plot_regression_3d.html" title="3.1.6.5. Multiple Regression"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >3.1. Statistics in Python</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/statistics/auto_examples/plot_wage_education_gender.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

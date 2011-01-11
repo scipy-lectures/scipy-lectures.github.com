@@ -1,0 +1,574 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>1.3.3. More elaborate arrays &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1.3.4. Advanced operations" href="advanced_operations.html" />
+    <link rel="prev" title="1.3.2. Numerical operations on arrays" href="operations.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="advanced_operations.html" title="1.3.4. Advanced operations"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="operations.html" title="1.3.2. Numerical operations on arrays"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >1. Getting started with Python for science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">1.3. NumPy: creating and manipulating numerical data</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/numpy/elaborate_arrays.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="more-elaborate-arrays">
+<h1>1.3.3. More elaborate arrays<a class="headerlink" href="#more-elaborate-arrays" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="section-contents">
+<p class="topic-title first">Section contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#more-data-types" id="id1">More data types</a></li>
+<li><a class="reference internal" href="#structured-data-types" id="id2">Structured data types</a></li>
+<li><a class="reference internal" href="#maskedarray-dealing-with-propagation-of-missing-data" id="id3"><code class="xref py py-class docutils literal"><span class="pre">maskedarray</span></code>: dealing with (propagation of) missing data</a></li>
+</ul>
+</div>
+<div class="section" id="more-data-types">
+<h2><a class="toc-backref" href="#id1">1.3.3.1. More data types</a><a class="headerlink" href="#more-data-types" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="casting">
+<h3>Casting<a class="headerlink" href="#casting" title="Permalink to this headline">¶</a></h3>
+<p>“Bigger” type wins in mixed-type operations:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="o">+</span> <span class="mf">1.5</span>
+<div class="newline"></div><span class="go">array([ 2.5,  3.5,  4.5])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Assignment never changes the type!</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span>
+<div class="newline"></div><span class="go">dtype(&#39;int64&#39;)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.9</span>     <span class="c1"># &lt;-- float is truncated to integer</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<div class="newline"></div><span class="go">array([1, 2, 3])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Forced casts:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">])</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>  <span class="c1"># &lt;-- truncates to integer</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
+<div class="newline"></div><span class="go">array([1, 1, 1])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Rounding:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>                    <span class="c1"># still floating-point</span>
+<div class="newline"></div><span class="go">array([ 1.,  2.,  2.,  2.,  4.,  4.])</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
+<div class="newline"></div><span class="go">array([1, 2, 2, 2, 4, 4])</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="different-data-type-sizes">
+<h3>Different data type sizes<a class="headerlink" href="#different-data-type-sizes" title="Permalink to this headline">¶</a></h3>
+<p>Integers (signed):</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-class docutils literal"><span class="pre">int8</span></code></td>
+<td>8 bits</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-class docutils literal"><span class="pre">int16</span></code></td>
+<td>16 bits</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-class docutils literal"><span class="pre">int32</span></code></td>
+<td>32 bits (same as <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a> on 32-bit platform)</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-class docutils literal"><span class="pre">int64</span></code></td>
+<td>64 bits (same as <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a> on 64-bit platform)</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">dtype</span>
+<div class="newline"></div><span class="go">dtype(&#39;int64&#39;)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span> <span class="o">-</span> <span class="mi">1</span>
+<div class="newline"></div><span class="go">(2147483647, 2147483647)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Unsigned integers:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-class docutils literal"><span class="pre">uint8</span></code></td>
+<td>8 bits</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-class docutils literal"><span class="pre">uint16</span></code></td>
+<td>16 bits</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-class docutils literal"><span class="pre">uint32</span></code></td>
+<td>32 bits</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-class docutils literal"><span class="pre">uint64</span></code></td>
+<td>64 bits</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span> <span class="o">-</span> <span class="mi">1</span>
+<div class="newline"></div><span class="go">(4294967295, 4294967295)</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="sidebar">
+<p class="first sidebar-title">Long integers</p>
+<p>Python 2 has a specific type for ‘long’ integers, that cannot
+overflow, represented with an ‘L’ at the end. In Python 3, all
+integers are long, and thus cannot overflow.</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">63</span> <span class="o">-</span> <span class="mi">1</span>  
+<div class="newline"></div><span class="go">(9223372036854775807, 9223372036854775807L)</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<p>Floating-point numbers:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-class docutils literal"><span class="pre">float16</span></code></td>
+<td>16 bits</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-class docutils literal"><span class="pre">float32</span></code></td>
+<td>32 bits</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-class docutils literal"><span class="pre">float64</span></code></td>
+<td>64 bits (same as <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">float</span></code></a>)</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-class docutils literal"><span class="pre">float96</span></code></td>
+<td>96 bits, platform-dependent (same as <code class="xref py py-class docutils literal"><span class="pre">np.longdouble</span></code>)</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-class docutils literal"><span class="pre">float128</span></code></td>
+<td>128 bits, platform-dependent (same as <code class="xref py py-class docutils literal"><span class="pre">np.longdouble</span></code>)</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+<div class="newline"></div><span class="go">1.1920929e-07</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+<div class="newline"></div><span class="go">2.2204460492503131e-16</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<div class="newline"></div><span class="go">True</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<div class="newline"></div><span class="go">False</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Complex floating-point numbers:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-class docutils literal"><span class="pre">complex64</span></code></td>
+<td>two 32-bit floats</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-class docutils literal"><span class="pre">complex128</span></code></td>
+<td>two 64-bit floats</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-class docutils literal"><span class="pre">complex192</span></code></td>
+<td>two 96-bit floats, platform-dependent</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-class docutils literal"><span class="pre">complex256</span></code></td>
+<td>two 128-bit floats, platform-dependent</td>
+</tr>
+</tbody>
+</table>
+<div class="topic">
+<p class="topic-title first">Smaller data types</p>
+<p>If you don’t know you need special data types, then you probably don’t.</p>
+<p>Comparison on using <code class="docutils literal"><span class="pre">float32</span></code> instead of <code class="docutils literal"><span class="pre">float64</span></code>:</p>
+<ul>
+<li><p class="first">Half the size in memory and on disk</p>
+</li>
+<li><p class="first">Half the memory bandwidth required (may be a bit faster in some operations)</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mf">1e6</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [2]: </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mf">1e6</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [3]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">a</span><span class="o">*</span><span class="n">a</span>
+<div class="newline"></div><span class="go">1000 loops, best of 3: 1.78 ms per loop</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [4]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">b</span><span class="o">*</span><span class="n">b</span>
+<div class="newline"></div><span class="go">1000 loops, best of 3: 1.07 ms per loop</span>
+<div class="newline"></div></pre></div>
+</div>
+</li>
+<li><p class="first">But: bigger rounding errors — sometimes in surprising places
+(i.e., don’t use them unless you really need them)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="structured-data-types">
+<h2><a class="toc-backref" href="#id2">1.3.3.2. Structured data types</a><a class="headerlink" href="#structured-data-types" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">sensor_code</span></code></td>
+<td>(4-character string)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">position</span></code></td>
+<td>(float)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">value</span></code></td>
+<td>(float)</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">6</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;sensor_code&#39;</span><span class="p">,</span> <span class="s1">&#39;S4&#39;</span><span class="p">),</span>
+<div class="newline"></div><span class="gp">... </span>                                <span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)])</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span><span class="o">.</span><span class="n">ndim</span>
+<div class="newline"></div><span class="go">1</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span><span class="o">.</span><span class="n">shape</span>
+<div class="newline"></div><span class="go">(6,)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
+<div class="newline"></div><span class="go">(&#39;sensor_code&#39;, &#39;position&#39;, &#39;value&#39;)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;ALFA&#39;</span><span class="p">,</span>   <span class="mi">1</span><span class="p">,</span> <span class="mf">0.37</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;BETA&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.11</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;TAU&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>   <span class="mf">0.13</span><span class="p">),</span>
+<div class="newline"></div><span class="gp">... </span>              <span class="p">(</span><span class="s1">&#39;ALFA&#39;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">0.37</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ALFA&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.11</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;TAU&#39;</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.13</span><span class="p">)]</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span>     
+<div class="newline"></div><span class="go">array([(&#39;ALFA&#39;, 1.0, 0.37), (&#39;BETA&#39;, 1.0, 0.11), (&#39;TAU&#39;, 1.0, 0.13),</span>
+<div class="newline"></div><span class="go">       (&#39;ALFA&#39;, 1.5, 0.37), (&#39;ALFA&#39;, 3.0, 0.11), (&#39;TAU&#39;, 1.2, 0.13)],</span>
+<div class="newline"></div><span class="go">      dtype=[(&#39;sensor_code&#39;, &#39;S4&#39;), (&#39;position&#39;, &#39;&lt;f8&#39;), (&#39;value&#39;, &#39;&lt;f8&#39;)])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Field access works by indexing with field names:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sensor_code&#39;</span><span class="p">]</span>    
+<div class="newline"></div><span class="go">array([&#39;ALFA&#39;, &#39;BETA&#39;, &#39;TAU&#39;, &#39;ALFA&#39;, &#39;ALFA&#39;, &#39;TAU&#39;],</span>
+<div class="newline"></div><span class="go">      dtype=&#39;|S4&#39;)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+<div class="newline"></div><span class="go">array([ 0.37,  0.11,  0.13,  0.37,  0.11,  0.13])</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    
+<div class="newline"></div><span class="go">(&#39;ALFA&#39;, 1.0, 0.37)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sensor_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;TAU&#39;</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    
+<div class="newline"></div><span class="go">(&#39;TAU&#39;, 1.0, 0.37)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Multiple fields at once:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span><span class="p">[[</span><span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">]]</span>
+<div class="newline"></div><span class="go">array([(1.0, 0.37), (1.0, 0.11), (1.0, 0.13), (1.5, 0.37), (3.0, 0.11),</span>
+<div class="newline"></div><span class="go">       (1.2, 0.13)],</span>
+<div class="newline"></div><span class="go">      dtype=[(&#39;position&#39;, &#39;&lt;f8&#39;), (&#39;value&#39;, &#39;&lt;f8&#39;)])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Fancy indexing works, as usual:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span><span class="p">[</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sensor_code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ALFA&#39;</span><span class="p">]</span>    
+<div class="newline"></div><span class="go">array([(&#39;ALFA&#39;, 1.5, 0.37), (&#39;ALFA&#39;, 3.0, 0.11)],</span>
+<div class="newline"></div><span class="go">      dtype=[(&#39;sensor_code&#39;, &#39;S4&#39;), (&#39;position&#39;, &#39;&lt;f8&#39;), (&#39;value&#39;, &#39;&lt;f8&#39;)])</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There are a bunch of other syntaxes for constructing structured
+arrays, see <a class="reference external" href="http://docs.scipy.org/doc/numpy/user/basics.rec.html">here</a>
+and <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html#specifying-and-constructing-data-types">here</a>.</p>
+</div>
+</div>
+<div class="section" id="maskedarray-dealing-with-propagation-of-missing-data">
+<h2><a class="toc-backref" href="#id3">1.3.3.3. <code class="xref py py-class docutils literal"><span class="pre">maskedarray</span></code>: dealing with (propagation of) missing data</a><a class="headerlink" href="#maskedarray-dealing-with-propagation-of-missing-data" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">For floats one could use NaN’s, but masks work for all types:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">mask</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<div class="newline"></div><span class="go">masked_array(data = [1 -- 3 --],</span>
+<div class="newline"></div><span class="go">             mask = [False  True False  True],</span>
+<div class="newline"></div><span class="go">       fill_value = 999999)</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">mask</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<div class="newline"></div><span class="go">masked_array(data = [2 -- -- --],</span>
+<div class="newline"></div><span class="go">             mask = [False  True  True  True],</span>
+<div class="newline"></div><span class="go">       fill_value = 999999)</span>
+<div class="newline"></div></pre></div>
+</div>
+</li>
+<li><p class="first">Masking versions of common functions:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">sqrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">])</span> 
+<div class="newline"></div><span class="go">masked_array(data = [1.0 -- 1.41421356237... --],</span>
+<div class="newline"></div><span class="go">             mask = [False  True False  True],</span>
+<div class="newline"></div><span class="go">       fill_value = 1e+20)</span>
+<div class="newline"></div></pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There are other useful <a class="reference internal" href="../../advanced/advanced_numpy/index.html#array-siblings"><span class="std std-ref">array siblings</span></a></p>
+</div>
+<hr class="docutils" />
+<p>While it is off topic in a chapter on numpy, let’s take a moment to
+recall good coding practice, which really do pay off in the long run:</p>
+<div class="topic">
+<p class="topic-title first">Good practices</p>
+<ul>
+<li><p class="first">Explicit variable names (no need of a comment to explain what is in
+the variable)</p>
+</li>
+<li><p class="first">Style: spaces after commas, around <code class="docutils literal"><span class="pre">=</span></code>, etc.</p>
+<p>A certain number of rules for writing “beautiful” code (and, more
+importantly, using the same conventions as everybody else!) are
+given in the <a class="reference external" href="https://www.python.org/dev/peps/pep-0008">Style Guide for Python Code</a> and the <a class="reference external" href="https://www.python.org/dev/peps/pep-0257">Docstring
+Conventions</a> page (to
+manage help strings).</p>
+</li>
+<li><p class="first">Except some rare cases, variable names and comments in English.</p>
+</li>
+</ul>
+</div>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.3.3. More elaborate arrays</a><ul>
+<li><a class="reference internal" href="#more-data-types">1.3.3.1. More data types</a><ul>
+<li><a class="reference internal" href="#casting">Casting</a></li>
+<li><a class="reference internal" href="#different-data-type-sizes">Different data type sizes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#structured-data-types">1.3.3.2. Structured data types</a></li>
+<li><a class="reference internal" href="#maskedarray-dealing-with-propagation-of-missing-data">1.3.3.3. <code class="docutils literal"><span class="pre">maskedarray</span></code>: dealing with (propagation of) missing data</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="advanced_operations.html" title="1.3.4. Advanced operations"
+             >next</a></li>
+        <li class="right" >
+          <a href="operations.html" title="1.3.2. Numerical operations on arrays"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >1. Getting started with Python for science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >1.3. NumPy: creating and manipulating numerical data</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/numpy/elaborate_arrays.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

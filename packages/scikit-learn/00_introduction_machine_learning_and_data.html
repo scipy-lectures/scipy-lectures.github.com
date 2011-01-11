@@ -1,0 +1,402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>What is machine learning? &#8212; Scipy lecture notes</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2015.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+   
+    <link rel="stylesheet"
+	  href="http://yui.yahooapis.com/pure/0.6.0/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body role="document">
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/scikit-learn/00_introduction_machine_learning_and_data.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="code python highlight-default"><div class="highlight"><pre><span class="c1"># Start pylab inline mode, so figures will appear in the notebook</span>
+<div class="newline"></div><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="section" id="what-is-machine-learning">
+<h1>What is machine learning?<a class="headerlink" href="#what-is-machine-learning" title="Permalink to this headline">¶</a></h1>
+<p>Machine Learning is about building programs with <strong>tunable parameters</strong>
+that are adjusted automatically so as to improve their behavior by
+<strong>adapting to previously seen data.</strong></p>
+<p>Machine Learning can be considered a subfield of <strong>Artificial
+Intelligence</strong> since those algorithms can be seen as building blocks to
+make computers learn to behave more intelligently by somehow
+<strong>generalizing</strong> rather that just storing and retrieving data items like
+a database system would do.</p>
+<p>We&#8217;ll take a look at two very simple machine learning tasks here. The
+first is a <strong>classification</strong> task: the figure shows a collection of
+two-dimensional data, colored according to two different class labels. A
+classification algorithm may be used to draw a dividing boundary between
+the two clusters of points:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="c1"># Import the example plot from the figures directory</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">figures</span> <span class="k">import</span> <span class="n">plot_sgd_separator</span>
+<div class="newline"></div><span class="n">plot_sgd_separator</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>By drawing this separating line, we have learned a model which can
+<strong>generalize</strong> to new data: if you were to drop another point onto the
+plane which is unlabeled, this algorithm could now <strong>predict</strong> whether
+it&#8217;s a blue or a red point.</p>
+<p>The next simple task we&#8217;ll look at is a <strong>regression</strong> task: a simple
+best-fit line to a set of data:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">figures</span> <span class="k">import</span> <span class="n">plot_linear_regression</span>
+<div class="newline"></div><span class="n">plot_linear_regression</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Again, this is an example of fitting a model to data, but our focus here
+is that the model can make generalizations about new data. The model has
+been <strong>learned</strong> from the training data, and can be used to predict the
+result of test data: here, we might be given an x-value, and the model
+would allow us to predict the y value.</p>
+</div>
+<div class="section" id="data-in-scikit-learn">
+<h1>Data in scikit-learn<a class="headerlink" href="#data-in-scikit-learn" title="Permalink to this headline">¶</a></h1>
+<p>Most machine learning algorithms implemented in scikit-learn expect data
+to be stored in a <strong>two-dimensional array or matrix</strong>. The arrays can be
+either <code class="docutils literal"><span class="pre">numpy</span></code> arrays, or in some cases <code class="docutils literal"><span class="pre">scipy.sparse</span></code> matrices. The
+size of the array is expected to be <code class="docutils literal"><span class="pre">[n_samples,</span> <span class="pre">n_features]</span></code></p>
+<ul class="simple">
+<li><strong>n_samples:</strong> The number of samples: each sample is an item to
+process (e.g. classify). A sample can be a document, a picture, a
+sound, a video, an astronomical object, a row in database or CSV
+file, or whatever you can describe with a fixed set of quantitative
+traits.</li>
+<li><strong>n_features:</strong> The number of features or distinct traits that can
+be used to describe each item in a quantitative manner. Features are
+generally real-valued, but may be boolean or discrete-valued in some
+cases.</li>
+</ul>
+<p>The number of features must be fixed in advance. However it can be very
+high dimensional (e.g. millions of features) with most of them being
+zeros for a given sample. This is a case where <code class="docutils literal"><span class="pre">scipy.sparse</span></code> matrices
+can be useful, in that they are much more memory-efficient than numpy
+arrays.</p>
+<div class="section" id="a-simple-example-the-iris-dataset">
+<h2>A Simple Example: the Iris Dataset<a class="headerlink" href="#a-simple-example-the-iris-dataset" title="Permalink to this headline">¶</a></h2>
+<p>As an example of a simple dataset, we&#8217;re going to take a look at the
+iris data stored by scikit-learn. The data consists of measurements of
+three different species of irises. There are three species of iris in
+the dataset, which we can picture here:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+<div class="newline"></div><span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;figures/iris_setosa.jpg&#39;</span><span class="p">))</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iris Setosa</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;figures/iris_versicolor.jpg&#39;</span><span class="p">))</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iris Versicolor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;figures/iris_virginica.jpg&#39;</span><span class="p">))</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iris Virginica&quot;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="quick-question">
+<h2>Quick Question:<a class="headerlink" href="#quick-question" title="Permalink to this headline">¶</a></h2>
+<p><strong>If we want to design an algorithm to recognize iris species, what
+might the data be?</strong></p>
+<p>Remember: we need a 2D array of size <code class="docutils literal"><span class="pre">[n_samples</span> <span class="pre">x</span> <span class="pre">n_features]</span></code>.</p>
+<ul class="simple">
+<li>What would the <code class="docutils literal"><span class="pre">n_samples</span></code> refer to?</li>
+<li>What might the <code class="docutils literal"><span class="pre">n_features</span></code> refer to?</li>
+</ul>
+<p>Remember that there must be a <strong>fixed</strong> number of features for each
+sample, and feature number <code class="docutils literal"><span class="pre">i</span></code> must be a similar kind of quantity for
+each sample.</p>
+</div>
+<div class="section" id="loading-the-iris-data-with-scikit-learn">
+<h2>Loading the Iris Data with Scikit-learn<a class="headerlink" href="#loading-the-iris-data-with-scikit-learn" title="Permalink to this headline">¶</a></h2>
+<p>Scikit-learn has a very straightforward set of data on these iris
+species. The data consist of the following:</p>
+<ul class="simple">
+<li>Features in the Iris dataset:</li>
+</ul>
+<ol class="arabic simple">
+<li>sepal length in cm</li>
+<li>sepal width in cm</li>
+<li>petal length in cm</li>
+<li>petal width in cm</li>
+</ol>
+<ul class="simple">
+<li>Target classes to predict:</li>
+</ul>
+<ol class="arabic simple">
+<li>Iris Setosa</li>
+<li>Iris Versicolour</li>
+<li>Iris Virginica</li>
+</ol>
+<p><code class="docutils literal"><span class="pre">scikit-learn</span></code> embeds a copy of the iris CSV file along with a helper
+function to load it into numpy arrays:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_iris</span>
+<div class="newline"></div><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>The features of each sample flower are stored in the <code class="docutils literal"><span class="pre">data</span></code> attribute
+of the dataset:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">n_features</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>The information about the class of each sample is stored in the
+<code class="docutils literal"><span class="pre">target</span></code> attribute of the dataset:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>The names of the classes are stored in the last attribute, namely
+<code class="docutils literal"><span class="pre">target_names</span></code>:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>This data is four dimensional, but we can visualize two of the
+dimensions at a time using a simple scatter-plot. Again, we&#8217;ll start by
+enabling matplotlib inline mode:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="n">x_index</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="newline"></div><span class="n">y_index</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># this formatter will label the colorbar with the correct target names</span>
+<div class="newline"></div><span class="n">formatter</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">FuncFormatter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">x_index</span><span class="p">],</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">y_index</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="n">formatter</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="n">x_index</span><span class="p">])</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="n">y_index</span><span class="p">])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><strong>Excercise</strong>: Can you choose x_index and y_index to find a plot where
+it is easier to seperate the different classes of irises.</p>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">What is machine learning?</a></li>
+<li><a class="reference internal" href="#data-in-scikit-learn">Data in scikit-learn</a><ul>
+<li><a class="reference internal" href="#a-simple-example-the-iris-dataset">A Simple Example: the Iris Dataset</a></li>
+<li><a class="reference internal" href="#quick-question">Quick Question:</a></li>
+<li><a class="reference internal" href="#loading-the-iris-data-with-scikit-learn">Loading the Iris Data with Scikit-learn</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/scikit-learn/00_introduction_machine_learning_and_data.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.6.
+    </div>
+  </body>
+</html>

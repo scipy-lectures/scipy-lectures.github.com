@@ -1,0 +1,403 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Comparing optimizers &#8212; Scipy lecture notes</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2015.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../../index.html" />
+   
+    <link rel="stylesheet"
+	  href="http://yui.yahooapis.com/pure/0.6.0/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body role="document">
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/mathematical_optimization/auto_examples/compare_optimizers.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="comparing-optimizers">
+<span id="example-compare-optimizers-py"></span><h1>Comparing optimizers<a class="headerlink" href="#comparing-optimizers" title="Permalink to this headline">¶</a></h1>
+<p>Comparison of optimizers on various problems.</p>
+<p><strong>Python source code:</strong> <a class="reference download internal" href="../../../_downloads/compare_optimizers.py" download=""><code class="xref download docutils literal"><span class="pre">compare_optimizers.py</span></code></a></p>
+<div class="highlight-default"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">functools</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">pickle</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">optimize</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">joblib</span> <span class="k">import</span> <span class="n">Memory</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">cost_functions</span> <span class="k">import</span> <span class="n">mk_quad</span><span class="p">,</span> <span class="n">mk_gauss</span><span class="p">,</span> <span class="n">rosenbrock</span><span class="p">,</span>\
+<div class="newline"></div>    <span class="n">rosenbrock_prime</span><span class="p">,</span> <span class="n">rosenbrock_hessian</span><span class="p">,</span> <span class="n">LoggingFunction</span><span class="p">,</span> \
+<div class="newline"></div>    <span class="n">CountingFunction</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">my_partial</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">f</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">functools</span><span class="o">.</span><span class="n">update_wrapper</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">function</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">f</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">methods</span> <span class="o">=</span> <span class="p">{</span>
+<div class="newline"></div>    <span class="s1">&#39;Nelder-mead&#39;</span><span class="p">:</span>          <span class="n">my_partial</span><span class="p">(</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin</span><span class="p">,</span>
+<div class="newline"></div>                                        <span class="n">ftol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">5</span><span class="n">e3</span><span class="p">,</span>
+<div class="newline"></div>                                        <span class="n">xtol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="n">maxfun</span><span class="o">=</span><span class="mi">1</span><span class="n">e6</span><span class="p">),</span>
+<div class="newline"></div>    <span class="s1">&#39;Powell&#39;</span><span class="p">:</span>               <span class="n">my_partial</span><span class="p">(</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_powell</span><span class="p">,</span>
+<div class="newline"></div>                                        <span class="n">ftol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">5</span><span class="n">e3</span><span class="p">,</span>
+<div class="newline"></div>                                        <span class="n">maxfun</span><span class="o">=</span><span class="mi">1</span><span class="n">e7</span><span class="p">),</span>
+<div class="newline"></div>    <span class="s1">&#39;BFGS&#39;</span><span class="p">:</span>                 <span class="n">my_partial</span><span class="p">(</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_bfgs</span><span class="p">,</span>
+<div class="newline"></div>                                        <span class="n">gtol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">5</span><span class="n">e3</span><span class="p">),</span>
+<div class="newline"></div>    <span class="s1">&#39;Newton&#39;</span><span class="p">:</span>               <span class="n">my_partial</span><span class="p">(</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_ncg</span><span class="p">,</span>
+<div class="newline"></div>                                        <span class="n">avextol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">5</span><span class="n">e3</span><span class="p">),</span>
+<div class="newline"></div>    <span class="s1">&#39;Conjugate gradient&#39;</span><span class="p">:</span>   <span class="n">my_partial</span><span class="p">(</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_cg</span><span class="p">,</span>
+<div class="newline"></div>                                        <span class="n">gtol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">5</span><span class="n">e3</span><span class="p">),</span>
+<div class="newline"></div>    <span class="s1">&#39;L-BFGS&#39;</span><span class="p">:</span>               <span class="n">my_partial</span><span class="p">(</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_l_bfgs_b</span><span class="p">,</span>
+<div class="newline"></div>                                        <span class="n">approx_grad</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">factr</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+<div class="newline"></div>                                        <span class="n">pgtol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="n">maxfun</span><span class="o">=</span><span class="mi">1</span><span class="n">e7</span><span class="p">),</span>
+<div class="newline"></div>    <span class="s2">&quot;L-BFGS w f&#39;&quot;</span><span class="p">:</span>               <span class="n">my_partial</span><span class="p">(</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_l_bfgs_b</span><span class="p">,</span>
+<div class="newline"></div>                                        <span class="n">factr</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+<div class="newline"></div>                                        <span class="n">pgtol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="n">maxfun</span><span class="o">=</span><span class="mi">1</span><span class="n">e7</span><span class="p">),</span>
+<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1">###############################################################################</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">bencher</span><span class="p">(</span><span class="n">cost_name</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">x0</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">cost_function</span> <span class="o">=</span> <span class="n">mk_costs</span><span class="p">(</span><span class="n">ndim</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="n">cost_name</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">method</span> <span class="o">=</span> <span class="n">methods</span><span class="p">[</span><span class="n">method_name</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">f</span> <span class="o">=</span> <span class="n">LoggingFunction</span><span class="p">(</span><span class="n">cost_function</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">method</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">this_costs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">all_f_i</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">this_costs</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Bench with gradients</span>
+<div class="newline"></div><span class="k">def</span> <span class="nf">bencher_gradient</span><span class="p">(</span><span class="n">cost_name</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">x0</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">cost_function</span><span class="p">,</span> <span class="n">cost_function_prime</span><span class="p">,</span> <span class="n">hessian</span> <span class="o">=</span> <span class="n">mk_costs</span><span class="p">(</span><span class="n">ndim</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="n">cost_name</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">method</span> <span class="o">=</span> <span class="n">methods</span><span class="p">[</span><span class="n">method_name</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">f_prime</span> <span class="o">=</span> <span class="n">CountingFunction</span><span class="p">(</span><span class="n">cost_function_prime</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">f</span> <span class="o">=</span> <span class="n">LoggingFunction</span><span class="p">(</span><span class="n">cost_function</span><span class="p">,</span> <span class="n">counter</span><span class="o">=</span><span class="n">f_prime</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">method</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">this_costs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">all_f_i</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">this_costs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">counts</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Bench with the hessian</span>
+<div class="newline"></div><span class="k">def</span> <span class="nf">bencher_hessian</span><span class="p">(</span><span class="n">cost_name</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">x0</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">cost_function</span><span class="p">,</span> <span class="n">cost_function_prime</span><span class="p">,</span> <span class="n">hessian</span> <span class="o">=</span> <span class="n">mk_costs</span><span class="p">(</span><span class="n">ndim</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="n">cost_name</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">method</span> <span class="o">=</span> <span class="n">methods</span><span class="p">[</span><span class="n">method_name</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">f_prime</span> <span class="o">=</span> <span class="n">CountingFunction</span><span class="p">(</span><span class="n">cost_function_prime</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">hessian</span> <span class="o">=</span> <span class="n">CountingFunction</span><span class="p">(</span><span class="n">hessian</span><span class="p">,</span> <span class="n">counter</span><span class="o">=</span><span class="n">f_prime</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">f</span> <span class="o">=</span> <span class="n">LoggingFunction</span><span class="p">(</span><span class="n">cost_function</span><span class="p">,</span> <span class="n">counter</span><span class="o">=</span><span class="n">f_prime</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">method</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">fhess</span><span class="o">=</span><span class="n">hessian</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">this_costs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">all_f_i</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">this_costs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">counts</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">mk_costs</span><span class="p">(</span><span class="n">ndim</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">costs</span> <span class="o">=</span> <span class="p">{</span>
+<div class="newline"></div>            <span class="s1">&#39;Well-conditioned quadratic&#39;</span><span class="p">:</span>      <span class="n">mk_quad</span><span class="p">(</span><span class="o">.</span><span class="mi">7</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="n">ndim</span><span class="p">),</span>
+<div class="newline"></div>            <span class="s1">&#39;Ill-conditioned quadratic&#39;</span><span class="p">:</span>       <span class="n">mk_quad</span><span class="p">(</span><span class="o">.</span><span class="mi">02</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="n">ndim</span><span class="p">),</span>
+<div class="newline"></div>            <span class="s1">&#39;Well-conditioned Gaussian&#39;</span><span class="p">:</span>       <span class="n">mk_gauss</span><span class="p">(</span><span class="o">.</span><span class="mi">7</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="n">ndim</span><span class="p">),</span>
+<div class="newline"></div>            <span class="s1">&#39;Ill-conditioned Gaussian&#39;</span><span class="p">:</span>        <span class="n">mk_gauss</span><span class="p">(</span><span class="o">.</span><span class="mi">02</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="n">ndim</span><span class="p">),</span>
+<div class="newline"></div>            <span class="s1">&#39;Rosenbrock  &#39;</span><span class="p">:</span>   <span class="p">(</span><span class="n">rosenbrock</span><span class="p">,</span> <span class="n">rosenbrock_prime</span><span class="p">,</span> <span class="n">rosenbrock_hessian</span><span class="p">),</span>
+<div class="newline"></div>        <span class="p">}</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">starting_points</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="n">rng</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">ndim</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+<div class="newline"></div>        <span class="n">starting_points</span> <span class="o">=</span> <span class="n">starting_points</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">costs</span><span class="p">,</span> <span class="n">starting_points</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1">###############################################################################</span>
+<div class="newline"></div><span class="c1"># Compare methods without gradient</span>
+<div class="newline"></div><span class="n">mem</span> <span class="o">=</span> <span class="n">Memory</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">if</span> <span class="mi">1</span><span class="p">:</span>
+<div class="newline"></div>    <span class="n">gradient_less_benchs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">for</span> <span class="n">ndim</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">128</span><span class="p">):</span>
+<div class="newline"></div>        <span class="n">this_dim_benchs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<div class="newline"></div>        <span class="n">costs</span><span class="p">,</span> <span class="n">starting_points</span> <span class="o">=</span> <span class="n">mk_costs</span><span class="p">(</span><span class="n">ndim</span><span class="p">)</span>
+<div class="newline"></div>        <span class="k">for</span> <span class="n">cost_name</span><span class="p">,</span> <span class="n">cost_function</span> <span class="ow">in</span> <span class="n">costs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+<div class="newline"></div>            <span class="c1"># We don&#39;t need the derivative or the hessian</span>
+<div class="newline"></div>            <span class="n">cost_function</span> <span class="o">=</span> <span class="n">cost_function</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="newline"></div>            <span class="n">function_bench</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<div class="newline"></div>            <span class="k">for</span> <span class="n">x0</span> <span class="ow">in</span> <span class="n">starting_points</span><span class="p">:</span>
+<div class="newline"></div>                <span class="n">all_bench</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<div class="newline"></div>                <span class="c1"># Bench gradient-less</span>
+<div class="newline"></div>                <span class="k">for</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+<div class="newline"></div>                    <span class="k">if</span> <span class="n">method_name</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;Newton&#39;</span><span class="p">,</span> <span class="s2">&quot;L-BFGS w f&#39;&quot;</span><span class="p">):</span>
+<div class="newline"></div>                        <span class="k">continue</span>
+<div class="newline"></div>                    <span class="n">this_bench</span> <span class="o">=</span> <span class="n">function_bench</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">method_name</span><span class="p">,</span> <span class="nb">list</span><span class="p">())</span>
+<div class="newline"></div>                    <span class="n">this_costs</span> <span class="o">=</span> <span class="n">mem</span><span class="o">.</span><span class="n">cache</span><span class="p">(</span><span class="n">bencher</span><span class="p">)(</span><span class="n">cost_name</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span>
+<div class="newline"></div>                                                    <span class="n">method_name</span><span class="p">,</span> <span class="n">x0</span><span class="p">)</span>
+<div class="newline"></div>                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">this_costs</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">25</span><span class="o">*</span><span class="n">ndim</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">9</span><span class="p">):</span>
+<div class="newline"></div>                        <span class="n">convergence</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">this_costs</span><span class="p">)</span>
+<div class="newline"></div>                    <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>                        <span class="n">convergence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+<div class="newline"></div>                                        <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">this_costs</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">25</span><span class="o">*</span><span class="n">ndim</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">9</span><span class="p">)</span>
+<div class="newline"></div>                                    <span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+<div class="newline"></div>                    <span class="n">this_bench</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">convergence</span><span class="p">)</span>
+<div class="newline"></div>                    <span class="n">all_bench</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">convergence</span><span class="p">)</span>
+<div class="newline"></div>                    <span class="n">function_bench</span><span class="p">[</span><span class="n">method_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_bench</span>
+<div class="newline"></div>
+<div class="newline"></div>                <span class="c1"># Bench with gradients</span>
+<div class="newline"></div>                <span class="k">for</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+<div class="newline"></div>                    <span class="k">if</span> <span class="n">method_name</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;Newton&#39;</span><span class="p">,</span> <span class="s1">&#39;Powell&#39;</span><span class="p">,</span> <span class="s1">&#39;Nelder-mead&#39;</span><span class="p">,</span>
+<div class="newline"></div>                                       <span class="s2">&quot;L-BFGS&quot;</span><span class="p">):</span>
+<div class="newline"></div>                        <span class="k">continue</span>
+<div class="newline"></div>                    <span class="n">this_method_name</span> <span class="o">=</span> <span class="n">method_name</span>
+<div class="newline"></div>                    <span class="k">if</span> <span class="n">method_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot; w f&#39;&quot;</span><span class="p">):</span>
+<div class="newline"></div>                        <span class="n">this_method_name</span> <span class="o">=</span> <span class="n">method_name</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+<div class="newline"></div>                    <span class="n">this_method_name</span> <span class="o">=</span> <span class="n">this_method_name</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">w f&#39;&quot;</span>
+<div class="newline"></div>                    <span class="n">this_bench</span> <span class="o">=</span> <span class="n">function_bench</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">this_method_name</span><span class="p">,</span> <span class="nb">list</span><span class="p">())</span>
+<div class="newline"></div>                    <span class="n">this_costs</span><span class="p">,</span> <span class="n">this_counts</span> <span class="o">=</span> <span class="n">mem</span><span class="o">.</span><span class="n">cache</span><span class="p">(</span><span class="n">bencher_gradient</span><span class="p">)(</span>
+<div class="newline"></div>                                        <span class="n">cost_name</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">x0</span><span class="p">)</span>
+<div class="newline"></div>                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">this_costs</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">25</span><span class="o">*</span><span class="n">ndim</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">9</span><span class="p">):</span>
+<div class="newline"></div>                        <span class="n">convergence</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">this_counts</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<div class="newline"></div>                    <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>                        <span class="n">convergence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+<div class="newline"></div>                                        <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">this_costs</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">25</span><span class="o">*</span><span class="n">ndim</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">9</span><span class="p">)</span>
+<div class="newline"></div>                                        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+<div class="newline"></div>                        <span class="n">convergence</span> <span class="o">=</span> <span class="n">this_counts</span><span class="p">[</span><span class="n">convergence</span><span class="p">]</span>
+<div class="newline"></div>                    <span class="n">this_bench</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">convergence</span><span class="p">)</span>
+<div class="newline"></div>                    <span class="n">all_bench</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">convergence</span><span class="p">)</span>
+<div class="newline"></div>                    <span class="n">function_bench</span><span class="p">[</span><span class="n">this_method_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_bench</span>
+<div class="newline"></div>
+<div class="newline"></div>                <span class="c1"># Bench Newton with Hessian</span>
+<div class="newline"></div>                <span class="n">method_name</span> <span class="o">=</span> <span class="s1">&#39;Newton&#39;</span>
+<div class="newline"></div>                <span class="n">this_bench</span> <span class="o">=</span> <span class="n">function_bench</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">method_name</span><span class="p">,</span> <span class="nb">list</span><span class="p">())</span>
+<div class="newline"></div>                <span class="n">this_costs</span> <span class="o">=</span> <span class="n">mem</span><span class="o">.</span><span class="n">cache</span><span class="p">(</span><span class="n">bencher_hessian</span><span class="p">)(</span><span class="n">cost_name</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span>
+<div class="newline"></div>                                                <span class="n">method_name</span><span class="p">,</span> <span class="n">x0</span><span class="p">)</span>
+<div class="newline"></div>                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">this_costs</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">25</span><span class="o">*</span><span class="n">ndim</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">9</span><span class="p">):</span>
+<div class="newline"></div>                    <span class="n">convergence</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">this_costs</span><span class="p">)</span>
+<div class="newline"></div>                <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>                    <span class="n">convergence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+<div class="newline"></div>                                    <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">this_costs</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">25</span><span class="o">*</span><span class="n">ndim</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">9</span><span class="p">)</span>
+<div class="newline"></div>                                <span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+<div class="newline"></div>                <span class="n">this_bench</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">convergence</span><span class="p">)</span>
+<div class="newline"></div>                <span class="n">all_bench</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">convergence</span><span class="p">)</span>
+<div class="newline"></div>                <span class="n">function_bench</span><span class="p">[</span><span class="n">method_name</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">w Hessian &#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_bench</span>
+<div class="newline"></div>
+<div class="newline"></div>                <span class="c1"># Normalize across methods</span>
+<div class="newline"></div>                <span class="n">x0_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">all_bench</span><span class="p">)</span>
+<div class="newline"></div>                <span class="k">for</span> <span class="n">method_name</span> <span class="ow">in</span> <span class="n">function_bench</span><span class="p">:</span>
+<div class="newline"></div>                    <span class="n">function_bench</span><span class="p">[</span><span class="n">method_name</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="n">x0_mean</span>
+<div class="newline"></div>            <span class="n">this_dim_benchs</span><span class="p">[</span><span class="n">cost_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">function_bench</span>
+<div class="newline"></div>        <span class="n">gradient_less_benchs</span><span class="p">[</span><span class="n">ndim</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_dim_benchs</span>
+<div class="newline"></div>        <span class="nb">print</span> <span class="mi">80</span><span class="o">*</span><span class="s1">&#39;_&#39;</span>
+<div class="newline"></div>        <span class="nb">print</span> <span class="s1">&#39;Done cost </span><span class="si">%s</span><span class="s1">, ndim </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cost_name</span><span class="p">,</span> <span class="n">ndim</span><span class="p">)</span>
+<div class="newline"></div>        <span class="nb">print</span> <span class="mi">80</span><span class="o">*</span><span class="s1">&#39;_&#39;</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">gradient_less_benchs</span><span class="p">,</span> <span class="n">file</span><span class="p">(</span><span class="s1">&#39;compare_optimizers.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div></pre></div>
+</div>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc"></div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/mathematical_optimization/auto_examples/compare_optimizers.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.6.
+    </div>
+  </body>
+</html>

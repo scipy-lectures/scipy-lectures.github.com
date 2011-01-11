@@ -1,0 +1,383 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>1.5.11.1. Maximum wind speed prediction at the Sprogø station &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1.5.11.2. Non linear least squares curve fitting: application to point extraction in topographical lidar data" href="optimize-fit.html" />
+    <link rel="prev" title="1.5. Scipy : high-level scientific computing" href="../scipy.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="optimize-fit.html" title="1.5.11.2. Non linear least squares curve fitting: application to point extraction in topographical lidar data"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../scipy.html" title="1.5. Scipy : high-level scientific computing"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >1. Getting started with Python for science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../scipy.html" accesskey="U">1.5. Scipy : high-level scientific computing</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/summary-exercises/stats-interpolate.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="maximum-wind-speed-prediction-at-the-sprogo-station">
+<span id="summary-exercise-stat-interp"></span><h1>1.5.11.1. Maximum wind speed prediction at the Sprogø station<a class="headerlink" href="#maximum-wind-speed-prediction-at-the-sprogo-station" title="Permalink to this headline">¶</a></h1>
+<p>The exercise goal is to predict the maximum wind speed occurring every
+50 years even if no measure exists for such a period. The available
+data are only measured over 21 years at the Sprogø meteorological
+station located in Denmark. First, the statistical steps will be given
+and then illustrated with functions from the scipy.interpolate module.
+At the end the interested readers are invited to compute results from
+raw data and in a slightly different approach.</p>
+<div class="section" id="statistical-approach">
+<h2>Statistical approach<a class="headerlink" href="#statistical-approach" title="Permalink to this headline">¶</a></h2>
+<p>The annual maxima are supposed to fit a normal probability density
+function. However such function is not going to be estimated because
+it gives a probability from a wind speed maxima. Finding the maximum wind
+speed occurring every 50 years requires the opposite approach, the result
+needs to be found from a defined probability. That is the quantile function
+role and the exercise goal will be to find it. In the current model,
+it is supposed that the maximum wind speed occurring every 50 years is
+defined as the upper 2% quantile.</p>
+<p>By definition, the quantile function is the inverse of the cumulative
+distribution function. The latter describes the probability distribution
+of an annual maxima. In the exercise, the cumulative probability <code class="docutils literal"><span class="pre">p_i</span></code>
+for a given year <code class="docutils literal"><span class="pre">i</span></code> is defined as <code class="docutils literal"><span class="pre">p_i</span> <span class="pre">=</span> <span class="pre">i/(N+1)</span></code> with <code class="docutils literal"><span class="pre">N</span> <span class="pre">=</span> <span class="pre">21</span></code>,
+the number of measured years. Thus it will be possible to calculate
+the cumulative probability of every measured wind speed maxima.
+From those experimental points, the scipy.interpolate module will be
+very useful for fitting the quantile function. Finally the 50 years
+maxima is going to be evaluated from the cumulative probability
+of the 2% quantile.</p>
+</div>
+<div class="section" id="computing-the-cumulative-probabilities">
+<h2>Computing the cumulative probabilities<a class="headerlink" href="#computing-the-cumulative-probabilities" title="Permalink to this headline">¶</a></h2>
+<p>The annual wind speeds maxima have already been computed and saved in
+the numpy format in the file <a class="reference download internal" href="../../_downloads/max-speeds.npy" download=""><code class="xref download docutils literal"><span class="pre">examples/max-speeds.npy</span></code></a>, thus they will be loaded
+by using numpy:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">max_speeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;intro/summary-exercises/examples/max-speeds.npy&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">years_nb</span> <span class="o">=</span> <span class="n">max_speeds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Following the cumulative probability definition <code class="docutils literal"><span class="pre">p_i</span></code> from the previous
+section, the corresponding values will be:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cprob</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">years_nb</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">years_nb</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>and they are assumed to fit the given wind speeds:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sorted_max_speeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">max_speeds</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="prediction-with-univariatespline">
+<h2>Prediction with UnivariateSpline<a class="headerlink" href="#prediction-with-univariatespline" title="Permalink to this headline">¶</a></h2>
+<p>In this section the quantile function will be estimated by using the
+<code class="docutils literal"><span class="pre">UnivariateSpline</span></code> class which can represent a spline from points. The
+default behavior is to build a spline of degree 3 and points can
+have different weights according to their reliability. Variants are
+<code class="docutils literal"><span class="pre">InterpolatedUnivariateSpline</span></code> and <code class="docutils literal"><span class="pre">LSQUnivariateSpline</span></code> on which
+errors checking is going to change.  In case a 2D spline is wanted,
+the <code class="docutils literal"><span class="pre">BivariateSpline</span></code> class family is provided. All those classes
+for 1D and 2D splines use the FITPACK Fortran subroutines, that’s why a
+lower library access is available through the <code class="docutils literal"><span class="pre">splrep</span></code> and <code class="docutils literal"><span class="pre">splev</span></code>
+functions for respectively representing and evaluating a spline.
+Moreover interpolation functions without the use of FITPACK parameters
+are also provided for simpler use (see <code class="docutils literal"><span class="pre">interp1d</span></code>, <code class="docutils literal"><span class="pre">interp2d</span></code>,
+<code class="docutils literal"><span class="pre">barycentric_interpolate</span></code> and so on).</p>
+<p>For the Sprogø maxima wind speeds, the <code class="docutils literal"><span class="pre">UnivariateSpline</span></code> will be
+used because a spline of degree 3 seems to correctly fit the data:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">UnivariateSpline</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">quantile_func</span> <span class="o">=</span> <span class="n">UnivariateSpline</span><span class="p">(</span><span class="n">cprob</span><span class="p">,</span> <span class="n">sorted_max_speeds</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>The quantile function is now going to be evaluated from the full range
+of probabilities:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nprob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1e2</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">fitted_max_speeds</span> <span class="o">=</span> <span class="n">quantile_func</span><span class="p">(</span><span class="n">nprob</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>In the current model, the maximum wind speed occurring every 50 years is
+defined as the upper 2% quantile. As a result, the cumulative probability
+value will be:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fifty_prob</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="mf">0.02</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>So the storm wind speed occurring every 50 years can be guessed by:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fifty_wind</span> <span class="o">=</span> <span class="n">quantile_func</span><span class="p">(</span><span class="n">fifty_prob</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">fifty_wind</span>      
+<div class="newline"></div><span class="go">array(32.97989825...)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>The results are now gathered on a Matplotlib figure:</p>
+<div class="figure align-center" id="id1">
+<img alt="../../_images/sphx_glr_plot_cumulative_wind_speed_prediction_001.png" src="../../_images/sphx_glr_plot_cumulative_wind_speed_prediction_001.png" />
+<p class="caption"><span class="caption-text">Solution: <span class="xref std std-ref">Python source file</span></span></p>
+</div>
+</div>
+<div class="section" id="exercise-with-the-gumbell-distribution">
+<h2>Exercise with the Gumbell distribution<a class="headerlink" href="#exercise-with-the-gumbell-distribution" title="Permalink to this headline">¶</a></h2>
+<p>The interested readers are now invited to make an exercise by using the wind
+speeds measured over 21 years. The measurement period is around 90 minutes (the
+original period was around 10 minutes but the file size has been reduced for
+making the exercise setup easier). The data are stored in numpy format inside
+the file <a class="reference download internal" href="../../_downloads/sprog-windspeeds.npy" download=""><code class="xref download docutils literal"><span class="pre">examples/sprog-windspeeds.npy</span></code></a>. Do not look at
+the source code for the plots
+until you have completed the exercise.</p>
+<ul class="simple">
+<li>The first step will be to find the annual maxima by using numpy
+and plot them as a matplotlib bar figure.</li>
+</ul>
+<div class="figure align-center" id="id2">
+<img alt="../../_images/sphx_glr_plot_sprog_annual_maxima_001.png" src="../../_images/sphx_glr_plot_sprog_annual_maxima_001.png" />
+<p class="caption"><span class="caption-text">Solution: <span class="xref std std-ref">Python source file</span></span></p>
+</div>
+<ul class="simple">
+<li>The second step will be to use the Gumbell distribution on cumulative
+probabilities <code class="docutils literal"><span class="pre">p_i</span></code> defined as <code class="docutils literal"><span class="pre">-log(</span> <span class="pre">-log(p_i)</span> <span class="pre">)</span></code> for fitting
+a linear quantile function (remember that you can define the degree
+of the <code class="docutils literal"><span class="pre">UnivariateSpline</span></code>). Plotting the annual maxima versus the
+Gumbell distribution should give you the following figure.</li>
+</ul>
+<div class="figure align-center" id="id3">
+<img alt="../../_images/sphx_glr_plot_gumbell_wind_speed_prediction_001.png" src="../../_images/sphx_glr_plot_gumbell_wind_speed_prediction_001.png" />
+<p class="caption"><span class="caption-text">Solution: <span class="xref std std-ref">Python source file</span></span></p>
+</div>
+<ul class="simple">
+<li>The last step will be to find 34.23 m/s for the maximum wind speed
+occurring every 50 years.</li>
+</ul>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.5.11.1. Maximum wind speed prediction at the Sprogø station</a><ul>
+<li><a class="reference internal" href="#statistical-approach">Statistical approach</a></li>
+<li><a class="reference internal" href="#computing-the-cumulative-probabilities">Computing the cumulative probabilities</a></li>
+<li><a class="reference internal" href="#prediction-with-univariatespline">Prediction with UnivariateSpline</a></li>
+<li><a class="reference internal" href="#exercise-with-the-gumbell-distribution">Exercise with the Gumbell distribution</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="optimize-fit.html" title="1.5.11.2. Non linear least squares curve fitting: application to point extraction in topographical lidar data"
+             >next</a></li>
+        <li class="right" >
+          <a href="../scipy.html" title="1.5. Scipy : high-level scientific computing"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >1. Getting started with Python for science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../scipy.html" >1.5. Scipy : high-level scientific computing</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/summary-exercises/stats-interpolate.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

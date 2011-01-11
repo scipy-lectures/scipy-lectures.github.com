@@ -1,0 +1,494 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Scipy lecture notes</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2015.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../../index.html" />
+   
+    <link rel="stylesheet"
+	  href="http://yui.yahooapis.com/pure/0.6.0/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../../index.html">Scipy lecture notes</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/image_processing/auto_examples/tv_denoise.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <p id="example-tv-denoise-py"><strong>Python source code:</strong> <a class="reference download internal" href="../../../_downloads/tv_denoise.py"><tt class="xref download docutils literal"><span class="pre">tv_denoise.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">_tv_denoise_3d</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">2.e-4</span><span class="p">,</span> <span class="n">keep_type</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+<div class="newline"></div>    <span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="sd">    Perform total-variation denoising on 3-D arrays</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Parameters</span>
+<div class="newline"></div><span class="sd">    ----------</span>
+<div class="newline"></div><span class="sd">    im: ndarray</span>
+<div class="newline"></div><span class="sd">        3-D input data to be denoised</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    weight: float, optional</span>
+<div class="newline"></div><span class="sd">        denoising weight. The greater ``weight``, the more denoising (at</span>
+<div class="newline"></div><span class="sd">        the expense of fidelity to ``input``)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    eps: float, optional</span>
+<div class="newline"></div><span class="sd">        relative difference of the value of the cost function that determines</span>
+<div class="newline"></div><span class="sd">        the stop criterion. The algorithm stops when:</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">            (E_(n-1) - E_n) &lt; eps * E_0</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    keep_type: bool, optional (False)</span>
+<div class="newline"></div><span class="sd">        whether the output has the same dtype as the input array.</span>
+<div class="newline"></div><span class="sd">        keep_type is False by default, and the dtype of the output</span>
+<div class="newline"></div><span class="sd">        is np.float</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    n_iter_max: int, optional</span>
+<div class="newline"></div><span class="sd">        maximal number of iterations used for the optimization.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Returns</span>
+<div class="newline"></div><span class="sd">    -------</span>
+<div class="newline"></div><span class="sd">    out: ndarray</span>
+<div class="newline"></div><span class="sd">        denoised array</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Notes</span>
+<div class="newline"></div><span class="sd">    -----</span>
+<div class="newline"></div><span class="sd">    Rudin, Osher and Fatemi algorithm</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Examples</span>
+<div class="newline"></div><span class="sd">    ---------</span>
+<div class="newline"></div><span class="sd">    First build synthetic noisy data</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; x, y, z = np.ogrid[0:40, 0:40, 0:40]</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; mask = (x -22)**2 + (y - 20)**2 + (z - 17)**2 &lt; 8**2</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; mask = mask.astype(np.float)</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; mask += 0.2*np.random.randn(*mask.shape)</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; res = tv_denoise_3d(mask, weight=100)</span>
+<div class="newline"></div><span class="sd">    &quot;&quot;&quot;</span>
+<div class="newline"></div>    <span class="n">im_type</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">dtype</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="n">im_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">:</span>
+<div class="newline"></div>        <span class="n">im</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">px</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">py</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">gx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">gy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">gz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="newline"></div>    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_iter_max</span><span class="p">:</span>
+<div class="newline"></div>        <span class="n">d</span> <span class="o">=</span> <span class="o">-</span> <span class="n">px</span> <span class="o">-</span> <span class="n">py</span> <span class="o">-</span> <span class="n">pz</span>
+<div class="newline"></div>        <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+=</span> <span class="n">px</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
+<div class="newline"></div>        <span class="n">d</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">+=</span> <span class="n">py</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
+<div class="newline"></div>        <span class="n">d</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">+=</span> <span class="n">pz</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
+<div class="newline"></div>        
+<div class="newline"></div>        <span class="n">out</span> <span class="o">=</span> <span class="n">im</span> <span class="o">+</span> <span class="n">d</span>
+<div class="newline"></div>        <span class="n">E</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="n">gx</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> 
+<div class="newline"></div>        <span class="n">gy</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+<div class="newline"></div>        <span class="n">gz</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> 
+<div class="newline"></div>        <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">gy</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">gz</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">E</span> <span class="o">+=</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">norm</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class="newline"></div>        <span class="n">norm</span> <span class="o">*=</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="n">weight</span>
+<div class="newline"></div>        <span class="n">norm</span> <span class="o">+=</span> <span class="mf">1.</span>
+<div class="newline"></div>        <span class="n">px</span> <span class="o">-=</span> <span class="mf">1.</span><span class="o">/</span><span class="mf">6.</span><span class="o">*</span><span class="n">gx</span>
+<div class="newline"></div>        <span class="n">px</span> <span class="o">/=</span> <span class="n">norm</span>
+<div class="newline"></div>        <span class="n">py</span> <span class="o">-=</span> <span class="mf">1.</span><span class="o">/</span><span class="mf">6.</span><span class="o">*</span><span class="n">gy</span>
+<div class="newline"></div>        <span class="n">py</span> <span class="o">/=</span> <span class="n">norm</span>
+<div class="newline"></div>        <span class="n">pz</span> <span class="o">-=</span> <span class="mi">1</span><span class="o">/</span><span class="mf">6.</span><span class="o">*</span><span class="n">gz</span>
+<div class="newline"></div>        <span class="n">pz</span> <span class="o">/=</span> <span class="n">norm</span>
+<div class="newline"></div>        <span class="n">E</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<div class="newline"></div>        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">E_init</span> <span class="o">=</span> <span class="n">E</span>
+<div class="newline"></div>            <span class="n">E_previous</span> <span class="o">=</span> <span class="n">E</span>
+<div class="newline"></div>        <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E_previous</span> <span class="o">-</span> <span class="n">E</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">E_init</span><span class="p">:</span>
+<div class="newline"></div>                <span class="k">break</span>
+<div class="newline"></div>            <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>                <span class="n">E_previous</span> <span class="o">=</span> <span class="n">E</span>
+<div class="newline"></div>        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="n">keep_type</span><span class="p">:</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">im_type</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="n">out</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">_tv_denoise_2d</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">2.e-4</span><span class="p">,</span> <span class="n">keep_type</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+<div class="newline"></div>    <span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="sd">    Perform total-variation denoising</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Parameters</span>
+<div class="newline"></div><span class="sd">    ----------</span>
+<div class="newline"></div><span class="sd">    im: ndarray</span>
+<div class="newline"></div><span class="sd">        input data to be denoised</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    weight: float, optional</span>
+<div class="newline"></div><span class="sd">        denoising weight. The greater ``weight``, the more denoising (at </span>
+<div class="newline"></div><span class="sd">        the expense of fidelity to ``input``) </span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    eps: float, optional</span>
+<div class="newline"></div><span class="sd">        relative difference of the value of the cost function that determines</span>
+<div class="newline"></div><span class="sd">        the stop criterion. The algorithm stops when:</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">            (E_(n-1) - E_n) &lt; eps * E_0</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    keep_type: bool, optional (False)</span>
+<div class="newline"></div><span class="sd">        whether the output has the same dtype as the input array. </span>
+<div class="newline"></div><span class="sd">        keep_type is False by default, and the dtype of the output</span>
+<div class="newline"></div><span class="sd">        is np.float</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    n_iter_max: int, optional</span>
+<div class="newline"></div><span class="sd">        maximal number of iterations used for the optimization.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Returns</span>
+<div class="newline"></div><span class="sd">    -------</span>
+<div class="newline"></div><span class="sd">    out: ndarray</span>
+<div class="newline"></div><span class="sd">        denoised array</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Notes</span>
+<div class="newline"></div><span class="sd">    -----</span>
+<div class="newline"></div><span class="sd">    The principle of total variation denoising is explained in</span>
+<div class="newline"></div><span class="sd">    http://en.wikipedia.org/wiki/Total_variation_denoising</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    This code is an implementation of the algorithm of Rudin, Fatemi and Osher</span>
+<div class="newline"></div><span class="sd">    that was proposed by Chambolle in [1]_.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    References</span>
+<div class="newline"></div><span class="sd">    ----------</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    .. [1] A. Chambolle, An algorithm for total variation minimization and</span>
+<div class="newline"></div><span class="sd">           applications, Journal of Mathematical Imaging and Vision,</span>
+<div class="newline"></div><span class="sd">           Springer, 2004, 20, 89-97.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Examples</span>
+<div class="newline"></div><span class="sd">    ---------</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; import scipy</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; lena = scipy.misc.lena().astype(np.float)</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; lena += 0.5 * lena.std()*np.random.randn(*lena.shape)</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; denoised_lena = tv_denoise(lena, weight=60.0)</span>
+<div class="newline"></div><span class="sd">    &quot;&quot;&quot;</span>
+<div class="newline"></div>    <span class="n">im_type</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">dtype</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="n">im_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">:</span>
+<div class="newline"></div>        <span class="n">im</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">px</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">py</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">gx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">gy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="newline"></div>    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_iter_max</span><span class="p">:</span>
+<div class="newline"></div>        <span class="n">d</span> <span class="o">=</span> <span class="o">-</span><span class="n">px</span> <span class="o">-</span><span class="n">py</span>
+<div class="newline"></div>        <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+=</span> <span class="n">px</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<div class="newline"></div>        <span class="n">d</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">+=</span> <span class="n">py</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="n">out</span> <span class="o">=</span> <span class="n">im</span> <span class="o">+</span> <span class="n">d</span>
+<div class="newline"></div>        <span class="n">E</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class="newline"></div>        <span class="n">gx</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">gy</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">gy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">E</span> <span class="o">+=</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">norm</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class="newline"></div>        <span class="n">norm</span> <span class="o">*=</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="n">weight</span>
+<div class="newline"></div>        <span class="n">norm</span> <span class="o">+=</span> <span class="mi">1</span>
+<div class="newline"></div>        <span class="n">px</span> <span class="o">-=</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">gx</span>
+<div class="newline"></div>        <span class="n">px</span> <span class="o">/=</span> <span class="n">norm</span>
+<div class="newline"></div>        <span class="n">py</span> <span class="o">-=</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">gy</span>
+<div class="newline"></div>        <span class="n">py</span> <span class="o">/=</span> <span class="n">norm</span>
+<div class="newline"></div>        <span class="n">E</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<div class="newline"></div>        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">E_init</span> <span class="o">=</span> <span class="n">E</span>
+<div class="newline"></div>            <span class="n">E_previous</span> <span class="o">=</span> <span class="n">E</span>
+<div class="newline"></div>        <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E_previous</span> <span class="o">-</span> <span class="n">E</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">E_init</span><span class="p">:</span>
+<div class="newline"></div>                <span class="k">break</span>
+<div class="newline"></div>            <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>                <span class="n">E_previous</span> <span class="o">=</span> <span class="n">E</span>
+<div class="newline"></div>        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="n">keep_type</span><span class="p">:</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">im_type</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="n">out</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">tv_denoise</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">2.e-4</span><span class="p">,</span> <span class="n">keep_type</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+<div class="newline"></div>    <span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="sd">    Perform total-variation denoising on 2-d and 3-d images</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Parameters</span>
+<div class="newline"></div><span class="sd">    ----------</span>
+<div class="newline"></div><span class="sd">    im: ndarray (2d or 3d) of ints, uints or floats</span>
+<div class="newline"></div><span class="sd">        input data to be denoised. `im` can be of any numeric type,</span>
+<div class="newline"></div><span class="sd">        but it is cast into an ndarray of floats for the computation</span>
+<div class="newline"></div><span class="sd">        of the denoised image.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    weight: float, optional</span>
+<div class="newline"></div><span class="sd">        denoising weight. The greater ``weight``, the more denoising (at</span>
+<div class="newline"></div><span class="sd">        the expense of fidelity to ``input``)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    eps: float, optional</span>
+<div class="newline"></div><span class="sd">        relative difference of the value of the cost function that </span>
+<div class="newline"></div><span class="sd">        determines the stop criterion. The algorithm stops when:</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">            (E_(n-1) - E_n) &lt; eps * E_0</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    keep_type: bool, optional (False)</span>
+<div class="newline"></div><span class="sd">        whether the output has the same dtype as the input array.</span>
+<div class="newline"></div><span class="sd">        keep_type is False by default, and the dtype of the output</span>
+<div class="newline"></div><span class="sd">        is np.float</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    n_iter_max: int, optional</span>
+<div class="newline"></div><span class="sd">        maximal number of iterations used for the optimization.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Returns</span>
+<div class="newline"></div><span class="sd">    -------</span>
+<div class="newline"></div><span class="sd">    out: ndarray</span>
+<div class="newline"></div><span class="sd">        denoised array</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Notes</span>
+<div class="newline"></div><span class="sd">    -----</span>
+<div class="newline"></div><span class="sd">    The principle of total variation denoising is explained in</span>
+<div class="newline"></div><span class="sd">    http://en.wikipedia.org/wiki/Total_variation_denoising</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    The principle of total variation denoising is to minimize the</span>
+<div class="newline"></div><span class="sd">    total variation of the image, which can be roughly described as </span>
+<div class="newline"></div><span class="sd">    the integral of the norm of the image gradient. Total variation </span>
+<div class="newline"></div><span class="sd">    denoising tends to produce &quot;cartoon-like&quot; images, that is, </span>
+<div class="newline"></div><span class="sd">    piecewise-constant images.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    This code is an implementation of the algorithm of Rudin, Fatemi and Osher </span>
+<div class="newline"></div><span class="sd">    that was proposed by Chambolle in [1]_.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    References</span>
+<div class="newline"></div><span class="sd">    ----------</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    .. [1] A. Chambolle, An algorithm for total variation minimization and </span>
+<div class="newline"></div><span class="sd">           applications, Journal of Mathematical Imaging and Vision, </span>
+<div class="newline"></div><span class="sd">           Springer, 2004, 20, 89-97.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Examples</span>
+<div class="newline"></div><span class="sd">    ---------</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; import scipy</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; # 2D example using lena</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; lena = scipy.misc.lena().astype(np.float)</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; lena += 0.5 * lena.std()*np.random.randn(*lena.shape)</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; denoised_lena = tv_denoise(lena, weight=60)</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; # 3D example on synthetic data</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; x, y, z = np.ogrid[0:40, 0:40, 0:40]</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; mask = (x -22)**2 + (y - 20)**2 + (z - 17)**2 &lt; 8**2</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; mask = mask.astype(np.float)</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; mask += 0.2*np.random.randn(*mask.shape)</span>
+<div class="newline"></div><span class="sd">    &gt;&gt;&gt; res = tv_denoise_3d(mask, weight=100)</span>
+<div class="newline"></div><span class="sd">    &quot;&quot;&quot;</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">if</span> <span class="n">im</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="n">_tv_denoise_2d</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">keep_type</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">elif</span> <span class="n">im</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="n">_tv_denoise_3d</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">keep_type</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;only 2-d and 3-d images may be denoised with this function&#39;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><div style="clear: both"></div></p>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc"></div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../../index.html">Scipy lecture notes</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/image_processing/auto_examples/tv_denoise.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012,2013,2015.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

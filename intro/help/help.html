@@ -1,0 +1,356 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>1.6. Getting help and finding documentation &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2. Advanced topics" href="../../advanced/index.html" />
+    <link rel="prev" title="Image denoising by FFT" href="../scipy/auto_examples/solutions/plot_fft_image_denoise.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../advanced/index.html" title="2. Advanced topics"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../scipy/auto_examples/solutions/plot_fft_image_denoise.html" title="Image denoising by FFT"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">1. Getting started with Python for science</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/help/help.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="getting-help-and-finding-documentation">
+<span id="help"></span><h1>1.6. Getting help and finding documentation<a class="headerlink" href="#getting-help-and-finding-documentation" title="Permalink to this headline">¶</a></h1>
+<p><strong>Author</strong>: <em>Emmanuelle Gouillart</em></p>
+<p>Rather than knowing all functions in Numpy and Scipy, it is important to
+find rapidly information throughout the documentation and the available
+help. Here are some ways to get information:</p>
+<ul>
+<li><p class="first">In Ipython, <code class="docutils literal"><span class="pre">help</span> <span class="pre">function</span></code> opens the docstring of the function. Only
+type the beginning of the function’s name and use tab completion to
+display the matching functions.</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [204]: </span><span class="n">help</span> <span class="n">np</span><span class="o">.</span><span class="n">v</span>
+<div class="newline"></div><span class="go">np.vander     np.vdot       np.version    np.void0      np.vstack</span>
+<div class="newline"></div><span class="go">np.var        np.vectorize  np.void       np.vsplit</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [204]: </span><span class="n">help</span> <span class="n">np</span><span class="o">.</span><span class="n">vander</span>
+<div class="newline"></div></pre></div>
+</div>
+</li>
+</ul>
+<p>In Ipython it is not possible to open a separated window for help and
+documentation; however one can always open a second <code class="docutils literal"><span class="pre">Ipython</span></code> shell
+just to display help and docstrings…</p>
+<a class="reference external image-reference" href="http://docs.scipy.org/doc/scipy/reference/"><img alt="../../_images/scipy_doc.png" class="align-right" src="../../_images/scipy_doc.png" style="width: 45%;" /></a>
+<ul>
+<li><p class="first">Numpy’s and Scipy’s documentations can be browsed online on
+<a class="reference external" href="http://docs.scipy.org/doc">http://docs.scipy.org/doc</a>. The <code class="docutils literal"><span class="pre">search</span></code> button is quite useful inside
+the reference documentation of the two packages
+(<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/">http://docs.scipy.org/doc/numpy/reference/</a> and
+<a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/">http://docs.scipy.org/doc/scipy/reference/</a>).</p>
+<p>Tutorials on various topics as well as the complete API with all
+docstrings are found on this website.</p>
+<p><div style="clear: both"></div></p>
+<a class="reference external image-reference" href="http://docs.scipy.org/doc/numpy/"><img alt="../../_images/docwiki.png" class="align-right" src="../../_images/docwiki.png" style="width: 45%;" /></a>
+</li>
+<li><p class="first">Numpy’s and Scipy’s documentation is enriched and updated on a regular
+basis by users on a wiki <a class="reference external" href="http://docs.scipy.org/doc/numpy/">http://docs.scipy.org/doc/numpy/</a>. As a result,
+some docstrings are clearer or more detailed on the wiki, and you may
+want to read directly the documentation on the wiki instead of the
+official documentation website. Note that anyone can create an account on
+the wiki and write better documentation; this is an easy way to
+contribute to an open-source project and improve the tools you are
+using!</p>
+<p><div style="clear: both"></div></p>
+</li>
+<li><p class="first">Scipy central <a class="reference external" href="http://central.scipy.org/">http://central.scipy.org/</a> gives recipes on many
+common problems frequently encountered, such as fitting data points,
+solving ODE, etc.</p>
+<a class="reference external image-reference" href="http://matplotlib.org/"><img alt="../../_images/matplotlib.png" class="align-right" src="../../_images/matplotlib.png" style="width: 45%;" /></a>
+</li>
+<li><p class="first">Matplotlib’s website <a class="reference external" href="http://matplotlib.org/">http://matplotlib.org/</a> features a very
+nice <strong>gallery</strong> with a large number of plots, each of them shows both
+the source code and the resulting plot. This is very useful for
+learning by example. More standard documentation is also available.</p>
+<p><div style="clear: both"></div></p>
+</li>
+</ul>
+<p>Finally, two more “technical” possibilities are useful as well:</p>
+<ul>
+<li><p class="first">In Ipython, the magical function <code class="docutils literal"><span class="pre">%psearch</span></code> search for objects
+matching patterns. This is useful if, for example, one does not know
+the exact name  of a function.</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [3]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="gp">In [4]: </span><span class="o">%</span><span class="n">psearch</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="o">*</span>
+<div class="newline"></div><span class="go">np.diag</span>
+<div class="newline"></div><span class="go">np.diagflat</span>
+<div class="newline"></div><span class="go">np.diagonal</span>
+<div class="newline"></div></pre></div>
+</div>
+</li>
+<li><p class="first">numpy.lookfor looks for keywords inside the docstrings of specified modules.</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [45]: </span><span class="n">numpy</span><span class="o">.</span><span class="n">lookfor</span><span class="p">(</span><span class="s1">&#39;convolution&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="go">Search results for &#39;convolution&#39;</span>
+<div class="newline"></div><span class="go">--------------------------------</span>
+<div class="newline"></div><span class="go">numpy.convolve</span>
+<div class="newline"></div><span class="go">    Returns the discrete, linear convolution of two one-dimensional</span>
+<div class="newline"></div><span class="go">sequences.</span>
+<div class="newline"></div><span class="go">numpy.bartlett</span>
+<div class="newline"></div><span class="go">    Return the Bartlett window.</span>
+<div class="newline"></div><span class="go">numpy.correlate</span>
+<div class="newline"></div><span class="go">    Discrete, linear correlation of two 1-dimensional sequences.</span>
+<div class="newline"></div><span class="gp">In [46]: </span><span class="n">numpy</span><span class="o">.</span><span class="n">lookfor</span><span class="p">(</span><span class="s1">&#39;remove&#39;</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;os&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="go">Search results for &#39;remove&#39;</span>
+<div class="newline"></div><span class="go">---------------------------</span>
+<div class="newline"></div><span class="go">os.remove</span>
+<div class="newline"></div><span class="go">    remove(path)</span>
+<div class="newline"></div><span class="go">os.removedirs</span>
+<div class="newline"></div><span class="go">    removedirs(path)</span>
+<div class="newline"></div><span class="go">os.rmdir</span>
+<div class="newline"></div><span class="go">    rmdir(path)</span>
+<div class="newline"></div><span class="go">os.unlink</span>
+<div class="newline"></div><span class="go">    unlink(path)</span>
+<div class="newline"></div><span class="go">os.walk</span>
+<div class="newline"></div><span class="go">    Directory tree generator.</span>
+<div class="newline"></div></pre></div>
+</div>
+</li>
+<li><p class="first">If everything listed above fails (and Google doesn’t have the
+answer)… don’t despair! Write to the mailing-list suited to your
+problem: you should have a quick answer if you describe your problem
+well. Experts on scientific python often give very enlightening
+explanations on the mailing-list.</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Numpy discussion</strong> (<a class="reference external" href="mailto:numpy-discussion&#37;&#52;&#48;scipy&#46;org">numpy-discussion<span>&#64;</span>scipy<span>&#46;</span>org</a>): all about numpy
+arrays, manipulating them, indexation questions, etc.</li>
+<li><strong>SciPy Users List</strong> (<a class="reference external" href="mailto:scipy-user&#37;&#52;&#48;scipy&#46;org">scipy-user<span>&#64;</span>scipy<span>&#46;</span>org</a>): scientific computing
+with Python, high-level data processing, in particular with the
+scipy package.</li>
+<li><a class="reference external" href="mailto:matplotlib-users&#37;&#52;&#48;lists&#46;sourceforge&#46;net">matplotlib-users<span>&#64;</span>lists<span>&#46;</span>sourceforge<span>&#46;</span>net</a> for plotting with
+matplotlib.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc"></div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../advanced/index.html" title="2. Advanced topics"
+             >next</a></li>
+        <li class="right" >
+          <a href="../scipy/auto_examples/solutions/plot_fft_image_denoise.html" title="Image denoising by FFT"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >1. Getting started with Python for science</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/help/help.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

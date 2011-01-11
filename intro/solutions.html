@@ -1,0 +1,479 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Solutions &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/solutions.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="solutions">
+<h1>Solutions<a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-pi-wallis-solution">
+<span id="pi-wallis"></span><h2>The Pi Wallis Solution<a class="headerlink" href="#the-pi-wallis-solution" title="Permalink to this headline">¶</a></h2>
+<p>Compute the decimals of Pi using the Wallis formula:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="sd">The correction for the calculation of pi using the Wallis formula.</span>
+<div class="newline"></div><span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">pi</span> <span class="o">=</span> <span class="mf">3.14159265358979312</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">my_pi</span> <span class="o">=</span> <span class="mf">1.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100000</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">my_pi</span> <span class="o">*=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">i</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">i</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">1.</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">my_pi</span> <span class="o">*=</span> <span class="mi">2</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">my_pi</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">pi</span> <span class="o">-</span> <span class="n">my_pi</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1">###############################################################################</span>
+<div class="newline"></div><span class="n">num</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="newline"></div><span class="n">den</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="newline"></div><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100000</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">tmp</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span>
+<div class="newline"></div>    <span class="n">num</span> <span class="o">*=</span> <span class="n">tmp</span>
+<div class="newline"></div>    <span class="n">den</span> <span class="o">*=</span> <span class="n">tmp</span> <span class="o">-</span> <span class="mi">1</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">better_pi</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">num</span> <span class="o">/</span> <span class="n">den</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">better_pi</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">pi</span> <span class="o">-</span> <span class="n">better_pi</span><span class="p">))</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">my_pi</span> <span class="o">-</span> <span class="n">better_pi</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1">###############################################################################</span>
+<div class="newline"></div><span class="c1"># Solution in a single line using more adcanved constructs (reduce, lambda,</span>
+<div class="newline"></div><span class="c1"># list comprehensions</span>
+<div class="newline"></div><span class="nb">print</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span>
+<div class="newline"></div>                 <span class="p">[</span><span class="nb">float</span><span class="p">((</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span> <span class="o">/</span> <span class="p">((</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div>                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)])</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="the-quicksort-solution">
+<span id="quick-sort"></span><h2>The Quicksort Solution<a class="headerlink" href="#the-quicksort-solution" title="Permalink to this headline">¶</a></h2>
+<p>Implement the quicksort algorithm, as defined by wikipedia:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>function quicksort(array)
+<div class="newline"></div>    var list less, greater
+<div class="newline"></div>    if length(array) ≤ 1
+<div class="newline"></div>        return array
+<div class="newline"></div>    select and remove a pivot value pivot from array
+<div class="newline"></div>    for each x in array
+<div class="newline"></div>        if x ≤ pivot then append x to less
+<div class="newline"></div>        else append x to greater
+<div class="newline"></div>    return concatenate(quicksort(less), pivot, quicksort(greater))
+<div class="newline"></div></pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="sd">Implement the quick sort algorithm.</span>
+<div class="newline"></div><span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">qsort</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+<div class="newline"></div>    <span class="sd">&quot;&quot;&quot; Quick sort: returns a sorted copy of the list.</span>
+<div class="newline"></div><span class="sd">    &quot;&quot;&quot;</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="n">lst</span>
+<div class="newline"></div>    <span class="n">pivot</span><span class="p">,</span> <span class="n">rest</span>    <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lst</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c1"># Could use list comprehension:</span>
+<div class="newline"></div>    <span class="c1"># less_than      = [ lt for lt in rest if lt &lt; pivot ]</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">less_than</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="newline"></div>    <span class="k">for</span> <span class="n">lt</span> <span class="ow">in</span> <span class="n">rest</span><span class="p">:</span>
+<div class="newline"></div>        <span class="k">if</span> <span class="n">lt</span> <span class="o">&lt;</span> <span class="n">pivot</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">less_than</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lt</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c1"># Could use list comprehension:</span>
+<div class="newline"></div>    <span class="c1"># greater_equal  = [ ge for ge in rest if ge &gt;= pivot ]</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">greater_equal</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="newline"></div>    <span class="k">for</span> <span class="n">ge</span> <span class="ow">in</span> <span class="n">rest</span><span class="p">:</span>
+<div class="newline"></div>        <span class="k">if</span> <span class="n">ge</span> <span class="o">&gt;=</span> <span class="n">pivot</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">greater_equal</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ge</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">qsort</span><span class="p">(</span><span class="n">less_than</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">pivot</span><span class="p">]</span> <span class="o">+</span> <span class="n">qsort</span><span class="p">(</span><span class="n">greater_equal</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># And now check that qsort does sort:</span>
+<div class="newline"></div><span class="k">assert</span> <span class="n">qsort</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="o">==</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class="newline"></div><span class="k">assert</span> <span class="n">qsort</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class="newline"></div><span class="k">assert</span> <span class="n">qsort</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="fibonacci-sequence">
+<span id="fibonacci"></span><h2>Fibonacci sequence<a class="headerlink" href="#fibonacci-sequence" title="Permalink to this headline">¶</a></h2>
+<p>Write a function that displays the <code class="docutils literal"><span class="pre">n</span></code> first terms of the Fibonacci
+sequence, defined by:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">u_0</span> <span class="pre">=</span> <span class="pre">1;</span> <span class="pre">u_1</span> <span class="pre">=</span> <span class="pre">1</span></code></li>
+<li><code class="docutils literal"><span class="pre">u_(n+2)</span> <span class="pre">=</span> <span class="pre">u_(n+1)</span> <span class="pre">+</span> <span class="pre">u_n</span></code></li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="sd">&quot;&quot;&quot;Display the n first terms of Fibonacci sequence&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="newline"></div><span class="gp">... </span>    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+<div class="newline"></div><span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">... </span>        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span>
+<div class="newline"></div><span class="gp">... </span>        <span class="n">i</span> <span class="o">+=</span><span class="mi">1</span>
+<div class="newline"></div><span class="gp">...</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">fib</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class="newline"></div><span class="go">1</span>
+<div class="newline"></div><span class="go">1</span>
+<div class="newline"></div><span class="go">2</span>
+<div class="newline"></div><span class="go">3</span>
+<div class="newline"></div><span class="go">5</span>
+<div class="newline"></div><span class="go">8</span>
+<div class="newline"></div><span class="go">13</span>
+<div class="newline"></div><span class="go">21</span>
+<div class="newline"></div><span class="go">34</span>
+<div class="newline"></div><span class="go">55</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="the-directory-listing-solution">
+<span id="dir-sort"></span><h2>The Directory Listing Solution<a class="headerlink" href="#the-directory-listing-solution" title="Permalink to this headline">¶</a></h2>
+<p>Implement a script that takes a directory name as argument, and
+returns the list of ‘.py’ files, sorted by name length.</p>
+<p><strong>Hint:</strong> try to understand the docstring of list.sort</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="sd">Script to list all the &#39;.py&#39; files in a directory, in the order of file</span>
+<div class="newline"></div><span class="sd">name length.</span>
+<div class="newline"></div><span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">os</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">sys</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">filter_and_sort</span><span class="p">(</span><span class="n">file_list</span><span class="p">):</span>
+<div class="newline"></div>    <span class="sd">&quot;&quot;&quot; Out of a list of file names, returns only the ones ending by</span>
+<div class="newline"></div><span class="sd">        &#39;.py&#39;, ordered with increasing file name length.</span>
+<div class="newline"></div><span class="sd">    &quot;&quot;&quot;</span>
+<div class="newline"></div>    <span class="n">file_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">filename</span> <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">file_list</span> 
+<div class="newline"></div>                          <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.py&#39;</span><span class="p">)]</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">file_list</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">file_list</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<div class="newline"></div>    <span class="n">file_list</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<div class="newline"></div>    <span class="n">sorted_file_list</span> <span class="o">=</span> <span class="n">filter_and_sort</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span>
+<div class="newline"></div>    <span class="nb">print</span><span class="p">(</span><span class="n">sorted_file_list</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="the-data-file-i-o-solution">
+<span id="data-file"></span><h2>The Data File I/O Solution<a class="headerlink" href="#the-data-file-i-o-solution" title="Permalink to this headline">¶</a></h2>
+<p>Write a function that will load the column of numbers in <code class="docutils literal"><span class="pre">data.txt</span></code>
+and calculate the min, max and sum values.</p>
+<p>Data file:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">10.2</span>
+<div class="newline"></div><span class="mf">43.1</span>
+<div class="newline"></div><span class="mf">32.6</span>
+<div class="newline"></div><span class="mf">32.5</span>
+<div class="newline"></div><span class="mf">61.3</span>
+<div class="newline"></div><span class="mf">58.2</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Solution:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="sd">===================</span>
+<div class="newline"></div><span class="sd">I/O script example</span>
+<div class="newline"></div><span class="sd">===================</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">Script to read in a column of numbers and calculate the min, max and sum.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">Data is stored in data.txt.</span>
+<div class="newline"></div><span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">data_string</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<div class="newline"></div>    <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="newline"></div>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data_string</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+<div class="newline"></div>        <span class="c1"># Data is read in as a string. We need to convert it to floats</span>
+<div class="newline"></div>        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c1"># Could instead use the following one line with list comprehensions!</span>
+<div class="newline"></div>    <span class="c1"># data = [float(x) for x in data_string.split()]</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">data</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<div class="newline"></div>    <span class="n">data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="c1"># Python provides these basic math functions</span>
+<div class="newline"></div>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;min: </span><span class="si">%f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">min</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<div class="newline"></div>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;max: </span><span class="si">%f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">max</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<div class="newline"></div>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sum: </span><span class="si">%f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">sum</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="the-pythonpath-search-solution">
+<span id="path-site"></span><h2>The PYTHONPATH Search Solution<a class="headerlink" href="#the-pythonpath-search-solution" title="Permalink to this headline">¶</a></h2>
+<p>Write a program to search your PYTHONPATH for the module <code class="docutils literal"><span class="pre">site.py</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Script to search the PYTHONPATH for the module site.py&quot;&quot;&quot;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">os</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">sys</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">glob</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">find_module</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="newline"></div>    <span class="c1"># Loop over the list of paths in sys.path</span>
+<div class="newline"></div>    <span class="k">for</span> <span class="n">subdir</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+<div class="newline"></div>        <span class="c1"># Join the subdir path with the module we&#39;re searching for</span>
+<div class="newline"></div>        <span class="n">pth</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subdir</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<div class="newline"></div>        <span class="c1"># Use glob to test if the pth is exists</span>
+<div class="newline"></div>        <span class="n">res</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">pth</span><span class="p">)</span>
+<div class="newline"></div>        <span class="c1"># glob returns a list, if it is not empty, the pth exists</span>
+<div class="newline"></div>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">result</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<div class="newline"></div>    <span class="n">result</span> <span class="o">=</span> <span class="n">find_module</span><span class="p">(</span><span class="s1">&#39;site.py&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div></pre></div>
+</div>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Solutions</a><ul>
+<li><a class="reference internal" href="#the-pi-wallis-solution">The Pi Wallis Solution</a></li>
+<li><a class="reference internal" href="#the-quicksort-solution">The Quicksort Solution</a></li>
+<li><a class="reference internal" href="#fibonacci-sequence">Fibonacci sequence</a></li>
+<li><a class="reference internal" href="#the-directory-listing-solution">The Directory Listing Solution</a></li>
+<li><a class="reference internal" href="#the-data-file-i-o-solution">The Data File I/O Solution</a></li>
+<li><a class="reference internal" href="#the-pythonpath-search-solution">The PYTHONPATH Search Solution</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/solutions.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

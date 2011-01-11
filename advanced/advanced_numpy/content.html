@@ -1,0 +1,2208 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Advanced Numpy &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2011',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="advanced-numpy">
+<h1><a class="toc-backref" href="#id2">Advanced Numpy</a><a class="headerlink" href="#advanced-numpy" title="Permalink to this headline">¶</a></h1>
+<p class="rubric">Prerequisites</p>
+<ul class="simple">
+<li>Numpy (&gt;= 1.2; preferably newer...)</li>
+<li>Cython (&gt;= 0.12, for the Ufunc example)</li>
+<li>PIL (I&#8217;ll use it in a couple of examples)</li>
+<li>Source codes:<ul>
+<li><a class="reference external" href="http://pav.iki.fi/tmp/advnumpy-ex.zip">http://pav.iki.fi/tmp/advnumpy-ex.zip</a>   (updated recently)</li>
+</ul>
+</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference external" href="#advanced-numpy" id="id2">Advanced Numpy</a></li>
+<li><a class="reference external" href="#life-of-ndarray" id="id3">Life of ndarray</a></li>
+<li><a class="reference external" href="#universal-functions" id="id4">Universal functions</a></li>
+<li><a class="reference external" href="#interoperability-features" id="id5">Interoperability features</a></li>
+<li><a class="reference external" href="#siblings-chararray-maskedarray-matrix" id="id6">Siblings: <tt class="xref py py-class docutils literal"><span class="pre">chararray</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">maskedarray</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt></a></li>
+<li><a class="reference external" href="#summary" id="id7">Summary</a></li>
+<li><a class="reference external" href="#hit-list-of-the-future-for-numpy-core" id="id8">Hit list of the future for Numpy core</a></li>
+<li><a class="reference external" href="#contributing-to-numpy-scipy" id="id9">Contributing to Numpy/Scipy</a></li>
+<li><a class="reference external" href="#python-2-and-3-single-code-base" id="id10">Python 2 and 3, single code base</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="life-of-ndarray">
+<h1><a class="toc-backref" href="#id3">Life of ndarray</a><a class="headerlink" href="#life-of-ndarray" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="it-s">
+<h2>It&#8217;s...<a class="headerlink" href="#it-s" title="Permalink to this headline">¶</a></h2>
+<p><strong>ndarray</strong> =</p>
+<blockquote>
+<p>block of memory + indexing scheme + data type descriptor</p>
+<ul class="simple">
+<li>raw data</li>
+<li>how to locate an element</li>
+<li>how to interpret an element</li>
+</ul>
+</blockquote>
+<img alt="../../_images/threefundamental.png" src="../../_images/threefundamental.png" />
+<div class="highlight-c"><div class="highlight"><pre><span class="k">typedef</span> <span class="k">struct</span> <span class="n">PyArrayObject</span> <span class="p">{</span>
+        <span class="n">PyObject_HEAD</span>
+
+        <span class="cm">/* Block of memory */</span>
+        <span class="kt">char</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+
+        <span class="cm">/* Data type descriptor */</span>
+        <span class="n">PyArray_Descr</span> <span class="o">*</span><span class="n">descr</span><span class="p">;</span>
+
+        <span class="cm">/* Indexing scheme */</span>
+        <span class="kt">int</span> <span class="n">nd</span><span class="p">;</span>
+        <span class="n">npy_intp</span> <span class="o">*</span><span class="n">dimensions</span><span class="p">;</span>
+        <span class="n">npy_intp</span> <span class="o">*</span><span class="n">strides</span><span class="p">;</span>
+
+        <span class="cm">/* Other stuff */</span>
+        <span class="n">PyObject</span> <span class="o">*</span><span class="n">base</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">flags</span><span class="p">;</span>
+        <span class="n">PyObject</span> <span class="o">*</span><span class="n">weakreflist</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">PyArrayObject</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="block-of-memory">
+<h2>Block of memory<a class="headerlink" href="#block-of-memory" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">data</span>
+<span class="go">&lt;read-write buffer for 0xa37bfd8, size 16, offset 0 at 0xa4eabe0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="go">&#39;\x01\x00\x00\x00\x02\x00\x00\x00\x03\x00\x00\x00\x04\x00\x00\x00&#39;</span>
+</pre></div>
+</div>
+<p>Memory address of the data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">__array_interface__</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">159755776</span>
+</pre></div>
+</div>
+<p>Reminder: two <tt class="xref py py-class docutils literal"><span class="pre">ndarrays</span></tt> may share the same memory:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([9, 2, 3])</span>
+</pre></div>
+</div>
+<p>Memory does not need to be owned by an <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="s">&#39;1234&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">data</span>
+<span class="go">&lt;read-only buffer for 0xa588ba8, size 4, offset 0 at 0xa55cd60&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">x</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">flags</span>
+<span class="go">  C_CONTIGUOUS : True</span>
+<span class="go">  F_CONTIGUOUS : True</span>
+<span class="go">  OWNDATA : False</span>
+<span class="go">  WRITEABLE : False</span>
+<span class="go">  ALIGNED : True</span>
+<span class="go">  UPDATEIFCOPY : False</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">owndata</span></tt> and <tt class="docutils literal"><span class="pre">writeable</span></tt> flags indicate status of the memory
+block.</p>
+</div>
+<div class="section" id="data-types">
+<h2>Data types<a class="headerlink" href="#data-types" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-descriptor">
+<h3>The descriptor<a class="headerlink" href="#the-descriptor" title="Permalink to this headline">¶</a></h3>
+<p><tt class="xref py py-class docutils literal"><span class="pre">dtype</span></tt> describes a single item in the array:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>type</td>
+<td><p class="first"><strong>scalar type</strong> of the data, one of:</p>
+<p>int8, int16, float64, <em>et al.</em>  (fixed size)</p>
+<p class="last">str, unicode, void   (flexible size)</p>
+</td>
+</tr>
+<tr><td>itemsize</td>
+<td><strong>size</strong> of the data block</td>
+</tr>
+<tr><td>byteorder</td>
+<td><strong>byte order</strong>: big-endian <tt class="docutils literal"><span class="pre">&gt;</span></tt> / little-endian <tt class="docutils literal"><span class="pre">&lt;</span></tt> / not applicable <tt class="docutils literal"><span class="pre">|</span></tt></td>
+</tr>
+<tr><td>fields</td>
+<td>sub-dtypes, if it&#8217;s a <strong>structured data type</strong></td>
+</tr>
+<tr><td>shape</td>
+<td>shape of the array, if it&#8217;s a <strong>sub-array</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">type</span>
+<span class="go">&lt;type &#39;numpy.int32&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">itemsize</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">byteorder</span>
+<span class="go">&#39;=&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-reading-wav-files">
+<h3>Example: reading <tt class="docutils literal"><span class="pre">.wav</span></tt> files<a class="headerlink" href="#example-reading-wav-files" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">.wav</span></tt> file header:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>chunk_id</td>
+<td><tt class="docutils literal"><span class="pre">&quot;RIFF&quot;</span></tt></td>
+</tr>
+<tr><td>chunk_size</td>
+<td>4-byte unsigned little-endian integer</td>
+</tr>
+<tr><td>format</td>
+<td><tt class="docutils literal"><span class="pre">&quot;WAVE&quot;</span></tt></td>
+</tr>
+<tr><td>fmt_id</td>
+<td><tt class="docutils literal"><span class="pre">&quot;fmt</span> <span class="pre">&quot;</span></tt></td>
+</tr>
+<tr><td>fmt_size</td>
+<td>4-byte unsigned little-endian integer</td>
+</tr>
+<tr><td>audio_fmt</td>
+<td>2-byte unsigned little-endian integer</td>
+</tr>
+<tr><td>num_channels</td>
+<td>2-byte unsigned little-endian integer</td>
+</tr>
+<tr><td>sample_rate</td>
+<td>4-byte unsigned little-endian integer</td>
+</tr>
+<tr><td>byte_rate</td>
+<td>4-byte unsigned little-endian integer</td>
+</tr>
+<tr><td>block_align</td>
+<td>2-byte unsigned little-endian integer</td>
+</tr>
+<tr><td>bits_per_sample</td>
+<td>2-byte unsigned little-endian integer</td>
+</tr>
+<tr><td>data_id</td>
+<td><tt class="docutils literal"><span class="pre">&quot;data&quot;</span></tt></td>
+</tr>
+<tr><td>data_size</td>
+<td>4-byte unsigned little-endian integer</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>44-byte block of raw data (in the beginning of the file)</li>
+<li>... followed by <tt class="docutils literal"><span class="pre">data_size</span></tt> bytes of actual sound data.</li>
+</ul>
+<p>The <tt class="docutils literal"><span class="pre">.wav</span></tt> file header as a Numpy <em>structured</em> data type:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">wav_header_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([</span>
+<span class="go">     (&quot;chunk_id&quot;, (str, 4)),   # flexible-sized scalar type, item size 4</span>
+<span class="go">     (&quot;chunk_size&quot;, &quot;&lt;u4&quot;),    # little-endian unsigned 32-bit integer</span>
+<span class="go">     (&quot;format&quot;, &quot;S4&quot;),         # 4-byte string</span>
+<span class="go">     (&quot;fmt_id&quot;, &quot;S4&quot;),</span>
+<span class="go">     (&quot;fmt_size&quot;, &quot;&lt;u4&quot;),</span>
+<span class="go">     (&quot;audio_fmt&quot;, &quot;&lt;u2&quot;),     #</span>
+<span class="go">     (&quot;num_channels&quot;, &quot;&lt;u2&quot;),  # .. more of the same ...</span>
+<span class="go">     (&quot;sample_rate&quot;, &quot;&lt;u4&quot;),   #</span>
+<span class="go">     (&quot;byte_rate&quot;, &quot;&lt;u4&quot;),</span>
+<span class="go">     (&quot;block_align&quot;, &quot;&lt;u2&quot;),</span>
+<span class="go">     (&quot;bits_per_sample&quot;, &quot;&lt;u2&quot;),</span>
+<span class="go">     (&quot;data_id&quot;, (&quot;S1&quot;, (2, 2))), # sub-array, just for fun!</span>
+<span class="go">     (&quot;data_size&quot;, &quot;u4&quot;),</span>
+<span class="go">     #</span>
+<span class="go">     # the sound data itself cannot be represented here:</span>
+<span class="go">     # it does not have a fixed size</span>
+<span class="go">])</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">wavreader.py</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">wav_header_dtype</span><span class="p">[</span><span class="s">&#39;format&#39;</span><span class="p">]</span>
+<span class="go">dtype(&#39;|S4&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wav_header_dtype</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">&lt;dictproxy object at 0x85e9704&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wav_header_dtype</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&#39;format&#39;</span><span class="p">]</span>
+<span class="go">(dtype(&#39;|S4&#39;), 8)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>The first element is the sub-dtype in the structured data, corresponding
+to the name <tt class="docutils literal"><span class="pre">format</span></tt></li>
+<li>The second one is its offset (in bytes) from the beginning of the item</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Mini-exercise, make a &#8220;sparse&#8221; dtype by using offsets, and only some
+of the fields:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">wav_header_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
+<span class="go">    names=[&#39;format&#39;, &#39;sample_rate&#39;, &#39;data_id&#39;],</span>
+<span class="go">    offsets=[offset_1, offset_2, offset_3], # counted from start of structure in bytes</span>
+<span class="go">    formats=list of dtypes for each of the fields,</span>
+<span class="go">))</span>
+</pre></div>
+</div>
+<p class="last">and use that to read the sample rate, and <tt class="docutils literal"><span class="pre">data_id</span></tt> (as sub-array).</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.wav&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wav_header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">wav_header_dtype</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">wav_header</span><span class="p">)</span>
+<span class="go">[ (&#39;RIFF&#39;, 17402L, &#39;WAVE&#39;, &#39;fmt &#39;, 16L, 1, 1, 16000L, 32000L, 2, 16,</span>
+<span class="go">  [[&#39;d&#39;, &#39;a&#39;], [&#39;t&#39;, &#39;a&#39;]], 17366L)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wav_header</span><span class="p">[</span><span class="s">&#39;sample_rate&#39;</span><span class="p">]</span>
+<span class="go">array([16000], dtype=uint32)</span>
+</pre></div>
+</div>
+<p>Let&#8217;s try accessing the sub-array:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">wav_header</span><span class="p">[</span><span class="s">&#39;data_id&#39;</span><span class="p">]</span>
+<span class="go">array([[[&#39;d&#39;, &#39;a&#39;],</span>
+<span class="go">        [&#39;t&#39;, &#39;a&#39;]]],</span>
+<span class="go">      dtype=&#39;|S1&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wav_header</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(1,)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wav_header</span><span class="p">[</span><span class="s">&#39;data_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(1, 2, 2)</span>
+</pre></div>
+</div>
+<p>When accessing sub-arrays, the dimensions get added to the end!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There are existing modules such as <tt class="docutils literal"><span class="pre">wavfile</span></tt>, <tt class="docutils literal"><span class="pre">audiolab</span></tt>,
+etc. for loading sound data...</p>
+</div>
+</div>
+<div class="section" id="casting-and-re-interpretation-views">
+<h3>Casting and re-interpretation/views<a class="headerlink" href="#casting-and-re-interpretation-views" title="Permalink to this headline">¶</a></h3>
+<p><strong>casting</strong></p>
+<blockquote>
+<ul class="simple">
+<li>on assignment</li>
+<li>on array construction</li>
+<li>on arithmetic</li>
+<li>etc.</li>
+<li>and manually: <tt class="docutils literal"><span class="pre">.astype(dtype)</span></tt></li>
+</ul>
+</blockquote>
+<p><strong>data re-interpretation</strong></p>
+<blockquote>
+<ul class="simple">
+<li>manually: <tt class="docutils literal"><span class="pre">.view(dtype)</span></tt></li>
+</ul>
+</blockquote>
+<p class="rubric">Casting</p>
+<ul class="simple">
+<li>Casting in arithmetic, in nutshell:<ul>
+<li>only type (not value!) of operands matters</li>
+<li>largest &#8220;safe&#8221; type able to represent both is picked</li>
+<li>scalars can &#8220;lose&#8221; to arrays in some situations</li>
+</ul>
+</li>
+<li>Casting in general copies data</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">array([ 1.,  2.,  3.,  4.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([1, 2, 3, 4], dtype=int8)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="go">array([2, 3, 4, 5], dtype=int8)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">+</span> <span class="mi">256</span>
+<span class="go">array([1, 2, 3, 4], dtype=int8)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">+</span> <span class="mf">256.0</span>
+<span class="go">array([ 257.,  258.,  259.,  260.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">256</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="go">array([258, 259, 260, 261])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Casting on setitem: dtype of the array is not changed on item assignment</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">1.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([2, 3, 4, 5], dtype=int8)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Exact rules: see documentation:
+<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/ufuncs.html#casting-rules">http://docs.scipy.org/doc/numpy/reference/ufuncs.html#casting-rules</a></p>
+</div>
+<p class="rubric">Re-interpretation / viewing</p>
+<ul>
+<li><p class="first">Data block in memory (4 bytes)</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="8%" />
+<col width="19%" />
+<col width="8%" />
+<col width="19%" />
+<col width="8%" />
+<col width="19%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><p class="first last"><tt class="docutils literal"><span class="pre">0x01</span></tt></p>
+</td>
+<td><p class="first last">||</p>
+</td>
+<td><p class="first last"><tt class="docutils literal"><span class="pre">0x02</span></tt></p>
+</td>
+<td><p class="first last">||</p>
+</td>
+<td><p class="first last"><tt class="docutils literal"><span class="pre">0x03</span></tt></p>
+</td>
+<td><p class="first last">||</p>
+</td>
+<td><p class="first last"><tt class="docutils literal"><span class="pre">0x04</span></tt></p>
+</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>4 of uint8, OR,</li>
+<li>4 of int8, OR,</li>
+<li>2 of int16, OR,</li>
+<li>1 of int32, OR,</li>
+<li>1 of float32, OR,</li>
+<li>...</li>
+</ul>
+<p>How to switch from one to another?</p>
+</li>
+</ul>
+<ol class="arabic">
+<li><p class="first">Switch the dtype:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="s">&quot;&lt;i2&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">array([ 513, 1027], dtype=int16)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mh">0x0201</span><span class="p">,</span> <span class="mh">0x0403</span>
+<span class="go">(513, 1027)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="23%" />
+<col width="9%" />
+<col width="23%" />
+<col width="23%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">0x01</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">0x02</span></tt></td>
+<td>||</td>
+<td><tt class="docutils literal"><span class="pre">0x03</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">0x04</span></tt></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">little-endian: least significant byte is on the <em>left</em> in memory</p>
+</div>
+</blockquote>
+</blockquote>
+<ol class="arabic" start="2">
+<li><p class="first">Create a new view:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="s">&quot;&lt;i4&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([67305985])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mh">0x04030201</span>
+<span class="go">67305985</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">0x01</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">0x02</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">0x03</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">0x04</span></tt></td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">.view()</span></tt> makes <em>views</em>, does not copy (or alter) the memory block</li>
+<li>only changes the dtype (and adjusts array shape)</li>
+</ul>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([328193])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">x</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<p class="rubric">Mini-exercise: data re-interpretation</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">view-colors.py</p>
+</div>
+<p>You have RGBA data in an array</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+</pre></div>
+</div>
+<p>where the last three dimensions are the R, B, and G, and alpha channels.</p>
+<p>How to make a (10, 10) structured array with field names &#8216;r&#8217;, &#8216;g&#8217;, &#8216;b&#8217;, &#8216;a&#8217;
+without copying data?</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="s">&#39;r&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="s">&#39;g&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="s">&#39;b&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><em>Solution</em></p>
+<blockquote>
+<a onclick="$('#hidden-item-0').toggle(100)">...</a>
+<div id="hidden-item-0" style="display: none;"><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">([(</span><span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="s">&#39;i1&#39;</span><span class="p">),</span>
+<span class="go">                (&#39;g&#39;, &#39;i1&#39;),</span>
+<span class="go">                (&#39;b&#39;, &#39;i1&#39;),</span>
+<span class="go">                (&#39;a&#39;, &#39;i1&#39;)]</span>
+<span class="go">              )[:,:,0]</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Another array taking exactly 4 bytes of memory:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">array([[1, 2],</span>
+<span class="go">       [3, 4]], dtype=uint8)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([[1, 2],</span>
+<span class="go">       [3, 4]], dtype=uint8)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+<span class="go">array([[ 513],</span>
+<span class="go">       [1027]], dtype=int16)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mh">0x0201</span><span class="p">,</span> <span class="mh">0x0403</span>
+<span class="go">(513, 1027)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+<span class="go">array([[ 769, 1026]], dtype=int16)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>What happened?</li>
+<li>... we need to look into what <tt class="docutils literal"><span class="pre">x[0,1]</span></tt> actually means</li>
+</ul>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="mh">0x0301</span><span class="p">,</span> <span class="mh">0x0402</span>
+<span class="go">(769, 1026)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="indexing-scheme-strides">
+<h2>Indexing scheme: strides<a class="headerlink" href="#indexing-scheme-strides" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="main-point">
+<h3>Main point<a class="headerlink" href="#main-point" title="Permalink to this headline">¶</a></h3>
+<p><strong>The question</strong></p>
+<blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="go">                  [4, 5, 6],</span>
+<span class="go">                  [7, 8, 9]], dtype=np.int8)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="go">&#39;\x01\x02\x03\x04\x05\x06\x07\x08\t&#39;</span>
+</pre></div>
+</div>
+<p>At which byte in <tt class="docutils literal"><span class="pre">x.data</span></tt> does the item <tt class="docutils literal"><span class="pre">x[1,2]</span></tt> begin?</p>
+</blockquote>
+<p><strong>The answer</strong> (in Numpy)</p>
+<blockquote>
+<ul class="simple">
+<li><strong>strides</strong>: the number of bytes to jump to find the next element</li>
+<li>1 stride per dimension</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">(3, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byte_offset</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="o">*</span><span class="mi">2</span>   <span class="c"># to find x[1,2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">byte_offset</span><span class="p">]</span>
+<span class="go">&#39;\x06&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>simple, <strong>flexible</strong></li>
+</ul>
+</blockquote>
+<p class="rubric">C and Fortran order</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="go">                  [4, 5, 6],</span>
+<span class="go">                  [7, 8, 9]], dtype=np.int16, order=&#39;C&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">(6, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="go">&#39;\x01\x00\x02\x00\x03\x00\x04\x00\x05\x00\x06\x00\x07\x00\x08\x00\t\x00&#39;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Need to jump 6 bytes to find the next row</li>
+<li>Need to jump 2 bytes to find the next column</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s">&#39;F&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">(2, 6)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="go">&#39;\x01\x00\x04\x00\x07\x00\x02\x00\x05\x00\x08\x00\x03\x00\x06\x00\t\x00&#39;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Need to jump 2 bytes to find the next row</li>
+<li>Need to jump 6 bytes to find the next column</li>
+</ul>
+<ul>
+<li><p class="first">Similarly to higher dimensions:</p>
+<ul class="simple">
+<li>C: last dimensions vary fastest (= smaller strides)</li>
+<li>F: first dimensions vary fastest</li>
+</ul>
+<div class="math">
+<p><img src="../../_images/math/95ec125db02dd68e18b6eea77903b79254ccbc1f.png" alt="\mathrm{shape} &amp;= (d_1, d_2, ..., d_n)
+\\
+\mathrm{strides} &amp;= (s_1, s_2, ..., s_n)
+\\
+s_j^C &amp;= d_{j+1} d_{j+2} ... d_{n} \times \mathrm{itemsize}
+\\
+s_j^F &amp;= d_{1} d_{2} ... d_{j-1} \times \mathrm{itemsize}" /></p>
+</div></li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Now we can understand the behavior of <tt class="docutils literal"><span class="pre">.view()</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Transposition does not affect the memory layout of the data, only strides</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">(2, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">(1, 2)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="go">&#39;\x01\x02\x03\x04&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="go">&#39;\x01\x03\x02\x04&#39;</span>
+</pre></div>
+</div>
+<ul class="last simple">
+<li>the results are different when interpreted as 2 of int16</li>
+<li><tt class="docutils literal"><span class="pre">.copy()</span></tt> creates new arrays in the C order (by default)</li>
+</ul>
+</div>
+<p class="rubric">Slicing with integers</p>
+<ul class="simple">
+<li><em>Everything</em> can be represented by changing only <tt class="docutils literal"><span class="pre">shape</span></tt>, <tt class="docutils literal"><span class="pre">strides</span></tt>,
+and possibly adjusting the <tt class="docutils literal"><span class="pre">data</span></tt> pointer!</li>
+<li>Never makes copies of the data</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([6, 5, 4, 3, 2, 1])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">(-4,)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">__array_interface__</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">__array_interface__</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">8</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">(800, 80, 8)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[::</span><span class="mi">2</span><span class="p">,::</span><span class="mi">3</span><span class="p">,::</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">(1600, 240, 32)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-fake-dimensions-with-strides">
+<h3>Example: fake dimensions with strides<a class="headerlink" href="#example-fake-dimensions-with-strides" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">Stride manipulation</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="kn">import</span> <span class="n">as_strided</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">as_strided</span><span class="p">)</span>
+<span class="go">as_strided(x, shape=None, strides=None)</span>
+<span class="go">   Make an ndarray from the given array with the given shape and strides</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><tt class="docutils literal"><span class="pre">as_strided</span></tt> does <strong>not</strong> check that you stay inside the memory
+block bounds...</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">as_strided</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">2</span><span class="p">,),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="go">array([1, 3], dtype=int16)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">array([1, 3], dtype=int16)</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">stride-fakedims.py</p>
+</div>
+<p><strong>Exercise</strong></p>
+<blockquote>
+<div class="highlight-python"><pre>array([1, 2, 3, 4], dtype=np.int8)
+
+-&gt; array([[1, 2, 3, 4],
+          [1, 2, 3, 4],
+          [1, 2, 3, 4]], dtype=np.int8)</pre>
+</div>
+<p>using only <tt class="docutils literal"><span class="pre">as_strided</span></tt>.:</p>
+<div class="highlight-python"><pre>Hint: byte_offset = stride[0]*index[0] + stride[1]*index[1] + ...</pre>
+</div>
+</blockquote>
+<p><em>Spoiler</em></p>
+<blockquote>
+<a onclick="$('#hidden-item-1').toggle(100)">...</a>
+<div id="hidden-item-1" style="display: none;"><p>Stride can also be <em>0</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">as_strided</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([[1, 2, 3, 4],</span>
+<span class="go">       [1, 2, 3, 4],</span>
+<span class="go">       [1, 2, 3, 4]], dtype=int8)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">x</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="broadcasting">
+<h3>Broadcasting<a class="headerlink" href="#broadcasting" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Doing something useful with it: outer product
+of <tt class="docutils literal"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4]</span></tt> and <tt class="docutils literal"><span class="pre">[5,</span> <span class="pre">6,</span> <span class="pre">7]</span></tt></li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="n">as_strided</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">*</span><span class="mi">2</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span>
+<span class="go">array([[1, 2, 3, 4],</span>
+<span class="go">       [1, 2, 3, 4],</span>
+<span class="go">       [1, 2, 3, 4]], dtype=int16)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y2</span> <span class="o">=</span> <span class="n">as_strided</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y2</span>
+<span class="go">array([[5, 5, 5, 5],</span>
+<span class="go">       [6, 6, 6, 6],</span>
+<span class="go">       [7, 7, 7, 7]], dtype=int16)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">*</span> <span class="n">y2</span>
+<span class="go">array([[ 5, 10, 15, 20],</span>
+<span class="go">       [ 6, 12, 18, 24],</span>
+<span class="go">       [ 7, 14, 21, 28]], dtype=int16)</span>
+</pre></div>
+</div>
+<p class="rubric">... seems somehow familiar ...</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,:]</span> <span class="o">*</span> <span class="n">y</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+<span class="go">array([[ 5, 10, 15, 20],</span>
+<span class="go">       [ 6, 12, 18, 24],</span>
+<span class="go">       [ 7, 14, 21, 28]], dtype=int16)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Internally, array <strong>broadcasting</strong> is indeed implemented using 0-strides.</li>
+</ul>
+</div>
+<div class="section" id="more-tricks-diagonals">
+<h3>More tricks: diagonals<a class="headerlink" href="#more-tricks-diagonals" title="Permalink to this headline">¶</a></h3>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">stride-diagonals.py</p>
+</div>
+<p><strong>Challenge</strong></p>
+<blockquote>
+<p>Pick diagonal entries of the matrix: (assume C memory order)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="go">                  [4, 5, 6],</span>
+<span class="go">                  [7, 8, 9]], dtype=np.int32)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><pre>&gt;&gt;&gt; x_diag = as_strided(x, shape=(3,), strides=(???,))</pre>
+</div>
+<p>Pick the first super-diagonal entries <tt class="docutils literal"><span class="pre">[2,</span> <span class="pre">6]</span></tt>.</p>
+<p>And the sub-diagonals?</p>
+<dl class="docutils">
+<dt>(Hint to the last two: slicing first moves the point where striding</dt>
+<dd>starts from.)</dd>
+</dl>
+</blockquote>
+<p><em>Solution</em></p>
+<blockquote>
+<a onclick="$('#hidden-item-2').toggle(100)">...</a>
+<div id="hidden-item-2" style="display: none;"><p>Pick diagonals:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x_diag</span> <span class="o">=</span> <span class="n">as_strided</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span> <span class="n">strides</span><span class="o">=</span><span class="p">((</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">itemsize</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x_diag</span>
+<span class="go">array([1, 5, 9])</span>
+</pre></div>
+</div>
+<p>Slice first, to adjust the data pointer:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">as_strided</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">:],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="n">strides</span><span class="o">=</span><span class="p">((</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">itemsize</span><span class="p">,))</span>
+<span class="go">array([2, 6])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">as_strided</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="n">strides</span><span class="o">=</span><span class="p">((</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">itemsize</span><span class="p">,))</span>
+<span class="go">array([4, 8])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([2, 6])</span>
+</pre></div>
+</div>
+<p>However,</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">owndata</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p class="last">It makes a copy?! Room for improvement... (bug #xxx)</p>
+</div>
+</div></blockquote>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">stride-diagonals.py</p>
+</div>
+<p><strong>Challenge</strong></p>
+<blockquote>
+<p>Compute the tensor trace</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="mi">5</span><span class="o">*</span><span class="mi">5</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>      <span class="n">s</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>by striding, and using <tt class="docutils literal"><span class="pre">sum()</span></tt> on the result.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">as_strided</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="n">TODO</span><span class="p">,</span> <span class="n">TODO</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s2</span> <span class="o">=</span> <span class="o">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">s</span> <span class="o">==</span> <span class="n">s2</span>
+</pre></div>
+</div>
+</blockquote>
+<p><em>Solution</em></p>
+<blockquote>
+<a onclick="$('#hidden-item-2-2').toggle(100)">...</a>
+<div id="hidden-item-2-2" style="display: none;"><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">as_strided</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">strides</span><span class="o">=</span><span class="p">((</span><span class="mi">5</span><span class="o">*</span><span class="mi">5</span><span class="o">*</span><span class="mi">5</span><span class="o">+</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">itemsize</span><span class="p">,</span>
+<span class="go">                                             (5*5+1)*x.itemsize))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s2</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="cpu-cache-effects">
+<h3>CPU cache effects<a class="headerlink" href="#cpu-cache-effects" title="Permalink to this headline">¶</a></h3>
+<p>Memory layout can affect performance:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">20000</span><span class="p">,))</span>
+
+<span class="gp">In [2]: </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">20000</span><span class="o">*</span><span class="mi">67</span><span class="p">,))[::</span><span class="mi">67</span><span class="p">]</span>
+
+<span class="gp">In [3]: </span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">((20000,), (20000,))</span>
+
+<span class="gp">In [4]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="go">100000 loops, best of 3: 0.180 ms per loop</span>
+
+<span class="gp">In [5]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">y</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="go">100000 loops, best of 3: 2.34 ms per loop</span>
+
+<span class="gp">In [6]: </span><span class="n">x</span><span class="o">.</span><span class="n">strides</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">((8,), (536,))</span>
+</pre></div>
+</div>
+<p class="rubric">Smaller strides are faster?</p>
+<img alt="../../_images/cpu-cacheline.png" src="../../_images/cpu-cacheline.png" />
+<ul class="simple">
+<li>CPU pulls data from main memory to its cache in blocks</li>
+<li>If many array items consecutively operated on fit in a single block (small stride):<ul>
+<li><img class="math" src="../../_images/math/843622567e12d686e4e2f94ddfcb444e8ecde0d2.png" alt="\Rightarrow" style="vertical-align: -1px"/> fewer transfers needed</li>
+<li><img class="math" src="../../_images/math/843622567e12d686e4e2f94ddfcb444e8ecde0d2.png" alt="\Rightarrow" style="vertical-align: -1px"/> faster</li>
+</ul>
+</li>
+</ul>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Much more about this in the next session (Francesc Alted) today!</p>
+</div>
+</div>
+<div class="section" id="example-inplace-operations-caveat-emptor">
+<h3>Example: inplace operations (caveat emptor)<a class="headerlink" href="#example-inplace-operations-caveat-emptor" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">Sometimes,</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">-=</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>is not the same as</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">-=</span> <span class="n">b</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">-=</span> <span class="n">x</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">array([[ 0, -1],</span>
+<span class="go">       [ 4,  0]])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">-=</span> <span class="n">y</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([[ 0, -1],</span>
+<span class="go">       [ 1,  0]])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">x</span></tt> and <tt class="docutils literal"><span class="pre">x.transpose()</span></tt> share data</li>
+<li><tt class="docutils literal"><span class="pre">x</span> <span class="pre">-=</span> <span class="pre">x.transpose()</span></tt> modifies the data element-by-element...</li>
+<li>because <tt class="docutils literal"><span class="pre">x</span></tt> and <tt class="docutils literal"><span class="pre">x.transpose()</span></tt> have different striding,
+modified data re-appears on the RHS</li>
+</ul>
+</div>
+</div>
+<div class="section" id="findings-in-dissection">
+<h2>Findings in dissection<a class="headerlink" href="#findings-in-dissection" title="Permalink to this headline">¶</a></h2>
+<img alt="../../_images/threefundamental.png" src="../../_images/threefundamental.png" />
+<ul class="simple">
+<li><em>memory block</em>: may be shared, <tt class="docutils literal"><span class="pre">.base</span></tt>, <tt class="docutils literal"><span class="pre">.data</span></tt></li>
+<li><em>data type descriptor</em>: structured data, sub-arrays, byte order,
+casting, viewing, <tt class="docutils literal"><span class="pre">.astype()</span></tt>, <tt class="docutils literal"><span class="pre">.view()</span></tt></li>
+<li><em>strided indexing</em>: strides, C/F-order, slicing w/ integers,
+<tt class="docutils literal"><span class="pre">as_strided</span></tt>, broadcasting, stride tricks, <tt class="docutils literal"><span class="pre">diag</span></tt>, CPU cache
+coherence</li>
+</ul>
+</div>
+</div>
+<div class="section" id="universal-functions">
+<h1><a class="toc-backref" href="#id4">Universal functions</a><a class="headerlink" href="#universal-functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-they-are">
+<h2>What they are?<a class="headerlink" href="#what-they-are" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Ufunc performs and elementwise operation on all elements of an array.</p>
+<p>Examples:</p>
+<div class="highlight-python"><pre>np.add, np.subtract, scipy.special.*, ...</pre>
+</div>
+</li>
+<li><p class="first">Automatically support: broadcasting, casting, ...</p>
+</li>
+<li><p class="first">The author of an ufunc only has to supply the elementwise operation,
+Numpy takes care of the rest.</p>
+</li>
+<li><p class="first">The elementwise operation needs to be implemented in C (or, e.g., Cython)</p>
+</li>
+</ul>
+<p class="rubric">Parts of an Ufunc</p>
+<ol class="arabic">
+<li><p class="first">Provided by user</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="kt">void</span> <span class="nf">ufunc_loop</span><span class="p">(</span><span class="kt">void</span> <span class="o">**</span><span class="n">args</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">dimensions</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">steps</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/*</span>
+<span class="cm">     * int8 output = elementwise_function(int8 input_1, int8 input_2)</span>
+<span class="cm">     *</span>
+<span class="cm">     * This function must compute the ufunc for many values at once,</span>
+<span class="cm">     * in the way shown below.</span>
+<span class="cm">     */</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">input_1</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">input_2</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="o">*</span><span class="n">output</span> <span class="o">=</span> <span class="n">elementwise_function</span><span class="p">(</span><span class="o">*</span><span class="n">input_1</span><span class="p">,</span> <span class="o">*</span><span class="n">input_2</span><span class="p">);</span>
+        <span class="n">input_1</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">input_2</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        <span class="n">output</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The Numpy part, built by</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="kt">char</span> <span class="n">types</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="n">types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_BYTE</span>   <span class="cm">/* type of first input arg */</span>
+<span class="n">types</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_BYTE</span>   <span class="cm">/* type of second input arg */</span>
+<span class="n">types</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_BYTE</span>   <span class="cm">/* type of third input arg */</span>
+
+<span class="n">PyObject</span> <span class="o">*</span><span class="n">python_ufunc</span> <span class="o">=</span> <span class="n">PyUFunc_FromFuncAndData</span><span class="p">(</span>
+    <span class="n">ufunc_loop</span><span class="p">,</span>
+    <span class="nb">NULL</span><span class="p">,</span>
+    <span class="n">types</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span> <span class="cm">/* ntypes */</span>
+    <span class="mi">2</span><span class="p">,</span> <span class="cm">/* num_inputs */</span>
+    <span class="mi">1</span><span class="p">,</span> <span class="cm">/* num_outputs */</span>
+    <span class="n">identity_element</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">,</span>
+    <span class="n">docstring</span><span class="p">,</span>
+    <span class="n">unused</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>A ufunc can also support multiple different input-output type
+combinations.</li>
+</ul>
+</li>
+</ol>
+<p class="rubric">... can be made slightly easier</p>
+<ol class="arabic" start="3">
+<li><p class="first"><tt class="docutils literal"><span class="pre">ufunc_loop</span></tt> is of very generic form, and Numpy provides
+pre-made ones</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="82%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><p class="first last"><tt class="docutils literal"><span class="pre">PyUfunc_f_f</span></tt></p>
+</td>
+<td><p class="first last"><tt class="docutils literal"><span class="pre">float</span> <span class="pre">elementwise_func(float</span> <span class="pre">input_1)</span></tt></p>
+</td>
+</tr>
+<tr><td><p class="first last"><tt class="docutils literal"><span class="pre">PyUfunc_ff_f</span></tt></p>
+</td>
+<td><p class="first last"><tt class="docutils literal"><span class="pre">float</span> <span class="pre">elementwise_func(float</span> <span class="pre">input_1,</span> <span class="pre">float</span> <span class="pre">input_2)</span></tt></p>
+</td>
+</tr>
+<tr><td><p class="first last"><tt class="docutils literal"><span class="pre">PyUfunc_d_d</span></tt></p>
+</td>
+<td><p class="first last"><tt class="docutils literal"><span class="pre">double</span> <span class="pre">elementwise_func(double</span> <span class="pre">input_1)</span></tt></p>
+</td>
+</tr>
+<tr><td><p class="first last"><tt class="docutils literal"><span class="pre">PyUfunc_dd_d</span></tt></p>
+</td>
+<td><p class="first last"><tt class="docutils literal"><span class="pre">double</span> <span class="pre">elementwise_func(double</span> <span class="pre">input_1,</span> <span class="pre">double</span> <span class="pre">input_2)</span></tt></p>
+</td>
+</tr>
+<tr><td><p class="first last"><tt class="docutils literal"><span class="pre">PyUfunc_D_D</span></tt></p>
+</td>
+<td><p class="first last"><tt class="docutils literal"><span class="pre">elementwise_func(npy_cdouble</span> <span class="pre">*input,</span> <span class="pre">npy_cdouble*</span> <span class="pre">output)</span></tt></p>
+</td>
+</tr>
+<tr><td><p class="first last"><tt class="docutils literal"><span class="pre">PyUfunc_DD_D</span></tt></p>
+</td>
+<td><p class="first last"><tt class="docutils literal"><span class="pre">elementwise_func(npy_cdouble</span> <span class="pre">*in1,</span> <span class="pre">npy_cdouble</span> <span class="pre">*in2,</span> <span class="pre">npy_cdouble*</span> <span class="pre">out)</span></tt></p>
+</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Only <tt class="docutils literal"><span class="pre">elementwise_func</span></tt> needs to be supplied</li>
+<li>... except when your elementwise function is not in one of the above forms</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="exercise-building-an-ufunc-from-scratch">
+<h2>Exercise: building an ufunc from scratch<a class="headerlink" href="#exercise-building-an-ufunc-from-scratch" title="Permalink to this headline">¶</a></h2>
+<p>The Mandelbrot fractal is defined by the iteration</p>
+<div class="math">
+<p><img src="../../_images/math/12fd396985abde635f08bb3ec9c0cc9972a595e7.png" alt="z \leftarrow z^2 + c" /></p>
+</div><p>where <img class="math" src="../../_images/math/2c6d8dad307b93654b479ac755c80256da0085bd.png" alt="c = x + i y" style="vertical-align: -6px"/> is a complex number. This iteration is
+repeated &#8211; if <img class="math" src="../../_images/math/b13f21416d84e13708696f34dea81026cda583c9.png" alt="z" style="vertical-align: 0px"/> stays finite no matter how long the iteration
+runs, <img class="math" src="../../_images/math/3372c1cb6d68cf97c2d231acc0b47b95a9ed04cc.png" alt="c" style="vertical-align: 0px"/> belongs to the Mandelbrot set.</p>
+<ul>
+<li><p class="first">Make ufunc called <tt class="docutils literal"><span class="pre">mandel(z0,</span> <span class="pre">c)</span></tt> that computes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">z</span> <span class="o">=</span> <span class="n">z0</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">*</span><span class="n">z</span> <span class="o">+</span> <span class="n">c</span>
+</pre></div>
+</div>
+<p>say, 100 iterations or until <tt class="docutils literal"><span class="pre">z.real**2</span> <span class="pre">+</span> <span class="pre">z.imag**2</span> <span class="pre">&gt;</span> <span class="pre">1000</span></tt>.
+Use it to determine which <cite>c</cite> are in the Mandelbrot set.</p>
+</li>
+<li><p class="first">Our function is a simple one, so make use of the <tt class="docutils literal"><span class="pre">PyUFunc_*</span></tt> helpers.</p>
+</li>
+<li><p class="first">Write it in Cython</p>
+</li>
+</ul>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">mandel.pyx, mandelplot.py</p>
+</div>
+<p>Reminder: some pre-made Ufunc loops:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">PyUfunc_f_f</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">float</span> <span class="pre">elementwise_func(float</span> <span class="pre">input_1)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">PyUfunc_ff_f</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">float</span> <span class="pre">elementwise_func(float</span> <span class="pre">input_1,</span> <span class="pre">float</span> <span class="pre">input_2)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">PyUfunc_d_d</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">double</span> <span class="pre">elementwise_func(double</span> <span class="pre">input_1)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">PyUfunc_dd_d</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">double</span> <span class="pre">elementwise_func(double</span> <span class="pre">input_1,</span> <span class="pre">double</span> <span class="pre">input_2)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">PyUfunc_D_D</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">elementwise_func(complex_double</span> <span class="pre">*input,</span> <span class="pre">complex_double*</span> <span class="pre">output)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">PyUfunc_DD_D</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">elementwise_func(complex_double</span> <span class="pre">*in1,</span> <span class="pre">complex_double</span> <span class="pre">*in2,</span> <span class="pre">complex_double*</span> <span class="pre">out)</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Type codes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">NPY_BOOL</span><span class="p">,</span> <span class="n">NPY_BYTE</span><span class="p">,</span> <span class="n">NPY_UBYTE</span><span class="p">,</span> <span class="n">NPY_SHORT</span><span class="p">,</span> <span class="n">NPY_USHORT</span><span class="p">,</span> <span class="n">NPY_INT</span><span class="p">,</span> <span class="n">NPY_UINT</span><span class="p">,</span>
+<span class="n">NPY_LONG</span><span class="p">,</span> <span class="n">NPY_ULONG</span><span class="p">,</span> <span class="n">NPY_LONGLONG</span><span class="p">,</span> <span class="n">NPY_ULONGLONG</span><span class="p">,</span> <span class="n">NPY_FLOAT</span><span class="p">,</span> <span class="n">NPY_DOUBLE</span><span class="p">,</span>
+<span class="n">NPY_LONGDOUBLE</span><span class="p">,</span> <span class="n">NPY_CFLOAT</span><span class="p">,</span> <span class="n">NPY_CDOUBLE</span><span class="p">,</span> <span class="n">NPY_CLONGDOUBLE</span><span class="p">,</span> <span class="n">NPY_DATETIME</span><span class="p">,</span>
+<span class="n">NPY_TIMEDELTA</span><span class="p">,</span> <span class="n">NPY_OBJECT</span><span class="p">,</span> <span class="n">NPY_STRING</span><span class="p">,</span> <span class="n">NPY_UNICODE</span><span class="p">,</span> <span class="n">NPY_VOID</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="solution-building-an-ufunc-from-scratch">
+<h2>Solution: building an ufunc from scratch<a class="headerlink" href="#solution-building-an-ufunc-from-scratch" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre># The elementwise function
+# ------------------------
+
+cdef void mandel_single_point(double complex *z_in, 
+                              double complex *c_in,
+                              double complex *z_out) nogil:
+    #
+    # The Mandelbrot iteration
+    #
+
+    #
+    # Some points of note:
+    #
+    # - It's *NOT* allowed to call any Python functions here.
+    #
+    #   The Ufunc loop runs with the Python Global Interpreter Lock released.
+    #   Hence, the ``nogil``.
+    #
+    # - And so all local variables must be declared with ``cdef``
+    #
+    # - Note also that this function receives *pointers* to the data;
+    #   the "traditional" solution to passing complex variables around
+    #
+
+    cdef double complex z = z_in[0]
+    cdef double complex c = c_in[0]
+    cdef int k  # the integer we use in the for loop
+
+    # Straightforward iteration
+
+    for k in range(100):
+        z = z*z + c
+        if z.real**2 + z.imag**2 &gt; 1000:
+            break
+
+    # Return the answer for this point
+    z_out[0] = z
+
+
+# Boilerplate Cython definitions
+#
+# You don't really need to read this part, it just pulls in
+# stuff from the Numpy C headers.
+# ----------------------------------------------------------
+
+cdef extern from "numpy/arrayobject.h":
+    void import_array()
+    ctypedef int npy_intp
+    cdef enum NPY_TYPES:
+        NPY_CDOUBLE
+
+cdef extern from "numpy/ufuncobject.h":
+    void import_ufunc()
+    ctypedef void (*PyUFuncGenericFunction)(char**, npy_intp*, npy_intp*, void*)
+    object PyUFunc_FromFuncAndData(PyUFuncGenericFunction* func, void** data,
+        char* types, int ntypes, int nin, int nout,
+        int identity, char* name, char* doc, int c)
+
+    void PyUFunc_DD_D(char**, npy_intp*, npy_intp*, void*)
+
+
+# Required module initialization
+# ------------------------------
+
+import_array()
+import_ufunc()
+
+
+# The actual ufunc declaration
+# ----------------------------
+
+cdef PyUFuncGenericFunction loop_func[1]
+cdef char input_output_types[3]
+cdef void *elementwise_funcs[1]
+
+loop_func[0] = PyUFunc_DD_D
+
+input_output_types[0] = NPY_CDOUBLE
+input_output_types[1] = NPY_CDOUBLE
+input_output_types[2] = NPY_CDOUBLE
+
+elementwise_funcs[0] = &lt;void*&gt;mandel_single_point
+
+mandel = PyUFunc_FromFuncAndData(
+    loop_func,
+    elementwise_funcs,
+    input_output_types,
+    1, # number of supported input types
+    2, # number of input args
+    1, # number of output args
+    0, # `identity` element, never mind this
+    "mandel", # function name
+    "mandel(z, c) -&gt; computes iterated z*z + c", # docstring
+    0 # unused
+    )
+</pre>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">mandel</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="bp">None</span><span class="p">,:]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">y</span><span class="p">[:,</span><span class="bp">None</span><span class="p">]</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">mandel</span><span class="o">.</span><span class="n">mandel</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gray</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../../_images/mandelbrot.png" src="../../_images/mandelbrot.png" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Most of the boilerplate could be automated by these Cython modules:</p>
+<p class="last"><a class="reference external" href="http://wiki.cython.org/MarkLodato/CreatingUfuncs">http://wiki.cython.org/MarkLodato/CreatingUfuncs</a></p>
+</div>
+<p class="rubric">Several accepted input types</p>
+<p>E.g. supporting both single- and double-precision versions</p>
+<div class="highlight-c"><pre>cdef void mandel_single_point(double complex *z_in,
+                              double complex *c_in,
+                              double complex *z_out) nogil:
+   ...
+
+cdef void mandel_single_point_singleprec(float complex *z_in,
+                                         float complex *c_in,
+                                         float complex *z_out) nogil:
+   ...
+
+cdef PyUFuncGenericFunction loop_funcs[2]
+cdef char input_output_types[3*2]
+cdef void *elementwise_funcs[1*2]
+
+loop_funcs[0] = PyUFunc_DD_D
+input_output_types[0] = NPY_CDOUBLE
+input_output_types[1] = NPY_CDOUBLE
+input_output_types[2] = NPY_CDOUBLE
+elementwise_funcs[0] = &lt;void*&gt;mandel_single_point
+
+loop_funcs[1] = PyUFunc_FF_F
+input_output_types[3] = NPY_CFLOAT
+input_output_types[4] = NPY_CFLOAT
+input_output_types[5] = NPY_CFLOAT
+elementwise_funcs[1] = &lt;void*&gt;mandel_single_point_singleprec
+
+mandel = PyUFunc_FromFuncAndData(
+    loop_func,
+    elementwise_funcs,
+    input_output_types,
+    2, # number of supported input types   &lt;----------------
+    2, # number of input args
+    1, # number of output args
+    0, # `identity` element, never mind this
+    "mandel", # function name
+    "mandel(z, c) -&gt; computes iterated z*z + c", # docstring
+    0 # unused
+    )</pre>
+</div>
+</div>
+<div class="section" id="generalized-ufuncs">
+<h2>Generalized ufuncs<a class="headerlink" href="#generalized-ufuncs" title="Permalink to this headline">¶</a></h2>
+<p><strong>ufunc</strong></p>
+<blockquote>
+<p><tt class="docutils literal"><span class="pre">output</span> <span class="pre">=</span> <span class="pre">elementwise_function(input)</span></tt></p>
+<p>Both <tt class="docutils literal"><span class="pre">output</span></tt> and <tt class="docutils literal"><span class="pre">input</span></tt> can be a single array element only.</p>
+</blockquote>
+<p><strong>generalized ufunc</strong></p>
+<blockquote>
+<p><tt class="docutils literal"><span class="pre">output</span></tt> and <tt class="docutils literal"><span class="pre">input</span></tt> can be arrays with a fixed number of dimensions</p>
+<p>For example, matrix trace (sum of diag elements):</p>
+<div class="highlight-python"><pre>input shape = (n, n)
+output shape = ()      i.e.  scalar
+
+(n, n) -&gt; ()</pre>
+</div>
+<p>Matrix product:</p>
+<div class="highlight-python"><pre>input_1 shape = (m, n)
+input_2 shape = (n, p)
+output shape  = (m, p)
+
+(m, n), (n, p) -&gt; (m, p)</pre>
+</div>
+<ul class="simple">
+<li>This is called the <em>&#8220;signature&#8221;</em> of the generalized ufunc</li>
+<li>The dimensions on which the g-ufunc acts, are <em>&#8220;core dimensions&#8221;</em></li>
+</ul>
+</blockquote>
+<p class="rubric">Status in Numpy</p>
+<ul class="simple">
+<li>g-ufuncs are in Numpy already ...</li>
+<li>new ones can be created with <tt class="docutils literal"><span class="pre">PyUFunc_FromFuncAndDataAndSignature</span></tt></li>
+<li>... but we don&#8217;t ship with public g-ufuncs, except for testing, ATM</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy.core.umath_tests</span> <span class="kn">as</span> <span class="nn">ut</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ut</span><span class="o">.</span><span class="n">matrix_multiply</span><span class="o">.</span><span class="n">signature</span>
+<span class="go">&#39;(m,n),(n,p)-&gt;(m,p)&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ut</span><span class="o">.</span><span class="n">matrix_multiply</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(10, 2, 5)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>the last two dimensions became <em>core dimensions</em>,
+and are modified as per the <em>signature</em></li>
+<li>otherwise, the g-ufunc operates &#8220;elementwise&#8221;</li>
+<li>matrix multiplication this way could be useful for operating on
+many small matrices at once</li>
+</ul>
+<p class="rubric">Generalized ufunc loop</p>
+<p>Matrix multiplication <tt class="docutils literal"><span class="pre">(m,n),(n,p)</span> <span class="pre">-&gt;</span> <span class="pre">(m,p)</span></tt></p>
+<div class="highlight-c"><div class="highlight"><pre><span class="kt">void</span> <span class="nf">gufunc_loop</span><span class="p">(</span><span class="kt">void</span> <span class="o">**</span><span class="n">args</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">dimensions</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">steps</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">input_1</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>  <span class="cm">/* these are as previously */</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">input_2</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+
+    <span class="kt">int</span> <span class="n">input_1_stride_m</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>  <span class="cm">/* strides for the core dimensions */</span>
+    <span class="kt">int</span> <span class="n">input_1_stride_n</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>  <span class="cm">/* are added after the non-core */</span>
+    <span class="kt">int</span> <span class="n">input_2_strides_n</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span> <span class="cm">/* steps */</span>
+    <span class="kt">int</span> <span class="n">input_2_strides_p</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">output_strides_n</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">7</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">output_strides_p</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+
+    <span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">dimension</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="cm">/* core dimensions are added after */</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">dimension</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span> <span class="cm">/* the main dimension; order as in */</span>
+    <span class="kt">int</span> <span class="n">p</span> <span class="o">=</span> <span class="n">dimension</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span> <span class="cm">/* signature */</span>
+
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">matmul_for_strided_matrices</span><span class="p">(</span><span class="n">input_1</span><span class="p">,</span> <span class="n">input_2</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span>
+                                    <span class="n">strides</span> <span class="k">for</span> <span class="n">each</span> <span class="n">array</span><span class="p">...);</span>
+
+        <span class="n">input_1</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">input_2</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        <span class="n">output</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="interoperability-features">
+<h1><a class="toc-backref" href="#id5">Interoperability features</a><a class="headerlink" href="#interoperability-features" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="sharing-multidimensional-typed-data">
+<h2>Sharing multidimensional, typed data<a class="headerlink" href="#sharing-multidimensional-typed-data" title="Permalink to this headline">¶</a></h2>
+<p>Suppose you</p>
+<ol class="arabic simple">
+<li>Write a library than handles (multidimensional) binary data,</li>
+<li>Want to make it easy to manipulate the data with Numpy, or whatever
+other library,</li>
+<li>... but would <strong>not</strong> like to have Numpy as a dependency.</li>
+</ol>
+<p>Currently, 3 solutions:</p>
+<ol class="arabic simple">
+<li>the &#8220;old&#8221; buffer interface</li>
+<li>the array interface</li>
+<li>the &#8220;new&#8221; buffer interface (<span class="target" id="index-0"></span><a class="pep reference external" href="http://www.python.org/dev/peps/pep-3118"><strong>PEP 3118</strong></a>)</li>
+</ol>
+</div>
+<div class="section" id="the-old-buffer-protocol">
+<h2>The old buffer protocol<a class="headerlink" href="#the-old-buffer-protocol" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Only 1-D buffers</li>
+<li>No data type information</li>
+<li>C-level interface; <tt class="docutils literal"><span class="pre">PyBufferProcs</span> <span class="pre">tp_as_buffer</span></tt> in the type object</li>
+<li>But it&#8217;s integrated into Python  (e.g. strings support it)</li>
+</ul>
+<p>Mini-exercise using PIL (Python Imaging Library):</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">pilbuffer.py</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>TODO: RGBA images consist of 32-bit integers whose bytes are [RR,GG,BB,AA].<ul>
+<li>Fill <tt class="docutils literal"><span class="pre">x</span></tt> with opaque red [255,0,0,255]</li>
+<li>Mangle it to (200,200) 32-bit integer array so that PIL accepts it</li>
+</ul>
+</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="s">&quot;RGBA&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;test.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Q:</strong></p>
+<blockquote>
+Check what happens if <tt class="docutils literal"><span class="pre">x</span></tt> is now modified, and <tt class="docutils literal"><span class="pre">img</span></tt> saved again.</blockquote>
+</div>
+<div class="section" id="id1">
+<h2>The old buffer protocol<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">Image</span>
+
+<span class="c"># Let&#39;s make a sample image, RGBA format</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+
+<span class="n">x</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">254</span> <span class="c"># red</span>
+<span class="n">x</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span> <span class="c"># opaque</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span> <span class="c"># Check that you understand why this is OK!</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="s">&quot;RGBA&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
+<span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;test.png&#39;</span><span class="p">)</span>
+
+<span class="c">#</span>
+<span class="c"># Modify the original data, and save again.</span>
+<span class="c">#</span>
+<span class="c"># It turns out that PIL, which knows next to nothing about Numpy,</span>
+<span class="c"># happily shares the same data.</span>
+<span class="c">#</span>
+
+<span class="n">x</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">254</span>
+<span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;test2.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/test.png" src="../../_images/test.png" />
+<img alt="../../_images/test2.png" src="../../_images/test2.png" />
+</div>
+<div class="section" id="array-interface-protocol">
+<h2>Array interface protocol<a class="headerlink" href="#array-interface-protocol" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Multidimensional buffers</li>
+<li>Data type information present</li>
+<li>Numpy-specific approach; slowly deprecated (but not going away)</li>
+<li>Not integrated in Python otherwise</li>
+</ul>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Documentation:
+<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/arrays.interface.html">http://docs.scipy.org/doc/numpy/reference/arrays.interface.html</a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">__array_interface__</span>
+<span class="go">{&#39;data&#39;: (171694552, False),      # memory address of data, is readonly?</span>
+<span class="go"> &#39;descr&#39;: [(&#39;&#39;, &#39;&lt;i4&#39;)],          # data type descriptor</span>
+<span class="go"> &#39;typestr&#39;: &#39;&lt;i4&#39;,                # same, in another form</span>
+<span class="go"> &#39;strides&#39;: None,                 # strides; or None if in C-order</span>
+<span class="go"> &#39;shape&#39;: (2, 2),</span>
+<span class="go"> &#39;version&#39;: 3,</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;test.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="o">.</span><span class="n">__array_interface__</span>
+<span class="go">{&#39;data&#39;: a very long string,</span>
+<span class="go"> &#39;shape&#39;: (200, 200, 4),</span>
+<span class="go"> &#39;typestr&#39;: &#39;|u1&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(200, 200, 4)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span>
+<span class="go">dtype(&#39;uint8&#39;)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A more C-friendly variant of the array interface is also defined.</p>
+</div>
+</div>
+<div class="section" id="the-new-buffer-protocol-pep-3118">
+<h2>The new buffer protocol: PEP 3118<a class="headerlink" href="#the-new-buffer-protocol-pep-3118" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Multidimensional buffers</li>
+<li>Data type information present</li>
+<li>C-level interface; extensions to <tt class="docutils literal"><span class="pre">tp_as_buffer</span></tt></li>
+<li>Integrated into Python (&gt;= 2.6)</li>
+<li>Replaces the &#8220;old&#8221; buffer interface in Python 3</li>
+<li>Next releases of Numpy (&gt;= 1.5) will also implement it fully</li>
+</ul>
+<ul>
+<li><p class="first">Demo in Python 3 / Numpy dev version:</p>
+<div class="highlight-python"><pre>Python 3.1.2 (r312:79147, Apr 15 2010, 12:35:07)
+[GCC 4.4.3] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; np.__version__
+'2.0.0.dev8469+15dcfb'</pre>
+</div>
+</li>
+<li><p class="first">Memoryview object exposes some of the stuff Python-side</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">memoryview</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">format</span>
+<span class="go">&#39;l&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">itemsize</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">ndim</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">readonly</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(2, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">(8, 4)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Roundtrips work</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span>
+<span class="go">array([[1, 2],</span>
+<span class="go">       [3, 4]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span>
+<span class="go">array([[9, 2],</span>
+<span class="go">       [3, 4]])</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Interoperability with the built-in Python <tt class="docutils literal"><span class="pre">array</span></tt> module</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s">&#39;h&#39;</span><span class="p">,</span> <span class="n">b</span><span class="s">&#39;1212&#39;</span><span class="p">)</span>    <span class="c"># 2 of int16, but no Numpy!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([12849, 12849], dtype=int16)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">base</span>
+<span class="go">&lt;memory at 0xa225acc&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="pep-3118-details">
+<h2>PEP 3118 &#8211; details<a class="headerlink" href="#pep-3118-details" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Suppose: you have a new Python extension type <tt class="docutils literal"><span class="pre">MyObject</span></tt> (defined in C)</li>
+<li>... and want it to interoperable with a (2, 2) array of int32</li>
+</ul>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">myobject.c, myobject_test.py, setup_myobject.py</p>
+</div>
+<div class="highlight-c"><div class="highlight"><pre><span class="k">static</span> <span class="n">PyBufferProcs</span> <span class="n">myobject_as_buffer</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="n">getbufferproc</span><span class="p">)</span><span class="n">myobject_getbuffer</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">releasebufferproc</span><span class="p">)</span><span class="n">myobject_releasebuffer</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="cm">/* .. and stick this to the type object */</span>
+
+<span class="k">static</span> <span class="kt">int</span>
+<span class="nf">myobject_getbuffer</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">obj</span><span class="p">,</span> <span class="n">Py_buffer</span> <span class="o">*</span><span class="n">view</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PyMyObjectObject</span> <span class="o">*</span><span class="n">self</span> <span class="o">=</span> <span class="p">(</span><span class="n">PyMyObjectObject</span><span class="o">*</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span>
+
+    <span class="cm">/* Called when something requests that a MyObject-type object</span>
+<span class="cm">       provides a buffer interface */</span>
+
+    <span class="n">view</span><span class="o">-&gt;</span><span class="n">buf</span> <span class="o">=</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="p">;</span>
+    <span class="n">view</span><span class="o">-&gt;</span><span class="n">readonly</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">view</span><span class="o">-&gt;</span><span class="n">format</span> <span class="o">=</span> <span class="s">&quot;i&quot;</span><span class="p">;</span>
+    <span class="n">view</span><span class="o">-&gt;</span><span class="n">shape</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Py_ssize_t</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="n">view</span><span class="o">-&gt;</span><span class="n">strides</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Py_ssize_t</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);;</span>
+    <span class="n">view</span><span class="o">-&gt;</span><span class="n">suboffsets</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+    <span class="nl">TODO:</span> <span class="n">Just</span> <span class="n">fill</span> <span class="n">in</span> <span class="n">view</span><span class="o">-&gt;</span><span class="n">len</span><span class="p">,</span> <span class="n">view</span><span class="o">-&gt;</span><span class="n">itemsize</span><span class="p">,</span> <span class="n">view</span><span class="o">-&gt;</span><span class="n">strides</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="n">and</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">view</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="n">and</span> <span class="mi">1</span><span class="p">,</span> <span class="n">and</span> <span class="n">view</span><span class="o">-&gt;</span><span class="n">ndim</span><span class="p">.</span>
+
+    <span class="cm">/* Note: if correct interpretation *requires* strides or shape,</span>
+<span class="cm">       you need to check flags for what was requested, and raise</span>
+<span class="cm">       appropriate errors.</span>
+
+<span class="cm">       The same if the buffer is not readable.</span>
+<span class="cm">    */</span>
+
+    <span class="n">view</span><span class="o">-&gt;</span><span class="n">obj</span> <span class="o">=</span> <span class="p">(</span><span class="n">PyObject</span><span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="p">;</span>
+    <span class="n">Py_INCREF</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span>
+<span class="nf">myobject_releasebuffer</span><span class="p">(</span><span class="n">PyMemoryViewObject</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">Py_buffer</span> <span class="o">*</span><span class="n">view</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">view</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">free</span><span class="p">(</span><span class="n">view</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">);</span>
+        <span class="n">view</span><span class="o">-&gt;</span><span class="n">shape</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">view</span><span class="o">-&gt;</span><span class="n">strides</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">free</span><span class="p">(</span><span class="n">view</span><span class="o">-&gt;</span><span class="n">strides</span><span class="p">);</span>
+        <span class="n">view</span><span class="o">-&gt;</span><span class="n">strides</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-python"><pre>/*
+ * Sample implementation of a custom data type that exposes an array
+ * interface. (And does nothing else :)
+ *
+ * Requires Python &gt;= 3.1
+ */
+
+/*
+ * Mini-exercises:
+ *
+ * - make the array strided
+ * - change the data type
+ *
+ */
+
+#define PY_SSIZE_T_CLEAN
+#include &lt;Python.h&gt;
+#include "structmember.h"
+
+
+typedef struct {
+    PyObject_HEAD
+    int buffer[4];
+} PyMyObjectObject;
+
+
+static int
+myobject_getbuffer(PyObject *obj, Py_buffer *view, int flags)
+{
+    PyMyObjectObject *self = (PyMyObjectObject*)obj;
+
+    /* Called when something requests that a MyObject-type object 
+       provides a buffer interface */
+
+    view-&gt;buf = self-&gt;buffer;
+    view-&gt;readonly = 0;
+    view-&gt;format = "i";
+    view-&gt;len = 4;
+    view-&gt;itemsize = sizeof(int);
+    view-&gt;ndim = 2;
+    view-&gt;shape = malloc(sizeof(Py_ssize_t) * 2);
+    view-&gt;shape[0] = 2;
+    view-&gt;shape[1] = 2;
+    view-&gt;strides = malloc(sizeof(Py_ssize_t) * 2);;
+    view-&gt;strides[0] = 2*sizeof(int);
+    view-&gt;strides[1] = sizeof(int);
+    view-&gt;suboffsets = NULL;
+
+    /* Note: if correct interpretation *requires* strides or shape,
+       you need to check flags for what was requested, and raise 
+       appropriate errors. 
+          
+       The same if the buffer is not readable. 
+    */ 
+
+    view-&gt;obj = (PyObject*)self;
+    Py_INCREF(self);
+
+    return 0;
+}
+
+static void
+myobject_releasebuffer(PyMemoryViewObject *self, Py_buffer *view)
+{
+    if (view-&gt;shape) {
+        free(view-&gt;shape); 
+        view-&gt;shape = NULL;
+    }
+    if (view-&gt;strides) {
+        free(view-&gt;strides); 
+        view-&gt;strides = NULL;
+    }
+}
+
+
+static PyBufferProcs myobject_as_buffer = {
+    (getbufferproc)myobject_getbuffer,
+    (releasebufferproc)myobject_releasebuffer,
+};
+
+/*
+ * Standard stuff follows
+ */
+
+PyTypeObject PyMyObject_Type;
+
+static PyObject *
+myobject_new(PyTypeObject *subtype, PyObject *args, PyObject *kwds)
+{
+    PyMyObjectObject *self;
+    static char *kwlist[] = {NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "", kwlist)) {
+        return NULL;
+    }
+    self = (PyMyObjectObject *)
+        PyObject_New(PyMyObjectObject, &amp;PyMyObject_Type);
+    self-&gt;buffer[0] = 1;
+    self-&gt;buffer[1] = 2;
+    self-&gt;buffer[2] = 3;
+    self-&gt;buffer[3] = 4;
+    return (PyObject*)self;
+}
+
+
+PyTypeObject PyMyObject_Type = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    "MyObject",
+    sizeof(PyMyObjectObject),
+    0,                                          /* tp_itemsize */
+    /* methods */
+    0,                                          /* tp_dealloc */
+    0,                                          /* tp_print */
+    0,                                          /* tp_getattr */
+    0,                                          /* tp_setattr */
+    0,                                          /* tp_reserved */
+    0,                                          /* tp_repr */
+    0,                                          /* tp_as_number */
+    0,                                          /* tp_as_sequence */
+    0,                                          /* tp_as_mapping */
+    0,                                          /* tp_hash */
+    0,                                          /* tp_call */
+    0,                                          /* tp_str */
+    0,                                          /* tp_getattro */
+    0,                                          /* tp_setattro */
+    &amp;myobject_as_buffer,                        /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT,                         /* tp_flags */
+    0,                                          /* tp_doc */
+    0,                                          /* tp_traverse */
+    0,                                          /* tp_clear */
+    0,                                          /* tp_richcompare */
+    0,                                          /* tp_weaklistoffset */
+    0,                                          /* tp_iter */
+    0,                                          /* tp_iternext */
+    0,                                          /* tp_methods */
+    0,                                          /* tp_members */
+    0,                                          /* tp_getset */
+    0,                                          /* tp_base */
+    0,                                          /* tp_dict */
+    0,                                          /* tp_descr_get */
+    0,                                          /* tp_descr_set */
+    0,                                          /* tp_dictoffset */
+    0,                                          /* tp_init */
+    0,                                          /* tp_alloc */
+    myobject_new,                               /* tp_new */
+    0,                                          /* tp_free */
+    0,                                          /* tp_is_gc */
+    0,                                          /* tp_bases */
+    0,                                          /* tp_mro */
+    0,                                          /* tp_cache */
+    0,                                          /* tp_subclasses */
+    0,                                          /* tp_weaklist */
+    0,                                          /* tp_del */
+    0,                                          /* tp_version_tag */
+};
+
+struct PyModuleDef moduledef = {
+    PyModuleDef_HEAD_INIT,
+    "myobject",
+    NULL,
+    -1,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+};
+
+PyObject *PyInit_myobject(void) {
+    PyObject *m, *d;
+
+    if (PyType_Ready(&amp;PyMyObject_Type) &lt; 0) {
+        return NULL;
+    }
+    
+    m = PyModule_Create(&amp;moduledef);
+
+    d = PyModule_GetDict(m);
+    
+    Py_INCREF(&amp;PyMyObject_Type);
+    PyDict_SetItemString(d, "MyObject", (PyObject *)&amp;PyMyObject_Type);
+    
+    return m;
+}
+</pre>
+</div>
+</div>
+</div>
+<div class="section" id="siblings-chararray-maskedarray-matrix">
+<h1><a class="toc-backref" href="#id6">Siblings: <tt class="xref py py-class docutils literal"><span class="pre">chararray</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">maskedarray</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt></a><a class="headerlink" href="#siblings-chararray-maskedarray-matrix" title="Permalink to this headline">¶</a></h1>
+<p class="rubric"><em>chararray</em> &#8212; vectorized string operations</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;  bbb&#39;</span><span class="p">,</span> <span class="s">&#39;  ccc&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">chararray</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="go">chararray([&#39;a&#39;, &#39;bbb&#39;, &#39;ccc&#39;],</span>
+<span class="go">      dtype=&#39;|S5&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="go">chararray([&#39;A&#39;, &#39;  BBB&#39;, &#39;  CCC&#39;],</span>
+<span class="go">          dtype=&#39;|S5&#39;)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">.view()</span></tt> has a second meaning: it can make an ndarray an instance
+of a specialized ndarray subclass</p>
+</div>
+<p class="rubric"><em>MaskedArray</em> &#8212; dealing with (propagation of) missing data</p>
+<ul class="simple">
+<li>For floats one could use NaN&#8217;s, but masks work for all types</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">mask</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">masked_array(data = [1 -- 3 --],</span>
+<span class="go">             mask = [False  True False  True],</span>
+<span class="go">       fill_value = 999999)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">mask</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="go">masked_array(data = [2 -- -- --],</span>
+<span class="go">             mask = [False  True  True  True],</span>
+<span class="go">       fill_value = 999999)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Masking versions of common functions</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">sqrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+<span class="go">masked_array(data = [1.0 -- 1.41421356237 --],</span>
+<span class="go">             mask = [False  True False  True],</span>
+<span class="go">       fill_value = 1e+20)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There&#8217;s more to them!</p>
+</div>
+<p class="rubric"><em>recarray</em> &#8212; purely convenience</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="s">&#39;S1&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">arr2</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">arr2</span><span class="o">.</span><span class="n">x</span>
+<span class="go">chararray([&#39;a&#39;, &#39;b&#39;],</span>
+<span class="go">      dtype=&#39;|S1&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">arr2</span><span class="o">.</span><span class="n">y</span>
+<span class="go">array([1, 2])</span>
+</pre></div>
+</div>
+<p class="rubric"><em>matrix</em> &#8212; convenience?</p>
+<ul class="simple">
+<li>always 2-D</li>
+<li><tt class="docutils literal"><span class="pre">*</span></tt> is the matrix product, not the elementwise one</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="go">matrix([[1, 2],</span>
+<span class="go">        [3, 4]])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="summary">
+<h1><a class="toc-backref" href="#id7">Summary</a><a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Anatomy of the ndarray: data, dtype, strides.</li>
+<li>Universal functions: elementwise operations, how to make new ones</li>
+<li>Ndarray subclasses</li>
+<li>Various buffer interfaces for integration with other tools</li>
+<li>Recent additions: PEP 3118, generalized ufuncs</li>
+</ul>
+</div>
+<div class="section" id="hit-list-of-the-future-for-numpy-core">
+<h1><a class="toc-backref" href="#id8">Hit list of the future for Numpy core</a><a class="headerlink" href="#hit-list-of-the-future-for-numpy-core" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p class="first">Python 3 &#8211; no wait, it already works!  (Numpy 1.5, sooner or later)</p>
+</li>
+<li><p class="first">PEP 3118 &#8211; hey, also that&#8217;s there! (Numpy 1.5)</p>
+</li>
+<li><p class="first">Breaking backwards binary compatibility, we need to clean up a bit
+(Numpy 2.0, later)</p>
+</li>
+<li><p class="first">Refactoring Python out of innards of Numpy (Numpy 2.0 or later, I&#8217;d guess)</p>
+</li>
+<li><p class="first">Numpy on PyPy? (a GSoC project is working on this currently)</p>
+</li>
+<li><p class="first">Memory access pattern optimizations for more efficient CPU cache usage?</p>
+</li>
+<li><p class="first">We should really have some public generalized ufuncs
+(e.g. multiplying many small matrices is often asked for)</p>
+</li>
+<li><p class="first">Fixing the inplace operations so that</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">+=</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>is guaranteed to produce the same <tt class="docutils literal"><span class="pre">a</span></tt> as</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>Preferably without sacrificing too much performance-wise...</p>
+</li>
+</ul>
+</div>
+<div class="section" id="contributing-to-numpy-scipy">
+<h1><a class="toc-backref" href="#id9">Contributing to Numpy/Scipy</a><a class="headerlink" href="#contributing-to-numpy-scipy" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+Get this tutorial: <a class="reference external" href="http://www.euroscipy.org/talk/882">http://www.euroscipy.org/talk/882</a></blockquote>
+<div class="section" id="why">
+<h2>Why<a class="headerlink" href="#why" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>&#8220;There&#8217;s a bug?&#8221;</li>
+<li>&#8220;I don&#8217;t understand what this is supposed to do?&#8221;</li>
+<li>&#8220;I have this fancy code. Would you like to have it?&#8221;</li>
+<li>&#8220;I&#8217;d like to help! What can I do?&#8221;</li>
+</ul>
+</div>
+<div class="section" id="reporting-bugs">
+<h2>Reporting bugs<a class="headerlink" href="#reporting-bugs" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Bug tracker (prefer <strong>this</strong>)<ul>
+<li><a class="reference external" href="http://projects.scipy.org/numpy">http://projects.scipy.org/numpy</a></li>
+<li><a class="reference external" href="http://projects.scipy.org/scipy">http://projects.scipy.org/scipy</a></li>
+<li>Click the &#8220;Register&#8221; link to get an account</li>
+</ul>
+</li>
+<li>Mailing lists ( scipy.org/Mailing_Lists )<ul>
+<li>If you&#8217;re unsure</li>
+<li>No replies in a week or so? Just file a bug ticket.</li>
+</ul>
+</li>
+</ul>
+<p class="rubric">Good bug report</p>
+<div class="highlight-python"><pre>Title: numpy.random.permutations fails for non-integer arguments
+
+I'm trying to generate random permutations, using numpy.random.permutations
+
+When calling numpy.random.permutation with non-integer arguments
+it fails with a cryptic error message:
+
+&gt;&gt;&gt; np.random.permutation(12)
+array([10,  9,  4,  7,  3,  8,  0,  6,  5,  1, 11,  2])
+&gt;&gt;&gt; np.random.permutation(long(12))
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  File "mtrand.pyx", line 3311, in mtrand.RandomState.permutation
+  File "mtrand.pyx", line 3254, in mtrand.RandomState.shuffle
+TypeError: len() of unsized object
+
+This also happens with long arguments, and so
+np.random.permutation(X.shape[0]) where X is an array fails on 64
+bit windows (where shape is a tuple of longs).
+
+It would be great if it could cast to integer or at least raise a
+proper error for non-integer types.
+
+I'm using Numpy 1.4.1, built from the official tarball, on Windows
+64 with Visual studio 2008, on Python.org 64-bit Python.</pre>
+</div>
+<ol class="arabic" start="0">
+<li><p class="first">What are you trying to do?</p>
+</li>
+<li><p class="first"><strong>Small code snippet reproducing the bug</strong> (if possible)</p>
+<ul class="simple">
+<li>What actually happens</li>
+<li>What you&#8217;d expect</li>
+</ul>
+</li>
+<li><p class="first">Platform (Windows / Linux / OSX, 32/64 bits, x86/PPC, ...)</p>
+</li>
+<li><p class="first">Version of Numpy/Scipy</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">numpy</span><span class="o">.</span><span class="n">__version__</span>
+</pre></div>
+</div>
+<p><strong>Check that the following is what you expect</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">numpy</span><span class="o">.</span><span class="n">__file__</span>
+</pre></div>
+</div>
+<p>In case you have old/broken Numpy installations lying around.</p>
+<p>If unsure, try to remove existing Numpy installations, and reinstall...</p>
+</li>
+</ol>
+</div>
+<div class="section" id="contributing-to-documentation">
+<h2>Contributing to documentation<a class="headerlink" href="#contributing-to-documentation" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Documentation editor</p>
+<ul>
+<li><p class="first"><a class="reference external" href="http://docs.scipy.org/numpy">http://docs.scipy.org/numpy</a></p>
+</li>
+<li><p class="first">Registration</p>
+<ul>
+<li><p class="first">Register an account</p>
+</li>
+<li><p class="first">Subscribe to <tt class="docutils literal"><span class="pre">scipy-dev</span></tt> ML  (subscribers-only)</p>
+</li>
+<li><p class="first">Problem with mailing lists: you get mail</p>
+<ul>
+<li><p class="first">But: <strong>you can turn mail delivery off</strong></p>
+</li>
+<li><p class="first">&#8220;change your subscription options&#8221;, at the bottom of</p>
+<p><a class="reference external" href="http://mail.scipy.org/mailman/listinfo/scipy-dev">http://mail.scipy.org/mailman/listinfo/scipy-dev</a></p>
+</li>
+</ul>
+</li>
+<li><p class="first">Send a mail &#64; <tt class="docutils literal"><span class="pre">scipy-dev</span></tt> mailing list; ask for activation:</p>
+<div class="highlight-python"><pre>To: scipy-dev@scipy.org
+
+Hi,
+
+I'd like to edit Numpy/Scipy docstrings. My account is XXXXX
+
+Cheers,
+N. N.</pre>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Check the style guide:<ul>
+<li><a class="reference external" href="http://docs.scipy.org/numpy/">http://docs.scipy.org/numpy/</a></li>
+<li>Don&#8217;t be intimidated; to fix a small thing, just fix it</li>
+</ul>
+</li>
+<li>Edit</li>
+</ul>
+</blockquote>
+</li>
+<li><p class="first">Edit sources and send patches (as for bugs)</p>
+</li>
+<li><p class="first">Complain on the ML</p>
+</li>
+</ol>
+</div>
+<div class="section" id="contributing-features">
+<h2>Contributing features<a class="headerlink" href="#contributing-features" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic" start="0">
+<li><p class="first">Ask on ML, if unsure where it should go</p>
+</li>
+<li><p class="first">Write a patch, add an enhancement ticket on the bug tracket</p>
+</li>
+<li><p class="first">OR, create a Git branch implementing the feature + add enhancement ticket.</p>
+<ul class="simple">
+<li>Especially for big/invasive additions</li>
+<li><a class="reference external" href="http://projects.scipy.org/numpy/wiki/GitMirror">http://projects.scipy.org/numpy/wiki/GitMirror</a></li>
+<li><a class="reference external" href="http://www.spheredev.org/wiki/Git_for_the_lazy">http://www.spheredev.org/wiki/Git_for_the_lazy</a></li>
+</ul>
+<div class="highlight-python"><pre># Clone numpy repository
+git clone --origin svn http://projects.scipy.org/git/numpy.git numpy
+cd numpy
+
+# Create a feature branch
+git checkout -b name-of-my-feature-branch  svn/trunk
+
+&lt;edit stuff&gt;
+
+git commit -a</pre>
+</div>
+<ul class="simple">
+<li>Create account on <a class="reference external" href="http://github.com">http://github.com</a>  (or anywhere)</li>
+<li>Create a new repository &#64; Github</li>
+<li>Push your work to github</li>
+</ul>
+<div class="highlight-python"><pre>git remote add github git@github:YOURUSERNAME/YOURREPOSITORYNAME.git
+git push github name-of-my-feature-branch</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="how-to-help-in-general">
+<h2>How to help, in general<a class="headerlink" href="#how-to-help-in-general" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Bug fixes always welcome!</p>
+<ul class="simple">
+<li>What irks you most</li>
+<li>Browse the tracker</li>
+</ul>
+</li>
+<li><p class="first">Documentation work</p>
+<ul>
+<li><p class="first">API docs: improvements to docstrings</p>
+<ul class="simple">
+<li>Know some Scipy module well?</li>
+</ul>
+</li>
+<li><p class="first"><em>User guide</em></p>
+<ul>
+<li><p class="first">Needs to be done eventually.</p>
+</li>
+<li><p class="first">Want to think? Come up with a Table of Contents</p>
+<p><a class="reference external" href="http://scipy.org/Developer_Zone/UG_Toc">http://scipy.org/Developer_Zone/UG_Toc</a></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">Ask on communication channels:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">numpy-discussion</span></tt> list</li>
+<li><tt class="docutils literal"><span class="pre">scipy-dev</span></tt> list</li>
+<li>or now &#64; Euroscipy :)</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="python-2-and-3-single-code-base">
+<h1><a class="toc-backref" href="#id10">Python 2 and 3, single code base</a><a class="headerlink" href="#python-2-and-3-single-code-base" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>The brave new future?</li>
+<li>You can do it!</li>
+</ul>
+<div class="section" id="the-case-of-numpy">
+<h2>The case of Numpy<a class="headerlink" href="#the-case-of-numpy" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>150 000+ SLOC</li>
+<li>Numpy is complicated (PyString, PyInt, buffer interfaces, ...)!</li>
+</ul>
+<p>Porting:</p>
+<ul>
+<li><p class="first">Python 2 and 3, with a single code base</p>
+</li>
+<li><p class="first">Took ca. <strong>2-3 man-weeks</strong></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">git</span> <span class="pre">log</span> <span class="pre">--grep=&quot;3K&quot;</span> <span class="pre">-M</span> <span class="pre">-C</span> <span class="pre">-p</span> <span class="pre">|</span> <span class="pre">filterdiff</span> <span class="pre">-x</span> <span class="pre">'*/mtrand.c'</span> <span class="pre">|</span> <span class="pre">diffstat</span> <span class="pre">|</span> <span class="pre">tail</span> <span class="pre">-n1</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">207</span> <span class="pre">files</span> <span class="pre">changed,</span> <span class="pre">5626</span> <span class="pre">insertions(+),</span> <span class="pre">2836</span> <span class="pre">deletions(-)</span></tt></p>
+</li>
+</ul>
+</div>
+<div class="section" id="the-case-of-scipy">
+<h2>The case of Scipy<a class="headerlink" href="#the-case-of-scipy" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>WIP</li>
+<li>But is much easier: very little string handing etc.</li>
+</ul>
+</div>
+<div class="section" id="how">
+<h2>How?<a class="headerlink" href="#how" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first"><a class="reference external" href="http://projects.scipy.org/numpy/browser/trunk/doc/Py3K.txt">http://projects.scipy.org/numpy/browser/trunk/doc/Py3K.txt</a></p>
+<p>(A bit out of date, but illustrative.)</p>
+</li>
+<li><p class="first">Python changes:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">2to3</span></tt> on <tt class="docutils literal"><span class="pre">setup.py</span> <span class="pre">build</span></tt></li>
+<li>Compatibility package <tt class="docutils literal"><span class="pre">numpy.compat.py3k</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">str</span></tt> vs. <tt class="docutils literal"><span class="pre">bytes</span></tt>, cyclic imports, <tt class="docutils literal"><span class="pre">types</span></tt> module, ...</li>
+</ul>
+</li>
+<li><p class="first">C changes:</p>
+<ul class="simple">
+<li>Compatibility header <tt class="docutils literal"><span class="pre">npy_3kcompat.h</span></tt></li>
+<li>Module &amp; type initialization</li>
+<li>Buffer interface (provider)</li>
+<li>Strings: (i) Unicode on 2+3, (ii) UC on 3, Bytes on 2, (iii) Bytes on 2+3</li>
+<li>Division, comparison</li>
+<li>I/O</li>
+<li>PyCObject -&gt; PyCapsule</li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.
+    </div>
+  </body>
+</html>

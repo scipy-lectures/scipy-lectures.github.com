@@ -1,0 +1,417 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Coil Application &mdash; Scipy lecture notes</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2013.2 beta (euroscipy 2013)',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../../index.html" /> 
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+    
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../../index.html">Scipy lecture notes</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="coil-application">
+<span id="example-coil-application-py"></span><h1>Coil Application<a class="headerlink" href="#coil-application" title="Permalink to this headline">¶</a></h1>
+<p>An application to visualize the field create by a list of
+coils.</p>
+<p>This code is fairly complex, but it is actuallty a very rich application,
+and a full-blown example of what you might want to do</p>
+<p><strong>Python source code:</strong> <a class="reference download internal" href="../../../_downloads/coil_application.py"><tt class="xref download docutils literal"><span class="pre">coil_application.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span><span class="p">,</span> <span class="n">special</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Array</span><span class="p">,</span> <span class="n">CFloat</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> \
+<div class="newline"></div>   <span class="n">Instance</span><span class="p">,</span> <span class="n">on_trait_change</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">traits.ui.api</span> <span class="kn">import</span> <span class="n">Item</span><span class="p">,</span> <span class="n">View</span><span class="p">,</span> <span class="n">HGroup</span><span class="p">,</span> <span class="n">ListEditor</span><span class="p">,</span> \
+<div class="newline"></div>        <span class="n">HSplit</span><span class="p">,</span> <span class="n">VSplit</span><span class="p">,</span> <span class="n">spring</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">mayavi.core.ui.api</span> <span class="kn">import</span> <span class="n">EngineView</span><span class="p">,</span> <span class="n">MlabSceneModel</span><span class="p">,</span> \
+<div class="newline"></div>        <span class="n">SceneEditor</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c">##############################################################################</span>
+<div class="newline"></div><span class="c"># A current loop</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">class</span> <span class="nc">Loop</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+<div class="newline"></div>    <span class="sd">&quot;&quot;&quot; A current loop.</span>
+<div class="newline"></div><span class="sd">    &quot;&quot;&quot;</span>
+<div class="newline"></div>    <span class="n">direction</span> <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">cols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<div class="newline"></div>                    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span> <span class="n">desc</span><span class="o">=</span><span class="s">&#39;directing vector of the loop&#39;</span><span class="p">,</span>
+<div class="newline"></div>                    <span class="n">enter_set</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">auto_set</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c"># CFloat tries to convert automatically to floats</span>
+<div class="newline"></div>    <span class="n">radius</span>    <span class="o">=</span> <span class="n">CFloat</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s">&#39;radius of the loop&#39;</span><span class="p">,</span>
+<div class="newline"></div>                    <span class="n">enter_set</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">auto_set</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">position</span>  <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">cols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<div class="newline"></div>                    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span> <span class="n">desc</span><span class="o">=</span><span class="s">&#39;position of the center of the loop&#39;</span><span class="p">,</span>
+<div class="newline"></div>                    <span class="n">enter_set</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">auto_set</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">plot</span>      <span class="o">=</span> <span class="bp">None</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">name</span>      <span class="o">=</span> <span class="n">Str</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">view</span> <span class="o">=</span> <span class="n">View</span><span class="p">(</span><span class="n">HGroup</span><span class="p">(</span><span class="n">Item</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s">&#39;readonly&#39;</span><span class="p">,</span> <span class="n">show_label</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+<div class="newline"></div>                       <span class="n">spring</span><span class="p">,</span> <span class="s">&#39;radius&#39;</span><span class="p">),</span>
+<div class="newline"></div>                <span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="s">&#39;direction&#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c"># For a Borg-like pattern</span>
+<div class="newline"></div>    <span class="n">__shared_state</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;number&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">traits</span><span class="p">):</span>
+<div class="newline"></div>        <span class="n">HasTraits</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">traits</span><span class="p">)</span>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">__shared_state</span><span class="p">[</span><span class="s">&#39;number&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span>  <span class="s">&#39;Coil </span><span class="si">%i</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">__shared_state</span><span class="p">[</span><span class="s">&#39;number&#39;</span><span class="p">]</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">base_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="newline"></div>        <span class="sd">&quot;&quot;&quot; Returns 3 orthognal base vectors, the first one colinear to</span>
+<div class="newline"></div><span class="sd">            the axis of the loop.</span>
+<div class="newline"></div><span class="sd">        &quot;&quot;&quot;</span>
+<div class="newline"></div>        <span class="c"># normalize n</span>
+<div class="newline"></div>        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="c"># choose two vectors perpendicular to n </span>
+<div class="newline"></div>        <span class="c"># choice is arbitrary since the coil is symetric about n</span>
+<div class="newline"></div>        <span class="k">if</span>  <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">==</span><span class="mi">1</span> <span class="p">:</span>
+<div class="newline"></div>            <span class="n">l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<div class="newline"></div>        <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="o">-</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="n">l</span> <span class="o">/=</span> <span class="p">(</span><span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">m</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="nd">@on_trait_change</span><span class="p">(</span><span class="s">&#39;direction,radius,position&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="newline"></div>        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;app&#39;</span><span class="p">):</span>
+<div class="newline"></div>            <span class="bp">self</span><span class="o">.</span><span class="n">mk_B_field</span><span class="p">()</span>
+<div class="newline"></div>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">_renderer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<div class="newline"></div>                <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<div class="newline"></div>                <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">visualize_field</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">half</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="newline"></div>        <span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="sd">        Display the coil in the 3D view.</span>
+<div class="newline"></div><span class="sd">        If half is True, display only one half of the coil.</span>
+<div class="newline"></div><span class="sd">        &quot;&quot;&quot;</span>
+<div class="newline"></div>        <span class="n">n</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_vectors</span><span class="p">()</span>
+<div class="newline"></div>        <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="o">-</span><span class="n">half</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+<div class="newline"></div>        <span class="n">coil</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">l</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">coil</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span>
+<div class="newline"></div>        <span class="n">coil_x</span><span class="p">,</span> <span class="n">coil_y</span><span class="p">,</span> <span class="n">coil_z</span> <span class="o">=</span> <span class="n">coil</span><span class="o">.</span><span class="n">T</span>
+<div class="newline"></div>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<div class="newline"></div>            <span class="bp">self</span><span class="o">.</span><span class="n">plot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">mlab</span><span class="o">.</span><span class="n">plot3d</span><span class="p">(</span><span class="n">coil_x</span><span class="p">,</span> <span class="n">coil_y</span><span class="p">,</span> <span class="n">coil_z</span><span class="p">,</span> 
+<div class="newline"></div>                                    <span class="n">tube_radius</span><span class="o">=</span><span class="mf">0.007</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<div class="newline"></div>                                    <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="p">)</span>
+<div class="newline"></div>        <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>            <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">mlab_source</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">coil_x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">coil_y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">coil_z</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">mk_B_field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="newline"></div>        <span class="sd">&quot;&quot;&quot;</span>
+<div class="newline"></div><span class="sd">        returns the magnetic field for the current loop calculated </span>
+<div class="newline"></div><span class="sd">        from eqns (1) and (2) in Phys Rev A Vol. 35, N 4, pp. 1535-1546; 1987. </span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">        return: </span>
+<div class="newline"></div><span class="sd">            B is a vector for the B field at point r in inverse units of </span>
+<div class="newline"></div><span class="sd">        (mu I) / (2 pi d) </span>
+<div class="newline"></div><span class="sd">        for I in amps and d in meters and mu = 4 pi * 10^-7 we get Tesla </span>
+<div class="newline"></div><span class="sd">        &quot;&quot;&quot;</span>
+<div class="newline"></div>        <span class="c">### Translate the coordinates in the coil&#39;s frame</span>
+<div class="newline"></div>        <span class="n">n</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_vectors</span><span class="p">()</span>
+<div class="newline"></div>        <span class="n">R</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
+<div class="newline"></div>        <span class="n">r0</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span>
+<div class="newline"></div>        <span class="n">r</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">Y</span><span class="p">),</span>
+<div class="newline"></div>                                                <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">Z</span><span class="p">)]</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="c"># transformation matrix coil frame to lab frame</span>
+<div class="newline"></div>        <span class="n">trans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="n">r</span> <span class="o">-=</span> <span class="n">r0</span>	  <span class="c">#point location from center of coil</span>
+<div class="newline"></div>        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span> <span class="p">)</span> 	    <span class="c">#transform vector to coil frame </span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="c">#### calculate field</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="c"># express the coordinates in polar form</span>
+<div class="newline"></div>        <span class="n">x</span> <span class="o">=</span> <span class="n">r</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<div class="newline"></div>        <span class="n">y</span> <span class="o">=</span> <span class="n">r</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<div class="newline"></div>        <span class="n">z</span> <span class="o">=</span> <span class="n">r</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+<div class="newline"></div>        <span class="n">rho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="n">E</span> <span class="o">=</span> <span class="n">special</span><span class="o">.</span><span class="n">ellipe</span><span class="p">((</span><span class="mi">4</span> <span class="o">*</span> <span class="n">R</span> <span class="o">*</span> <span class="n">rho</span><span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="p">(</span><span class="n">R</span> <span class="o">+</span> <span class="n">rho</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+<div class="newline"></div>        <span class="n">K</span> <span class="o">=</span> <span class="n">special</span><span class="o">.</span><span class="n">ellipk</span><span class="p">((</span><span class="mi">4</span> <span class="o">*</span> <span class="n">R</span> <span class="o">*</span> <span class="n">rho</span><span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="p">(</span><span class="n">R</span> <span class="o">+</span> <span class="n">rho</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+<div class="newline"></div>        <span class="n">Bz</span> <span class="o">=</span>  <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">R</span> <span class="o">+</span> <span class="n">rho</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span> 
+<div class="newline"></div>                    <span class="n">K</span> 
+<div class="newline"></div>                  <span class="o">+</span> <span class="n">E</span> <span class="o">*</span> <span class="p">(</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">rho</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="n">R</span> <span class="o">-</span> <span class="n">rho</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> 
+<div class="newline"></div>                <span class="p">)</span>
+<div class="newline"></div>        <span class="n">Brho</span> <span class="o">=</span> <span class="n">z</span><span class="o">/</span><span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">R</span> <span class="o">+</span> <span class="n">rho</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span> 
+<div class="newline"></div>                <span class="o">-</span><span class="n">K</span> 
+<div class="newline"></div>                <span class="o">+</span> <span class="n">E</span> <span class="o">*</span> <span class="p">(</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">rho</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="n">R</span> <span class="o">-</span> <span class="n">rho</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> 
+<div class="newline"></div>                <span class="p">)</span>
+<div class="newline"></div>        <span class="c"># On the axis of the coil we get a divided by zero here. This returns a</span>
+<div class="newline"></div>        <span class="c"># NaN, where the field is actually zero :</span>
+<div class="newline"></div>        <span class="n">Brho</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">Brho</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">Brho</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">Brho</span><span class="p">,</span> <span class="n">Bz</span> <span class="p">]</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="c"># Rotate the field back in the lab&#39;s frame</span>
+<div class="newline"></div>        <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">trans</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="n">Bx</span><span class="p">,</span> <span class="n">By</span><span class="p">,</span> <span class="n">Bz</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span>
+<div class="newline"></div>        <span class="n">Bx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Bx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">By</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">By</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">Bz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Bz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="n">Bnorm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Bx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">By</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">Bz</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="c"># We need to threshold ourselves, rather than with VTK, to be able </span>
+<div class="newline"></div>        <span class="c"># to use an ImageData</span>
+<div class="newline"></div>        <span class="n">Bmax</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">Bnorm</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="n">Bx</span><span class="p">[</span><span class="n">Bnorm</span> <span class="o">&gt;</span> <span class="n">Bmax</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NAN</span> 
+<div class="newline"></div>        <span class="n">By</span><span class="p">[</span><span class="n">Bnorm</span> <span class="o">&gt;</span> <span class="n">Bmax</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NAN</span>
+<div class="newline"></div>        <span class="n">Bz</span><span class="p">[</span><span class="n">Bnorm</span> <span class="o">&gt;</span> <span class="n">Bmax</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NAN</span>
+<div class="newline"></div>        <span class="n">Bnorm</span><span class="p">[</span><span class="n">Bnorm</span> <span class="o">&gt;</span> <span class="n">Bmax</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NAN</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">Bx</span> <span class="o">=</span> <span class="n">Bx</span>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">By</span> <span class="o">=</span> <span class="n">By</span>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">Bz</span> <span class="o">=</span> <span class="n">Bz</span>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">Bnorm</span> <span class="o">=</span> <span class="n">Bnorm</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="c">##############################################################################</span>
+<div class="newline"></div><span class="c"># The application</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">class</span> <span class="nc">Application</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">scene</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">MlabSceneModel</span><span class="p">,</span> <span class="p">(),</span> <span class="n">editor</span><span class="o">=</span><span class="n">SceneEditor</span><span class="p">())</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c"># The mayavi engine view.</span>
+<div class="newline"></div>    <span class="n">engine_view</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">EngineView</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c"># We use a traits List to be able to add coils to it</span>
+<div class="newline"></div>    <span class="n">coils</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">Loop</span><span class="p">,</span>
+<div class="newline"></div>                    <span class="n">value</span><span class="o">=</span><span class="p">(</span> <span class="n">Loop</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">),</span> <span class="p">),</span>
+<div class="newline"></div>                            <span class="n">Loop</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mf">0.05</span><span class="p">),</span> <span class="p">),</span> <span class="p">),</span>
+<div class="newline"></div>                    <span class="n">editor</span><span class="o">=</span><span class="n">ListEditor</span><span class="p">(</span><span class="n">use_notebook</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">deletable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+<div class="newline"></div>                                        <span class="n">style</span><span class="o">=</span><span class="s">&#39;custom&#39;</span><span class="p">),</span>
+<div class="newline"></div>                 <span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c"># The grid of points on which we want to evaluate the field</span>
+<div class="newline"></div>    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mf">0.15</span><span class="p">:</span><span class="mf">0.15</span><span class="p">:</span><span class="mi">20j</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">:</span><span class="mf">0.15</span><span class="p">:</span><span class="mi">20j</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">:</span><span class="mf">0.15</span><span class="p">:</span><span class="mi">20j</span><span class="p">]</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c"># Avoid rounding issues:</span>
+<div class="newline"></div>    <span class="n">f</span> <span class="o">=</span> <span class="mf">1e4</span>  <span class="c"># this gives the precision we are interested by :</span>
+<div class="newline"></div>    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">f</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span>
+<div class="newline"></div>    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Y</span> <span class="o">*</span> <span class="n">f</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span>
+<div class="newline"></div>    <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Z</span> <span class="o">*</span> <span class="n">f</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">Bx</span>    <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">By</span>    <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">Bz</span>    <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">Bnorm</span> <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">field</span> <span class="o">=</span> <span class="bp">None</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">traits</span><span class="p">):</span>
+<div class="newline"></div>        <span class="n">HasTraits</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">traits</span><span class="p">)</span>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">engine_view</span> <span class="o">=</span> <span class="n">EngineView</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="nd">@on_trait_change</span><span class="p">(</span><span class="s">&#39;scene.activated&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">init_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="newline"></div>        <span class="c"># This gets fired when the viewer of the scene is created</span>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">scene_editor</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<div class="newline"></div>        <span class="k">for</span> <span class="n">coil</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coils</span><span class="p">:</span>
+<div class="newline"></div>            <span class="n">coil</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="bp">self</span>
+<div class="newline"></div>            <span class="n">coil</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<div class="newline"></div>            <span class="n">coil</span><span class="o">.</span><span class="n">mk_B_field</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">visualize_field</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">visualize_field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">Bx</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">By</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">Bz</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+<div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">Bnorm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+<div class="newline"></div>        <span class="k">for</span> <span class="n">coil</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coils</span><span class="p">:</span>
+<div class="newline"></div>            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">coil</span><span class="p">,</span> <span class="s">&#39;Bx&#39;</span><span class="p">):</span>
+<div class="newline"></div>                <span class="bp">self</span><span class="o">.</span><span class="n">Bx</span> <span class="o">+=</span> <span class="n">coil</span><span class="o">.</span><span class="n">Bx</span>
+<div class="newline"></div>                <span class="bp">self</span><span class="o">.</span><span class="n">By</span> <span class="o">+=</span> <span class="n">coil</span><span class="o">.</span><span class="n">By</span>
+<div class="newline"></div>                <span class="bp">self</span><span class="o">.</span><span class="n">Bz</span> <span class="o">+=</span> <span class="n">coil</span><span class="o">.</span><span class="n">Bz</span>
+<div class="newline"></div>                <span class="bp">self</span><span class="o">.</span><span class="n">Bnorm</span> <span class="o">+=</span> <span class="n">coil</span><span class="o">.</span><span class="n">Bnorm</span>
+<div class="newline"></div>
+<div class="newline"></div>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<div class="newline"></div>            <span class="bp">self</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">mlab</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">vector_field</span><span class="p">(</span>
+<div class="newline"></div>                            <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">By</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bz</span><span class="p">,</span> 
+<div class="newline"></div>                            <span class="n">scalars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bnorm</span><span class="p">,</span>
+<div class="newline"></div>                            <span class="n">name</span><span class="o">=</span><span class="s">&#39;B field&#39;</span><span class="p">)</span>
+<div class="newline"></div>            <span class="n">vectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">mlab</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">vectors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">,</span>
+<div class="newline"></div>                                    <span class="n">mode</span><span class="o">=</span><span class="s">&#39;arrow&#39;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<div class="newline"></div>                                    <span class="n">mask_points</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s">&#39;YlOrRd&#39;</span><span class="p">,</span>
+<div class="newline"></div>                                    <span class="n">scale_factor</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<div class="newline"></div>                                                          <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="p">)</span>
+<div class="newline"></div>            <span class="n">vectors</span><span class="o">.</span><span class="n">module_manager</span><span class="o">.</span><span class="n">vector_lut_manager</span><span class="o">.</span><span class="n">reverse_lut</span> <span class="o">=</span> <span class="bp">True</span>
+<div class="newline"></div>            <span class="n">vectors</span><span class="o">.</span><span class="n">glyph</span><span class="o">.</span><span class="n">mask_points</span><span class="o">.</span><span class="n">random_mode</span> <span class="o">=</span> <span class="bp">False</span>
+<div class="newline"></div>            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">mlab</span><span class="o">.</span><span class="n">axes</span><span class="p">()</span>
+<div class="newline"></div>            <span class="bp">self</span><span class="o">.</span><span class="n">scp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">mlab</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">scalar_cut_plane</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">,</span>
+<div class="newline"></div>                                                      <span class="n">colormap</span><span class="o">=</span><span class="s">&#39;hot&#39;</span><span class="p">)</span>
+<div class="newline"></div>        <span class="k">else</span><span class="p">:</span>
+<div class="newline"></div>            <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">mlab_source</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span>  <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span>  <span class="n">z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span>
+<div class="newline"></div>                                       <span class="n">u</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Bx</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">By</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Bz</span><span class="p">,</span>
+<div class="newline"></div>                                       <span class="n">scalars</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Bnorm</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">view</span> <span class="o">=</span> <span class="n">View</span><span class="p">(</span><span class="n">HSplit</span><span class="p">(</span>
+<div class="newline"></div>                    <span class="n">VSplit</span><span class="p">(</span><span class="n">Item</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;engine_view&#39;</span><span class="p">,</span>
+<div class="newline"></div>                                   <span class="n">style</span><span class="o">=</span><span class="s">&#39;custom&#39;</span><span class="p">,</span>
+<div class="newline"></div>                                   <span class="n">resizable</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+<div class="newline"></div>                            <span class="n">Item</span><span class="p">(</span><span class="s">&#39;coils&#39;</span><span class="p">,</span> <span class="n">springy</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+<div class="newline"></div>                        <span class="n">show_labels</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+<div class="newline"></div>                        <span class="s">&#39;scene&#39;</span><span class="p">,</span>
+<div class="newline"></div>                        <span class="n">show_labels</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+<div class="newline"></div>                    <span class="n">resizable</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<div class="newline"></div>                    <span class="n">title</span><span class="o">=</span><span class="s">&#39;Coils...&#39;</span><span class="p">,</span>
+<div class="newline"></div>                    <span class="n">height</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+<div class="newline"></div>                    <span class="n">width</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+<div class="newline"></div>                <span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c">##############################################################################</span>
+<div class="newline"></div><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+<div class="newline"></div>    <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+<div class="newline"></div>    <span class="n">app</span><span class="o">.</span><span class="n">configure_traits</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../../index.html">Scipy lecture notes</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012,2013.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

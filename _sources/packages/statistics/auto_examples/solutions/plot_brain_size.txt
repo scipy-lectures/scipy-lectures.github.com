@@ -1,0 +1,69 @@
+
+
+.. _example_solutions_plot_brain_size.py:
+
+
+Relating Gender and IQ
+=======================
+
+Going back to the brain size + IQ data, test if the VIQ of male and
+female are different after removing the effect of brain size, height and
+weight.
+
+Notice that here 'Gender' is a categorical value. As it is a non-float
+data type, statsmodels is able to automatically infer this.
+
+
+
+
+.. image:: images/plot_brain_size_1.png
+    :align: center
+
+
+**Script output**:
+
+.. rst-class:: max_height
+
+ ::
+
+    OLS Regression Results                            
+  ==============================================================================
+  Dep. Variable:                    VIQ   R-squared:                       0.246
+  Model:                            OLS   Adj. R-squared:                  0.181
+  Method:                 Least Squares   F-statistic:                     3.809
+  Date:                Mon, 10 Oct 2016   Prob (F-statistic):             0.0184
+  Time:                        22:14:32   Log-Likelihood:                -172.34
+  No. Observations:                  39   AIC:                             352.7
+  Df Residuals:                      35   BIC:                             359.3
+  Df Model:                           3                                         
+  Covariance Type:            nonrobust                                         
+  ==================================================================================
+                       coef    std err          t      P>|t|      [0.025      0.975]
+  ----------------------------------------------------------------------------------
+  Intercept        166.6258     88.824      1.876      0.069     -13.696     346.948
+  Gender[T.Male]     8.8524     10.710      0.827      0.414     -12.890      30.595
+  MRI_Count          0.0002   6.46e-05      2.615      0.013    3.78e-05       0.000
+  Height            -3.0837      1.276     -2.417      0.021      -5.674      -0.494
+  ==============================================================================
+  Omnibus:                        7.373   Durbin-Watson:                   2.109
+  Prob(Omnibus):                  0.025   Jarque-Bera (JB):                2.252
+  Skew:                           0.005   Prob(JB):                        0.324
+  Kurtosis:                       1.823   Cond. No.                     2.40e+07
+  ==============================================================================
+  
+  Warnings:
+  [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+  [2] The condition number is large, 2.4e+07. This might indicate that there are
+  strong multicollinearity or other numerical problems.
+  <F test: F=array([[ 0.68319608]]), p=0.414087844124, df_denom=35, df_num=1>
+
+
+
+**Python source code:** :download:`plot_brain_size.py <plot_brain_size.py>`
+
+.. literalinclude:: plot_brain_size.py
+    :lines: 13-
+
+**Total running time of the example:**  0.71 seconds
+( 0 minutes  0.71 seconds)
+    

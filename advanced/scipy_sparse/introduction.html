@@ -1,0 +1,347 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2.5.1. Introduction &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.5.2. Storage Schemes" href="storage_schemes.html" />
+    <link rel="prev" title="2.5. Sparse Matrices in SciPy" href="index.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="storage_schemes.html" title="2.5.2. Storage Schemes"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="index.html" title="2.5. Sparse Matrices in SciPy"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >2. Advanced topics</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">2.5. Sparse Matrices in SciPy</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/scipy_sparse/introduction.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction">
+<h1>2.5.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>(dense) matrix is:</p>
+<ul class="simple">
+<li>mathematical object</li>
+<li>data structure for storing a 2D array of values</li>
+</ul>
+<p>important features:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>memory allocated once for all items</dt>
+<dd><ul class="first last">
+<li>usually a contiguous chunk, think NumPy ndarray</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><em>fast</em> access to individual items (*)</li>
+</ul>
+<div class="section" id="why-sparse-matrices">
+<h2>2.5.1.1. Why Sparse Matrices?<a class="headerlink" href="#why-sparse-matrices" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">the memory, that grows like <cite>n**2</cite></p>
+</li>
+<li><p class="first">small example (double precision matrix):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1e6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">8.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>    
+<div class="newline"></div><span class="go">[&lt;matplotlib.lines.Line2D object at ...&gt;]</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;size n&#39;</span><span class="p">)</span>    
+<div class="newline"></div><span class="go">&lt;matplotlib.text.Text object at ...&gt;</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;memory [MB]&#39;</span><span class="p">)</span>    
+<div class="newline"></div><span class="go">&lt;matplotlib.text.Text object at ...&gt;</span>
+<div class="newline"></div></pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="sparse-matrices-vs-sparse-matrix-storage-schemes">
+<h2>2.5.1.2. Sparse Matrices vs. Sparse Matrix Storage Schemes<a class="headerlink" href="#sparse-matrices-vs-sparse-matrix-storage-schemes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>sparse matrix is a matrix, which is <em>almost empty</em></li>
+<li>storing all the zeros is wasteful -&gt; store only nonzero items</li>
+<li>think <strong>compression</strong></li>
+<li>pros: huge memory savings</li>
+<li>cons: depends on actual storage scheme, (*) usually does not hold</li>
+</ul>
+</div>
+<div class="section" id="typical-applications">
+<h2>2.5.1.3. Typical Applications<a class="headerlink" href="#typical-applications" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>solution of partial differential equations (PDEs)</dt>
+<dd><ul class="first last">
+<li>the <em>finite element method</em></li>
+<li>mechanical engineering, electrotechnics, physics, …</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>graph theory</dt>
+<dd><ul class="first last">
+<li>nonzero at <cite>(i, j)</cite> means that node <cite>i</cite> is connected to node <cite>j</cite></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>…</li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2>2.5.1.4. Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<ul class="horizontal simple">
+<li><a class="reference internal" href="../../intro/numpy/index.html#numpy"><span class="std std-ref">numpy</span></a></li>
+<li><a class="reference internal" href="../../intro/scipy.html#scipy"><span class="std std-ref">scipy</span></a></li>
+<li><a class="reference internal" href="../../intro/matplotlib/index.html#matplotlib"><span class="std std-ref">matplotlib (optional)</span></a></li>
+<li><a class="reference internal" href="../../intro/intro.html#interactive-work"><span class="std std-ref">ipython (the enhancements come handy)</span></a></li>
+</ul>
+</div>
+<div class="section" id="sparsity-structure-visualization">
+<h2>2.5.1.5. Sparsity Structure Visualization<a class="headerlink" href="#sparsity-structure-visualization" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="xref py py-func docutils literal"><span class="pre">spy()</span></code> from <code class="docutils literal"><span class="pre">matplotlib</span></code></li>
+<li>example plots:</li>
+</ul>
+<img alt="../../_images/graph.png" src="../../_images/graph.png" />
+<img alt="../../_images/graph_g.png" src="../../_images/graph_g.png" />
+<img alt="../../_images/graph_rcm.png" src="../../_images/graph_rcm.png" />
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.5.1. Introduction</a><ul>
+<li><a class="reference internal" href="#why-sparse-matrices">2.5.1.1. Why Sparse Matrices?</a></li>
+<li><a class="reference internal" href="#sparse-matrices-vs-sparse-matrix-storage-schemes">2.5.1.2. Sparse Matrices vs. Sparse Matrix Storage Schemes</a></li>
+<li><a class="reference internal" href="#typical-applications">2.5.1.3. Typical Applications</a></li>
+<li><a class="reference internal" href="#prerequisites">2.5.1.4. Prerequisites</a></li>
+<li><a class="reference internal" href="#sparsity-structure-visualization">2.5.1.5. Sparsity Structure Visualization</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="storage_schemes.html" title="2.5.2. Storage Schemes"
+             >next</a></li>
+        <li class="right" >
+          <a href="index.html" title="2.5. Sparse Matrices in SciPy"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >2. Advanced topics</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >2.5. Sparse Matrices in SciPy</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/scipy_sparse/introduction.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

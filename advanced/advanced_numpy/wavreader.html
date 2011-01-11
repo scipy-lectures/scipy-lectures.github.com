@@ -1,0 +1,100 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2011.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <p id="example-wavreader-py"><strong>Python source code:</strong> <a class="reference download internal" href="../../_downloads/wavreader1.py"><tt class="xref download docutils literal"><span class="pre">wavreader.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">wav_header_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([</span>
+     <span class="p">(</span><span class="s">&quot;chunk_id&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>   <span class="c"># flexible-sized scalar type, item size 4</span>
+     <span class="p">(</span><span class="s">&quot;chunk_size&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;u4&quot;</span><span class="p">),</span>    <span class="c"># little-endian unsigned 32-bit integer</span>
+     <span class="p">(</span><span class="s">&quot;format&quot;</span><span class="p">,</span> <span class="s">&quot;S4&quot;</span><span class="p">),</span>         <span class="c"># 4-byte string</span>
+     <span class="p">(</span><span class="s">&quot;fmt_id&quot;</span><span class="p">,</span> <span class="s">&quot;S4&quot;</span><span class="p">),</span>
+     <span class="p">(</span><span class="s">&quot;fmt_size&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;u4&quot;</span><span class="p">),</span>
+     <span class="p">(</span><span class="s">&quot;audio_fmt&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;u2&quot;</span><span class="p">),</span>     <span class="c">#</span>
+     <span class="p">(</span><span class="s">&quot;num_channels&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;u2&quot;</span><span class="p">),</span>  <span class="c"># .. more of the same ...</span>
+     <span class="p">(</span><span class="s">&quot;sample_rate&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;u4&quot;</span><span class="p">),</span>   <span class="c">#</span>
+     <span class="p">(</span><span class="s">&quot;byte_rate&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;u4&quot;</span><span class="p">),</span>
+     <span class="p">(</span><span class="s">&quot;block_align&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;u2&quot;</span><span class="p">),</span>
+     <span class="p">(</span><span class="s">&quot;bits_per_sample&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;u2&quot;</span><span class="p">),</span>
+     <span class="p">(</span><span class="s">&quot;data_id&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s">&quot;S1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))),</span> <span class="c"># sub-array! **MUST** be fixed-size</span>
+     <span class="p">(</span><span class="s">&quot;data_size&quot;</span><span class="p">,</span> <span class="s">&quot;u4&quot;</span><span class="p">),</span>
+     <span class="c">#</span>
+     <span class="c"># the sound data itself cannot be represented here:</span>
+     <span class="c"># it does not have a fixed size</span>
+<span class="p">])</span>
+
+<span class="k">print</span> <span class="n">wav_header_dtype</span><span class="o">.</span><span class="n">fields</span>
+
+<span class="c"># Mini-exercise: Rewrite the above by supplying only the ``sample_rate`` and </span>
+<span class="c">#                ``num_channels`` fields.</span>
+<span class="c">#</span>
+<span class="c">#  wav_header_dtype = np.dtype(dict(</span>
+<span class="c">#      names=[&#39;format&#39;, &#39;sample_rate&#39;, &#39;data_id&#39;],</span>
+<span class="c">#      offsets= list of offsets in bytes, from start of structure</span>
+<span class="c">#      formats= list of dtypes for each field,</span>
+<span class="c">#  ))</span>
+
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">wav_header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">wav_header_dtype</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">print</span> <span class="s">&quot;Sample rate: </span><span class="si">%d</span><span class="s">, channels: </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+    <span class="n">wav_header</span><span class="p">[</span><span class="s">&#39;sample_rate&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">wav_header</span><span class="p">[</span><span class="s">&#39;num_channels&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

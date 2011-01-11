@@ -1,0 +1,366 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Image denoising by FFT &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="1.6. Getting help and finding documentation" href="../../../help/help.html" />
+    <link rel="prev" title="Simple image blur by convolution with a Gaussian kernel" href="plot_image_blur.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../help/help.html" title="1.6. Getting help and finding documentation"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="plot_image_blur.html" title="Simple image blur by convolution with a Gaussian kernel"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >1. Getting started with Python for science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../../scipy.html" accesskey="U">1.5. Scipy : high-level scientific computing</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/scipy/auto_examples/solutions/plot_fft_image_denoise.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="image-denoising-by-fft">
+<span id="sphx-glr-intro-scipy-auto-examples-solutions-plot-fft-image-denoise-py"></span><h1>Image denoising by FFT<a class="headerlink" href="#image-denoising-by-fft" title="Permalink to this headline">¶</a></h1>
+<p>Denoise an image (<a class="reference download internal" href="../../../../_downloads/moonlanding.png" download=""><code class="xref download docutils literal"><span class="pre">../../../../data/moonlanding.png</span></code></a>) by
+implementing a blur with an FFT.</p>
+<p>Implements, via FFT, the following convolution:</p>
+<div class="math">
+<p><img src="../../../../_images/math/90481892d2e0e489ba9eb7e9dfc72c7e2ebb46d2.png" alt="f_1(t) = \int dt'\, K(t-t') f_0(t')"/></p>
+</div><div class="math">
+<p><img src="../../../../_images/math/9c29db8906bc4cb851b96c5f69b65059b95630d5.png" alt="\tilde{f}_1(\omega) = \tilde{K}(\omega) \tilde{f}_0(\omega)"/></p>
+</div><div class="section" id="read-and-plot-the-image">
+<h2>Read and plot the image<a class="headerlink" href="#read-and-plot-the-image" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">im</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;../../../../data/moonlanding.png&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Original image&#39;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_001.png" class="align-center" src="../../../../_images/sphx_glr_plot_fft_image_denoise_001.png" />
+</div>
+<div class="section" id="compute-the-2d-fft-of-the-input-image">
+<h2>Compute the 2d FFT of the input image<a class="headerlink" href="#compute-the-2d-fft-of-the-input-image" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">fftpack</span>
+<div class="newline"></div><span class="n">im_fft</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">fft2</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Show the results</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">plot_spectrum</span><span class="p">(</span><span class="n">im_fft</span><span class="p">):</span>
+<div class="newline"></div>    <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LogNorm</span>
+<div class="newline"></div>    <span class="c1"># A logarithmic colormap</span>
+<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">im_fft</span><span class="p">),</span> <span class="n">norm</span><span class="o">=</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="newline"></div><span class="n">plot_spectrum</span><span class="p">(</span><span class="n">im_fft</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Fourier transform&#39;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_002.png" class="align-center" src="../../../../_images/sphx_glr_plot_fft_image_denoise_002.png" />
+</div>
+<div class="section" id="filter-in-fft">
+<h2>Filter in FFT<a class="headerlink" href="#filter-in-fft" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># In the lines following, we&#39;ll make a copy of the original spectrum and</span>
+<div class="newline"></div><span class="c1"># truncate coefficients.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Define the fraction of coefficients (in each direction) we keep</span>
+<div class="newline"></div><span class="n">keep_fraction</span> <span class="o">=</span> <span class="mf">0.1</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Call ff a copy of the original transform. Numpy arrays have a copy</span>
+<div class="newline"></div><span class="c1"># method for this purpose.</span>
+<div class="newline"></div><span class="n">im_fft2</span> <span class="o">=</span> <span class="n">im_fft</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Set r and c to be the number of rows and columns of the array.</span>
+<div class="newline"></div><span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">im_fft2</span><span class="o">.</span><span class="n">shape</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Set to zero all rows with indices between r*keep_fraction and</span>
+<div class="newline"></div><span class="c1"># r*(1-keep_fraction):</span>
+<div class="newline"></div><span class="n">im_fft2</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="o">*</span><span class="n">keep_fraction</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">keep_fraction</span><span class="p">))]</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Similarly with the columns:</span>
+<div class="newline"></div><span class="n">im_fft2</span><span class="p">[:,</span> <span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">keep_fraction</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">keep_fraction</span><span class="p">))]</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="newline"></div><span class="n">plot_spectrum</span><span class="p">(</span><span class="n">im_fft2</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Filtered Spectrum&#39;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_003.png" class="align-center" src="../../../../_images/sphx_glr_plot_fft_image_denoise_003.png" />
+</div>
+<div class="section" id="reconstruct-the-final-image">
+<h2>Reconstruct the final image<a class="headerlink" href="#reconstruct-the-final-image" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Reconstruct the denoised image from the filtered spectrum, keep only the</span>
+<div class="newline"></div><span class="c1"># real part for display.</span>
+<div class="newline"></div><span class="n">im_new</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">ifft2</span><span class="p">(</span><span class="n">im_fft2</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im_new</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Reconstructed Image&#39;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_004.png" class="align-center" src="../../../../_images/sphx_glr_plot_fft_image_denoise_004.png" />
+</div>
+<div class="section" id="easier-and-better-scipy-ndimage-gaussian-filter">
+<h2>Easier and better: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter.html#scipy.ndimage.gaussian_filter" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.ndimage.gaussian_filter()</span></code></a><a class="headerlink" href="#easier-and-better-scipy-ndimage-gaussian-filter" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>Implementing filtering directly with FFTs is tricky and time consuming.
+We can use the Gaussian filter from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/ndimage.html#module-scipy.ndimage" title="(in SciPy v1.0.0)"><code class="xref py py-mod docutils literal"><span class="pre">scipy.ndimage</span></code></a></div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
+<div class="newline"></div><span class="n">im_blur</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im_blur</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Blurred image&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_005.png" class="align-center" src="../../../../_images/sphx_glr_plot_fft_image_denoise_005.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.868 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../../_downloads/plot_fft_image_denoise.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_fft_image_denoise.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../../_downloads/plot_fft_image_denoise.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_fft_image_denoise.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Image denoising by FFT</a><ul>
+<li><a class="reference internal" href="#read-and-plot-the-image">Read and plot the image</a></li>
+<li><a class="reference internal" href="#compute-the-2d-fft-of-the-input-image">Compute the 2d FFT of the input image</a></li>
+<li><a class="reference internal" href="#filter-in-fft">Filter in FFT</a></li>
+<li><a class="reference internal" href="#reconstruct-the-final-image">Reconstruct the final image</a></li>
+<li><a class="reference internal" href="#easier-and-better-scipy-ndimage-gaussian-filter">Easier and better: <code class="docutils literal"><span class="pre">scipy.ndimage.gaussian_filter()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../help/help.html" title="1.6. Getting help and finding documentation"
+             >next</a></li>
+        <li class="right" >
+          <a href="plot_image_blur.html" title="Simple image blur by convolution with a Gaussian kernel"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >1. Getting started with Python for science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../../scipy.html" >1.5. Scipy : high-level scientific computing</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/intro/scipy/auto_examples/solutions/plot_fft_image_denoise.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

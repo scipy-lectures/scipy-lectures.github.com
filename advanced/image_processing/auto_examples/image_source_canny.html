@@ -1,0 +1,451 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Scipy lecture notes</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2015.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../../index.html" />
+   
+    <link rel="stylesheet"
+	  href="http://yui.yahooapis.com/pure/0.6.0/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../../index.html">Scipy lecture notes</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/image_processing/auto_examples/image_source_canny.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <p id="example-image-source-canny-py">canny.py - Canny Edge detector</p>
+<dl class="docutils">
+<dt>Reference: Canny, J., A Computational Approach To Edge Detection, IEEE Trans.</dt>
+<dd>Pattern Analysis and Machine Intelligence, 8:679-714, 1986</dd>
+</dl>
+<p>Originally part of CellProfiler, code licensed under both GPL and BSD licenses.
+Website: <a class="reference external" href="http://www.cellprofiler.org">http://www.cellprofiler.org</a>
+Copyright (c) 2003-2009 Massachusetts Institute of Technology
+Copyright (c) 2009-2011 Broad Institute
+All rights reserved.
+Original author: Lee Kamentsky</p>
+<p><strong>Python source code:</strong> <a class="reference download internal" href="../../../_downloads/image_source_canny.py"><tt class="xref download docutils literal"><span class="pre">image_source_canny.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="kn">as</span> <span class="nn">ndi</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="p">(</span><span class="n">gaussian_filter</span><span class="p">,</span> <span class="n">convolve</span><span class="p">,</span>
+<div class="newline"></div>                           <span class="n">generate_binary_structure</span><span class="p">,</span> <span class="n">binary_erosion</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">smooth_with_function_and_mask</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
+<div class="newline"></div>    <span class="sd">&quot;&quot;&quot;Smooth an image with a linear function, ignoring masked pixels</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Parameters</span>
+<div class="newline"></div><span class="sd">    ----------</span>
+<div class="newline"></div><span class="sd">    image : array</span>
+<div class="newline"></div><span class="sd">      The image to smooth</span>
+<div class="newline"></div><span class="sd">    </span>
+<div class="newline"></div><span class="sd">    function : callable</span>
+<div class="newline"></div><span class="sd">      A function that takes an image and returns a smoothed image</span>
+<div class="newline"></div><span class="sd">    </span>
+<div class="newline"></div><span class="sd">    mask : array</span>
+<div class="newline"></div><span class="sd">      Mask with 1&#39;s for significant pixels, 0 for masked pixels</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Notes</span>
+<div class="newline"></div><span class="sd">    ------</span>
+<div class="newline"></div><span class="sd">    This function calculates the fractional contribution of masked pixels</span>
+<div class="newline"></div><span class="sd">    by applying the function to the mask (which gets you the fraction of</span>
+<div class="newline"></div><span class="sd">    the pixel data that&#39;s due to significant points). We then mask the image</span>
+<div class="newline"></div><span class="sd">    and apply the function. The resulting values will be lower by the bleed-over</span>
+<div class="newline"></div><span class="sd">    fraction, so you can recalibrate by dividing by the function on the mask</span>
+<div class="newline"></div><span class="sd">    to recover the effect of smoothing from just the significant pixels.</span>
+<div class="newline"></div><span class="sd">    &quot;&quot;&quot;</span>
+<div class="newline"></div>    <span class="n">not_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">bleed_over</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">masked_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">masked_image</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">smoothed_image</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">masked_image</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">output_image</span> <span class="o">=</span> <span class="n">smoothed_image</span> <span class="o">/</span> <span class="p">(</span><span class="n">bleed_over</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">output_image</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">canny</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">low_threshold</span><span class="p">,</span> <span class="n">high_threshold</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="newline"></div>    <span class="sd">&#39;&#39;&#39;Edge filter an image using the Canny algorithm.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Parameters</span>
+<div class="newline"></div><span class="sd">    -----------</span>
+<div class="newline"></div><span class="sd">    image : array_like, dtype=float</span>
+<div class="newline"></div><span class="sd">      The greyscale input image to detect edges on; should be normalized to 0.0</span>
+<div class="newline"></div><span class="sd">      to 1.0.</span>
+<div class="newline"></div><span class="sd">    </span>
+<div class="newline"></div><span class="sd">    sigma : float</span>
+<div class="newline"></div><span class="sd">      The standard deviation of the Gaussian filter</span>
+<div class="newline"></div><span class="sd">    </span>
+<div class="newline"></div><span class="sd">    low_threshold : float</span>
+<div class="newline"></div><span class="sd">      The lower bound for hysterisis thresholding (linking edges)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    high_threshold : float</span>
+<div class="newline"></div><span class="sd">      The upper bound for hysterisis thresholding (linking edges)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    mask : array, dtype=bool, optional</span>
+<div class="newline"></div><span class="sd">      An optional mask to limit the application of Canny to a certain area.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    Returns</span>
+<div class="newline"></div><span class="sd">    -------</span>
+<div class="newline"></div><span class="sd">    output : array (image)</span>
+<div class="newline"></div><span class="sd">      The binary edge map.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="sd">    References</span>
+<div class="newline"></div><span class="sd">    -----------</span>
+<div class="newline"></div><span class="sd">    Canny, J., A Computational Approach To Edge Detection, IEEE Trans.</span>
+<div class="newline"></div><span class="sd">    Pattern Analysis and Machine Intelligence, 8:679-714, 1986</span>
+<div class="newline"></div><span class="sd">    </span>
+<div class="newline"></div><span class="sd">    William Green&#39;s Canny tutorial</span>
+<div class="newline"></div><span class="sd">    http://www.pages.drexel.edu/~weg22/can_tut.html</span>
+<div class="newline"></div><span class="sd">    &#39;&#39;&#39;</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="c"># The steps involved:</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="c"># * Smooth using the Gaussian with sigma above.</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="c"># * Apply the horizontal and vertical Sobel operators to get the gradients</span>
+<div class="newline"></div>    <span class="c">#   within the image. The edge strength is the sum of the magnitudes</span>
+<div class="newline"></div>    <span class="c">#   of the gradients in each direction.</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="c"># * Find the normal to the edge at each point using the arctangent of the</span>
+<div class="newline"></div>    <span class="c">#   ratio of the Y sobel over the X sobel - pragmatically, we can</span>
+<div class="newline"></div>    <span class="c">#   look at the signs of X and Y and the relative magnitude of X vs Y</span>
+<div class="newline"></div>    <span class="c">#   to sort the points into 4 categories: horizontal, vertical,</span>
+<div class="newline"></div>    <span class="c">#   diagonal and antidiagonal.</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="c"># * Look in the normal and reverse directions to see if the values</span>
+<div class="newline"></div>    <span class="c">#   in either of those directions are greater than the point in question.</span>
+<div class="newline"></div>    <span class="c">#   Use interpolation to get a mix of points instead of picking the one</span>
+<div class="newline"></div>    <span class="c">#   that&#39;s the closest to the normal.</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="c"># * Label all points above the high threshold as edges.</span>
+<div class="newline"></div>    <span class="c"># * Recursively label any point above the low threshold that is 8-connected</span>
+<div class="newline"></div>    <span class="c">#   to a labeled point as an edge.</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="c"># Regarding masks, any point touching a masked point will have a gradient</span>
+<div class="newline"></div>    <span class="c"># that is &quot;infected&quot; by the masked point, so it&#39;s enough to erode the</span>
+<div class="newline"></div>    <span class="c"># mask by one and then mask the output. We also mask out the border points</span>
+<div class="newline"></div>    <span class="c"># because who knows what lies beyond the edge of the image?</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<div class="newline"></div>        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">fsmooth</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;constant&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">smoothed</span> <span class="o">=</span> <span class="n">smooth_with_function_and_mask</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">fsmooth</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">jsobel</span> <span class="o">=</span> <span class="n">ndi</span><span class="o">.</span><span class="n">sobel</span><span class="p">(</span><span class="n">smoothed</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">isobel</span> <span class="o">=</span> <span class="n">ndi</span><span class="o">.</span><span class="n">sobel</span><span class="p">(</span><span class="n">smoothed</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">abs_isobel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">isobel</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">abs_jsobel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">jsobel</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">magnitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">isobel</span><span class="p">,</span> <span class="n">jsobel</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="c"># Make the eroded mask. Setting the border value to zero will wipe</span>
+<div class="newline"></div>    <span class="c"># out the image edges for us.</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="n">s</span> <span class="o">=</span> <span class="n">generate_binary_structure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">eroded_mask</span> <span class="o">=</span> <span class="n">binary_erosion</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">border_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">eroded_mask</span> <span class="o">=</span> <span class="n">eroded_mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">magnitude</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="c">#--------- Find local maxima --------------</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="c"># Assign each point to have a normal of 0-45 degrees, 45-90 degrees,</span>
+<div class="newline"></div>    <span class="c"># 90-135 degrees and 135-180 degrees.</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="n">local_maxima</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="nb">bool</span><span class="p">)</span>
+<div class="newline"></div>    <span class="c">#----- 0 to 45 degrees ------</span>
+<div class="newline"></div>    <span class="n">pts_plus</span> <span class="o">=</span> <span class="p">(</span><span class="n">isobel</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">jsobel</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">abs_isobel</span> <span class="o">&gt;=</span> <span class="n">abs_jsobel</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pts_minus</span> <span class="o">=</span> <span class="p">(</span><span class="n">isobel</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">jsobel</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">abs_isobel</span> <span class="o">&gt;=</span> <span class="n">abs_jsobel</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pts</span> <span class="o">=</span> <span class="n">pts_plus</span> <span class="o">|</span> <span class="n">pts_minus</span>
+<div class="newline"></div>    <span class="n">pts</span> <span class="o">=</span> <span class="n">eroded_mask</span> <span class="o">&amp;</span> <span class="n">pts</span>
+<div class="newline"></div>    <span class="c"># Get the magnitudes shifted left to make a matrix of the points to the</span>
+<div class="newline"></div>    <span class="c"># right of pts. Similarly, shift left and down to get the points to the</span>
+<div class="newline"></div>    <span class="c"># top right of pts.</span>
+<div class="newline"></div>    <span class="n">c1</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:][</span><span class="n">pts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]]</span>
+<div class="newline"></div>    <span class="n">c2</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:][</span><span class="n">pts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">m</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">w</span> <span class="o">=</span> <span class="n">abs_jsobel</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span> <span class="o">/</span> <span class="n">abs_isobel</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">c_plus</span> <span class="o">=</span> <span class="n">c2</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">c1</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">m</span>
+<div class="newline"></div>    <span class="n">c1</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:][</span><span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:]]</span>
+<div class="newline"></div>    <span class="n">c2</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:]]</span>
+<div class="newline"></div>    <span class="n">c_minus</span> <span class="o">=</span> <span class="n">c2</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">c1</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">m</span>
+<div class="newline"></div>    <span class="n">local_maxima</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_plus</span> <span class="o">&amp;</span> <span class="n">c_minus</span>
+<div class="newline"></div>    <span class="c">#----- 45 to 90 degrees ------</span>
+<div class="newline"></div>    <span class="c"># Mix diagonal and vertical</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="n">pts_plus</span> <span class="o">=</span> <span class="p">(</span><span class="n">isobel</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">jsobel</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">abs_isobel</span> <span class="o">&lt;=</span> <span class="n">abs_jsobel</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pts_minus</span> <span class="o">=</span> <span class="p">(</span><span class="n">isobel</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">jsobel</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">abs_isobel</span> <span class="o">&lt;=</span> <span class="n">abs_jsobel</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pts</span> <span class="o">=</span> <span class="n">pts_plus</span> <span class="o">|</span> <span class="n">pts_minus</span>
+<div class="newline"></div>    <span class="n">pts</span> <span class="o">=</span> <span class="n">eroded_mask</span> <span class="o">&amp;</span> <span class="n">pts</span>
+<div class="newline"></div>    <span class="n">c1</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:][</span><span class="n">pts</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">c2</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:][</span><span class="n">pts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">m</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">w</span> <span class="o">=</span> <span class="n">abs_isobel</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span> <span class="o">/</span> <span class="n">abs_jsobel</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">c_plus</span> <span class="o">=</span> <span class="n">c2</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">c1</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">m</span>
+<div class="newline"></div>    <span class="n">c1</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">pts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]]</span>
+<div class="newline"></div>    <span class="n">c2</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:]]</span>
+<div class="newline"></div>    <span class="n">c_minus</span> <span class="o">=</span> <span class="n">c2</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">c1</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">m</span>
+<div class="newline"></div>    <span class="n">local_maxima</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_plus</span> <span class="o">&amp;</span> <span class="n">c_minus</span>
+<div class="newline"></div>    <span class="c">#----- 90 to 135 degrees ------</span>
+<div class="newline"></div>    <span class="c"># Mix anti-diagonal and vertical</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="n">pts_plus</span> <span class="o">=</span> <span class="p">(</span><span class="n">isobel</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">jsobel</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">abs_isobel</span> <span class="o">&lt;=</span> <span class="n">abs_jsobel</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pts_minus</span> <span class="o">=</span> <span class="p">(</span><span class="n">isobel</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">jsobel</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">abs_isobel</span> <span class="o">&lt;=</span> <span class="n">abs_jsobel</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pts</span> <span class="o">=</span> <span class="n">pts_plus</span> <span class="o">|</span> <span class="n">pts_minus</span>
+<div class="newline"></div>    <span class="n">pts</span> <span class="o">=</span> <span class="n">eroded_mask</span> <span class="o">&amp;</span> <span class="n">pts</span>
+<div class="newline"></div>    <span class="n">c1a</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:][</span><span class="n">pts</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">c2a</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:][</span><span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">m</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">w</span> <span class="o">=</span> <span class="n">abs_isobel</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span> <span class="o">/</span> <span class="n">abs_jsobel</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">c_plus</span> <span class="o">=</span> <span class="n">c2a</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">c1a</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">m</span>
+<div class="newline"></div>    <span class="n">c1</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">pts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]]</span>
+<div class="newline"></div>    <span class="n">c2</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">pts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]]</span>
+<div class="newline"></div>    <span class="n">c_minus</span> <span class="o">=</span> <span class="n">c2</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">c1</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">m</span>
+<div class="newline"></div>    <span class="n">cc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">c_plus</span><span class="p">,</span><span class="n">c_minus</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">local_maxima</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_plus</span> <span class="o">&amp;</span> <span class="n">c_minus</span>
+<div class="newline"></div>    <span class="c">#----- 135 to 180 degrees ------</span>
+<div class="newline"></div>    <span class="c"># Mix anti-diagonal and anti-horizontal</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="n">pts_plus</span> <span class="o">=</span> <span class="p">(</span><span class="n">isobel</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">jsobel</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">abs_isobel</span> <span class="o">&gt;=</span> <span class="n">abs_jsobel</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pts_minus</span> <span class="o">=</span> <span class="p">(</span><span class="n">isobel</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">jsobel</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">abs_isobel</span> <span class="o">&gt;=</span> <span class="n">abs_jsobel</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">pts</span> <span class="o">=</span> <span class="n">pts_plus</span> <span class="o">|</span> <span class="n">pts_minus</span>
+<div class="newline"></div>    <span class="n">pts</span> <span class="o">=</span> <span class="n">eroded_mask</span> <span class="o">&amp;</span> <span class="n">pts</span>
+<div class="newline"></div>    <span class="n">c1</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:][</span><span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:]]</span>
+<div class="newline"></div>    <span class="n">c2</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:][</span><span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<div class="newline"></div>    <span class="n">m</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">w</span> <span class="o">=</span> <span class="n">abs_jsobel</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span> <span class="o">/</span> <span class="n">abs_isobel</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">c_plus</span> <span class="o">=</span> <span class="n">c2</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">c1</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">m</span>
+<div class="newline"></div>    <span class="n">c1</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:][</span><span class="n">pts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]]</span>
+<div class="newline"></div>    <span class="n">c2</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">[</span><span class="mi">1</span><span class="p">:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">pts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">:]]</span>
+<div class="newline"></div>    <span class="n">c_minus</span> <span class="o">=</span> <span class="n">c2</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">c1</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">m</span>
+<div class="newline"></div>    <span class="n">local_maxima</span><span class="p">[</span><span class="n">pts</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_plus</span> <span class="o">&amp;</span> <span class="n">c_minus</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="c">#---- Create two masks at the two thresholds.</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="n">high_mask</span> <span class="o">=</span> <span class="n">local_maxima</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">magnitude</span> <span class="o">&gt;=</span> <span class="n">high_threshold</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">low_mask</span> <span class="o">=</span> <span class="n">local_maxima</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">magnitude</span> <span class="o">&gt;=</span> <span class="n">low_threshold</span><span class="p">)</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="c"># Segment the low-mask, then only keep low-segments that have</span>
+<div class="newline"></div>    <span class="c"># some high_mask component in them</span>
+<div class="newline"></div>    <span class="c">#</span>
+<div class="newline"></div>    <span class="n">labels</span><span class="p">,</span><span class="n">count</span> <span class="o">=</span> <span class="n">label</span><span class="p">(</span><span class="n">low_mask</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span><span class="nb">bool</span><span class="p">))</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="n">low_mask</span>
+<div class="newline"></div>    
+<div class="newline"></div>    <span class="n">sums</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ndi</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">high_mask</span><span class="p">,</span><span class="n">labels</span><span class="p">,</span>
+<div class="newline"></div>                             <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">count</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+<div class="newline"></div>                     <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">good_label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,),</span><span class="nb">bool</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">good_label</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">sums</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<div class="newline"></div>    <span class="n">output_mask</span> <span class="o">=</span> <span class="n">good_label</span><span class="p">[</span><span class="n">labels</span><span class="p">]</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">output_mask</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><div style="clear: both"></div></p>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc"></div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../../index.html">Scipy lecture notes</a> &raquo;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/image_processing/auto_examples/image_source_canny.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012,2013,2015.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

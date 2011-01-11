@@ -1,0 +1,1497 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2.8. Interfacing with C &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3. Packages and applications" href="../../packages/index.html" />
+    <link rel="prev" title="2.7.4.11. Gradient descent" href="../mathematical_optimization/auto_examples/plot_gradient_descent.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../packages/index.html" title="3. Packages and applications"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../mathematical_optimization/auto_examples/plot_gradient_descent.html" title="2.7.4.11. Gradient descent"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">2. Advanced topics</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/interfacing_with_c/interfacing_with_c.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="interfacing-with-c">
+<h1>2.8. Interfacing with C<a class="headerlink" href="#interfacing-with-c" title="Permalink to this headline">¶</a></h1>
+<p><strong>Author</strong>: <em>Valentin Haenel</em></p>
+<p>This chapter contains an <em>introduction</em> to the many different routes for
+making your native code (primarily <code class="docutils literal"><span class="pre">C/C++</span></code>) available from Python, a
+process commonly referred to <em>wrapping</em>. The goal of this chapter is to
+give you a flavour of what technologies exist and what their respective
+merits and shortcomings are, so that you can select the appropriate one
+for your specific needs. In any case, once you do start wrapping, you
+almost certainly will want to consult the respective documentation for
+your selected technique.</p>
+<div class="contents local topic" id="chapters-contents">
+<p class="topic-title first">Chapters contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id18">Introduction</a></li>
+<li><a class="reference internal" href="#id1" id="id19">Python-C-Api</a></li>
+<li><a class="reference internal" href="#id3" id="id20">Ctypes</a></li>
+<li><a class="reference internal" href="#swig" id="id21">SWIG</a></li>
+<li><a class="reference internal" href="#id10" id="id22">Cython</a></li>
+<li><a class="reference internal" href="#summary" id="id23">Summary</a></li>
+<li><a class="reference internal" href="#further-reading-and-references" id="id24">Further Reading and References</a></li>
+<li><a class="reference internal" href="#exercises" id="id25">Exercises</a></li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id18">2.8.1. Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This chapter covers the following techniques:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.python.org/2/c-api/">Python-C-Api</a></li>
+<li><a class="reference external" href="https://docs.python.org/2/library/ctypes.html">Ctypes</a></li>
+<li><a class="reference external" href="http://www.swig.org/">SWIG (Simplified Wrapper and Interface Generator)</a></li>
+<li><a class="reference external" href="http://cython.org/">Cython</a></li>
+</ul>
+<p>These four techniques are perhaps the most well known ones, of which Cython is
+probably the most advanced one and the one you should consider using first. The
+others are also important, if you want to understand the wrapping problem from
+different angles. Having said that, there are other alternatives out there,
+but having understood the basics of the ones above, you will be in a position
+to evaluate the technique of your choice to see if it fits your needs.</p>
+<p>The following criteria may be useful when evaluating a technology:</p>
+<ul class="simple">
+<li>Are additional libraries required?</li>
+<li>Is the code autogenerated?</li>
+<li>Does it need to be compiled?</li>
+<li>Is there good support for interacting with Numpy arrays?</li>
+<li>Does it support C++?</li>
+</ul>
+<p>Before you set out, you should consider your use case. When interfacing with
+native code, there are usually two use-cases that come up:</p>
+<ul class="simple">
+<li>Existing code in C/C++ that needs to be leveraged, either because it already
+exists, or because it is faster.</li>
+<li>Python code too slow, push inner loops to native code</li>
+</ul>
+<p>Each technology is demonstrated by wrapping the <code class="docutils literal"><span class="pre">cos</span></code> function from
+<code class="docutils literal"><span class="pre">math.h</span></code>. While this is a mostly a trivial example, it should serve us well
+to demonstrate the basics of the wrapping solution. Since each technique also
+includes some form of Numpy support, this is also demonstrated using an
+example where the cosine is computed on some kind of array.</p>
+<p>Last but not least, two small warnings:</p>
+<ul class="simple">
+<li>All of these techniques may crash (segmentation fault) the Python
+interpreter, which is (usually) due to bugs in the C code.</li>
+<li>All the examples have been done on Linux, they <em>should</em> be possible on other
+operating systems.</li>
+<li>You will need a C compiler for most of the examples.</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h2><a class="toc-backref" href="#id19">2.8.2. Python-C-Api</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="https://docs.python.org/2/c-api/">Python-C-API</a> is the backbone of the
+standard Python interpreter (a.k.a <em>CPython</em>). Using this API it is possible to
+write Python extension module in C and C++. Obviously, these extension modules
+can, by virtue of language compatibility, call any function written in C or
+C++.</p>
+<p>When using the Python-C-API, one usually writes much boilerplate code, first to
+parse the arguments that were given to a function, and later to construct the
+return type.</p>
+<p><strong>Advantages</strong></p>
+<ul class="simple">
+<li>Requires no additional libraries</li>
+<li>Lots of low-level control</li>
+<li>Entirely usable from C++</li>
+</ul>
+<p><strong>Disadvantages</strong></p>
+<ul class="simple">
+<li>May require a substantial amount of effort</li>
+<li>Much overhead in the code</li>
+<li>Must be compiled</li>
+<li>High maintenance cost</li>
+<li>No forward compatibility across Python versions as C-API changes</li>
+<li>Reference count bugs are easy to create and very hard to track down.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Python-C-Api example here serves mainly for didactic reasons. Many of
+the other techniques actually depend on this, so it is good to have a
+high-level understanding of how it works. In 99% of the use-cases you will
+be better off, using an alternative technique.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Since refernce counting bugs are easy to create and hard to track down,
+anyone really needing to use the Python C-API should read the <a class="reference external" href="https://docs.python.org/2/c-api/intro.html#objects-types-and-reference-counts">section
+about objects, types and reference counts</a>
+from the official python documentation. Additionally, there is a tool by the
+name of <a class="reference external" href="https://gcc-python-plugin.readthedocs.org/en/latest/cpychecker.html">cpychecker</a>
+which can help discover common errors with reference counting.</p>
+</div>
+<div class="section" id="example">
+<h3>2.8.2.1. Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>The following C-extension module, make the <code class="docutils literal"><span class="pre">cos</span></code> function from the standard
+math library available to Python:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*  Example of wrapping cos function from math.h with the Python-C-API. */</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
+<div class="newline"></div><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cm">/*  wrapped cosine function */</span>
+<div class="newline"></div><span class="k">static</span> <span class="n">PyObject</span><span class="o">*</span> <span class="nf">cos_func</span><span class="p">(</span><span class="n">PyObject</span><span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span><span class="o">*</span> <span class="n">args</span><span class="p">)</span>
+<div class="newline"></div><span class="p">{</span>
+<div class="newline"></div>    <span class="kt">double</span> <span class="n">value</span><span class="p">;</span>
+<div class="newline"></div>    <span class="kt">double</span> <span class="n">answer</span><span class="p">;</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="cm">/*  parse the input, from python float to c double */</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">))</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<div class="newline"></div>    <span class="cm">/* if the above function returns -1, an appropriate Python exception will</span>
+<div class="newline"></div><span class="cm">     * have been set, and the function simply returns NULL</span>
+<div class="newline"></div><span class="cm">     */</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="cm">/* call cos from libm */</span>
+<div class="newline"></div>    <span class="n">answer</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="cm">/*  construct the output from cos, from c double to python float */</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">Py_BuildValue</span><span class="p">(</span><span class="s">&quot;f&quot;</span><span class="p">,</span> <span class="n">answer</span><span class="p">);</span>
+<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cm">/*  define functions in module */</span>
+<div class="newline"></div><span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">CosMethods</span><span class="p">[]</span> <span class="o">=</span>
+<div class="newline"></div><span class="p">{</span>
+<div class="newline"></div>     <span class="p">{</span><span class="s">&quot;cos_func&quot;</span><span class="p">,</span> <span class="n">cos_func</span><span class="p">,</span> <span class="n">METH_VARARGS</span><span class="p">,</span> <span class="s">&quot;evaluate the cosine&quot;</span><span class="p">},</span>
+<div class="newline"></div>     <span class="p">{</span><span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">}</span>
+<div class="newline"></div><span class="p">};</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cp">#if PY_MAJOR_VERSION &gt;= 3</span>
+<div class="newline"></div><span class="cm">/* module initialization */</span>
+<div class="newline"></div><span class="cm">/* Python version 3*/</span>
+<div class="newline"></div><span class="k">static</span> <span class="k">struct</span> <span class="n">PyModuleDef</span> <span class="n">cModPyDem</span> <span class="o">=</span>
+<div class="newline"></div><span class="p">{</span>
+<div class="newline"></div>    <span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span>
+<div class="newline"></div>    <span class="s">&quot;cos_module&quot;</span><span class="p">,</span> <span class="s">&quot;Some documentation&quot;</span><span class="p">,</span>
+<div class="newline"></div>    <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+<div class="newline"></div>    <span class="n">CosMethods</span>
+<div class="newline"></div><span class="p">};</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">PyMODINIT_FUNC</span>
+<div class="newline"></div><span class="nf">PyInit_cos_module</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<div class="newline"></div><span class="p">{</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cModPyDem</span><span class="p">);</span>
+<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cp">#else</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cm">/* module initialization */</span>
+<div class="newline"></div><span class="cm">/* Python version 2 */</span>
+<div class="newline"></div><span class="n">PyMODINIT_FUNC</span>
+<div class="newline"></div><span class="nf">initcos_module</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<div class="newline"></div><span class="p">{</span>
+<div class="newline"></div>    <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">Py_InitModule</span><span class="p">(</span><span class="s">&quot;cos_module&quot;</span><span class="p">,</span> <span class="n">CosMethods</span><span class="p">);</span>
+<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cp">#endif</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>As you can see, there is much boilerplate, both to «massage» the arguments and
+return types into place and for the module initialisation. Although some of
+this is amortised, as the extension grows, the boilerplate required for each
+function(s) remains.</p>
+<p>The standard python build system <code class="docutils literal"><span class="pre">distutils</span></code> supports compiling C-extensions
+from a <code class="docutils literal"><span class="pre">setup.py</span></code>, which is rather convenient:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># define the extension module</span>
+<div class="newline"></div><span class="n">cos_module</span> <span class="o">=</span> <span class="n">Extension</span><span class="p">(</span><span class="s1">&#39;cos_module&#39;</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cos_module.c&#39;</span><span class="p">])</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># run the setup</span>
+<div class="newline"></div><span class="n">setup</span><span class="p">(</span><span class="n">ext_modules</span><span class="o">=</span><span class="p">[</span><span class="n">cos_module</span><span class="p">])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>This can be compiled:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> advanced/interfacing_with_c/python_c_api
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="go">cos_module.c  setup.py</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">$</span> python setup.py build_ext --inplace
+<div class="newline"></div><span class="go">running build_ext</span>
+<div class="newline"></div><span class="go">building &#39;cos_module&#39; extension</span>
+<div class="newline"></div><span class="go">creating build</span>
+<div class="newline"></div><span class="go">creating build/temp.linux-x86_64-2.7</span>
+<div class="newline"></div><span class="go">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/esc/anaconda/include/python2.7 -c cos_module.c -o build/temp.linux-x86_64-2.7/cos_module.o</span>
+<div class="newline"></div><span class="go">gcc -pthread -shared build/temp.linux-x86_64-2.7/cos_module.o -L/home/esc/anaconda/lib -lpython2.7 -o /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/python_c_api/cos_module.so</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="go">build/  cos_module.c  cos_module.so  setup.py</span>
+<div class="newline"></div></pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">build_ext</span></code> is to build extension modules</li>
+<li><code class="docutils literal"><span class="pre">--inplace</span></code> will output the compiled extension module into the current directory</li>
+</ul>
+<p>The file <code class="docutils literal"><span class="pre">cos_module.so</span></code> contains the compiled extension, which we can now load in the IPython interpreter:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In Python 3, the filename for compiled modules includes metadata on the Python
+interpreter (see <a class="reference external" href="https://www.python.org/dev/peps/pep-3149/">PEP 3149</a>) and is thus
+longer. The import statement is not affected by this.</p>
+</div>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">cos_module</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [2]: </span><span class="n">cos_module</span><span class="err">?</span>
+<div class="newline"></div><span class="go">Type:       module</span>
+<div class="newline"></div><span class="go">String Form:&lt;module &#39;cos_module&#39; from &#39;cos_module.so&#39;&gt;</span>
+<div class="newline"></div><span class="go">File:       /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/python_c_api/cos_module.so</span>
+<div class="newline"></div><span class="go">Docstring:  &lt;no docstring&gt;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [3]: </span><span class="nb">dir</span><span class="p">(</span><span class="n">cos_module</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[3]: </span><span class="p">[</span><span class="s1">&#39;__doc__&#39;</span><span class="p">,</span> <span class="s1">&#39;__file__&#39;</span><span class="p">,</span> <span class="s1">&#39;__name__&#39;</span><span class="p">,</span> <span class="s1">&#39;__package__&#39;</span><span class="p">,</span> <span class="s1">&#39;cos_func&#39;</span><span class="p">]</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [4]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[4]: </span><span class="mf">0.5403023058681398</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [5]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[5]: </span><span class="mf">1.0</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [6]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="mf">3.14159265359</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[7]: </span><span class="o">-</span><span class="mf">1.0</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Now let’s see how robust this is:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="go">---------------------------------------------------------------------------</span>
+<div class="newline"></div><span class="go">TypeError                                 Traceback (most recent call last)</span>
+<div class="newline"></div><span class="go">&lt;ipython-input-10-11bee483665d&gt; in &lt;module&gt;()</span>
+<div class="newline"></div><span class="go">----&gt; 1 cos_module.cos_func(&#39;foo&#39;)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="go">TypeError: a float is required</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="numpy-support">
+<h3>2.8.2.2. Numpy Support<a class="headerlink" href="#numpy-support" title="Permalink to this headline">¶</a></h3>
+<p>Analog to the Python-C-API, Numpy, which is itself implemented as a
+C-extension, comes with the <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/c-api.html">Numpy-C-API</a>. This API can be used
+to create and manipulate Numpy arrays from C, when writing a custom
+C-extension. See also: <a class="reference internal" href="../advanced_numpy/index.html#advanced-numpy"><span class="std std-ref">Advanced NumPy</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you do ever need to use the Numpy C-API refer to the documentation about
+<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/c-api.array.html">Arrays</a> and
+<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/c-api.iterator.html">Iterators</a>.</p>
+</div>
+<p>The following example shows how to pass Numpy arrays as arguments to functions
+and how to iterate over Numpy arrays using the (old) Numpy-C-API. It simply
+takes an array as argument applies the cosine function from the <code class="docutils literal"><span class="pre">math.h</span></code> and
+returns a resulting new array.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*  Example of wrapping the cos function from math.h using the Numpy-C-API. */</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
+<div class="newline"></div><span class="cp">#include</span> <span class="cpf">&lt;numpy/arrayobject.h&gt;</span><span class="cp"></span>
+<div class="newline"></div><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cm">/*  wrapped cosine function */</span>
+<div class="newline"></div><span class="k">static</span> <span class="n">PyObject</span><span class="o">*</span> <span class="nf">cos_func_np</span><span class="p">(</span><span class="n">PyObject</span><span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span><span class="o">*</span> <span class="n">args</span><span class="p">)</span>
+<div class="newline"></div><span class="p">{</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">PyArrayObject</span> <span class="o">*</span><span class="n">in_array</span><span class="p">;</span>
+<div class="newline"></div>    <span class="n">PyObject</span>      <span class="o">*</span><span class="n">out_array</span><span class="p">;</span>
+<div class="newline"></div>    <span class="n">NpyIter</span> <span class="o">*</span><span class="n">in_iter</span><span class="p">;</span>
+<div class="newline"></div>    <span class="n">NpyIter</span> <span class="o">*</span><span class="n">out_iter</span><span class="p">;</span>
+<div class="newline"></div>    <span class="n">NpyIter_IterNextFunc</span> <span class="o">*</span><span class="n">in_iternext</span><span class="p">;</span>
+<div class="newline"></div>    <span class="n">NpyIter_IterNextFunc</span> <span class="o">*</span><span class="n">out_iternext</span><span class="p">;</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="cm">/*  parse single numpy array argument */</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;O!&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyArray_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">in_array</span><span class="p">))</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="cm">/*  construct the output array, like the input array */</span>
+<div class="newline"></div>    <span class="n">out_array</span> <span class="o">=</span> <span class="n">PyArray_NewLikeArray</span><span class="p">(</span><span class="n">in_array</span><span class="p">,</span> <span class="n">NPY_ANYORDER</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="n">out_array</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="cm">/*  create the iterators */</span>
+<div class="newline"></div>    <span class="n">in_iter</span> <span class="o">=</span> <span class="n">NpyIter_New</span><span class="p">(</span><span class="n">in_array</span><span class="p">,</span> <span class="n">NPY_ITER_READONLY</span><span class="p">,</span> <span class="n">NPY_KEEPORDER</span><span class="p">,</span>
+<div class="newline"></div>                             <span class="n">NPY_NO_CASTING</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="n">in_iter</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+<div class="newline"></div>        <span class="k">goto</span> <span class="n">fail</span><span class="p">;</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">out_iter</span> <span class="o">=</span> <span class="n">NpyIter_New</span><span class="p">((</span><span class="n">PyArrayObject</span> <span class="o">*</span><span class="p">)</span><span class="n">out_array</span><span class="p">,</span> <span class="n">NPY_ITER_READWRITE</span><span class="p">,</span>
+<div class="newline"></div>                          <span class="n">NPY_KEEPORDER</span><span class="p">,</span> <span class="n">NPY_NO_CASTING</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="n">out_iter</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+<div class="newline"></div>        <span class="n">NpyIter_Deallocate</span><span class="p">(</span><span class="n">in_iter</span><span class="p">);</span>
+<div class="newline"></div>        <span class="k">goto</span> <span class="n">fail</span><span class="p">;</span>
+<div class="newline"></div>    <span class="p">}</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="n">in_iternext</span> <span class="o">=</span> <span class="n">NpyIter_GetIterNext</span><span class="p">(</span><span class="n">in_iter</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<div class="newline"></div>    <span class="n">out_iternext</span> <span class="o">=</span> <span class="n">NpyIter_GetIterNext</span><span class="p">(</span><span class="n">out_iter</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="n">in_iternext</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">out_iternext</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+<div class="newline"></div>        <span class="n">NpyIter_Deallocate</span><span class="p">(</span><span class="n">in_iter</span><span class="p">);</span>
+<div class="newline"></div>        <span class="n">NpyIter_Deallocate</span><span class="p">(</span><span class="n">out_iter</span><span class="p">);</span>
+<div class="newline"></div>        <span class="k">goto</span> <span class="n">fail</span><span class="p">;</span>
+<div class="newline"></div>    <span class="p">}</span>
+<div class="newline"></div>    <span class="kt">double</span> <span class="o">**</span> <span class="n">in_dataptr</span> <span class="o">=</span> <span class="p">(</span><span class="kt">double</span> <span class="o">**</span><span class="p">)</span> <span class="n">NpyIter_GetDataPtrArray</span><span class="p">(</span><span class="n">in_iter</span><span class="p">);</span>
+<div class="newline"></div>    <span class="kt">double</span> <span class="o">**</span> <span class="n">out_dataptr</span> <span class="o">=</span> <span class="p">(</span><span class="kt">double</span> <span class="o">**</span><span class="p">)</span> <span class="n">NpyIter_GetDataPtrArray</span><span class="p">(</span><span class="n">out_iter</span><span class="p">);</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="cm">/*  iterate over the arrays */</span>
+<div class="newline"></div>    <span class="k">do</span> <span class="p">{</span>
+<div class="newline"></div>        <span class="o">**</span><span class="n">out_dataptr</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="o">**</span><span class="n">in_dataptr</span><span class="p">);</span>
+<div class="newline"></div>    <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="n">in_iternext</span><span class="p">(</span><span class="n">in_iter</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">out_iternext</span><span class="p">(</span><span class="n">out_iter</span><span class="p">));</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="cm">/*  clean up and return the result */</span>
+<div class="newline"></div>    <span class="n">NpyIter_Deallocate</span><span class="p">(</span><span class="n">in_iter</span><span class="p">);</span>
+<div class="newline"></div>    <span class="n">NpyIter_Deallocate</span><span class="p">(</span><span class="n">out_iter</span><span class="p">);</span>
+<div class="newline"></div>    <span class="n">Py_INCREF</span><span class="p">(</span><span class="n">out_array</span><span class="p">);</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">out_array</span><span class="p">;</span>
+<div class="newline"></div>
+<div class="newline"></div>    <span class="cm">/*  in case bad things happen */</span>
+<div class="newline"></div>    <span class="nl">fail</span><span class="p">:</span>
+<div class="newline"></div>        <span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">out_array</span><span class="p">);</span>
+<div class="newline"></div>        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cm">/*  define functions in module */</span>
+<div class="newline"></div><span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">CosMethods</span><span class="p">[]</span> <span class="o">=</span>
+<div class="newline"></div><span class="p">{</span>
+<div class="newline"></div>     <span class="p">{</span><span class="s">&quot;cos_func_np&quot;</span><span class="p">,</span> <span class="n">cos_func_np</span><span class="p">,</span> <span class="n">METH_VARARGS</span><span class="p">,</span>
+<div class="newline"></div>         <span class="s">&quot;evaluate the cosine on a numpy array&quot;</span><span class="p">},</span>
+<div class="newline"></div>     <span class="p">{</span><span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">}</span>
+<div class="newline"></div><span class="p">};</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cm">/* module initialization */</span>
+<div class="newline"></div><span class="n">PyMODINIT_FUNC</span>
+<div class="newline"></div><span class="nf">initcos_module_np</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<div class="newline"></div><span class="p">{</span>
+<div class="newline"></div>     <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">Py_InitModule</span><span class="p">(</span><span class="s">&quot;cos_module_np&quot;</span><span class="p">,</span> <span class="n">CosMethods</span><span class="p">);</span>
+<div class="newline"></div>     <span class="cm">/* IMPORTANT: this must be called */</span>
+<div class="newline"></div>     <span class="n">import_array</span><span class="p">();</span>
+<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>To compile this we can use distutils again. However we need to be sure to
+include the Numpy headers by using :func:<code class="docutils literal"><span class="pre">numpy.get_include</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># define the extension module</span>
+<div class="newline"></div><span class="n">cos_module_np</span> <span class="o">=</span> <span class="n">Extension</span><span class="p">(</span><span class="s1">&#39;cos_module_np&#39;</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cos_module_np.c&#39;</span><span class="p">],</span>
+<div class="newline"></div>                          <span class="n">include_dirs</span><span class="o">=</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">get_include</span><span class="p">()])</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># run the setup</span>
+<div class="newline"></div><span class="n">setup</span><span class="p">(</span><span class="n">ext_modules</span><span class="o">=</span><span class="p">[</span><span class="n">cos_module_np</span><span class="p">])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>To convince ourselves if this does actually works, we run the following test
+script:</p>
+<div class="highlight-numpy"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cos_module_np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">cos_module_np</span><span class="o">.</span><span class="n">cos_func_np</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>And this should result in the following figure:</p>
+<a class="reference internal image-reference" href="../../_images/test_cos_module_np.png"><img alt="../../_images/test_cos_module_np.png" src="../../_images/test_cos_module_np.png" style="width: 637.5px; height: 190.0px;" /></a>
+</div>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id20">2.8.3. Ctypes</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://docs.python.org/2/library/ctypes.html">Ctypes</a> is a <em>foreign
+function library</em> for Python. It provides C compatible data types, and allows
+calling functions in DLLs or shared libraries. It can be used to wrap these
+libraries in pure Python.</p>
+<p><strong>Advantages</strong></p>
+<ul class="simple">
+<li>Part of the Python standard library</li>
+<li>Does not need to be compiled</li>
+<li>Wrapping code entirely in Python</li>
+</ul>
+<p><strong>Disadvantages</strong></p>
+<ul class="simple">
+<li>Requires code to be wrapped to be available as a shared library
+(roughly speaking <code class="docutils literal"><span class="pre">*.dll</span></code> in Windows <code class="docutils literal"><span class="pre">*.so</span></code> in Linux and <code class="docutils literal"><span class="pre">*.dylib</span></code> in Mac OSX.)</li>
+<li>No good support for C++</li>
+</ul>
+<div class="section" id="id5">
+<h3>2.8.3.1. Example<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>As advertised, the wrapper code is in pure Python.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot; Example of wrapping cos function from math.h using ctypes. &quot;&quot;&quot;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">ctypes</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># find and load the library</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># OSX or linux</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">ctypes.util</span> <span class="kn">import</span> <span class="n">find_library</span>
+<div class="newline"></div><span class="n">libm</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">cdll</span><span class="o">.</span><span class="n">LoadLibrary</span><span class="p">(</span><span class="n">find_library</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">))</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Windows</span>
+<div class="newline"></div><span class="c1"># from ctypes import windll</span>
+<div class="newline"></div><span class="c1"># libm = cdll.msvcrt</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># set the argument type</span>
+<div class="newline"></div><span class="n">libm</span><span class="o">.</span><span class="n">cos</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_double</span><span class="p">]</span>
+<div class="newline"></div><span class="c1"># set the return type</span>
+<div class="newline"></div><span class="n">libm</span><span class="o">.</span><span class="n">cos</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_double</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">cos_func</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+<div class="newline"></div>    <span class="sd">&#39;&#39;&#39; Wrapper for cos from math.h &#39;&#39;&#39;</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">libm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<ul class="simple">
+<li>Finding and loading the library may vary depending on your operating system,
+check <a class="reference external" href="https://docs.python.org/2/library/ctypes.html#loading-dynamic-link-libraries">the documentation</a>
+for details</li>
+<li>This may be somewhat deceptive, since the math library exists in compiled
+form on the system already. If you were to wrap a in-house library, you would
+have to compile it first, which may or may not require some additional effort.</li>
+</ul>
+<p>We may now use this, as before:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">cos_module</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [2]: </span><span class="n">cos_module</span><span class="err">?</span>
+<div class="newline"></div><span class="go">Type:       module</span>
+<div class="newline"></div><span class="go">String Form:&lt;module &#39;cos_module&#39; from &#39;cos_module.py&#39;&gt;</span>
+<div class="newline"></div><span class="go">File:       /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/ctypes/cos_module.py</span>
+<div class="newline"></div><span class="go">Docstring:  &lt;no docstring&gt;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [3]: </span><span class="nb">dir</span><span class="p">(</span><span class="n">cos_module</span><span class="p">)</span>
+<div class="newline"></div><span class="go">Out[3]:</span>
+<div class="newline"></div><span class="go">[&#39;__builtins__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__doc__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__file__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__name__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__package__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;cos_func&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;ctypes&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;find_library&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;libm&#39;]</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [4]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[4]: </span><span class="mf">0.5403023058681398</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [5]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[5]: </span><span class="mf">1.0</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [6]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="mf">3.14159265359</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[6]: </span><span class="o">-</span><span class="mf">1.0</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>As with the previous example, this code is somewhat robust, although the error
+message is not quite as helpful, since it does not tell us what the type should be.</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [7]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="go">---------------------------------------------------------------------------</span>
+<div class="newline"></div><span class="go">ArgumentError                             Traceback (most recent call last)</span>
+<div class="newline"></div><span class="go">&lt;ipython-input-7-11bee483665d&gt; in &lt;module&gt;()</span>
+<div class="newline"></div><span class="go">----&gt; 1 cos_module.cos_func(&#39;foo&#39;)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="go">/home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/ctypes/cos_module.py in cos_func(arg)</span>
+<div class="newline"></div><span class="go">     12 def cos_func(arg):</span>
+<div class="newline"></div><span class="go">     13     &#39;&#39;&#39; Wrapper for cos from math.h &#39;&#39;&#39;</span>
+<div class="newline"></div><span class="go">---&gt; 14     return libm.cos(arg)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="go">ArgumentError: argument 1: &lt;type &#39;exceptions.TypeError&#39;&gt;: wrong type</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>2.8.3.2. Numpy Support<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>Numpy contains some support for interfacing with ctypes. In particular there is
+support for exporting certain attributes of a Numpy array as ctypes data-types
+and there are functions to convert from C arrays to Numpy arrays and back.</p>
+<p>For more information, consult the corresponding section in the <a class="reference external" href="http://www.scipy.org/Cookbook/Ctypes">Numpy Cookbook</a> and the API documentation for
+<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.ctypes.html">numpy.ndarray.ctypes</a>
+and <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/routines.ctypeslib.html">numpy.ctypeslib</a>.</p>
+<p>For the following example, let’s consider a C function in a library that takes
+an input and an output array, computes the cosine of the input array and
+stores the result in the output array.</p>
+<p>The library consists of the following header file (although this is not
+strictly needed for this example, we list it for completeness):</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>The function implementation resides in the following C source file:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cm">/*  Compute the cosine of each element in in_array, storing the result in</span>
+<div class="newline"></div><span class="cm"> *  out_array. */</span>
+<div class="newline"></div><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">){</span>
+<div class="newline"></div>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+<div class="newline"></div>    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+<div class="newline"></div>        <span class="n">out_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">in_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<div class="newline"></div>    <span class="p">}</span>
+<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>And since the library is pure C, we can’t use <code class="docutils literal"><span class="pre">distutils</span></code> to compile it, but
+must use a combination of <code class="docutils literal"><span class="pre">make</span></code> and <code class="docutils literal"><span class="pre">gcc</span></code>:</p>
+<div class="highlight-make"><div class="highlight"><pre><span></span><span class="nf">m.PHONY </span><span class="o">:</span> <span class="n">clean</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="nf">libcos_doubles.so </span><span class="o">:</span> <span class="n">cos_doubles</span>.<span class="n">o</span>
+<div class="newline"></div>	gcc -shared -Wl,-soname,libcos_doubles.so -o libcos_doubles.so cos_doubles.o
+<div class="newline"></div>
+<div class="newline"></div><span class="nf">cos_doubles.o </span><span class="o">:</span> <span class="n">cos_doubles</span>.<span class="n">c</span>
+<div class="newline"></div>	gcc -c -fPIC cos_doubles.c -o cos_doubles.o
+<div class="newline"></div>
+<div class="newline"></div><span class="nf">clean </span><span class="o">:</span>
+<div class="newline"></div>	-rm -vf libcos_doubles.so cos_doubles.o cos_doubles.pyc
+<div class="newline"></div></pre></div>
+</div>
+<p>We can then compile this (on Linux) into the shared library
+<code class="docutils literal"><span class="pre">libcos_doubles.so</span></code>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> ls
+<div class="newline"></div><span class="go">cos_doubles.c  cos_doubles.h  cos_doubles.py  makefile  test_cos_doubles.py</span>
+<div class="newline"></div><span class="gp">$</span> make
+<div class="newline"></div><span class="go">gcc -c -fPIC cos_doubles.c -o cos_doubles.o</span>
+<div class="newline"></div><span class="go">gcc -shared -Wl,-soname,libcos_doubles.so -o libcos_doubles.so cos_doubles.o</span>
+<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="go">cos_doubles.c  cos_doubles.o   libcos_doubles.so*  test_cos_doubles.py</span>
+<div class="newline"></div><span class="go">cos_doubles.h  cos_doubles.py  makefile</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Now we can proceed to wrap this library via ctypes with direct support for
+(certain kinds of) Numpy arrays:</p>
+<div class="highlight-numpy"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot; Example of wrapping a C library function that accepts a C double array as</span>
+<div class="newline"></div><span class="sd">    input using the numpy.ctypeslib. &quot;&quot;&quot;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy.ctypeslib</span> <span class="kn">as</span> <span class="nn">npct</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">c_int</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># input type for the cos_doubles function</span>
+<div class="newline"></div><span class="c1"># must be a double array, with single dimension that is contiguous</span>
+<div class="newline"></div><span class="n">array_1d_double</span> <span class="o">=</span> <span class="n">npct</span><span class="o">.</span><span class="n">ndpointer</span><span class="p">(</span><span class="kp">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">,</span> <span class="kp">ndim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="s1">&#39;CONTIGUOUS&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># load the library, using numpy mechanisms</span>
+<div class="newline"></div><span class="n">libcd</span> <span class="o">=</span> <span class="n">npct</span><span class="o">.</span><span class="n">load_library</span><span class="p">(</span><span class="s2">&quot;libcos_doubles&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># setup the return types and argument types</span>
+<div class="newline"></div><span class="n">libcd</span><span class="o">.</span><span class="n">cos_doubles</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="bp">None</span>
+<div class="newline"></div><span class="n">libcd</span><span class="o">.</span><span class="n">cos_doubles</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">array_1d_double</span><span class="p">,</span> <span class="n">array_1d_double</span><span class="p">,</span> <span class="n">c_int</span><span class="p">]</span>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">cos_doubles_func</span><span class="p">(</span><span class="n">in_array</span><span class="p">,</span> <span class="n">out_array</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">libcd</span><span class="o">.</span><span class="n">cos_doubles</span><span class="p">(</span><span class="n">in_array</span><span class="p">,</span> <span class="n">out_array</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_array</span><span class="p">))</span>
+<div class="newline"></div></pre></div>
+</div>
+<ul class="simple">
+<li>Note the inherent limitation of contiguous single dimensional Numpy arrays,
+since the C functions requires this kind of buffer.</li>
+<li>Also note that the output array must be preallocated, for example with
+<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html#numpy.zeros" title="(in NumPy v1.14)"><code class="xref py py-func docutils literal"><span class="pre">numpy.zeros()</span></code></a> and the function will write into it’s buffer.</li>
+<li>Although the original signature of the <code class="docutils literal"><span class="pre">cos_doubles</span></code> function is <code class="docutils literal"><span class="pre">ARRAY,</span>
+<span class="pre">ARRAY,</span> <span class="pre">int</span></code> the final <code class="docutils literal"><span class="pre">cos_doubles_func</span></code> takes only two Numpy arrays as
+arguments.</li>
+</ul>
+<p>And, as before, we convince ourselves that it worked:</p>
+<div class="highlight-numpy"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">cos_doubles</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">empty_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">cos_doubles</span><span class="o">.</span><span class="n">cos_doubles_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/test_cos_doubles.png"><img alt="../../_images/test_cos_doubles.png" src="../../_images/test_cos_doubles.png" style="width: 637.5px; height: 190.0px;" /></a>
+</div>
+</div>
+<div class="section" id="swig">
+<h2><a class="toc-backref" href="#id21">2.8.4. SWIG</a><a class="headerlink" href="#swig" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://www.swig.org/">SWIG</a>, the Simplified Wrapper Interface Generator,
+is a software development tool that connects programs written in C and C++
+with a variety of high-level programming languages, including Python. The
+important thing with SWIG is, that it can autogenerate the wrapper code for you.
+While this is an advantage in terms of development time, it can also be a
+burden. The generated file tend to be quite large and may not be too human
+readable and the multiple levels of indirection which are a result of
+the wrapping process, may be a bit tricky to understand.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The autogenerated C code uses the Python-C-Api.</p>
+</div>
+<p><strong>Advantages</strong></p>
+<ul class="simple">
+<li>Can automatically wrap entire libraries given the headers</li>
+<li>Works nicely with C++</li>
+</ul>
+<p><strong>Disadvantages</strong></p>
+<ul class="simple">
+<li>Autogenerates enormous files</li>
+<li>Hard to debug if something goes wrong</li>
+<li>Steep learning curve</li>
+</ul>
+<div class="section" id="id8">
+<h3>2.8.4.1. Example<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>Let’s imagine that our <code class="docutils literal"><span class="pre">cos</span></code> function lives in a <code class="docutils literal"><span class="pre">cos_module</span></code> which has
+been written in <code class="docutils literal"><span class="pre">c</span></code> and consists of the source file <code class="docutils literal"><span class="pre">cos_module.c</span></code>:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<div class="newline"></div>
+<div class="newline"></div><span class="kt">double</span> <span class="nf">cos_func</span><span class="p">(</span><span class="kt">double</span> <span class="n">arg</span><span class="p">){</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">cos</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span>
+<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>and the header file <code class="docutils literal"><span class="pre">cos_module.h</span></code>:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">double</span> <span class="nf">cos_func</span><span class="p">(</span><span class="kt">double</span> <span class="n">arg</span><span class="p">);</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>And our goal is to expose the <code class="docutils literal"><span class="pre">cos_func</span></code> to Python. To achieve this with
+SWIG, we must write an <em>interface file</em> which contains the instructions for SWIG.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*  Example of wrapping cos function from math.h using SWIG. */</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="o">%</span><span class="n">module</span> <span class="n">cos_module</span>
+<div class="newline"></div><span class="o">%</span><span class="p">{</span>
+<div class="newline"></div>    <span class="cm">/* the resulting C file should be built as a python extension */</span>
+<div class="newline"></div>    <span class="cp">#define SWIG_FILE_WITH_INIT</span>
+<div class="newline"></div>    <span class="cm">/*  Includes the header in the wrapper code */</span>
+<div class="newline"></div>    <span class="cp">#include</span> <span class="cpf">&quot;cos_module.h&quot;</span><span class="cp"></span>
+<div class="newline"></div><span class="o">%</span><span class="p">}</span>
+<div class="newline"></div><span class="cm">/*  Parse the header file to generate wrappers */</span>
+<div class="newline"></div><span class="o">%</span><span class="n">include</span> <span class="s">&quot;cos_module.h&quot;</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>As you can see, not too much code is needed here. For this simple example it is
+enough to simply include the header file in the interface file, to expose the
+function to Python. However, SWIG does allow for more fine grained
+inclusion/exclusion of functions found in header files, check the documentation
+for details.</p>
+<p>Generating the compiled wrappers is a two stage process:</p>
+<ol class="arabic simple">
+<li>Run the <code class="docutils literal"><span class="pre">swig</span></code>  executable on the interface file to generate the files
+<code class="docutils literal"><span class="pre">cos_module_wrap.c</span></code>, which is the source file for the autogenerated Python
+C-extension and <code class="docutils literal"><span class="pre">cos_module.py</span></code>, which is the autogenerated pure python
+module.</li>
+<li>Compile the <code class="docutils literal"><span class="pre">cos_module_wrap.c</span></code> into the <code class="docutils literal"><span class="pre">_cos_module.so</span></code>. Luckily,
+<code class="docutils literal"><span class="pre">distutils</span></code> knows how to handle SWIG interface files, so that our
+<code class="docutils literal"><span class="pre">setup.py</span></code> is simply:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">setup</span><span class="p">(</span><span class="n">ext_modules</span><span class="o">=</span><span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s2">&quot;_cos_module&quot;</span><span class="p">,</span>
+<div class="newline"></div>      <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cos_module.c&quot;</span><span class="p">,</span> <span class="s2">&quot;cos_module.i&quot;</span><span class="p">])])</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> advanced/interfacing_with_c/swig
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="go">cos_module.c  cos_module.h  cos_module.i  setup.py</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">$</span> python setup.py build_ext --inplace
+<div class="newline"></div><span class="go">running build_ext</span>
+<div class="newline"></div><span class="go">building &#39;_cos_module&#39; extension</span>
+<div class="newline"></div><span class="go">swigging cos_module.i to cos_module_wrap.c</span>
+<div class="newline"></div><span class="go">swig -python -o cos_module_wrap.c cos_module.i</span>
+<div class="newline"></div><span class="go">creating build</span>
+<div class="newline"></div><span class="go">creating build/temp.linux-x86_64-2.7</span>
+<div class="newline"></div><span class="go">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/esc/anaconda/include/python2.7 -c cos_module.c -o build/temp.linux-x86_64-2.7/cos_module.o</span>
+<div class="newline"></div><span class="go">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/esc/anaconda/include/python2.7 -c cos_module_wrap.c -o build/temp.linux-x86_64-2.7/cos_module_wrap.o</span>
+<div class="newline"></div><span class="go">gcc -pthread -shared build/temp.linux-x86_64-2.7/cos_module.o build/temp.linux-x86_64-2.7/cos_module_wrap.o -L/home/esc/anaconda/lib -lpython2.7 -o /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/swig/_cos_module.so</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="go">build/  cos_module.c  cos_module.h  cos_module.i  cos_module.py  _cos_module.so*  cos_module_wrap.c  setup.py</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>We can now load and execute the <code class="docutils literal"><span class="pre">cos_module</span></code> as we have done in the previous examples:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">cos_module</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [2]: </span><span class="n">cos_module</span><span class="err">?</span>
+<div class="newline"></div><span class="go">Type:       module</span>
+<div class="newline"></div><span class="go">String Form:&lt;module &#39;cos_module&#39; from &#39;cos_module.py&#39;&gt;</span>
+<div class="newline"></div><span class="go">File:       /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/swig/cos_module.py</span>
+<div class="newline"></div><span class="go">Docstring:  &lt;no docstring&gt;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [3]: </span><span class="nb">dir</span><span class="p">(</span><span class="n">cos_module</span><span class="p">)</span>
+<div class="newline"></div><span class="go">Out[3]:</span>
+<div class="newline"></div><span class="go">[&#39;__builtins__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__doc__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__file__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__name__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__package__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;_cos_module&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;_newclass&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;_object&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;_swig_getattr&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;_swig_property&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;_swig_repr&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;_swig_setattr&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;_swig_setattr_nondynamic&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;cos_func&#39;]</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [4]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[4]: </span><span class="mf">0.5403023058681398</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [5]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[5]: </span><span class="mf">1.0</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [6]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="mf">3.14159265359</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[6]: </span><span class="o">-</span><span class="mf">1.0</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Again we test for robustness, and we see that we get a better error message
+(although, strictly speaking in Python there is no <code class="docutils literal"><span class="pre">double</span></code> type):</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [7]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="go">---------------------------------------------------------------------------</span>
+<div class="newline"></div><span class="go">TypeError                                 Traceback (most recent call last)</span>
+<div class="newline"></div><span class="go">&lt;ipython-input-7-11bee483665d&gt; in &lt;module&gt;()</span>
+<div class="newline"></div><span class="go">----&gt; 1 cos_module.cos_func(&#39;foo&#39;)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="go">TypeError: in method &#39;cos_func&#39;, argument 1 of type &#39;double&#39;</span>
+<div class="newline"></div></pre></div>
+</div>
+</div>
+<div class="section" id="id9">
+<h3>2.8.4.2. Numpy Support<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<p>Numpy provides <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/swig.html">support for SWIG</a> with the <code class="docutils literal"><span class="pre">numpy.i</span></code>
+file. This interface file defines various so-called <em>typemaps</em> which support
+conversion between Numpy arrays and C-Arrays. In the following example we will
+take a quick look at how such typemaps work in practice.</p>
+<p>We have the same <code class="docutils literal"><span class="pre">cos_doubles</span></code> function as in the ctypes example:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cm">/*  Compute the cosine of each element in in_array, storing the result in</span>
+<div class="newline"></div><span class="cm"> *  out_array. */</span>
+<div class="newline"></div><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">){</span>
+<div class="newline"></div>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+<div class="newline"></div>    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+<div class="newline"></div>        <span class="n">out_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">in_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<div class="newline"></div>    <span class="p">}</span>
+<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>This is wrapped as <code class="docutils literal"><span class="pre">cos_doubles_func</span></code> using the following SWIG interface
+file:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*  Example of wrapping a C function that takes a C double array as input using</span>
+<div class="newline"></div><span class="cm"> *  numpy typemaps for SWIG. */</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="o">%</span><span class="n">module</span> <span class="n">cos_doubles</span>
+<div class="newline"></div><span class="o">%</span><span class="p">{</span>
+<div class="newline"></div>    <span class="cm">/* the resulting C file should be built as a python extension */</span>
+<div class="newline"></div>    <span class="cp">#define SWIG_FILE_WITH_INIT</span>
+<div class="newline"></div>    <span class="cm">/*  Includes the header in the wrapper code */</span>
+<div class="newline"></div>    <span class="cp">#include</span> <span class="cpf">&quot;cos_doubles.h&quot;</span><span class="cp"></span>
+<div class="newline"></div><span class="o">%</span><span class="p">}</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cm">/*  include the numpy typemaps */</span>
+<div class="newline"></div><span class="o">%</span><span class="n">include</span> <span class="s">&quot;numpy.i&quot;</span>
+<div class="newline"></div><span class="cm">/*  need this for correct module initialization */</span>
+<div class="newline"></div><span class="o">%</span><span class="n">init</span> <span class="o">%</span><span class="p">{</span>
+<div class="newline"></div>    <span class="n">import_array</span><span class="p">();</span>
+<div class="newline"></div><span class="o">%</span><span class="p">}</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cm">/*  typemaps for the two arrays, the second will be modified in-place */</span>
+<div class="newline"></div><span class="o">%</span><span class="n">apply</span> <span class="p">(</span><span class="kt">double</span><span class="o">*</span> <span class="n">IN_ARRAY1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">DIM1</span><span class="p">)</span> <span class="p">{(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size_in</span><span class="p">)}</span>
+<div class="newline"></div><span class="o">%</span><span class="n">apply</span> <span class="p">(</span><span class="kt">double</span><span class="o">*</span> <span class="n">INPLACE_ARRAY1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">DIM1</span><span class="p">)</span> <span class="p">{(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size_out</span><span class="p">)}</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cm">/*  Wrapper for cos_doubles that massages the types */</span>
+<div class="newline"></div><span class="o">%</span><span class="kr">inline</span> <span class="o">%</span><span class="p">{</span>
+<div class="newline"></div>    <span class="cm">/*  takes as input two numpy arrays */</span>
+<div class="newline"></div>    <span class="kt">void</span> <span class="n">cos_doubles_func</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size_in</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size_out</span><span class="p">)</span> <span class="p">{</span>
+<div class="newline"></div>        <span class="cm">/*  calls the original funcion, providing only the size of the first */</span>
+<div class="newline"></div>        <span class="n">cos_doubles</span><span class="p">(</span><span class="n">in_array</span><span class="p">,</span> <span class="n">out_array</span><span class="p">,</span> <span class="n">size_in</span><span class="p">);</span>
+<div class="newline"></div>    <span class="p">}</span>
+<div class="newline"></div><span class="o">%</span><span class="p">}</span>
+<div class="newline"></div></pre></div>
+</div>
+<ul class="simple">
+<li>To use the Numpy typemaps, we need include the <code class="docutils literal"><span class="pre">numpy.i</span></code> file.</li>
+<li>Observe the call to <code class="docutils literal"><span class="pre">import_array()</span></code> which we encountered already in the
+Numpy-C-API example.</li>
+<li>Since the type maps only support the signature <code class="docutils literal"><span class="pre">ARRAY,</span> <span class="pre">SIZE</span></code> we need to
+wrap the <code class="docutils literal"><span class="pre">cos_doubles</span></code> as <code class="docutils literal"><span class="pre">cos_doubles_func</span></code> which takes two arrays
+including sizes as input.</li>
+<li>As opposed to the simple SWIG example, we don’t include the <code class="docutils literal"><span class="pre">cos_doubles.h</span></code>
+header, There is nothing there that we wish to expose to Python since we
+expose the functionality through <code class="docutils literal"><span class="pre">cos_doubles_func</span></code>.</li>
+</ul>
+<p>And, as before we can use distutils to wrap this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">setup</span><span class="p">(</span><span class="n">ext_modules</span><span class="o">=</span><span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s2">&quot;_cos_doubles&quot;</span><span class="p">,</span>
+<div class="newline"></div>      <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cos_doubles.c&quot;</span><span class="p">,</span> <span class="s2">&quot;cos_doubles.i&quot;</span><span class="p">],</span>
+<div class="newline"></div>      <span class="n">include_dirs</span><span class="o">=</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">get_include</span><span class="p">()])])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>As previously, we need to use <code class="docutils literal"><span class="pre">include_dirs</span></code> to specify the location.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> ls
+<div class="newline"></div><span class="go">cos_doubles.c  cos_doubles.h  cos_doubles.i  numpy.i  setup.py  test_cos_doubles.py</span>
+<div class="newline"></div><span class="gp">$</span> python setup.py build_ext -i
+<div class="newline"></div><span class="go">running build_ext</span>
+<div class="newline"></div><span class="go">building &#39;_cos_doubles&#39; extension</span>
+<div class="newline"></div><span class="go">swigging cos_doubles.i to cos_doubles_wrap.c</span>
+<div class="newline"></div><span class="go">swig -python -o cos_doubles_wrap.c cos_doubles.i</span>
+<div class="newline"></div><span class="go">cos_doubles.i:24: Warning(490): Fragment &#39;NumPy_Backward_Compatibility&#39; not found.</span>
+<div class="newline"></div><span class="go">cos_doubles.i:24: Warning(490): Fragment &#39;NumPy_Backward_Compatibility&#39; not found.</span>
+<div class="newline"></div><span class="go">cos_doubles.i:24: Warning(490): Fragment &#39;NumPy_Backward_Compatibility&#39; not found.</span>
+<div class="newline"></div><span class="go">creating build</span>
+<div class="newline"></div><span class="go">creating build/temp.linux-x86_64-2.7</span>
+<div class="newline"></div><span class="go">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include -I/home/esc/anaconda/include/python2.7 -c cos_doubles.c -o build/temp.linux-x86_64-2.7/cos_doubles.o</span>
+<div class="newline"></div><span class="go">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include -I/home/esc/anaconda/include/python2.7 -c cos_doubles_wrap.c -o build/temp.linux-x86_64-2.7/cos_doubles_wrap.o</span>
+<div class="newline"></div><span class="go">In file included from /home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include/numpy/ndarraytypes.h:1722,</span>
+<div class="newline"></div><span class="go">                 from /home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include/numpy/ndarrayobject.h:17,</span>
+<div class="newline"></div><span class="go">                 from /home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h:15,</span>
+<div class="newline"></div><span class="go">                 from cos_doubles_wrap.c:2706:</span>
+<div class="newline"></div><span class="go">/home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include/numpy/npy_deprecated_api.h:11:2: warning: #warning &quot;Using deprecated NumPy API, disable it by #defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION&quot;</span>
+<div class="newline"></div><span class="go">gcc -pthread -shared build/temp.linux-x86_64-2.7/cos_doubles.o build/temp.linux-x86_64-2.7/cos_doubles_wrap.o -L/home/esc/anaconda/lib -lpython2.7 -o /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/swig_numpy/_cos_doubles.so</span>
+<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="go">build/         cos_doubles.h  cos_doubles.py    cos_doubles_wrap.c  setup.py</span>
+<div class="newline"></div><span class="go">cos_doubles.c  cos_doubles.i  _cos_doubles.so*  numpy.i             test_cos_doubles.py</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>And, as before, we convince ourselves that it worked:</p>
+<div class="highlight-numpy"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">cos_doubles</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">empty_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">cos_doubles</span><span class="o">.</span><span class="n">cos_doubles_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/test_cos_doubles1.png"><img alt="../../_images/test_cos_doubles1.png" src="../../_images/test_cos_doubles1.png" style="width: 637.5px; height: 190.0px;" /></a>
+</div>
+</div>
+<div class="section" id="id10">
+<h2><a class="toc-backref" href="#id22">2.8.5. Cython</a><a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://cython.org/">Cython</a> is both a Python-like language for writing
+C-extensions and an advanced compiler for this language. The Cython <em>language</em>
+is a superset of Python, which comes with additional constructs that allow you
+call C functions and annotate variables and class attributes with c types. In
+this sense one could also call it a <em>Python with types</em>.</p>
+<p>In addition to the basic use case of wrapping native code, Cython supports an
+additional use-case, namely interactive optimization. Basically, one starts out
+with a pure-Python script and incrementally adds Cython types to the bottleneck
+code to optimize only those code paths that really matter.</p>
+<p>In this sense it is quite similar to SWIG, since the code can be autogenerated
+but in a sense it also quite similar to ctypes since the wrapping code can
+(almost) be written in Python.</p>
+<p>While others solutions that autogenerate code can be quite difficult to debug
+(for example SWIG) Cython comes with an extension to the GNU debugger that
+helps debug Python, Cython and C code.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The autogenerated C code uses the Python-C-Api.</p>
+</div>
+<p><strong>Advantages</strong></p>
+<ul class="simple">
+<li>Python like language for writing C-extensions</li>
+<li>Autogenerated code</li>
+<li>Supports incremental optimization</li>
+<li>Includes a GNU debugger extension</li>
+<li>Support for C++ (Since version 0.13)</li>
+</ul>
+<p><strong>Disadvantages</strong></p>
+<ul class="simple">
+<li>Must be compiled</li>
+<li>Requires an additional library ( but only at build time, at this problem can be
+overcome by shipping the generated C files)</li>
+</ul>
+<div class="section" id="id12">
+<h3>2.8.5.1. Example<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<p>The main Cython code for our <code class="docutils literal"><span class="pre">cos_module</span></code> is contained in the file
+<code class="docutils literal"><span class="pre">cos_module.pyx</span></code>:</p>
+<div class="highlight-cython"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot; Example of wrapping cos function from math.h using Cython. &quot;&quot;&quot;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">cdef</span> <span class="kr">extern</span> <span class="k">from</span> <span class="s">&quot;math.h&quot;</span><span class="p">:</span>
+<div class="newline"></div>    <span class="n">double</span> <span class="n">cos</span><span class="p">(</span><span class="n">double</span> <span class="n">arg</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">cos_func</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">cos</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Note the additional keywords such as <code class="docutils literal"><span class="pre">cdef</span></code> and <code class="docutils literal"><span class="pre">extern</span></code>. Also the
+<code class="docutils literal"><span class="pre">cos_func</span></code> is then pure Python.</p>
+<p>Again we can use the standard <code class="docutils literal"><span class="pre">distutils</span></code> module, but this time we need some
+additional pieces from the <code class="docutils literal"><span class="pre">Cython.Distutils</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="k">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">Cython.Distutils</span> <span class="k">import</span> <span class="n">build_ext</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">setup</span><span class="p">(</span>
+<div class="newline"></div>    <span class="n">cmdclass</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;build_ext&#39;</span><span class="p">:</span> <span class="n">build_ext</span><span class="p">},</span>
+<div class="newline"></div>    <span class="n">ext_modules</span><span class="o">=</span><span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s2">&quot;cos_module&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;cos_module.pyx&quot;</span><span class="p">])]</span>
+<div class="newline"></div><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Compiling this:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> advanced/interfacing_with_c/cython
+<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="go">cos_module.pyx  setup.py</span>
+<div class="newline"></div><span class="gp">$</span> python setup.py build_ext --inplace
+<div class="newline"></div><span class="go">running build_ext</span>
+<div class="newline"></div><span class="go">cythoning cos_module.pyx to cos_module.c</span>
+<div class="newline"></div><span class="go">building &#39;cos_module&#39; extension</span>
+<div class="newline"></div><span class="go">creating build</span>
+<div class="newline"></div><span class="go">creating build/temp.linux-x86_64-2.7</span>
+<div class="newline"></div><span class="go">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/esc/anaconda/include/python2.7 -c cos_module.c -o build/temp.linux-x86_64-2.7/cos_module.o</span>
+<div class="newline"></div><span class="go">gcc -pthread -shared build/temp.linux-x86_64-2.7/cos_module.o -L/home/esc/anaconda/lib -lpython2.7 -o /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/cython/cos_module.so</span>
+<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="go">build/  cos_module.c  cos_module.pyx  cos_module.so*  setup.py</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>And running it:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">cos_module</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [2]: </span><span class="n">cos_module</span><span class="err">?</span>
+<div class="newline"></div><span class="go">Type:       module</span>
+<div class="newline"></div><span class="go">String Form:&lt;module &#39;cos_module&#39; from &#39;cos_module.so&#39;&gt;</span>
+<div class="newline"></div><span class="go">File:       /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/cython/cos_module.so</span>
+<div class="newline"></div><span class="go">Docstring:  &lt;no docstring&gt;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [3]: </span><span class="nb">dir</span><span class="p">(</span><span class="n">cos_module</span><span class="p">)</span>
+<div class="newline"></div><span class="go">Out[3]:</span>
+<div class="newline"></div><span class="go">[&#39;__builtins__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__doc__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__file__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__name__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__package__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;__test__&#39;,</span>
+<div class="newline"></div><span class="go"> &#39;cos_func&#39;]</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [4]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[4]: </span><span class="mf">0.5403023058681398</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [5]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[5]: </span><span class="mf">1.0</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="gp">In [6]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="mf">3.14159265359</span><span class="p">)</span>
+<div class="newline"></div><span class="gr">Out[6]: </span><span class="o">-</span><span class="mf">1.0</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>And, testing a little for robustness, we can see that we get good error messages:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [7]: </span><span class="n">cos_module</span><span class="o">.</span><span class="n">cos_func</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="go">---------------------------------------------------------------------------</span>
+<div class="newline"></div><span class="go">TypeError                                 Traceback (most recent call last)</span>
+<div class="newline"></div><span class="go">&lt;ipython-input-7-11bee483665d&gt; in &lt;module&gt;()</span>
+<div class="newline"></div><span class="go">----&gt; 1 cos_module.cos_func(&#39;foo&#39;)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="go">/home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/cython/cos_module.so in cos_module.cos_func (cos_module.c:506)()</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="go">TypeError: a float is required</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Additionally, it is worth noting that <code class="docutils literal"><span class="pre">Cython</span></code> ships with complete
+declarations for the C math library, which simplifies the code above to become:</p>
+<div class="highlight-cython"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot; Simpler example of wrapping cos function from math.h using Cython. &quot;&quot;&quot;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">from</span> <span class="nn">libc.math</span> <span class="k">cimport</span> <span class="n">cos</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">def</span> <span class="nf">cos_func</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">cos</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>In this case the <code class="docutils literal"><span class="pre">cimport</span></code> statement is used to import the <code class="docutils literal"><span class="pre">cos</span></code> function.</p>
+</div>
+<div class="section" id="id13">
+<h3>2.8.5.2. Numpy Support<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<p>Cython has support for Numpy via the <code class="docutils literal"><span class="pre">numpy.pyx</span></code> file which allows you to add
+the Numpy array type to your Cython code. I.e. like specifying that variable
+<code class="docutils literal"><span class="pre">i</span></code> is of type <code class="docutils literal"><span class="pre">int</span></code>, you can specify that variable <code class="docutils literal"><span class="pre">a</span></code> is of type
+<code class="docutils literal"><span class="pre">numpy.ndarray</span></code> with a given <code class="docutils literal"><span class="pre">dtype</span></code>. Also, certain optimizations such as
+bounds checking are supported. Look at the corresponding section in the <a class="reference external" href="http://docs.cython.org/src/tutorial/numpy.html">Cython
+documentation</a>. In case you
+want to pass Numpy arrays as C arrays to your Cython wrapped C functions, there
+is a section about this in the <a class="reference external" href="http://wiki.cython.org/tutorials/NumpyPointerToC">Cython wiki</a>.</p>
+<p>In the following example, we will show how to wrap the familiar <code class="docutils literal"><span class="pre">cos_doubles</span></code>
+function using Cython.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+<div class="newline"></div></pre></div>
+</div>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cm">/*  Compute the cosine of each element in in_array, storing the result in</span>
+<div class="newline"></div><span class="cm"> *  out_array. */</span>
+<div class="newline"></div><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">){</span>
+<div class="newline"></div>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+<div class="newline"></div>    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+<div class="newline"></div>        <span class="n">out_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">in_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<div class="newline"></div>    <span class="p">}</span>
+<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>This is wrapped as <code class="docutils literal"><span class="pre">cos_doubles_func</span></code> using the following Cython code:</p>
+<div class="highlight-cython"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot; Example of wrapping a C function that takes C double arrays as input using</span>
+<div class="newline"></div><span class="sd">    the Numpy declarations from Cython &quot;&quot;&quot;</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># cimport the Cython declarations for numpy</span>
+<div class="newline"></div><span class="k">cimport</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># if you want to use the Numpy-C-API from Cython</span>
+<div class="newline"></div><span class="c"># (not strictly necessary for this example, but good practice)</span>
+<div class="newline"></div><span class="n">np</span><span class="o">.</span><span class="n">import_array</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># cdefine the signature of our c function</span>
+<div class="newline"></div><span class="k">cdef</span> <span class="kr">extern</span> <span class="k">from</span> <span class="s">&quot;cos_doubles.h&quot;</span><span class="p">:</span>
+<div class="newline"></div>    <span class="n">void</span> <span class="n">cos_doubles</span> <span class="p">(</span><span class="n">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="n">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="nb">int</span> <span class="n">size</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c"># create the wrapper code, with numpy type annotations</span>
+<div class="newline"></div><span class="k">def</span> <span class="nf">cos_doubles_func</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">double</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mf">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;c&quot;</span><span class="p">]</span> <span class="n">in_array</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">,</span>
+<div class="newline"></div>                     <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">double</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mf">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;c&quot;</span><span class="p">]</span> <span class="n">out_array</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
+<div class="newline"></div>    <span class="n">cos_doubles</span><span class="p">(</span><span class="o">&lt;</span><span class="n">double</span><span class="o">*&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">PyArray_DATA</span><span class="p">(</span><span class="n">in_array</span><span class="p">),</span>
+<div class="newline"></div>                <span class="o">&lt;</span><span class="n">double</span><span class="o">*&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">PyArray_DATA</span><span class="p">(</span><span class="n">out_array</span><span class="p">),</span>
+<div class="newline"></div>                <span class="n">in_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mf">0</span><span class="p">])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>And can be compiled using <code class="docutils literal"><span class="pre">distutils</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">Cython.Distutils</span> <span class="kn">import</span> <span class="n">build_ext</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">setup</span><span class="p">(</span>
+<div class="newline"></div>    <span class="n">cmdclass</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;build_ext&#39;</span><span class="p">:</span> <span class="n">build_ext</span><span class="p">},</span>
+<div class="newline"></div>    <span class="n">ext_modules</span><span class="o">=</span><span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s2">&quot;cos_doubles&quot;</span><span class="p">,</span>
+<div class="newline"></div>                 <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;_cos_doubles.pyx&quot;</span><span class="p">,</span> <span class="s2">&quot;cos_doubles.c&quot;</span><span class="p">],</span>
+<div class="newline"></div>                 <span class="n">include_dirs</span><span class="o">=</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">get_include</span><span class="p">()])],</span>
+<div class="newline"></div><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<ul class="simple">
+<li>As with the previous compiled Numpy examples, we need the <code class="docutils literal"><span class="pre">include_dirs</span></code> option.</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> ls
+<div class="newline"></div><span class="go">cos_doubles.c  cos_doubles.h  _cos_doubles.pyx  setup.py  test_cos_doubles.py</span>
+<div class="newline"></div><span class="gp">$</span> python setup.py build_ext -i
+<div class="newline"></div><span class="go">running build_ext</span>
+<div class="newline"></div><span class="go">cythoning _cos_doubles.pyx to _cos_doubles.c</span>
+<div class="newline"></div><span class="go">building &#39;cos_doubles&#39; extension</span>
+<div class="newline"></div><span class="go">creating build</span>
+<div class="newline"></div><span class="go">creating build/temp.linux-x86_64-2.7</span>
+<div class="newline"></div><span class="go">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include -I/home/esc/anaconda/include/python2.7 -c _cos_doubles.c -o build/temp.linux-x86_64-2.7/_cos_doubles.o</span>
+<div class="newline"></div><span class="go">In file included from /home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include/numpy/ndarraytypes.h:1722,</span>
+<div class="newline"></div><span class="go">                 from /home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include/numpy/ndarrayobject.h:17,</span>
+<div class="newline"></div><span class="go">                 from /home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h:15,</span>
+<div class="newline"></div><span class="go">                 from _cos_doubles.c:253:</span>
+<div class="newline"></div><span class="go">/home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include/numpy/npy_deprecated_api.h:11:2: warning: #warning &quot;Using deprecated NumPy API, disable it by #defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION&quot;</span>
+<div class="newline"></div><span class="go">/home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include/numpy/__ufunc_api.h:236: warning: ‘_import_umath’ defined but not used</span>
+<div class="newline"></div><span class="go">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include -I/home/esc/anaconda/include/python2.7 -c cos_doubles.c -o build/temp.linux-x86_64-2.7/cos_doubles.o</span>
+<div class="newline"></div><span class="go">gcc -pthread -shared build/temp.linux-x86_64-2.7/_cos_doubles.o build/temp.linux-x86_64-2.7/cos_doubles.o -L/home/esc/anaconda/lib -lpython2.7 -o /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/cython_numpy/cos_doubles.so</span>
+<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="go">build/  _cos_doubles.c  cos_doubles.c  cos_doubles.h  _cos_doubles.pyx  cos_doubles.so*  setup.py  test_cos_doubles.py</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>And, as before, we convince ourselves that it worked:</p>
+<div class="highlight-numpy"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">cos_doubles</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">empty_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">cos_doubles</span><span class="o">.</span><span class="n">cos_doubles_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/test_cos_doubles2.png"><img alt="../../_images/test_cos_doubles2.png" src="../../_images/test_cos_doubles2.png" style="width: 637.5px; height: 190.0px;" /></a>
+</div>
+</div>
+<div class="section" id="summary">
+<h2><a class="toc-backref" href="#id23">2.8.6. Summary</a><a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>In this section four different techniques for interfacing with native code
+have been presented. The table below roughly summarizes some of the aspects of
+the techniques.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="24%" />
+<col width="15%" />
+<col width="21%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">x</th>
+<th class="head">Part of CPython</th>
+<th class="head">Compiled</th>
+<th class="head">Autogenerated</th>
+<th class="head">Numpy Support</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Python-C-API</td>
+<td><code class="docutils literal"><span class="pre">True</span></code></td>
+<td><code class="docutils literal"><span class="pre">True</span></code></td>
+<td><code class="docutils literal"><span class="pre">False</span></code></td>
+<td><code class="docutils literal"><span class="pre">True</span></code></td>
+</tr>
+<tr class="row-odd"><td>Ctypes</td>
+<td><code class="docutils literal"><span class="pre">True</span></code></td>
+<td><code class="docutils literal"><span class="pre">False</span></code></td>
+<td><code class="docutils literal"><span class="pre">False</span></code></td>
+<td><code class="docutils literal"><span class="pre">True</span></code></td>
+</tr>
+<tr class="row-even"><td>Swig</td>
+<td><code class="docutils literal"><span class="pre">False</span></code></td>
+<td><code class="docutils literal"><span class="pre">True</span></code></td>
+<td><code class="docutils literal"><span class="pre">True</span></code></td>
+<td><code class="docutils literal"><span class="pre">True</span></code></td>
+</tr>
+<tr class="row-odd"><td>Cython</td>
+<td><code class="docutils literal"><span class="pre">False</span></code></td>
+<td><code class="docutils literal"><span class="pre">True</span></code></td>
+<td><code class="docutils literal"><span class="pre">True</span></code></td>
+<td><code class="docutils literal"><span class="pre">True</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Of all three presented techniques, Cython is the most modern and advanced. In
+particular, the ability to optimize code incrementally by adding types to your
+Python code is unique.</p>
+</div>
+<div class="section" id="further-reading-and-references">
+<h2><a class="toc-backref" href="#id24">2.8.7. Further Reading and References</a><a class="headerlink" href="#further-reading-and-references" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://gael-varoquaux.info/blog/?p=157">Gaël Varoquaux’s blog post about avoiding data copies</a> provides some insight on how to
+handle memory management cleverly. If you ever run into issues with large
+datasets, this is a reference to come back to for some inspiration.</li>
+</ul>
+</div>
+<div class="section" id="exercises">
+<h2><a class="toc-backref" href="#id25">2.8.8. Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<p>Since this is a brand new section, the exercises are considered more as
+pointers as to what to look at next, so pick the ones that you find more
+interesting. If you have good ideas for exercises, please let us know!</p>
+<ol class="arabic simple">
+<li>Download the source code for each example and compile and run them on your
+machine.</li>
+<li>Make trivial changes to each example and convince yourself that this works. (
+E.g. change <code class="docutils literal"><span class="pre">cos</span></code> for <code class="docutils literal"><span class="pre">sin</span></code>.)</li>
+<li>Most of the examples, especially the ones involving Numpy may still be
+fragile and respond badly to input errors. Look for ways to crash the
+examples, figure what the problem is and devise a potential solution.
+Here are some ideas:<ol class="arabic">
+<li>Numerical overflow.</li>
+<li>Input and output arrays that have different lengths.</li>
+<li>Multidimensional array.</li>
+<li>Empty array</li>
+<li>Arrays with non-<code class="docutils literal"><span class="pre">double</span></code> types</li>
+</ol>
+</li>
+<li>Use the <code class="docutils literal"><span class="pre">%timeit</span></code> IPython magic to measure the execution time of the
+various solutions</li>
+</ol>
+<div class="section" id="id14">
+<h3>2.8.8.1. Python-C-API<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Modify the Numpy example such that the function takes two input arguments, where
+the second is the preallocated output array, making it similar to the other Numpy examples.</li>
+<li>Modify the example such that the function only takes a single input array
+and modifies this in place.</li>
+<li>Try to fix the example to use the new <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/c-api.iterator.html">Numpy iterator protocol</a>. If you
+manage to obtain a working solution, please submit a pull-request on github.</li>
+<li>You may have noticed, that the Numpy-C-API example is the only Numpy example
+that does not wrap <code class="docutils literal"><span class="pre">cos_doubles</span></code> but instead applies the <code class="docutils literal"><span class="pre">cos</span></code> function
+directly to the elements of the Numpy array. Does this have any advantages
+over the other techniques.</li>
+<li>Can you wrap <code class="docutils literal"><span class="pre">cos_doubles</span></code> using only the Numpy-C-API. You may need to
+ensure that the arrays have the correct type, are one dimensional and
+contiguous in memory.</li>
+</ol>
+</div>
+<div class="section" id="id15">
+<h3>2.8.8.2. Ctypes<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Modify the Numpy example such that <code class="docutils literal"><span class="pre">cos_doubles_func</span></code> handles the preallocation for
+you, thus making it more like the Numpy-C-API example.</li>
+</ol>
+</div>
+<div class="section" id="id16">
+<h3>2.8.8.3. SWIG<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Look at the code that SWIG autogenerates, how much of it do you
+understand?</li>
+<li>Modify the Numpy example such that <code class="docutils literal"><span class="pre">cos_doubles_func</span></code> handles the preallocation for
+you, thus making it more like the Numpy-C-API example.</li>
+<li>Modify the <code class="docutils literal"><span class="pre">cos_doubles</span></code>  C function so that it returns an allocated array.
+Can you wrap this using SWIG typemaps? If not, why not? Is there a
+workaround for this specific situation? (Hint: you know the size of the
+output array, so it may be possible to construct a Numpy array from the
+returned <code class="docutils literal"><span class="pre">double</span> <span class="pre">*</span></code>.)</li>
+</ol>
+</div>
+<div class="section" id="id17">
+<h3>2.8.8.4. Cython<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Look at the code that Cython autogenerates. Take a closer look at some of the
+comments that Cython inserts. What do you see?</li>
+<li>Look at the section <a class="reference external" href="http://docs.cython.org/src/tutorial/numpy.html">Working with Numpy</a> from the Cython
+documentation  to learn how to incrementally optimize a pure python script that uses Numpy.</li>
+<li>Modify the Numpy example such that <code class="docutils literal"><span class="pre">cos_doubles_func</span></code> handles the preallocation for
+you, thus making it more like the Numpy-C-API example.</li>
+</ol>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.8. Interfacing with C</a><ul>
+<li><a class="reference internal" href="#introduction">2.8.1. Introduction</a></li>
+<li><a class="reference internal" href="#id1">2.8.2. Python-C-Api</a><ul>
+<li><a class="reference internal" href="#example">2.8.2.1. Example</a></li>
+<li><a class="reference internal" href="#numpy-support">2.8.2.2. Numpy Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3">2.8.3. Ctypes</a><ul>
+<li><a class="reference internal" href="#id5">2.8.3.1. Example</a></li>
+<li><a class="reference internal" href="#id6">2.8.3.2. Numpy Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#swig">2.8.4. SWIG</a><ul>
+<li><a class="reference internal" href="#id8">2.8.4.1. Example</a></li>
+<li><a class="reference internal" href="#id9">2.8.4.2. Numpy Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id10">2.8.5. Cython</a><ul>
+<li><a class="reference internal" href="#id12">2.8.5.1. Example</a></li>
+<li><a class="reference internal" href="#id13">2.8.5.2. Numpy Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#summary">2.8.6. Summary</a></li>
+<li><a class="reference internal" href="#further-reading-and-references">2.8.7. Further Reading and References</a></li>
+<li><a class="reference internal" href="#exercises">2.8.8. Exercises</a><ul>
+<li><a class="reference internal" href="#id14">2.8.8.1. Python-C-API</a></li>
+<li><a class="reference internal" href="#id15">2.8.8.2. Ctypes</a></li>
+<li><a class="reference internal" href="#id16">2.8.8.3. SWIG</a></li>
+<li><a class="reference internal" href="#id17">2.8.8.4. Cython</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../packages/index.html" title="3. Packages and applications"
+             >next</a></li>
+        <li class="right" >
+          <a href="../mathematical_optimization/auto_examples/plot_gradient_descent.html" title="2.7.4.11. Gradient descent"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >2. Advanced topics</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/advanced/interfacing_with_c/interfacing_with_c.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

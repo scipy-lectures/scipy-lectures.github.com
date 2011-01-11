@@ -1,0 +1,118 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.7.12.15. Image processing application: counting bubbles and unmolten grains &mdash; Scipy lecture notes</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="1.7. Scipy : high-level scientific computing" href="../scipy.html" />
+    <link rel="next" title="1.7.12.16. Example of solution for the image processing exercise: unmolten grains in glass" href="answers_image_processing.html" />
+    <link rel="prev" title="1.7.12.14. Non linear least squares curve fitting: application to point extraction in topographical lidar data" href="optimize-fit.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="answers_image_processing.html" title="1.7.12.16. Example of solution for the image processing exercise: unmolten grains in glass"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="optimize-fit.html" title="1.7.12.14. Non linear least squares curve fitting: application to point extraction in topographical lidar data"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+          <li><a href="../scipy.html" accesskey="U">1.7. Scipy : high-level scientific computing</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="image-processing-application-counting-bubbles-and-unmolten-grains">
+<span id="summary-exercise-image-processing"></span><h1>1.7.12.15. Image processing application: counting bubbles and unmolten grains<a class="headerlink" href="#image-processing-application-counting-bubbles-and-unmolten-grains" title="Permalink to this headline">¶</a></h1>
+<a class="reference internal image-reference" href="../../_images/MV_HFV_012.jpg"><div align="center" class="align-center"><img alt="../../_images/MV_HFV_012.jpg" class="align-center" src="../../_images/MV_HFV_012.jpg" style="width: 716.8px; height: 660.1px;" /></div>
+</a>
+<div class="section" id="statement-of-the-problem">
+<h2>1.7.12.15.1. Statement of the problem<a class="headerlink" href="#statement-of-the-problem" title="Permalink to this headline">¶</a></h2>
+<p>1. Open the image file MV_HFV_012.jpg and display it. Browse through the
+keyword arguments in the docstring of <tt class="docutils literal"><span class="pre">imshow</span></tt> to display the image
+with the &#8220;right&#8221; orientation (origin in the bottom left corner, and not
+the upper left corner as for standard arrays).</p>
+<p>This Scanning Element Microscopy image shows a glass sample (light gray
+matrix) with some bubbles (on black) and unmolten sand grains (dark
+gray). We wish to determine the fraction of the sample covered by these
+three phases, and to estimate the typical size of sand grains and
+bubbles, their sizes, etc.</p>
+<ol class="arabic simple" start="2">
+<li>Crop the image to remove the lower panel with measure information.</li>
+</ol>
+<p>3. Slightly filter the image with a median filter in order to refine its
+histogram. Check how the histogram changes.</p>
+<p>4. Using the histogram of the filtered image, determine thresholds that
+allow to define masks for sand pixels, glass pixels and bubble pixels.
+Other option (homework): write a function that determines automatically
+the thresholds from the minima of the histogram.</p>
+<p>5. Display an image in which the three phases are colored with three
+different colors.</p>
+<ol class="arabic simple" start="6">
+<li>Use mathematical morphology to clean the different phases.</li>
+</ol>
+<p>7. Attribute labels to all bubbles and sand grains, and remove from the
+sand mask grains that are smaller than 10 pixels. To do so, use
+<tt class="docutils literal"><span class="pre">ndimage.sum</span></tt> or <tt class="docutils literal"><span class="pre">np.bincount</span></tt> to compute the grain sizes.</p>
+<ol class="arabic simple" start="8">
+<li>Compute the mean size of bubbles.</li>
+</ol>
+</div>
+<div class="section" id="proposed-solution">
+<span id="image-answers"></span><h2>1.7.12.15.2. Proposed solution<a class="headerlink" href="#proposed-solution" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="answers_image_processing.html" title="1.7.12.16. Example of solution for the image processing exercise: unmolten grains in glass"
+             >next</a></li>
+        <li class="right" >
+          <a href="optimize-fit.html" title="1.7.12.14. Non linear least squares curve fitting: application to point extraction in topographical lidar data"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+          <li><a href="../scipy.html" >1.7. Scipy : high-level scientific computing</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/ce4bb37a1409.
+    </div>
+  </body>
+</html>

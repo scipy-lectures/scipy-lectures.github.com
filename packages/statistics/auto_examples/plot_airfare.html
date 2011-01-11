@@ -1,0 +1,457 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3.1.6.8. Air fares before and after 9/11 &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="3.1.7.1. Relating Gender and IQ" href="solutions/plot_brain_size.html" />
+    <link rel="prev" title="3.1.6.7. Visualizing factors influencing wages" href="plot_wage_data.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="../../../_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="solutions/plot_brain_size.html" title="3.1.7.1. Relating Gender and IQ"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="plot_wage_data.html" title="3.1.6.7. Visualizing factors influencing wages"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">3.1. Statistics in Python</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/statistics/auto_examples/plot_airfare.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="air-fares-before-and-after-9-11">
+<span id="sphx-glr-packages-statistics-auto-examples-plot-airfare-py"></span><h1>3.1.6.8. Air fares before and after 9/11<a class="headerlink" href="#air-fares-before-and-after-9-11" title="Permalink to this headline">¶</a></h1>
+<p>This is a business-intelligence (BI) like application.</p>
+<p>What is interesting here is that we may want to study fares as a function
+of the year, paired accordingly to the trips, or forgetting the year,
+only as a function of the trip endpoints.</p>
+<p>Using statsmodels’ linear models, we find that both with an OLS (ordinary
+least square) and a robust fit, the intercept and the slope are
+significantly non-zero: the air fares have decreased between 2000 and
+2001, and their dependence on distance travelled has also decreased</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Standard library imports</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">urllib</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">os</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Load the data</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;airfares.txt&#39;</span><span class="p">):</span>
+<div class="newline"></div>    <span class="c1"># Download the file if it is not present</span>
+<div class="newline"></div>    <span class="n">urllib</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span>
+<div class="newline"></div>        <span class="s1">&#39;http://www.stat.ufl.edu/~winner/data/airq4.dat&#39;</span><span class="p">,</span>
+<div class="newline"></div>                       <span class="s1">&#39;airfares.txt&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># As a seperator, &#39; +&#39; is a regular expression that means &#39;one of more</span>
+<div class="newline"></div><span class="c1"># space&#39;</span>
+<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.html#pandas.read_csv" title="View documentation for pandas.read_csv"><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="s1">&#39;airfares.txt&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; +&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<div class="newline"></div>                       <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;city1&#39;</span><span class="p">,</span> <span class="s1">&#39;city2&#39;</span><span class="p">,</span> <span class="s1">&#39;pop1&#39;</span><span class="p">,</span> <span class="s1">&#39;pop2&#39;</span><span class="p">,</span>
+<div class="newline"></div>                              <span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="s1">&#39;fare_2000&#39;</span><span class="p">,</span> <span class="s1">&#39;nb_passengers_2000&#39;</span><span class="p">,</span>
+<div class="newline"></div>                              <span class="s1">&#39;fare_2001&#39;</span><span class="p">,</span> <span class="s1">&#39;nb_passengers_2001&#39;</span><span class="p">])</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># we log-transform the number of passengers</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2000&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2000&#39;</span><span class="p">])</span>
+<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2001&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2001&#39;</span><span class="p">])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Make a dataframe whith the year as an attribute, instead of separate columns</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># This involves a small danse in which we separate the dataframes in 2,</span>
+<div class="newline"></div><span class="c1"># one for year 2000, and one for 2001, before concatenating again.</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Make an index of each flight</span>
+<div class="newline"></div><span class="n">data_flat</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">data_2000</span> <span class="o">=</span> <span class="n">data_flat</span><span class="p">[[</span><span class="s1">&#39;city1&#39;</span><span class="p">,</span> <span class="s1">&#39;city2&#39;</span><span class="p">,</span> <span class="s1">&#39;pop1&#39;</span><span class="p">,</span> <span class="s1">&#39;pop2&#39;</span><span class="p">,</span>
+<div class="newline"></div>                       <span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="s1">&#39;fare_2000&#39;</span><span class="p">,</span> <span class="s1">&#39;nb_passengers_2000&#39;</span><span class="p">]]</span>
+<div class="newline"></div><span class="c1"># Rename the columns</span>
+<div class="newline"></div><span class="n">data_2000</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;city1&#39;</span><span class="p">,</span> <span class="s1">&#39;city2&#39;</span><span class="p">,</span> <span class="s1">&#39;pop1&#39;</span><span class="p">,</span> <span class="s1">&#39;pop2&#39;</span><span class="p">,</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">,</span>
+<div class="newline"></div>                     <span class="s1">&#39;nb_passengers&#39;</span><span class="p">]</span>
+<div class="newline"></div><span class="c1"># Add a column with the year</span>
+<div class="newline"></div><span class="n">data_2000</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2000</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">data_2001</span> <span class="o">=</span> <span class="n">data_flat</span><span class="p">[[</span><span class="s1">&#39;city1&#39;</span><span class="p">,</span> <span class="s1">&#39;city2&#39;</span><span class="p">,</span> <span class="s1">&#39;pop1&#39;</span><span class="p">,</span> <span class="s1">&#39;pop2&#39;</span><span class="p">,</span>
+<div class="newline"></div>                       <span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="s1">&#39;fare_2001&#39;</span><span class="p">,</span> <span class="s1">&#39;nb_passengers_2001&#39;</span><span class="p">]]</span>
+<div class="newline"></div><span class="c1"># Rename the columns</span>
+<div class="newline"></div><span class="n">data_2001</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;city1&#39;</span><span class="p">,</span> <span class="s1">&#39;city2&#39;</span><span class="p">,</span> <span class="s1">&#39;pop1&#39;</span><span class="p">,</span> <span class="s1">&#39;pop2&#39;</span><span class="p">,</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">,</span>
+<div class="newline"></div>                     <span class="s1">&#39;nb_passengers&#39;</span><span class="p">]</span>
+<div class="newline"></div><span class="c1"># Add a column with the year</span>
+<div class="newline"></div><span class="n">data_2001</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2001</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">data_flat</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.html#pandas.concat" title="View documentation for pandas.concat"><span class="n">pandas</span><span class="o">.</span><span class="n">concat</span></a><span class="p">([</span><span class="n">data_2000</span><span class="p">,</span> <span class="n">data_2001</span><span class="p">])</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Plot scatter matrices highlighting different aspects</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span>
+<div class="newline"></div><a href="http://seaborn.pydata.org/generated/seaborn.html#seaborn.pairplot" title="View documentation for seaborn.pairplot"><span class="n">seaborn</span><span class="o">.</span><span class="n">pairplot</span></a><span class="p">(</span><span class="n">data_flat</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fare&#39;</span><span class="p">,</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="s1">&#39;nb_passengers&#39;</span><span class="p">],</span>
+<div class="newline"></div>                 <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;reg&#39;</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># A second plot, to show the effect of the year (ie the 9/11 effect)</span>
+<div class="newline"></div><a href="http://seaborn.pydata.org/generated/seaborn.html#seaborn.pairplot" title="View documentation for seaborn.pairplot"><span class="n">seaborn</span><span class="o">.</span><span class="n">pairplot</span></a><span class="p">(</span><span class="n">data_flat</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fare&#39;</span><span class="p">,</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="s1">&#39;nb_passengers&#39;</span><span class="p">],</span>
+<div class="newline"></div>                 <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;reg&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<div class="newline"></div></pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_airfare_001.png"><img alt="../../../_images/sphx_glr_plot_airfare_001.png" src="../../../_images/sphx_glr_plot_airfare_001.png" style="width: 352.5px; height: 352.5px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_airfare_002.png"><img alt="../../../_images/sphx_glr_plot_airfare_002.png" src="../../../_images/sphx_glr_plot_airfare_002.png" style="width: 390.57px; height: 352.5px;" /></a>
+</li>
+</ul>
+<p>Plot the difference in fare</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="newline"></div>
+<div class="newline"></div><a href="http://matplotlib.org/api/figure_api.html#module-matplotlib.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<div class="newline"></div><a href="http://seaborn.pydata.org/generated/seaborn.html#seaborn.boxplot" title="View documentation for seaborn.boxplot"><span class="n">seaborn</span><span class="o">.</span><span class="n">boxplot</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">fare_2001</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">fare_2000</span><span class="p">)</span>
+<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Fare: 2001 - 2000&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots_adjust.html#matplotlib.pyplot.subplots_adjust" title="View documentation for matplotlib.pyplot.subplots_adjust"><span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span></a><span class="p">()</span>
+<div class="newline"></div>
+<div class="newline"></div><a href="http://matplotlib.org/api/figure_api.html#module-matplotlib.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<div class="newline"></div><a href="http://seaborn.pydata.org/generated/seaborn.html#seaborn.boxplot" title="View documentation for seaborn.boxplot"><span class="n">seaborn</span><span class="o">.</span><span class="n">boxplot</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">nb_passengers_2001</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">nb_passengers_2000</span><span class="p">)</span>
+<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;NB passengers: 2001 - 2000&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots_adjust.html#matplotlib.pyplot.subplots_adjust" title="View documentation for matplotlib.pyplot.subplots_adjust"><span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span></a><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_airfare_003.png"><img alt="../../../_images/sphx_glr_plot_airfare_003.png" src="../../../_images/sphx_glr_plot_airfare_003.png" style="width: 235.0px; height: 94.0px;" /></a>
+</li>
+<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_airfare_004.png"><img alt="../../../_images/sphx_glr_plot_airfare_004.png" src="../../../_images/sphx_glr_plot_airfare_004.png" style="width: 235.0px; height: 94.0px;" /></a>
+</li>
+</ul>
+<p>Statistical testing: dependence of fare on distance and number of
+passengers</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">as</span> <span class="nn">sm</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">result</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;fare ~ 1 + dist + nb_passengers&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_flat</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Using a robust fit</span>
+<div class="newline"></div><span class="n">result</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">rlm</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;fare ~ 1 + dist + nb_passengers&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_flat</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div></pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">OLS</span> <span class="n">Regression</span> <span class="n">Results</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div><span class="n">Dep</span><span class="o">.</span> <span class="n">Variable</span><span class="p">:</span>                   <span class="n">fare</span>   <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                       <span class="mf">0.275</span>
+<div class="newline"></div><span class="n">Model</span><span class="p">:</span>                            <span class="n">OLS</span>   <span class="n">Adj</span><span class="o">.</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                  <span class="mf">0.275</span>
+<div class="newline"></div><span class="n">Method</span><span class="p">:</span>                 <span class="n">Least</span> <span class="n">Squares</span>   <span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">:</span>                     <span class="mf">1585.</span>
+<div class="newline"></div><span class="n">Date</span><span class="p">:</span>                <span class="n">Tue</span><span class="p">,</span> <span class="mi">25</span> <span class="n">Apr</span> <span class="mi">2017</span>   <span class="n">Prob</span> <span class="p">(</span><span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">):</span>               <span class="mf">0.00</span>
+<div class="newline"></div><span class="n">Time</span><span class="p">:</span>                        <span class="mi">10</span><span class="p">:</span><span class="mi">42</span><span class="p">:</span><span class="mi">22</span>   <span class="n">Log</span><span class="o">-</span><span class="n">Likelihood</span><span class="p">:</span>                <span class="o">-</span><span class="mf">45532.</span>
+<div class="newline"></div><span class="n">No</span><span class="o">.</span> <span class="n">Observations</span><span class="p">:</span>                <span class="mi">8352</span>   <span class="n">AIC</span><span class="p">:</span>                         <span class="mf">9.107e+04</span>
+<div class="newline"></div><span class="n">Df</span> <span class="n">Residuals</span><span class="p">:</span>                    <span class="mi">8349</span>   <span class="n">BIC</span><span class="p">:</span>                         <span class="mf">9.109e+04</span>
+<div class="newline"></div><span class="n">Df</span> <span class="n">Model</span><span class="p">:</span>                           <span class="mi">2</span>
+<div class="newline"></div><span class="n">Covariance</span> <span class="n">Type</span><span class="p">:</span>            <span class="n">nonrobust</span>
+<div class="newline"></div><span class="o">=================================================================================</span>
+<div class="newline"></div>                    <span class="n">coef</span>    <span class="n">std</span> <span class="n">err</span>          <span class="n">t</span>      <span class="n">P</span><span class="o">&gt;|</span><span class="n">t</span><span class="o">|</span>      <span class="p">[</span><span class="mf">0.025</span>      <span class="mf">0.975</span><span class="p">]</span>
+<div class="newline"></div><span class="o">---------------------------------------------------------------------------------</span>
+<div class="newline"></div><span class="n">Intercept</span>       <span class="mf">211.2428</span>      <span class="mf">2.466</span>     <span class="mf">85.669</span>      <span class="mf">0.000</span>     <span class="mf">206.409</span>     <span class="mf">216.076</span>
+<div class="newline"></div><span class="n">dist</span>              <span class="mf">0.0484</span>      <span class="mf">0.001</span>     <span class="mf">48.149</span>      <span class="mf">0.000</span>       <span class="mf">0.046</span>       <span class="mf">0.050</span>
+<div class="newline"></div><span class="n">nb_passengers</span>   <span class="o">-</span><span class="mf">32.8925</span>      <span class="mf">1.127</span>    <span class="o">-</span><span class="mf">29.191</span>      <span class="mf">0.000</span>     <span class="o">-</span><span class="mf">35.101</span>     <span class="o">-</span><span class="mf">30.684</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div><span class="n">Omnibus</span><span class="p">:</span>                      <span class="mf">604.051</span>   <span class="n">Durbin</span><span class="o">-</span><span class="n">Watson</span><span class="p">:</span>                   <span class="mf">1.446</span>
+<div class="newline"></div><span class="n">Prob</span><span class="p">(</span><span class="n">Omnibus</span><span class="p">):</span>                  <span class="mf">0.000</span>   <span class="n">Jarque</span><span class="o">-</span><span class="n">Bera</span> <span class="p">(</span><span class="n">JB</span><span class="p">):</span>              <span class="mf">740.733</span>
+<div class="newline"></div><span class="n">Skew</span><span class="p">:</span>                           <span class="mf">0.710</span>   <span class="n">Prob</span><span class="p">(</span><span class="n">JB</span><span class="p">):</span>                    <span class="mf">1.42e-161</span>
+<div class="newline"></div><span class="n">Kurtosis</span><span class="p">:</span>                       <span class="mf">3.338</span>   <span class="n">Cond</span><span class="o">.</span> <span class="n">No</span><span class="o">.</span>                     <span class="mf">5.23e+03</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">Warnings</span><span class="p">:</span>
+<div class="newline"></div><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">Standard</span> <span class="n">Errors</span> <span class="n">assume</span> <span class="n">that</span> <span class="n">the</span> <span class="n">covariance</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">the</span> <span class="n">errors</span> <span class="ow">is</span> <span class="n">correctly</span> <span class="n">specified</span><span class="o">.</span>
+<div class="newline"></div><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">The</span> <span class="n">condition</span> <span class="n">number</span> <span class="ow">is</span> <span class="n">large</span><span class="p">,</span> <span class="mf">5.23e+03</span><span class="o">.</span> <span class="n">This</span> <span class="n">might</span> <span class="n">indicate</span> <span class="n">that</span> <span class="n">there</span> <span class="n">are</span>
+<div class="newline"></div><span class="n">strong</span> <span class="n">multicollinearity</span> <span class="ow">or</span> <span class="n">other</span> <span class="n">numerical</span> <span class="n">problems</span><span class="o">.</span>
+<div class="newline"></div>                    <span class="n">Robust</span> <span class="n">linear</span> <span class="n">Model</span> <span class="n">Regression</span> <span class="n">Results</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div><span class="n">Dep</span><span class="o">.</span> <span class="n">Variable</span><span class="p">:</span>                   <span class="n">fare</span>   <span class="n">No</span><span class="o">.</span> <span class="n">Observations</span><span class="p">:</span>                 <span class="mi">8352</span>
+<div class="newline"></div><span class="n">Model</span><span class="p">:</span>                            <span class="n">RLM</span>   <span class="n">Df</span> <span class="n">Residuals</span><span class="p">:</span>                     <span class="mi">8349</span>
+<div class="newline"></div><span class="n">Method</span><span class="p">:</span>                          <span class="n">IRLS</span>   <span class="n">Df</span> <span class="n">Model</span><span class="p">:</span>                            <span class="mi">2</span>
+<div class="newline"></div><span class="n">Norm</span><span class="p">:</span>                          <span class="n">HuberT</span>
+<div class="newline"></div><span class="n">Scale</span> <span class="n">Est</span><span class="o">.</span><span class="p">:</span>                       <span class="n">mad</span>
+<div class="newline"></div><span class="n">Cov</span> <span class="n">Type</span><span class="p">:</span>                          <span class="n">H1</span>
+<div class="newline"></div><span class="n">Date</span><span class="p">:</span>                <span class="n">Tue</span><span class="p">,</span> <span class="mi">25</span> <span class="n">Apr</span> <span class="mi">2017</span>
+<div class="newline"></div><span class="n">Time</span><span class="p">:</span>                        <span class="mi">10</span><span class="p">:</span><span class="mi">42</span><span class="p">:</span><span class="mi">22</span>
+<div class="newline"></div><span class="n">No</span><span class="o">.</span> <span class="n">Iterations</span><span class="p">:</span>                    <span class="mi">12</span>
+<div class="newline"></div><span class="o">=================================================================================</span>
+<div class="newline"></div>                    <span class="n">coef</span>    <span class="n">std</span> <span class="n">err</span>          <span class="n">z</span>      <span class="n">P</span><span class="o">&gt;|</span><span class="n">z</span><span class="o">|</span>      <span class="p">[</span><span class="mf">0.025</span>      <span class="mf">0.975</span><span class="p">]</span>
+<div class="newline"></div><span class="o">---------------------------------------------------------------------------------</span>
+<div class="newline"></div><span class="n">Intercept</span>       <span class="mf">215.0848</span>      <span class="mf">2.448</span>     <span class="mf">87.856</span>      <span class="mf">0.000</span>     <span class="mf">210.287</span>     <span class="mf">219.883</span>
+<div class="newline"></div><span class="n">dist</span>              <span class="mf">0.0460</span>      <span class="mf">0.001</span>     <span class="mf">46.166</span>      <span class="mf">0.000</span>       <span class="mf">0.044</span>       <span class="mf">0.048</span>
+<div class="newline"></div><span class="n">nb_passengers</span>   <span class="o">-</span><span class="mf">35.2686</span>      <span class="mf">1.119</span>    <span class="o">-</span><span class="mf">31.526</span>      <span class="mf">0.000</span>     <span class="o">-</span><span class="mf">37.461</span>     <span class="o">-</span><span class="mf">33.076</span>
+<div class="newline"></div><span class="o">=================================================================================</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">If</span> <span class="n">the</span> <span class="n">model</span> <span class="n">instance</span> <span class="n">has</span> <span class="n">been</span> <span class="n">used</span> <span class="k">for</span> <span class="n">another</span> <span class="n">fit</span> <span class="k">with</span> <span class="n">different</span> <span class="n">fit</span>
+<div class="newline"></div><span class="n">parameters</span><span class="p">,</span> <span class="n">then</span> <span class="n">the</span> <span class="n">fit</span> <span class="n">options</span> <span class="n">might</span> <span class="ow">not</span> <span class="n">be</span> <span class="n">the</span> <span class="n">correct</span> <span class="n">ones</span> <span class="n">anymore</span> <span class="o">.</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Statistical testing: regression of fare on distance: 2001/2000 difference</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;fare_2001 - fare_2000 ~ 1 + dist&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="c1"># Plot the corresponding regression</span>
+<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;fare_difference&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;fare_2001&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;fare_2000&#39;</span><span class="p">]</span>
+<div class="newline"></div><a href="http://seaborn.pydata.org/generated/seaborn.html#seaborn.lmplot" title="View documentation for seaborn.lmplot"><span class="n">seaborn</span><span class="o">.</span><span class="n">lmplot</span></a><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;fare_difference&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<div class="newline"></div>
+<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<div class="newline"></div></pre></div>
+</div>
+<img alt="../../../_images/sphx_glr_plot_airfare_005.png" class="align-center" src="../../../_images/sphx_glr_plot_airfare_005.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">OLS</span> <span class="n">Regression</span> <span class="n">Results</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div><span class="n">Dep</span><span class="o">.</span> <span class="n">Variable</span><span class="p">:</span>              <span class="n">fare_2001</span>   <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                       <span class="mf">0.159</span>
+<div class="newline"></div><span class="n">Model</span><span class="p">:</span>                            <span class="n">OLS</span>   <span class="n">Adj</span><span class="o">.</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                  <span class="mf">0.159</span>
+<div class="newline"></div><span class="n">Method</span><span class="p">:</span>                 <span class="n">Least</span> <span class="n">Squares</span>   <span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">:</span>                     <span class="mf">791.7</span>
+<div class="newline"></div><span class="n">Date</span><span class="p">:</span>                <span class="n">Tue</span><span class="p">,</span> <span class="mi">25</span> <span class="n">Apr</span> <span class="mi">2017</span>   <span class="n">Prob</span> <span class="p">(</span><span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">):</span>          <span class="mf">1.20e-159</span>
+<div class="newline"></div><span class="n">Time</span><span class="p">:</span>                        <span class="mi">10</span><span class="p">:</span><span class="mi">42</span><span class="p">:</span><span class="mi">22</span>   <span class="n">Log</span><span class="o">-</span><span class="n">Likelihood</span><span class="p">:</span>                <span class="o">-</span><span class="mf">22640.</span>
+<div class="newline"></div><span class="n">No</span><span class="o">.</span> <span class="n">Observations</span><span class="p">:</span>                <span class="mi">4176</span>   <span class="n">AIC</span><span class="p">:</span>                         <span class="mf">4.528e+04</span>
+<div class="newline"></div><span class="n">Df</span> <span class="n">Residuals</span><span class="p">:</span>                    <span class="mi">4174</span>   <span class="n">BIC</span><span class="p">:</span>                         <span class="mf">4.530e+04</span>
+<div class="newline"></div><span class="n">Df</span> <span class="n">Model</span><span class="p">:</span>                           <span class="mi">1</span>
+<div class="newline"></div><span class="n">Covariance</span> <span class="n">Type</span><span class="p">:</span>            <span class="n">nonrobust</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div>                 <span class="n">coef</span>    <span class="n">std</span> <span class="n">err</span>          <span class="n">t</span>      <span class="n">P</span><span class="o">&gt;|</span><span class="n">t</span><span class="o">|</span>      <span class="p">[</span><span class="mf">0.025</span>      <span class="mf">0.975</span><span class="p">]</span>
+<div class="newline"></div><span class="o">------------------------------------------------------------------------------</span>
+<div class="newline"></div><span class="n">Intercept</span>    <span class="mf">148.0279</span>      <span class="mf">1.673</span>     <span class="mf">88.480</span>      <span class="mf">0.000</span>     <span class="mf">144.748</span>     <span class="mf">151.308</span>
+<div class="newline"></div><span class="n">dist</span>           <span class="mf">0.0388</span>      <span class="mf">0.001</span>     <span class="mf">28.136</span>      <span class="mf">0.000</span>       <span class="mf">0.036</span>       <span class="mf">0.041</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div><span class="n">Omnibus</span><span class="p">:</span>                      <span class="mf">136.558</span>   <span class="n">Durbin</span><span class="o">-</span><span class="n">Watson</span><span class="p">:</span>                   <span class="mf">1.544</span>
+<div class="newline"></div><span class="n">Prob</span><span class="p">(</span><span class="n">Omnibus</span><span class="p">):</span>                  <span class="mf">0.000</span>   <span class="n">Jarque</span><span class="o">-</span><span class="n">Bera</span> <span class="p">(</span><span class="n">JB</span><span class="p">):</span>              <span class="mf">149.624</span>
+<div class="newline"></div><span class="n">Skew</span><span class="p">:</span>                           <span class="mf">0.462</span>   <span class="n">Prob</span><span class="p">(</span><span class="n">JB</span><span class="p">):</span>                     <span class="mf">3.23e-33</span>
+<div class="newline"></div><span class="n">Kurtosis</span><span class="p">:</span>                       <span class="mf">2.920</span>   <span class="n">Cond</span><span class="o">.</span> <span class="n">No</span><span class="o">.</span>                     <span class="mf">2.40e+03</span>
+<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="n">Warnings</span><span class="p">:</span>
+<div class="newline"></div><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">Standard</span> <span class="n">Errors</span> <span class="n">assume</span> <span class="n">that</span> <span class="n">the</span> <span class="n">covariance</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">the</span> <span class="n">errors</span> <span class="ow">is</span> <span class="n">correctly</span> <span class="n">specified</span><span class="o">.</span>
+<div class="newline"></div><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">The</span> <span class="n">condition</span> <span class="n">number</span> <span class="ow">is</span> <span class="n">large</span><span class="p">,</span> <span class="mf">2.4e+03</span><span class="o">.</span> <span class="n">This</span> <span class="n">might</span> <span class="n">indicate</span> <span class="n">that</span> <span class="n">there</span> <span class="n">are</span>
+<div class="newline"></div><span class="n">strong</span> <span class="n">multicollinearity</span> <span class="ow">or</span> <span class="n">other</span> <span class="n">numerical</span> <span class="n">problems</span><span class="o">.</span>
+<div class="newline"></div></pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  14.514 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/plot_airfare.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_airfare.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../../_downloads/plot_airfare.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_airfare.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="http://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p><div style="clear: both"></div></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc"></div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="solutions/plot_brain_size.html" title="3.1.7.1. Relating Gender and IQ"
+             >next</a></li>
+        <li class="right" >
+          <a href="plot_wage_data.html" title="3.1.6.7. Visualizing factors influencing wages"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >3.1. Statistics in Python</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="../../../_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/packages/statistics/auto_examples/plot_airfare.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

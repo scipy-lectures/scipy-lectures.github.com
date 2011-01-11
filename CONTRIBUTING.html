@@ -1,0 +1,372 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Contributing &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/CONTRIBUTING.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+<p>The SciPy lecture notes are a community-based effort and require constant
+maintenance and improvements. New contributions such as wording
+improvements or inclusion of new topics are welcome.</p>
+<div class="section" id="contributing-guide">
+<h2>Contributing guide<a class="headerlink" href="#contributing-guide" title="Permalink to this headline">¶</a></h2>
+<p>The directory <code class="docutils literal"><span class="pre">guide</span></code> contains instructions on how to contribute:</p>
+<div class="topic">
+<p class="topic-title first"><strong>Example chapter</strong></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="guide/index.html">How to contribute</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/index.html#id1">How to contribute ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/index.html#using-github">Using GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/index.html#keeping-it-concise-collapsing-paragraphs">Keeping it concise: collapsing paragraphs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/index.html#figures-and-code-examples">Figures and code examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/index.html#using-markup">Using Markup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/index.html#linking-to-package-documentations">Linking to package documentations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/index.html#chapter-section-subsection-paragraph">Chapter, section, subsection, paragraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/index.html#admonitions">Admonitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/index.html#clearing-floats">Clearing floats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/index.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="building-instructions">
+<h2>Building instructions<a class="headerlink" href="#building-instructions" title="Permalink to this headline">¶</a></h2>
+<p>To generate the html output for on-screen display, Type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">html</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>the generated html files can be found in <code class="docutils literal"><span class="pre">build/html</span></code></p>
+<p>The first build takes a long time, but information is cached and
+subsequent builds will be faster.</p>
+<p>To generate the pdf file for printing:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">pdf</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>The pdf builder is a bit difficult and you might have some TeX errors.
+Tweaking the layout in the <code class="docutils literal"><span class="pre">*.rst</span></code> files is usually enough to work
+around these problems.</p>
+<div class="section" id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<p>A complete list of requirements with information on the versions presently used
+to build the SciPy lecture notes, can be inferred from the
+<a class="reference download internal" href="_downloads/requirements.txt" download=""><code class="xref download docutils literal"><span class="pre">requirements</span> <span class="pre">file</span></code></a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">numpy</span><span class="o">==</span><span class="mf">1.11</span>
+<div class="newline"></div><span class="n">scipy</span><span class="o">==</span><span class="mf">0.19</span>
+<div class="newline"></div><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">==</span><span class="mf">0.18</span>
+<div class="newline"></div><span class="n">matplotlib</span><span class="o">==</span><span class="mf">1.5</span>
+<div class="newline"></div><span class="n">scikit</span><span class="o">-</span><span class="n">image</span><span class="o">==</span><span class="mf">0.13</span>
+<div class="newline"></div><span class="n">sympy</span><span class="o">==</span><span class="mf">1.0</span>
+<div class="newline"></div><span class="n">statsmodels</span><span class="o">==</span><span class="mf">0.6</span>
+<div class="newline"></div><span class="n">seaborn</span><span class="o">==</span><span class="mf">0.7</span>
+<div class="newline"></div><span class="n">pandas</span><span class="o">==</span><span class="mf">0.18</span>
+<div class="newline"></div><span class="n">pytest</span><span class="o">&gt;=</span><span class="mf">3.2</span><span class="o">.</span><span class="mi">1</span>
+<div class="newline"></div><span class="n">sphinx</span><span class="o">==</span><span class="mf">1.6</span><span class="o">.</span><span class="mi">3</span>
+<div class="newline"></div><span class="n">coverage</span><span class="o">==</span><span class="mf">4.4</span><span class="o">.</span><span class="mi">1</span>
+<div class="newline"></div><span class="n">pillow</span><span class="o">==</span><span class="mf">3.3</span><span class="o">.</span><span class="mi">1</span>
+<div class="newline"></div><span class="c1"># For conda, pip installable</span>
+<div class="newline"></div><span class="n">sphinx</span><span class="o">-</span><span class="n">gallery</span><span class="o">==</span><span class="mf">0.1</span><span class="o">.</span><span class="mi">12</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>The installation instructions below cover (i) Debian/Ubuntu with miniconda as this is the
+method we use to test and build the material and (ii) generic instructions using pip.</p>
+<div class="topic">
+<p class="topic-title first"><strong>Building on Debian/Ubuntu</strong></p>
+<p>The environment needed to create an html version of the SciPy lecture notes
+can be based on miniconda. We first download the latest version of miniconda
+and rename it to <code class="docutils literal"><span class="pre">miniconda.sh</span></code> for simplicity:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">repo</span><span class="o">.</span><span class="n">continuum</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">miniconda</span><span class="o">/</span><span class="n">Miniconda3</span><span class="o">-</span><span class="n">latest</span><span class="o">-</span><span class="n">Linux</span><span class="o">-</span><span class="n">x86_64</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">O</span> <span class="n">miniconda</span><span class="o">.</span><span class="n">sh</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>To ensure that the file has been downloaded correctly, one can compare the
+MD5 sum obtained by means of:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">md5sum</span> <span class="n">miniconda</span><span class="o">.</span><span class="n">sh</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>with the value listed on <a class="reference external" href="https://repo.continuum.io/miniconda/">https://repo.continuum.io/miniconda/</a> . Miniconda can
+now be installed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">miniconda</span><span class="o">.</span><span class="n">sh</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Review the license agreement and choose a target directory (here we assume it
+to be <code class="docutils literal"><span class="pre">$HOME/miniconda3</span></code>). Unless you intend to work more extensively with
+miniconda, you do not want to modify <code class="docutils literal"><span class="pre">.bashrc</span></code>. In this case, you need:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>export PATH=$HOME/miniconda3/bin:$PATH
+<div class="newline"></div></pre></div>
+</div>
+<p>to find the correct binaries. Note that the path depends on the target directory
+chosen above.</p>
+<p>Now, we use <code class="docutils literal"><span class="pre">environment.yml</span></code> from the main directory of the <code class="docutils literal"><span class="pre">scipy-lecture-notes</span></code>
+repository to install the required dependencies. Note that <code class="docutils literal"><span class="pre">environment.yml</span></code> yields
+an environment named <code class="docutils literal"><span class="pre">testenv</span></code>. If you prefer a more telling name, make a copy of
+<code class="docutils literal"><span class="pre">environment.yml</span></code>, replace <code class="docutils literal"><span class="pre">testenv</span></code> in line 4 by a more appropriate name and use
+this name in the following instead of <code class="docutils literal"><span class="pre">testenv</span></code>. The conda environment is created
+by:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">env</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">environment</span><span class="o">.</span><span class="n">yml</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>Now, the environment can be activated:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">activate</span> <span class="n">testenv</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>and deactivated:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">deactivate</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>With an activated environment, you are now able to produce the html version of the
+SciPy as explained above. Generating a pdf version requires the system packages
+<code class="docutils literal"><span class="pre">texlive</span></code>, <code class="docutils literal"><span class="pre">texlive-latex-extra</span></code>, <code class="docutils literal"><span class="pre">texlive-fonts-extra</span></code>, and <code class="docutils literal"><span class="pre">latexmk</span></code>.</p>
+</div>
+<div class="topic">
+<p class="topic-title first"><strong>Installing the Python packages with pip</strong></p>
+<p><a class="reference external" href="https://pip.pypa.io/">pip</a> is the recommended tool to install Python
+packages. However, a number of packages must be installed from the system. Install
+Python, the Python “headers” (the <cite>python3-dev</cite> package on Debian, for instance), a C
+development environment, <a class="reference external" href="https://www.gnu.org/software/make/">GNU Make</a>, a full LaTeX
+distribution (e.g. <a class="reference external" href="https://www.tug.org/texlive/">TeX Live</a> with extra fonts and
+utilities) and <a class="reference external" href="https://git-scm.com/">git</a>.</p>
+<p>The remaining software can be installed with <cite>pip</cite>. Depending on the configuration, the
+probably most convenient and safe way to proceed is with:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+<div class="newline"></div></pre></div>
+</div>
+<p>This will install the software in a local directory belonging to the user and will not
+interfere with system-wide Python packages.</p>
+</div>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Contributing</a><ul>
+<li><a class="reference internal" href="#contributing-guide">Contributing guide</a></li>
+<li><a class="reference internal" href="#building-instructions">Building instructions</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/CONTRIBUTING.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

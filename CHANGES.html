@@ -1,0 +1,369 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>What’s new &#8212; Scipy lecture notes</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2017.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/copybutton.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+   
+    <link rel="stylesheet"
+	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+
+<script type="text/javascript">
+$(function () {
+    // Highlight the table of content as we scroll
+    sections = {},
+    i        = 0,
+    url	 = document.URL.replace(/#.*$/, ""),
+    current_section = 0;
+
+    // Grab positions of our sections
+    $('.headerlink').each(function(){
+        sections[this.href.replace(url, '')] = $(this).offset().top - 50;
+    });
+
+    $(window).scroll(function(event) {
+	var pos   = $(window).scrollTop();
+
+	// Highlight the current section
+	$('a.internal').parent().removeClass('active');
+        for(i in sections){
+            if(sections[i] > pos){
+		break;
+            };
+	    if($('a.internal[href$="' + i + '"]').is(':visible')){
+		current_section = i;
+	    };
+        }
+	$('a.internal[href$="' + current_section + '"]').parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().addClass('active');
+	$('a.internal[href$="' + current_section + '"]').parent().parent().parent().parent().parent().addClass('active');
+    });
+
+});
+</script>
+
+
+  </head>
+  <body>
+   <!-- Use the header to add javascript -->
+    
+
+    <script type="text/javascript">
+    // Function to collapse the tip divs
+    function collapse_tip_div(obj){
+	// Update the representation on the tip div based on whether it
+	// has the 'collapsed' css class or not: we only want to
+	// collapse divs that are not already collapsed
+	if($(obj).hasClass("collapsed")) {
+	} else {
+	    $(obj).find("p.summary").remove();
+	    var content = $(obj).text();
+	    var html = $(obj).html();
+
+	    if(content.length > 40) {
+		if ($.browser.msie) {
+		    // We start at '3' to avoid 'tip', as IE
+		    // does not count whitespace
+		    var content = content.substr(3, 50);
+		} else {
+		    // We start at '5' to avoid 'tip '
+		    var content = content.substr(5, 50);
+		}
+	    }
+	    $(obj).html('<p class="summary"><img src="_static/plus.png">' + content + '...</p>' + html);
+	}
+    }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+	$(".tip")
+	    .click(function(event){
+		$(this).toggleClass("collapsed");
+		// Change state of the global button
+		$('div.related li.transparent').removeClass('transparent')
+		$(this).find("p.summary").remove();
+		if($(this).hasClass("collapsed")) {
+		    var content = $(this).text();
+		    var html = $(this).html();
+
+		    if(content.length > 40) {
+			if ($.browser.msie) {
+			    // We start at '3' to avoid 'tip', as IE
+			    // does not count whitespace
+			    var content = content.substr(3, 50);
+			} else {
+			    // We start at '5' to avoid 'tip '
+			    var content = content.substr(5, 50);
+			}
+		    }
+		    $(this).html('<p class="summary"><img src="_static/plus.png">' + content + '...</p>' + html);
+		}
+		if (event.target.tagName.toLowerCase() != "a") {
+                   return true; //Makes links clickable
+		}
+	});
+    });
+    </script>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/CHANGES.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="what-s-new">
+<h1>What’s new<a class="headerlink" href="#what-s-new" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="release-2017-1-october-2017">
+<h2>Release 2017.1 (October 2017)<a class="headerlink" href="#release-2017-1-october-2017" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Update optimization chapter (Michael Hartmann, Gaël Varoquaux)</li>
+<li>Update SymPy chapter (Vince Knight)</li>
+<li>Update advanced NumPy (Bartosz Teleńczuk)</li>
+<li>Update scikit-learn chapter (Gaël Varoquaux)</li>
+<li>Update SciPy chapter (Gaël Varoquaux)</li>
+<li>Make ‘&gt;&gt;&gt;’ in the prompts unselectable (Pierre de Buyl)</li>
+<li>Use common package requirements for pip and conda and improve the build
+instructions (Gert-Ludwig Ingold, Vince Knight, Pierre de Buyl)</li>
+<li>Set up Circle CI (Loïc Estève)</li>
+<li>Improved support for Python 3 integer divisions and calls to print (Loïc
+Estève, Gert-Ludwig Ingold, Pierre de Buyl, Gaël Varoquaux)</li>
+<li>Change test runner to pytest (Pierre de Buyl)</li>
+<li>Replace the plot directive by sphinx-gallery (Gert-Ludwig Ingold)</li>
+</ul>
+</div>
+<div class="section" id="release-2016-1-september-2016">
+<h2>Release 2016.1 (September 2016)<a class="headerlink" href="#release-2016-1-september-2016" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Rework of intro chapter (Gaël Varoquaux)</li>
+<li>Integrate sphinx-gallery: examples are now Jupyter notebooks (Gaël
+Varoquaux, Gert-Ludwig Ingold, Óscar Nájera)</li>
+<li>Better Python 3 tests and support (Gert-Ludwig Ingold)</li>
+<li>Adapt examples to Matplotlib 1.5 (Gaël Varoquaux)</li>
+<li>Modernize numpy chapter (Bartosz Telenczuk)</li>
+</ul>
+</div>
+<div class="section" id="release-2015-3-november-2015">
+<h2>Release 2015.3 (November 2015)<a class="headerlink" href="#release-2015-3-november-2015" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Collapsed sidebar can now pop up for mid-sized display (Gaël Varoquaux)</li>
+<li>Replaced pictures of Lena by racoon face (Thouis Jones)</li>
+</ul>
+</div>
+<div class="section" id="release-2015-2-october-2015">
+<h2>Release 2015.2 (October 2015)<a class="headerlink" href="#release-2015-2-october-2015" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Authors on cover ordered as in bibtex entry (Nicolas Rougier)</li>
+<li>Better rendering on mobile (Gaël Varoquaux)</li>
+<li>Fix restructured text markup errors (Olav Vahtras)</li>
+</ul>
+</div>
+<div class="section" id="release-2015-1-september-2015">
+<h2>Release 2015.1 (September 2015)<a class="headerlink" href="#release-2015-1-september-2015" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>New chapter on statistics with Python (Gaël Varoquaux)</li>
+<li>Better layout in PDF (Gaël Varoquaux)</li>
+<li>New HTML layout, simplified formatting, mobile-friendly and sidebar
+(Gaël Varoquaux, Nelle Varoquaux)</li>
+<li>Logos on the HTML front page and on the PDF cover (Nicolas Rougier)</li>
+<li>Python 3 compatible code (Gaël Varoquaux, Olav Vahtras)</li>
+<li>Code put up to date for more recent versions of project (Pierre de
+Buyl, Emmanuelle Gouillart, Gert-Ludwig Ingold, Nicolas Pettiaux, Olav
+Vahtras, Gaël Varoquaux, Nelle Varoquaux)</li>
+<li>Matplotlib updated with removal of deprecated pylab interface (Nicolas
+Rougier)</li>
+</ul>
+</div>
+<div class="section" id="release-2013-2-21-august-2013">
+<h2>Release 2013.2 (21 August 2013)<a class="headerlink" href="#release-2013-2-21-august-2013" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Numpy chapter simplified (Valentin Haenel)</li>
+<li>New layout for the HTML rendering (Gaël Varoquaux)</li>
+</ul>
+</div>
+<div class="section" id="release-2013-1-10-feb-2013">
+<h2>Release 2013.1 (10 Feb 2013)<a class="headerlink" href="#release-2013-1-10-feb-2013" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Improvements to the advanced image manipulation chapter (Emmanuelle Gouillart)</li>
+<li>Upgrade of the introductory language chapter (Valentin Haenel)</li>
+<li>Upgrade of the introductory numpy chapter (Valentin Haenel)</li>
+<li>New advanced chapter on interfacing with C (Valentin Haenel)</li>
+<li>Minor fixes and improvements in various places (Robert Gieseke, Ozan Çağlayan,
+Sergio Oller, kikocorreo, Valentin Haenel)</li>
+</ul>
+</div>
+<div class="section" id="release-2012-3-26-nov-2012">
+<h2>Release 2012.3 (26 Nov 2012)<a class="headerlink" href="#release-2012-3-26-nov-2012" title="Permalink to this headline">¶</a></h2>
+<p>This release integrates the changes written for the Euroscipy conference:</p>
+<ul class="simple">
+<li>Matplotlib chapter completely redone (Nicolas Rougier, Gaël Varoquaux)</li>
+<li>New advanced chapter on mathematical optimization (Gaël Varoquaux)</li>
+<li>Mayavi chapter redone (Gaël Varoquaux)</li>
+<li>Front page layout slightly improved: folding TOC (Gaël Varoquaux)</li>
+</ul>
+</div>
+<div class="section" id="release-2012-2-22-jun-2012">
+<h2>Release 2012.2 (22 Jun 2012)<a class="headerlink" href="#release-2012-2-22-jun-2012" title="Permalink to this headline">¶</a></h2>
+<p>Minor release with a few clean ups (Gael Varoquaux).</p>
+</div>
+<div class="section" id="release-2012-1-20-jun-2012">
+<h2>Release 2012.1 (20 Jun 2012)<a class="headerlink" href="#release-2012-1-20-jun-2012" title="Permalink to this headline">¶</a></h2>
+<p>This is a minor release with many clean ups. In particular, clean up of
+the layout (Gael Varoquaux), shortening of the numpy chapters and
+deduplications across the intro and advanced chapters (Gael Varoquaux)
+and doctesting of all the code (Gael Varoquaux).</p>
+</div>
+<div class="section" id="release-2012-0-22-apr-2012">
+<h2>Release 2012.0 (22 Apr 2012)<a class="headerlink" href="#release-2012-0-22-apr-2012" title="Permalink to this headline">¶</a></h2>
+<p>This is a minor release with a few clean ups. In particular, clean up the
+scikit-learn chapter (Lars Buitinck), more informative section titles
+(Gael Varoquaux), and misc fixes (Valentin Haenel, Virgile Fritsch).</p>
+</div>
+<div class="section" id="release-2011-1-16-oct-2011">
+<h2>Release 2011.1 (16 Oct 2011)<a class="headerlink" href="#release-2011-1-16-oct-2011" title="Permalink to this headline">¶</a></h2>
+<p>This release is a reworked version of the Euroscipy 2011 tutorial. Layout
+has been cleaned and optimized (Valentin Haenel and many others), the Traits
+chapter has been merged in (Didrik Pinte)</p>
+</div>
+<div class="section" id="release-2011-1-sept-2011">
+<h2>Release 2011 (1 Sept 2011)<a class="headerlink" href="#release-2011-1-sept-2011" title="Permalink to this headline">¶</a></h2>
+<p>This release is used for the Euroscipy 2011 tutorial. The numpy
+introductory chapter has been rewamped (Pauli Virtanen). The outline of
+the introductory chapters has been simplified (Gaël Varoquaux). Advanced
+chapters have been added: advanced Python constructs (Zbigniew
+Jędrzejewski-Szmek), debugging code (Gaël Varoquaux), optimizing code
+(Gaël Varoquaux), image processing (Emmanuelle Gouillart), scikit-learn
+(Fabian Pedregosa).</p>
+<p><div style="clear: both"></div></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+	<div class="sidebartoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">What’s new</a><ul>
+<li><a class="reference internal" href="#release-2017-1-october-2017">Release 2017.1 (October 2017)</a></li>
+<li><a class="reference internal" href="#release-2016-1-september-2016">Release 2016.1 (September 2016)</a></li>
+<li><a class="reference internal" href="#release-2015-3-november-2015">Release 2015.3 (November 2015)</a></li>
+<li><a class="reference internal" href="#release-2015-2-october-2015">Release 2015.2 (October 2015)</a></li>
+<li><a class="reference internal" href="#release-2015-1-september-2015">Release 2015.1 (September 2015)</a></li>
+<li><a class="reference internal" href="#release-2013-2-21-august-2013">Release 2013.2 (21 August 2013)</a></li>
+<li><a class="reference internal" href="#release-2013-1-10-feb-2013">Release 2013.1 (10 Feb 2013)</a></li>
+<li><a class="reference internal" href="#release-2012-3-26-nov-2012">Release 2012.3 (26 Nov 2012)</a></li>
+<li><a class="reference internal" href="#release-2012-2-22-jun-2012">Release 2012.2 (22 Jun 2012)</a></li>
+<li><a class="reference internal" href="#release-2012-1-20-jun-2012">Release 2012.1 (20 Jun 2012)</a></li>
+<li><a class="reference internal" href="#release-2012-0-22-apr-2012">Release 2012.0 (22 Apr 2012)</a></li>
+<li><a class="reference internal" href="#release-2011-1-16-oct-2011">Release 2011.1 (16 Oct 2011)</a></li>
+<li><a class="reference internal" href="#release-2011-1-sept-2011">Release 2011 (1 Sept 2011)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <div class="script_container">
+    <script>
+    (function() {
+	var cx = '004523248466141510607:hgv2yimrahw';
+	var gcse = document.createElement('script');
+	gcse.type = 'text/javascript';
+	gcse.async = true;
+	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	    '//cse.google.com/cse.js?cx=' + cx;
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <gcse:search></gcse:search>
+    </div>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="index.html">Scipy lecture notes</a> &#187;</li>
+     
+    <!-- Insert a menu in the navigation bar -->
+    <li class="left">
+	<!-- On click toggle the 'tip' on or off-->
+	<a onclick="$('.tip').each(function (index, obj) {
+			    collapse_tip_div(obj);
+		    });
+		    $('.tip').addClass('collapsed');
+		    $('.left').addClass('transparent');">
+	<img src="_static/minus.png"
+         alt="Collapse to compact view" style="padding: 1ex;"/>
+	<span class="hiddenlink">Collapse document to compact view</span>
+    </a></li>
+    <li class="right edit_on_github"><a href="https://github.com/scipy-lectures/scipy-lecture-notes/edit/master/CHANGES.rst">Edit
+    <span class="tooltip">
+	Improve this page:<br/>Edit it on Github.
+    </span>
+    </a>
+    </li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2015,2016,2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>
