@@ -1,0 +1,178 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Scientific computing: why Python? &mdash; Euroscipy 2010 tutorials</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Euroscipy 2010 tutorials" href="../index.html" />
+    <link rel="next" title="Building blocks of scientific computing with Python" href="workflow.html" />
+    <link rel="prev" title="Euroscipy 2010 tutorials" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="workflow.html" title="Building blocks of scientific computing with Python"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../index.html" title="Euroscipy 2010 tutorials"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Euroscipy 2010</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="scientific-computing-why-python">
+<h1>Scientific computing: why Python?<a class="headerlink" href="#scientific-computing-why-python" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-scientist-s-needs">
+<h2>The scientist&#8217;s needs<a class="headerlink" href="#the-scientist-s-needs" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Get data (simulation, experiment control)</li>
+<li>Manipulate and process data.</li>
+<li>Visualize results... to understand what we are doing!</li>
+<li>Communicate on results: produce figures for reports or publications,
+write presentations.</li>
+</ul>
+</div>
+<div class="section" id="specifications">
+<h2>Specifications<a class="headerlink" href="#specifications" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Rich collection of already existing <strong>bricks</strong> corresponding to classical
+numerical methods or basic actions: we don&#8217;t want to re-program the
+plotting of a curve, a Fourier transform or a fitting algorithm. Don&#8217;t
+reinvent the wheel!</li>
+<li>Easy to learn: computer science neither is our job nor our education. We
+want to be able to draw a curve, smooth a signal, do a Fourier transform
+in a few minutes.</li>
+<li>Easy communication with collaborators, students, customers, to make the code
+live within a labo or a company: the code should be as readable as a book.
+Thus, the language should contain as few syntax symbols or unneeded routines
+that would divert the reader from the mathematical or scientific understanding
+of the code.</li>
+<li>Efficient code that executes quickly... But needless to say that a very fast
+code becomes useless if we spend too much time writing it. So, we need both a   quick development time and a quick execution time.</li>
+<li>A single environment/language for everything, if possible, to avoid learning
+a new software for each new problem.</li>
+</ul>
+</div>
+<div class="section" id="existing-solutions">
+<h2>Existing solutions<a class="headerlink" href="#existing-solutions" title="Permalink to this headline">¶</a></h2>
+<p>Which solutions do the scientists use to work?</p>
+<p><strong>Compiled languages: C, C++, Fortran, etc.</strong></p>
+<ul class="simple">
+<li>Advantages:<ul>
+<li>Very fast. Very optimized compilers. For heavy computations, it&#8217;s difficult
+to outperform these languages.</li>
+<li>Some very optimized scientific libraries have been written for these
+languages. Ex: blas (vector/matrix operations)</li>
+</ul>
+</li>
+<li>Drawbacks:<ul>
+<li>Painful usage: no interactivity during development,
+mandatory compilation steps, verbose syntax (&amp;, ::, }}, ; etc.),
+manual memory management (tricky in C). These are <strong>difficult
+languages</strong> for non computer scientists.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Scripting languages: Matlab</strong></p>
+<ul class="simple">
+<li>Advantages:<ul>
+<li>Very rich collection of libraries with numerous algorithms, for many
+different domains. Fast execution because these libraries are often written
+in a compiled language.</li>
+<li>Pleasant development environment: comprehensive and well organized help,
+integrated editor, etc.</li>
+<li>Commercial support is available.</li>
+</ul>
+</li>
+<li>Drawbacks:<ul>
+<li>Base language is quite poor and can become restrictive for advanced users.</li>
+<li>Not free.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Other script languages: Scilab, Octave, Igor, R, IDL, etc.</strong></p>
+<ul class="simple">
+<li>Advantages:<ul>
+<li>Open-source, free, or at least cheaper than Matlab.</li>
+<li>Some features can be very advanced (statistics in R, figures in Igor, etc.)</li>
+</ul>
+</li>
+<li>Drawbacks:<ul>
+<li>fewer available algorithms than in Matlab, and the language
+is not more advanced.</li>
+<li>Some softwares are dedicated to one domain. Ex: Gnuplot or xmgrace
+to draw curves. These programs are very powerful, but they are
+restricted to a single type of usage, such as plotting.</li>
+</ul>
+</li>
+</ul>
+<p><strong>What about Python?</strong></p>
+<ul class="simple">
+<li>Advantages:<ul>
+<li>Very rich scientific computing libraries (a bit less than Matlab,
+though)</li>
+<li>Well-thought language, allowing to write very readable and well structured
+code: we &#8220;code what we think&#8221;.</li>
+<li>Many libraries for other tasks than scientific computing (web server
+management, serial port access, etc.)</li>
+<li>Free and open-source software, widely spread, with a vibrant community.</li>
+</ul>
+</li>
+<li>Drawbacks:<ul>
+<li>less pleasant development environment than, for example, Matlab. (More
+geek-oriented).</li>
+<li>Not all the algorithms that can be found in more specialized
+softwares or toolboxes.</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="workflow.html" title="Building blocks of scientific computing with Python"
+             >next</a></li>
+        <li class="right" >
+          <a href="../index.html" title="Euroscipy 2010 tutorials"
+             >previous</a> |</li>
+        <li><a href="../index.html">Euroscipy 2010</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

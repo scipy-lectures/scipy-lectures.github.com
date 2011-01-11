@@ -1,0 +1,126 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Sparse Matrices in SciPy &mdash; Euroscipy 2010 tutorials</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Euroscipy 2010 tutorials" href="../index.html" />
+    <link rel="next" title="Introduction" href="introduction.html" />
+    <link rel="prev" title="Example of solution for the image processing exercise: unmolten grains in glass" href="../summary-exercices/answers_image_processing.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="introduction.html" title="Introduction"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../summary-exercices/answers_image_processing.html" title="Example of solution for the image processing exercise: unmolten grains in glass"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Euroscipy 2010</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="sparse-matrices-in-scipy">
+<h1>Sparse Matrices in SciPy<a class="headerlink" href="#sparse-matrices-in-scipy" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">author:</th><td class="field-body">Robert Cimrman</td>
+</tr>
+</tbody>
+</table>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#why-sparse-matrices">Why Sparse Matrices?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#sparse-matrices-vs-sparse-matrix-storage-schemes">Sparse Matrices vs. Sparse Matrix Storage Schemes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#typical-applications">Typical Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#sparsity-structure-visualization">Sparsity Structure Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="storage_schemes.html">Storage Schemes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="storage_schemes.html#common-methods">Common Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage_schemes.html#sparse-matrix-classes">Sparse Matrix Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dia_matrix.html">Diagonal Format (DIA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lil_matrix.html">List of Lists Format (LIL)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dok_matrix.html">Dictionary of Keys Format (DOK)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coo_matrix.html">Coordinate Format (COO)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="csr_matrix.html">Compressed Sparse Row Format (CSR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="csc_matrix.html">Compressed Sparse Column Format (CSC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bsr_matrix.html">Block Compressed Row Format (BSR)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="storage_schemes.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="solvers.html">Linear System Solvers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#sparse-direct-solvers">Sparse Direct Solvers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="solvers.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#iterative-solvers">Iterative Solvers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="solvers.html#common-parameters">Common Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solvers.html#linearoperator-class">LinearOperator Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solvers.html#a-few-notes-on-preconditioning">A Few Notes on Preconditioning</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#eigenvalue-problem-solvers">Eigenvalue Problem Solvers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="solvers.html#the-eigen-module">The <tt class="docutils literal"><span class="pre">eigen</span></tt> module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="other_packages.html">Other Interesting Packages</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="introduction.html" title="Introduction"
+             >next</a></li>
+        <li class="right" >
+          <a href="../summary-exercices/answers_image_processing.html" title="Example of solution for the image processing exercise: unmolten grains in glass"
+             >previous</a> |</li>
+        <li><a href="../index.html">Euroscipy 2010</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>
