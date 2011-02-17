@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.2.2. Storage Schemes &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="2.2. Sparse Matrices in SciPy" href="index.html" />
+    <link rel="next" title="2.2.2.2.1. Diagonal Format (DIA)" href="dia_matrix.html" />
+    <link rel="prev" title="2.2.1. Introduction" href="introduction.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="dia_matrix.html" title="2.2.2.2.1. Diagonal Format (DIA)"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="introduction.html" title="2.2.1. Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">2.2. Sparse Matrices in SciPy</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="storage-schemes">
+<h1>2.2.2. Storage Schemes<a class="headerlink" href="#storage-schemes" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><dl class="first docutils">
+<dt>seven sparse matrix types in scipy.sparse:</dt>
+<dd><ol class="first last arabic simple">
+<li>csc_matrix: Compressed Sparse Column format</li>
+<li>csr_matrix: Compressed Sparse Row format</li>
+<li>bsr_matrix: Block Sparse Row format</li>
+<li>lil_matrix: List of Lists format</li>
+<li>dok_matrix: Dictionary of Keys format</li>
+<li>coo_matrix: COOrdinate format (aka IJV, triplet format)</li>
+<li>dia_matrix: DIAgonal format</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p class="first">each suitable for some tasks</p>
+</li>
+<li><p class="first">many employ sparsetools C++ module by Nathan Bell</p>
+</li>
+<li><p class="first">assume the following is imported:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy.sparse</span> <span class="kn">as</span> <span class="nn">sps</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</li>
+<li><dl class="first docutils">
+<dt><strong>warning</strong> for NumPy users:</dt>
+<dd><ul class="first last">
+<li><p class="first">the multiplication with &#8216;*&#8217; is the <em>matrix multiplication</em> (dot product)</p>
+</li>
+<li><dl class="first docutils">
+<dt>not part of NumPy!</dt>
+<dd><ul class="first last simple">
+<li>passing a sparse matrix object to NumPy functions expecting
+ndarray/matrix does not work</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="common-methods">
+<h2>2.2.2.1. Common Methods<a class="headerlink" href="#common-methods" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><dl class="first docutils">
+<dt>all scipy.sparse classes are subclasses of <tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt></dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>default implementation of arithmetic operations</dt>
+<dd><ul class="first last simple">
+<li>always converts to CSR</li>
+<li>subclasses override for efficiency</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">shape, data type set/get</p>
+</li>
+<li><p class="first">nonzero indices</p>
+</li>
+<li><p class="first">format conversion, interaction with NumPy (<cite>toarray()</cite>, <cite>todense()</cite>)</p>
+</li>
+<li><p class="first">...</p>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>attributes:</dt>
+<dd><ul class="first last simple">
+<li><cite>mtx.A</cite> - same as mtx.toarray()</li>
+<li><cite>mtx.T</cite> - transpose (same as mtx.transpose())</li>
+<li><cite>mtx.H</cite> - Hermitian (conjugate) transpose</li>
+<li><cite>mtx.real</cite> - real part of complex matrix</li>
+<li><cite>mtx.imag</cite> - imaginary part of complex matrix</li>
+<li><cite>mtx.size</cite> - the number of nonzeros (same as self.getnnz())</li>
+<li><cite>mtx.shape</cite> - the number of rows and columns (tuple)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">data usually stored in NumPy arrays</p>
+</li>
+</ul>
+</div>
+<div class="section" id="sparse-matrix-classes">
+<h2>2.2.2.2. Sparse Matrix Classes<a class="headerlink" href="#sparse-matrix-classes" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dia_matrix.html">2.2.2.2.1. Diagonal Format (DIA)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dia_matrix.html#examples">2.2.2.2.1.1. Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lil_matrix.html">2.2.2.2.2. List of Lists Format (LIL)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lil_matrix.html#examples">2.2.2.2.2.1. Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dok_matrix.html">2.2.2.2.3. Dictionary of Keys Format (DOK)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dok_matrix.html#examples">2.2.2.2.3.1. Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coo_matrix.html">2.2.2.2.4. Coordinate Format (COO)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="coo_matrix.html#examples">2.2.2.2.4.1. Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="csr_matrix.html">2.2.2.2.5. Compressed Sparse Row Format (CSR)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="csr_matrix.html#examples">2.2.2.2.5.1. Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="csc_matrix.html">2.2.2.2.6. Compressed Sparse Column Format (CSC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="csc_matrix.html#examples">2.2.2.2.6.1. Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bsr_matrix.html">2.2.2.2.7. Block Compressed Row Format (BSR)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bsr_matrix.html#examples">2.2.2.2.7.1. Examples</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>2.2.2.3. Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<caption>Summary of storage schemes.</caption>
+<colgroup>
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">format</th>
+<th class="head">matrix * vector</th>
+<th class="head">get item</th>
+<th class="head">fancy get</th>
+<th class="head">set item</th>
+<th class="head">fancy set</th>
+<th class="head">solvers</th>
+<th class="head">note</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>DIA</td>
+<td>sparsetools</td>
+<td>.</td>
+<td>.</td>
+<td>.</td>
+<td>.</td>
+<td>iterative</td>
+<td>has data array, specialized</td>
+</tr>
+<tr><td>LIL</td>
+<td>via CSR</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>iterative</td>
+<td>arithmetics via CSR, incremental construction</td>
+</tr>
+<tr><td>DOK</td>
+<td>python</td>
+<td>yes</td>
+<td>one axis only</td>
+<td>yes</td>
+<td>yes</td>
+<td>iterative</td>
+<td>O(1) item access, incremental construction</td>
+</tr>
+<tr><td>COO</td>
+<td>sparsetools</td>
+<td>.</td>
+<td>.</td>
+<td>.</td>
+<td>.</td>
+<td>iterative</td>
+<td>has data array, facilitates fast conversion</td>
+</tr>
+<tr><td>CSR</td>
+<td>sparsetools</td>
+<td>yes</td>
+<td>yes</td>
+<td>slow</td>
+<td>.</td>
+<td>any</td>
+<td>has data array, fast row-wise ops</td>
+</tr>
+<tr><td>CSC</td>
+<td>sparsetools</td>
+<td>yes</td>
+<td>yes</td>
+<td>slow</td>
+<td>.</td>
+<td>any</td>
+<td>has data array, fast column-wise ops</td>
+</tr>
+<tr><td>BSR</td>
+<td>sparsetools</td>
+<td>.</td>
+<td>.</td>
+<td>.</td>
+<td>.</td>
+<td>specialized</td>
+<td>has data array, specialized</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="dia_matrix.html" title="2.2.2.2.1. Diagonal Format (DIA)"
+             >next</a></li>
+        <li class="right" >
+          <a href="introduction.html" title="2.2.1. Introduction"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

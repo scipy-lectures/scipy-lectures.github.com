@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3.8. Standard Library &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="1.3. A (very short) introduction to Python" href="python_language.html" />
+    <link rel="next" title="1.3.9. Exceptions handling in Python" href="exceptions.html" />
+    <link rel="prev" title="1.3.7. Input and Output" href="io.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="exceptions.html" title="1.3.9. Exceptions handling in Python"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="io.html" title="1.3.7. Input and Output"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+          <li><a href="python_language.html" accesskey="U">1.3. A (very short) introduction to Python</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="standard-library">
+<h1>1.3.8. Standard Library<a class="headerlink" href="#standard-library" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Reference document for this section:</p>
+<ul class="last simple">
+<li>The Python Standard Library documentation:
+<a class="reference external" href="http://docs.python.org/library/index.html">http://docs.python.org/library/index.html</a></li>
+<li>Python Essential Reference, David Beazley, Addison-Wesley Professional</li>
+</ul>
+</div>
+<div class="section" id="os-module-operating-system-functionality">
+<h2>1.3.8.1. <tt class="docutils literal"><span class="pre">os</span></tt> module: operating system functionality<a class="headerlink" href="#os-module-operating-system-functionality" title="Permalink to this headline">¶</a></h2>
+<p><em>&#8220;A portable way of using operating system dependent functionality.&#8221;</em></p>
+<div class="section" id="directory-and-file-manipulation">
+<h3>1.3.8.1.1. Directory and file manipulation<a class="headerlink" href="#directory-and-file-manipulation" title="Permalink to this headline">¶</a></h3>
+<p>Current directory:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [17]: </span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+<span class="go">Out[17]: </span><span class="s">&#39;/Users/cburns/src/scipy2009/scipy_2009_tutorial/source&#39;</span>
+</pre></div>
+</div>
+<p>List a directory:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [31]: </span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+<span class="go">Out[31]:</span>
+<span class="go">[&#39;.index.rst.swo&#39;,</span>
+<span class="go"> &#39;.python_language.rst.swp&#39;,</span>
+<span class="go"> &#39;.view_array.py.swp&#39;,</span>
+<span class="go"> &#39;_static&#39;,</span>
+<span class="go"> &#39;_templates&#39;,</span>
+<span class="go"> &#39;basic_types.rst&#39;,</span>
+<span class="go"> &#39;conf.py&#39;,</span>
+<span class="go"> &#39;control_flow.rst&#39;,</span>
+<span class="go"> &#39;debugging.rst&#39;,</span>
+<span class="go"> ...</span>
+</pre></div>
+</div>
+<p>Make a directory:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [32]: </span><span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s">&#39;junkdir&#39;</span><span class="p">)</span>
+
+<span class="gp">In [33]: </span><span class="s">&#39;junkdir&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+<span class="go">Out[33]: </span><span class="bp">True</span>
+</pre></div>
+</div>
+<p>Rename the directory:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [36]: </span><span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s">&#39;junkdir&#39;</span><span class="p">,</span> <span class="s">&#39;foodir&#39;</span><span class="p">)</span>
+
+<span class="gp">In [37]: </span><span class="s">&#39;junkdir&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+<span class="go">Out[37]: </span><span class="bp">False</span>
+
+<span class="gp">In [38]: </span><span class="s">&#39;foodir&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+<span class="go">Out[38]: </span><span class="bp">True</span>
+
+<span class="gp">In [41]: </span><span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="s">&#39;foodir&#39;</span><span class="p">)</span>
+
+<span class="gp">In [42]: </span><span class="s">&#39;foodir&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+<span class="go">Out[42]: </span><span class="bp">False</span>
+</pre></div>
+</div>
+<p>Delete a file:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [44]: </span><span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;junk.txt&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+
+<span class="gp">In [45]: </span><span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="gp">In [46]: </span><span class="s">&#39;junk.txt&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+<span class="go">Out[46]: </span><span class="bp">True</span>
+
+<span class="gp">In [47]: </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&#39;junk.txt&#39;</span><span class="p">)</span>
+
+<span class="gp">In [48]: </span><span class="s">&#39;junk.txt&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+<span class="go">Out[48]: </span><span class="bp">False</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="os-path-path-manipulations">
+<h3>1.3.8.1.2. <tt class="docutils literal"><span class="pre">os.path</span></tt>: path manipulations<a class="headerlink" href="#os-path-path-manipulations" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">os.path</span></tt> provides common operations on pathnames.</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [70]: </span><span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;junk.txt&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+
+<span class="gp">In [71]: </span><span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="gp">In [72]: </span><span class="n">a</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s">&#39;junk.txt&#39;</span><span class="p">)</span>
+
+<span class="gp">In [73]: </span><span class="n">a</span>
+<span class="go">Out[73]: </span><span class="s">&#39;/Users/cburns/src/scipy2009/scipy_2009_tutorial/source/junk.txt&#39;</span>
+
+<span class="gp">In [74]: </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">Out[74]: </span><span class="p">(</span><span class="s">&#39;/Users/cburns/src/scipy2009/scipy_2009_tutorial/source&#39;</span><span class="p">,</span>
+<span class="go">          &#39;junk.txt&#39;)</span>
+
+<span class="gp">In [78]: </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">Out[78]: </span><span class="s">&#39;/Users/cburns/src/scipy2009/scipy_2009_tutorial/source&#39;</span>
+
+<span class="gp">In [79]: </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">Out[79]: </span><span class="s">&#39;junk.txt&#39;</span>
+
+<span class="gp">In [80]: </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="go">Out[80]: </span><span class="p">(</span><span class="s">&#39;junk&#39;</span><span class="p">,</span> <span class="s">&#39;.txt&#39;</span><span class="p">)</span>
+
+<span class="gp">In [84]: </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s">&#39;junk.txt&#39;</span><span class="p">)</span>
+<span class="go">Out[84]: </span><span class="bp">True</span>
+
+<span class="gp">In [86]: </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">&#39;junk.txt&#39;</span><span class="p">)</span>
+<span class="go">Out[86]: </span><span class="bp">True</span>
+
+<span class="gp">In [87]: </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="s">&#39;junk.txt&#39;</span><span class="p">)</span>
+<span class="go">Out[87]: </span><span class="bp">False</span>
+
+<span class="gp">In [88]: </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&#39;~/local&#39;</span><span class="p">)</span>
+<span class="go">Out[88]: </span><span class="s">&#39;/Users/cburns/local&#39;</span>
+
+<span class="gp">In [92]: </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&#39;~&#39;</span><span class="p">),</span> <span class="s">&#39;local&#39;</span><span class="p">,</span> <span class="s">&#39;bin&#39;</span><span class="p">)</span>
+<span class="go">Out[92]: </span><span class="s">&#39;/Users/cburns/local/bin&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-an-external-command">
+<h3>1.3.8.1.3. Running an external command<a class="headerlink" href="#running-an-external-command" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [8]: </span><span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;ls *&#39;</span><span class="p">)</span>
+<span class="go">conf.py   debug_file.py  demo2.py~  demo.py   demo.pyc          my_file.py~</span>
+<span class="go">conf.py~  demo2.py     demo2.pyc  demo.py~  my_file.py  pi_wallis_image.py</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="walking-a-directory">
+<h3>1.3.8.1.4. Walking a directory<a class="headerlink" href="#walking-a-directory" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">os.path.walk</span></tt> generates a list of filenames in a directory tree.</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [10]: </span><span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">):</span>
+<span class="gp">   ....:</span>     <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+<span class="gp">   ....:</span>         <span class="k">print</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+<span class="gp">   ....:</span>
+<span class="gp">   ....:</span>
+<span class="go">/Users/cburns/src/scipy2009/scipy_2009_tutorial/source/.index.rst.swo</span>
+<span class="go">/Users/cburns/src/scipy2009/scipy_2009_tutorial/source/.view_array.py.swp</span>
+<span class="go">/Users/cburns/src/scipy2009/scipy_2009_tutorial/source/basic_types.rst</span>
+<span class="go">/Users/cburns/src/scipy2009/scipy_2009_tutorial/source/conf.py</span>
+<span class="go">/Users/cburns/src/scipy2009/scipy_2009_tutorial/source/control_flow.rst</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="environment-variables">
+<h3>1.3.8.1.5. Environment variables:<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [9]: </span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="gp">In [11]: </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">Out[11]:</span>
+<span class="go">[&#39;_&#39;,</span>
+<span class="go"> &#39;FSLDIR&#39;,</span>
+<span class="go"> &#39;TERM_PROGRAM_VERSION&#39;,</span>
+<span class="go"> &#39;FSLREMOTECALL&#39;,</span>
+<span class="go"> &#39;USER&#39;,</span>
+<span class="go"> &#39;HOME&#39;,</span>
+<span class="go"> &#39;PATH&#39;,</span>
+<span class="go"> &#39;PS1&#39;,</span>
+<span class="go"> &#39;SHELL&#39;,</span>
+<span class="go"> &#39;EDITOR&#39;,</span>
+<span class="go"> &#39;WORKON_HOME&#39;,</span>
+<span class="go"> &#39;PYTHONPATH&#39;,</span>
+<span class="go"> ...</span>
+
+<span class="gp">In [12]: </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;PYTHONPATH&#39;</span><span class="p">]</span>
+<span class="go">Out[12]: </span><span class="s">&#39;.:/Users/cburns/src/utils:/Users/cburns/src/nitools:</span>
+<span class="go">/Users/cburns/local/lib/python2.5/site-packages/:</span>
+<span class="go">/usr/local/lib/python2.5/site-packages/:</span>
+<span class="go">/Library/Frameworks/Python.framework/Versions/2.5/lib/python2.5&#39;</span>
+
+<span class="gp">In [16]: </span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">&#39;PYTHONPATH&#39;</span><span class="p">)</span>
+<span class="go">Out[16]: </span><span class="s">&#39;.:/Users/cburns/src/utils:/Users/cburns/src/nitools:</span>
+<span class="go">/Users/cburns/local/lib/python2.5/site-packages/:</span>
+<span class="go">/usr/local/lib/python2.5/site-packages/:</span>
+<span class="go">/Library/Frameworks/Python.framework/Versions/2.5/lib/python2.5&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="shutil-high-level-file-operations">
+<h2>1.3.8.2. <tt class="docutils literal"><span class="pre">shutil</span></tt>: high-level file operations<a class="headerlink" href="#shutil-high-level-file-operations" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">shutil</span></tt> provides useful file operations:</p>
+<blockquote>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">shutil.rmtree</span></tt>: Recursively delete a directory tree.</li>
+<li><tt class="docutils literal"><span class="pre">shutil.move</span></tt>: Recursively move a file or directory to another location.</li>
+<li><tt class="docutils literal"><span class="pre">shutil.copy</span></tt>: Copy files or directories.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="glob-pattern-matching-on-files">
+<h2>1.3.8.3. <tt class="docutils literal"><span class="pre">glob</span></tt>: Pattern matching on files<a class="headerlink" href="#glob-pattern-matching-on-files" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">glob</span></tt> module provides convenient file pattern matching.</p>
+<p>Find all files ending in <tt class="docutils literal"><span class="pre">.txt</span></tt>:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [18]: </span><span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="gp">In [19]: </span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">&#39;*.txt&#39;</span><span class="p">)</span>
+<span class="go">Out[19]: </span><span class="p">[</span><span class="s">&#39;holy_grail.txt&#39;</span><span class="p">,</span> <span class="s">&#39;junk.txt&#39;</span><span class="p">,</span> <span class="s">&#39;newfile.txt&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sys-module-system-specific-information">
+<h2>1.3.8.4. <tt class="docutils literal"><span class="pre">sys</span></tt> module: system-specific information<a class="headerlink" href="#sys-module-system-specific-information" title="Permalink to this headline">¶</a></h2>
+<p>System-specific information related to the Python interpreter.</p>
+<ul>
+<li><p class="first">Which version of python are you running and where is it installed:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [117]: </span><span class="n">sys</span><span class="o">.</span><span class="n">platform</span>
+<span class="go">Out[117]: </span><span class="s">&#39;darwin&#39;</span>
+
+<span class="gp">In [118]: </span><span class="n">sys</span><span class="o">.</span><span class="n">version</span>
+<span class="go">Out[118]: </span><span class="s">&#39;2.5.2 (r252:60911, Feb 22 2008, 07:57:53) </span><span class="se">\n</span>
+<span class="go">          [GCC 4.0.1 (Apple Computer, Inc. build 5363)]&#39;</span>
+
+<span class="gp">In [119]: </span><span class="n">sys</span><span class="o">.</span><span class="n">prefix</span>
+<span class="go">Out[119]: </span><span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.5&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">List of command line arguments passed to a Python script:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [100]: </span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+<span class="go">Out[100]: </span><span class="p">[</span><span class="s">&#39;/Users/cburns/local/bin/ipython&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p><tt class="docutils literal"><span class="pre">sys.path</span></tt> is a list of strings that specifies the search path for
+modules.  Initialized from PYTHONPATH:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [121]: </span><span class="n">sys</span><span class="o">.</span><span class="n">path</span>
+<span class="go">Out[121]:</span>
+<span class="go">[&#39;&#39;,</span>
+<span class="go"> &#39;/Users/cburns/local/bin&#39;,</span>
+<span class="go"> &#39;/Users/cburns/local/lib/python2.5/site-packages/grin-1.1-py2.5.egg&#39;,</span>
+<span class="go"> &#39;/Users/cburns/local/lib/python2.5/site-packages/argparse-0.8.0-py2.5.egg&#39;,</span>
+<span class="go"> &#39;/Users/cburns/local/lib/python2.5/site-packages/urwid-0.9.7.1-py2.5.egg&#39;,</span>
+<span class="go"> &#39;/Users/cburns/local/lib/python2.5/site-packages/yolk-0.4.1-py2.5.egg&#39;,</span>
+<span class="go"> &#39;/Users/cburns/local/lib/python2.5/site-packages/virtualenv-1.2-py2.5.egg&#39;,</span>
+<span class="go"> ...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pickle-easy-persistence">
+<h2>1.3.8.5. <tt class="docutils literal"><span class="pre">pickle</span></tt>: easy persistence<a class="headerlink" href="#pickle-easy-persistence" title="Permalink to this headline">¶</a></h2>
+<p>Useful to store arbritrary objects to a file. Not safe or fast!</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="gp">In [2]: </span><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s">&#39;Stan&#39;</span><span class="p">]</span>
+
+<span class="gp">In [3]: </span><span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="nb">file</span><span class="p">(</span><span class="s">&#39;test.pkl&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">))</span>
+
+<span class="gp">In [4]: </span><span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">file</span><span class="p">(</span><span class="s">&#39;test.pkl&#39;</span><span class="p">))</span>
+<span class="go">Out[4]: </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s">&#39;Stan&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="topic">
+<p class="topic-title first">Exercise</p>
+<p>Write a program to search your PYTHONPATH for the module <tt class="docutils literal"><span class="pre">site.py</span></tt>.</p>
+</div>
+<p><a class="reference internal" href="../solutions.html#path-site"><em>The PYTHONPATH Search Solution</em></a></p>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="exceptions.html" title="1.3.9. Exceptions handling in Python"
+             >next</a></li>
+        <li class="right" >
+          <a href="io.html" title="1.3.7. Input and Output"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+          <li><a href="python_language.html" >1.3. A (very short) introduction to Python</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

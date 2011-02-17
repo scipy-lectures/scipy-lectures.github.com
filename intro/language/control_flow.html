@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3.4. Control Flow &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="1.3. A (very short) introduction to Python" href="python_language.html" />
+    <link rel="next" title="1.3.5. Defining functions" href="functions.html" />
+    <link rel="prev" title="1.3.3. Assignment operator" href="assignment.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="functions.html" title="1.3.5. Defining functions"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="assignment.html" title="1.3.3. Assignment operator"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+          <li><a href="python_language.html" accesskey="U">1.3. A (very short) introduction to Python</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="control-flow">
+<h1>1.3.4. Control Flow<a class="headerlink" href="#control-flow" title="Permalink to this headline">¶</a></h1>
+<p>Controls the order in which the code is executed.</p>
+<div class="section" id="if-elif-else">
+<h2>1.3.4.1. if/elif/else<a class="headerlink" href="#if-elif-else" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="k">if</span> <span class="mi">2</span><span class="o">**</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+<span class="gp">   ...:</span>     <span class="k">print</span><span class="p">(</span><span class="s">&#39;Obvious!&#39;</span><span class="p">)</span>
+<span class="gp">   ...:</span>
+<span class="go">Obvious!</span>
+</pre></div>
+</div>
+<p><strong>Blocks are delimited by indentation</strong></p>
+<p>Type the following lines in your Python interpreter, and be careful to
+<strong>respect the indentation depth</strong>. The Ipython shell automatically
+increases the indentation depth after a column <tt class="docutils literal"><span class="pre">:</span></tt> sign; to
+decrease the indentation depth, go four spaces to the left with the
+Backspace key. Press the Enter key twice to leave the logical block.</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [2]: </span><span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="gp">In [3]: </span><span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="gp">   ...:</span>     <span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">   ...:</span> <span class="k">elif</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+<span class="gp">   ...:</span>     <span class="k">print</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">   ...:</span> <span class="k">else</span><span class="p">:</span>
+<span class="gp">   ...:</span>     <span class="k">print</span><span class="p">(</span><span class="s">&#39;A lot&#39;</span><span class="p">)</span>
+<span class="gp">   ...:</span>
+<span class="go">A lot</span>
+</pre></div>
+</div>
+<p>Indentation is compulsory in scripts as well. As an exercise, re-type the
+previous lines with the same indentation in a script <tt class="docutils literal"><span class="pre">condition.py</span></tt>, and
+execute the script with <tt class="docutils literal"><span class="pre">run</span> <span class="pre">condition.py</span></tt> in Ipython.</p>
+</div>
+<div class="section" id="for-range">
+<h2>1.3.4.2. for/range<a class="headerlink" href="#for-range" title="Permalink to this headline">¶</a></h2>
+<p>Iterating with an index:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [4]: </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+<span class="gp">   ...:</span>     <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="gp">   ...:</span>
+<span class="go">0</span>
+<span class="go">1</span>
+<span class="go">2</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>But most often, it is more readable to iterate over values:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [5]: </span><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;cool&#39;</span><span class="p">,</span> <span class="s">&#39;powerful&#39;</span><span class="p">,</span> <span class="s">&#39;readable&#39;</span><span class="p">):</span>
+<span class="gp">   ...:</span>     <span class="k">print</span><span class="p">(</span><span class="s">&#39;Python is </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">word</span><span class="p">)</span>
+<span class="gp">   ...:</span>
+<span class="go">Python is cool</span>
+<span class="go">Python is powerful</span>
+<span class="go">Python is readable</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="while-break-continue">
+<h2>1.3.4.3. while/break/continue<a class="headerlink" href="#while-break-continue" title="Permalink to this headline">¶</a></h2>
+<p>Typical C-style while loop (Mandelbrot problem):</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [6]: </span><span class="n">z</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span>
+
+<span class="gp">In [7]: </span><span class="k">while</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
+<span class="gp">   ...:</span>     <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">   ...:</span>
+
+<span class="gp">In [8]: </span><span class="n">z</span>
+<span class="go">Out[8]: </span><span class="p">(</span><span class="o">-</span><span class="mi">134</span><span class="o">+</span><span class="mi">352</span><span class="n">j</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>More advanced features</strong></p>
+<p><tt class="docutils literal"><span class="pre">break</span></tt> out of enclosing for/while loop:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [9]: </span><span class="n">z</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span>
+
+<span class="gp">In [10]: </span><span class="k">while</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
+<span class="gp">   ....:</span>     <span class="k">if</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">   ....:</span>         <span class="k">break</span>
+<span class="gp">   ....:</span>     <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">   ....:</span>
+<span class="gp">   ....:</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">continue</span></tt> the next iteration of a loop.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">element</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">continue</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">element</span>
+<span class="gp">...</span>
+<span class="go">1.0</span>
+<span class="go">0.5</span>
+<span class="go">0.25</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="conditional-expressions">
+<h2>1.3.4.4. Conditional Expressions<a class="headerlink" href="#conditional-expressions" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first"><cite>if object</cite></p>
+<dl class="docutils">
+<dt>Evaluates to True:</dt>
+<dd><ul class="first last simple">
+<li>any non-zero value</li>
+<li>any sequence with a length &gt; 0</li>
+</ul>
+</dd>
+<dt>Evaluates to False:</dt>
+<dd><ul class="first last simple">
+<li>any zero value</li>
+<li>any empty sequence</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first"><cite>a == b</cite></p>
+<p>Tests equality, with logics:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [19]: </span><span class="mi">1</span> <span class="o">==</span> <span class="mf">1.</span>
+<span class="go">Out[19]: </span><span class="bp">True</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><cite>a is b</cite></p>
+<p>Tests identity: both objects are the same</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [20]: </span><span class="mi">1</span> <span class="ow">is</span> <span class="mf">1.</span>
+<span class="go">Out[20]: </span><span class="bp">False</span>
+
+<span class="gp">In [21]: </span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="gp">In [22]: </span><span class="n">b</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="gp">In [23]: </span><span class="n">a</span> <span class="ow">is</span> <span class="n">b</span>
+<span class="go">Out[23]: </span><span class="bp">True</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><cite>a in b</cite></p>
+<p>For any collection <cite>b</cite>: <cite>b</cite> contains <cite>a</cite></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="ow">in</span> <span class="n">b</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">5</span> <span class="ow">in</span> <span class="n">b</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>If <cite>b</cite> is a dictionary, this tests that <cite>a</cite> is a key of <cite>b</cite>.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="advanced-iteration">
+<h2>1.3.4.5. Advanced iteration<a class="headerlink" href="#advanced-iteration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="iterate-over-any-sequence">
+<h3>1.3.4.5.1. Iterate over any <em>sequence</em><a class="headerlink" href="#iterate-over-any-sequence" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">You can iterate over any sequence (string, list, dictionary, file, ...)</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [11]: </span><span class="n">vowels</span> <span class="o">=</span> <span class="s">&#39;aeiouy&#39;</span>
+
+<span class="gp">In [12]: </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="s">&#39;powerful&#39;</span><span class="p">:</span>
+<span class="gp">   ....:</span>     <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">vowels</span><span class="p">:</span>
+<span class="gp">   ....:</span>         <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
+<span class="gp">   ....:</span>
+<span class="gp">   ....:</span>
+<span class="go">o e u</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">message</span> <span class="o">=</span> <span class="s">&quot;Hello how are you?&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="c"># returns a list</span>
+<span class="go">[&#39;Hello&#39;, &#39;how&#39;, &#39;are&#39;, &#39;you?&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">word</span>
+<span class="gp">...</span>
+<span class="go">Hello</span>
+<span class="go">how</span>
+<span class="go">are</span>
+<span class="go">you?</span>
+</pre></div>
+</div>
+<p>Few languages (in particular, languages for scienfic computing) allow to
+loop over anything but integers/indices. With Python it is possible to
+loop exactly over the objects of interest without bothering with indices
+you often don&#8217;t care about.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Not safe to modify the sequence you are iterating over.</p>
+</div>
+</div>
+<div class="section" id="keeping-track-of-enumeration-number">
+<h3>1.3.4.5.2. Keeping track of enumeration number<a class="headerlink" href="#keeping-track-of-enumeration-number" title="Permalink to this headline">¶</a></h3>
+<p>Common task is to iterate over a sequence while keeping track of the
+item number.</p>
+<ul>
+<li><p class="first">Could use while loop with a counter as above. Or a for loop:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [13]: </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)):</span>
+<span class="gp">   ....:</span>     <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="gp">   ....:</span>
+<span class="gp">   ....:</span>
+<span class="go">0 cool</span>
+<span class="go">1 powerful</span>
+<span class="go">2 readable</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">But Python provides <strong>enumerate</strong> for this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;cool&#39;</span><span class="p">,</span> <span class="s">&#39;powerful&#39;</span><span class="p">,</span> <span class="s">&#39;readable&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">index</span><span class="p">,</span> <span class="n">item</span>
+<span class="gp">...</span>
+<span class="go">0 cool</span>
+<span class="go">1 powerful</span>
+<span class="go">2 readable</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="looping-over-a-dictionary">
+<h3>1.3.4.5.3. Looping over a dictionary<a class="headerlink" href="#looping-over-a-dictionary" title="Permalink to this headline">¶</a></h3>
+<p>Use <strong>iteritems</strong>:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [15]: </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span><span class="mf">1.2</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">:</span><span class="mi">1</span><span class="n">j</span><span class="p">}</span>
+
+<span class="gp">In [15]: </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+<span class="gp">   ....:</span>     <span class="k">print</span><span class="p">(</span><span class="s">&#39;Key: </span><span class="si">%s</span><span class="s"> has value: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+<span class="gp">   ....:</span>
+<span class="gp">   ....:</span>
+<span class="go">Key: a has value: 1</span>
+<span class="go">Key: c has value: 1j</span>
+<span class="go">Key: b has value: 1.2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="list-comprehensions">
+<h2>1.3.4.6. List Comprehensions<a class="headerlink" href="#list-comprehensions" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [16]: </span><span class="p">[</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+<span class="go">Out[16]: </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="topic">
+<p class="topic-title first">Exercise</p>
+<p>Compute the decimals of Pi using the Wallis formula:</p>
+<div align="center" class="align-center"><img alt="../../_images/pi_formula.png" class="align-center" src="../../_images/pi_formula.png" /></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="functions.html" title="1.3.5. Defining functions"
+             >next</a></li>
+        <li class="right" >
+          <a href="assignment.html" title="1.3.3. Assignment operator"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+          <li><a href="python_language.html" >1.3. A (very short) introduction to Python</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

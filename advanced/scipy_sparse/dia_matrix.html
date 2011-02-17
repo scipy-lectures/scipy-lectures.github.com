@@ -1,0 +1,215 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.2.2.2.1. Diagonal Format (DIA) &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="2.2.2. Storage Schemes" href="storage_schemes.html" />
+    <link rel="next" title="2.2.2.2.2. List of Lists Format (LIL)" href="lil_matrix.html" />
+    <link rel="prev" title="2.2.2. Storage Schemes" href="storage_schemes.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="lil_matrix.html" title="2.2.2.2.2. List of Lists Format (LIL)"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="storage_schemes.html" title="2.2.2. Storage Schemes"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li>
+          <li><a href="storage_schemes.html" accesskey="U">2.2.2. Storage Schemes</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="diagonal-format-dia">
+<h1>2.2.2.2.1. Diagonal Format (DIA)<a class="headerlink" href="#diagonal-format-dia" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p class="first">very simple scheme</p>
+</li>
+<li><dl class="first docutils">
+<dt>diagonals in dense NumPy array of shape <cite>(n_diag, length)</cite></dt>
+<dd><ul class="first last simple">
+<li>fixed length -&gt; waste space a bit when far from main diagonal</li>
+<li>subclass of <tt class="xref py py-class docutils literal"><span class="pre">_data_matrix</span></tt> (sparse matrix classes with
+<cite>.data</cite> attribute)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>offset for each diagonal</dt>
+<dd><ul class="first last simple">
+<li>0 is the main diagonal</li>
+<li>negative offset = below</li>
+<li>positive offset = above</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">fast matrix * vector (sparsetools)</p>
+</li>
+<li><dl class="first docutils">
+<dt>fast and easy item-wise operations</dt>
+<dd><ul class="first last simple">
+<li>manipulate data array directly (fast NumPy machinery)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>constructor accepts:</dt>
+<dd><ul class="first last simple">
+<li>dense matrix (array)</li>
+<li>sparse matrix</li>
+<li>shape tuple (create empty matrix)</li>
+<li><cite>(data, offsets)</cite> tuple</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">no slicing, no individual item access</p>
+</li>
+<li><dl class="first docutils">
+<dt>use:</dt>
+<dd><ul class="first last simple">
+<li>rather specialized</li>
+<li>solving PDEs by finite differences</li>
+<li>with an iterative solver</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="examples">
+<h2>2.2.2.2.1.1. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">create some DIA matrices:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
+<span class="go">array([[1, 2, 3, 4],</span>
+<span class="go">       [1, 2, 3, 4],</span>
+<span class="go">       [1, 2, 3, 4]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">offsets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">dia_matrix</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="n">offsets</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span>
+<span class="go">&lt;4x4 sparse matrix of type &#39;&lt;type &#39;numpy.int32&#39;&gt;&#39;</span>
+<span class="go">        with 9 stored elements (3 diagonals) in DIAgonal format&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+<span class="go">matrix([[1, 0, 3, 0],</span>
+<span class="go">        [1, 2, 0, 4],</span>
+<span class="go">        [0, 2, 3, 0],</span>
+<span class="go">        [0, 0, 3, 4]])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
+<span class="go">array([[ 1,  2,  3,  4],</span>
+<span class="go">       [ 5,  6,  7,  8],</span>
+<span class="go">       [ 9, 10, 11, 12]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">dia_matrix</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="n">offsets</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">data</span>
+<span class="go">array([[ 1,  2,  3,  4],</span>
+<span class="go">       [ 5,  6,  7,  8],</span>
+<span class="go">       [ 9, 10, 11, 12]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">offsets</span>
+<span class="go">array([ 0, -1,  2])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">mtx</span>
+<span class="go">  (0, 0)        1</span>
+<span class="go">  (1, 1)        2</span>
+<span class="go">  (2, 2)        3</span>
+<span class="go">  (3, 3)        4</span>
+<span class="go">  (1, 0)        5</span>
+<span class="go">  (2, 1)        6</span>
+<span class="go">  (3, 2)        7</span>
+<span class="go">  (0, 2)        11</span>
+<span class="go">  (1, 3)        12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+<span class="go">matrix([[ 1,  0, 11,  0],</span>
+<span class="go">        [ 5,  2,  0, 12],</span>
+<span class="go">        [ 0,  6,  3,  0],</span>
+<span class="go">        [ 0,  0,  7,  4]])</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">explanation with a scheme:</p>
+<div class="highlight-python"><pre>offset: row
+
+     2:  9
+     1:  --10------
+     0:  1  . 11  .
+    -1:  5  2  . 12
+    -2:  .  6  3  .
+    -3:  .  .  7  4
+         ---------8</pre>
+</div>
+</li>
+<li><p class="first">matrix-vector multiplication</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">4</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vec</span>
+<span class="go">array([ 1.,  1.,  1.,  1.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">*</span> <span class="n">vec</span>
+<span class="go">array([ 12.,  19.,   9.,  11.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="o">*</span> <span class="n">vec</span>
+<span class="go">array([[  1.,   0.,  11.,   0.],</span>
+<span class="go">       [  5.,   2.,   0.,  12.],</span>
+<span class="go">       [  0.,   6.,   3.,   0.],</span>
+<span class="go">       [  0.,   0.,   7.,   4.]])</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="lil_matrix.html" title="2.2.2.2.2. List of Lists Format (LIL)"
+             >next</a></li>
+        <li class="right" >
+          <a href="storage_schemes.html" title="2.2.2. Storage Schemes"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li>
+          <li><a href="storage_schemes.html" >2.2.2. Storage Schemes</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

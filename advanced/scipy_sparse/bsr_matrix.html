@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.2.2.2.7. Block Compressed Row Format (BSR) &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="2.2.2. Storage Schemes" href="storage_schemes.html" />
+    <link rel="next" title="2.2.3. Linear System Solvers" href="solvers.html" />
+    <link rel="prev" title="2.2.2.2.6. Compressed Sparse Column Format (CSC)" href="csc_matrix.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="solvers.html" title="2.2.3. Linear System Solvers"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="csc_matrix.html" title="2.2.2.2.6. Compressed Sparse Column Format (CSC)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li>
+          <li><a href="storage_schemes.html" accesskey="U">2.2.2. Storage Schemes</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="block-compressed-row-format-bsr">
+<h1>2.2.2.2.7. Block Compressed Row Format (BSR)<a class="headerlink" href="#block-compressed-row-format-bsr" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p class="first">basically a CSR with dense sub-matrices of fixed shape instead of scalar
+items</p>
+<blockquote>
+<ul>
+<li><p class="first">block size <cite>(R, C)</cite> must evenly divide the shape of the matrix
+<cite>(M, N)</cite></p>
+</li>
+<li><dl class="first docutils">
+<dt>three NumPy arrays: <cite>indices</cite>, <cite>indptr</cite>, <cite>data</cite></dt>
+<dd><ul class="first last simple">
+<li><cite>indices</cite> is array of column indices for each block</li>
+<li><cite>data</cite> is array of corresponding nonzero values of shape <cite>(nnz, R, C)</cite></li>
+<li>...</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>subclass of <tt class="xref py py-class docutils literal"><span class="pre">_cs_matrix</span></tt> (common CSR/CSC functionality)</dt>
+<dd><ul class="first last simple">
+<li>subclass of <tt class="xref py py-class docutils literal"><span class="pre">_data_matrix</span></tt> (sparse matrix classes with
+<cite>.data</cite> attribute)</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</blockquote>
+</li>
+<li><p class="first">fast matrix vector products and other arithmetics (sparsetools)</p>
+</li>
+<li><dl class="first docutils">
+<dt>constructor accepts:</dt>
+<dd><ul class="first last simple">
+<li>dense matrix (array)</li>
+<li>sparse matrix</li>
+<li>shape tuple (create empty matrix)</li>
+<li><cite>(data, ij)</cite> tuple</li>
+<li><cite>(data, indices, indptr)</cite> tuple</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">many arithmetic operations considerably more efficient than CSR for
+sparse matrices with dense sub-matrices</p>
+</li>
+<li><dl class="first docutils">
+<dt>use:</dt>
+<dd><ul class="first last simple">
+<li>like CSR</li>
+<li>vector-valued finite element discretizations</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="examples">
+<h2>2.2.2.2.7.1. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">create empty BSR matrix with (1, 1) block size (like CSR...):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">bsr_matrix</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span>
+<span class="go">&lt;3x4 sparse matrix of type &#39;&lt;type &#39;numpy.int8&#39;&gt;&#39;</span>
+<span class="go">        with 0 stored elements (blocksize = 1x1) in Block Sparse Row format&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+<span class="go">matrix([[0, 0, 0, 0],</span>
+<span class="go">        [0, 0, 0, 0],</span>
+<span class="go">        [0, 0, 0, 0]], dtype=int8)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">create empty BSR matrix with (3, 2) block size:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">bsr_matrix</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">blocksize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span>
+<span class="go">&lt;3x4 sparse matrix of type &#39;&lt;type &#39;numpy.int8&#39;&gt;&#39;</span>
+<span class="go">        with 0 stored elements (blocksize = 3x2) in Block Sparse Row format&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+<span class="go">matrix([[0, 0, 0, 0],</span>
+<span class="go">        [0, 0, 0, 0],</span>
+<span class="go">        [0, 0, 0, 0]], dtype=int8)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>a bug?</li>
+</ul>
+</li>
+<li><p class="first">create using <cite>(data, ij)</cite> tuple with (1, 1) block size (like CSR...):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">bsr_matrix</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span>
+<span class="go">&lt;3x3 sparse matrix of type &#39;&lt;type &#39;numpy.int32&#39;&gt;&#39;</span>
+<span class="go">        with 6 stored elements (blocksize = 1x1) in Block Sparse Row format&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+<span class="go">matrix([[1, 0, 2],</span>
+<span class="go">        [0, 0, 3],</span>
+<span class="go">        [4, 5, 6]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">data</span>
+<span class="go">array([[[1]],</span>
+
+<span class="go">       [[2]],</span>
+
+<span class="go">       [[3]],</span>
+
+<span class="go">       [[4]],</span>
+
+<span class="go">       [[5]],</span>
+
+<span class="go">       [[6]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">indices</span>
+<span class="go">array([0, 2, 2, 0, 1, 2])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">indptr</span>
+<span class="go">array([0, 2, 3, 6])</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">create using <cite>(data, indices, indptr)</cite> tuple with (2, 2) block size:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">indptr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">bsr_matrix</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">indptr</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+<span class="go">matrix([[1, 1, 0, 0, 2, 2],</span>
+<span class="go">        [1, 1, 0, 0, 2, 2],</span>
+<span class="go">        [0, 0, 0, 0, 3, 3],</span>
+<span class="go">        [0, 0, 0, 0, 3, 3],</span>
+<span class="go">        [4, 4, 5, 5, 6, 6],</span>
+<span class="go">        [4, 4, 5, 5, 6, 6]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
+<span class="go">array([[[1, 1],</span>
+<span class="go">        [1, 1]],</span>
+
+<span class="go">       [[2, 2],</span>
+<span class="go">        [2, 2]],</span>
+
+<span class="go">       [[3, 3],</span>
+<span class="go">        [3, 3]],</span>
+
+<span class="go">       [[4, 4],</span>
+<span class="go">        [4, 4]],</span>
+
+<span class="go">       [[5, 5],</span>
+<span class="go">        [5, 5]],</span>
+
+<span class="go">       [[6, 6],</span>
+<span class="go">        [6, 6]]])</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="solvers.html" title="2.2.3. Linear System Solvers"
+             >next</a></li>
+        <li class="right" >
+          <a href="csc_matrix.html" title="2.2.2.2.6. Compressed Sparse Column Format (CSC)"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li>
+          <li><a href="storage_schemes.html" >2.2.2. Storage Schemes</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

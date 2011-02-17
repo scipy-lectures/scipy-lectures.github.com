@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3.5. Defining functions &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="1.3. A (very short) introduction to Python" href="python_language.html" />
+    <link rel="next" title="1.3.6. Reusing code: scripts and modules" href="reusing_code.html" />
+    <link rel="prev" title="1.3.4. Control Flow" href="control_flow.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="reusing_code.html" title="1.3.6. Reusing code: scripts and modules"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="control_flow.html" title="1.3.4. Control Flow"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+          <li><a href="python_language.html" accesskey="U">1.3. A (very short) introduction to Python</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="defining-functions">
+<h1>1.3.5. Defining functions<a class="headerlink" href="#defining-functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="function-definition">
+<h2>1.3.5.1. Function definition<a class="headerlink" href="#function-definition" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [56]: </span><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="gp">   ....:</span>     <span class="k">print</span><span class="p">(</span><span class="s">&#39;in test function&#39;</span><span class="p">)</span>
+<span class="gp">   ....:</span>
+<span class="gp">   ....:</span>
+
+<span class="gp">In [57]: </span><span class="n">test</span><span class="p">()</span>
+<span class="go">in test function</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Function blocks must be indented as other control-flow blocks.</p>
+</div>
+</div>
+<div class="section" id="return-statement">
+<h2>1.3.5.2. Return statement<a class="headerlink" href="#return-statement" title="Permalink to this headline">¶</a></h2>
+<p>Functions can <em>optionally</em> return values.</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [6]: </span><span class="k">def</span> <span class="nf">disk_area</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
+<span class="gp">   ...:</span>     <span class="k">return</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">radius</span>
+<span class="gp">   ...:</span>
+
+<span class="gp">In [8]: </span><span class="n">disk_area</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="go">Out[8]: </span><span class="mf">7.0649999999999995</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">By default, functions return <tt class="xref docutils literal"><span class="pre">None</span></tt>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Note the syntax to define a function:</p>
+<ul class="last simple">
+<li>the <tt class="docutils literal"><span class="pre">def</span></tt> keyword;</li>
+<li>is followed by the function&#8217;s <strong>name</strong>, then</li>
+<li>the arguments of the function are given between brackets followed
+by a colon.</li>
+<li>the function body ;</li>
+<li>and <tt class="docutils literal"><span class="pre">return</span> <span class="pre">object</span></tt> for optionally returning values.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="parameters">
+<h2>1.3.5.3. Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p>Mandatory parameters (positional arguments)</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [81]: </span><span class="k">def</span> <span class="nf">double_it</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">   ....:</span>     <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="gp">   ....:</span>
+
+<span class="gp">In [82]: </span><span class="n">double_it</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">Out[82]: </span><span class="mi">6</span>
+
+<span class="gp">In [83]: </span><span class="n">double_it</span><span class="p">()</span>
+<span class="go">---------------------------------------------------------------------------</span>
+<span class="go">TypeError                                 Traceback (most recent call last)</span>
+
+<span class="go">/Users/cburns/src/scipy2009/scipy_2009_tutorial/source/&lt;ipython console&gt; in &lt;module&gt;()</span>
+
+<span class="go">TypeError: double_it() takes exactly 1 argument (0 given)</span>
+</pre></div>
+</div>
+<p>Optional parameters (keyword or named arguments)</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [84]: </span><span class="k">def</span> <span class="nf">double_it</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="gp">   ....:</span>     <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="gp">   ....:</span>
+
+<span class="gp">In [85]: </span><span class="n">double_it</span><span class="p">()</span>
+<span class="go">Out[85]: </span><span class="mi">4</span>
+
+<span class="gp">In [86]: </span><span class="n">double_it</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">Out[86]: </span><span class="mi">6</span>
+</pre></div>
+</div>
+<p>Keyword arguments allow you to specify <em>default values</em>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Default values are evaluated when the function is defined, not when
+it is called.</p>
+</div>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [124]: </span><span class="n">bigx</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="gp">In [125]: </span><span class="k">def</span> <span class="nf">double_it</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">bigx</span><span class="p">):</span>
+<span class="gp">   .....:</span>     <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="gp">   .....:</span>
+
+<span class="gp">In [126]: </span><span class="n">bigx</span> <span class="o">=</span> <span class="mf">1e9</span>  <span class="c"># Now really big</span>
+
+<span class="gp">In [128]: </span><span class="n">double_it</span><span class="p">()</span>
+<span class="go">Out[128]: </span><span class="mi">20</span>
+</pre></div>
+</div>
+<p>More involved example implementing python&#8217;s slicing:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [98]: </span><span class="k">def</span> <span class="nf">slicer</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="gp">   ....:</span>     <span class="sd">&quot;&quot;&quot;Implement basic python slicing.&quot;&quot;&quot;</span>
+<span class="gp">   ....:</span>     <span class="k">return</span> <span class="n">seq</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">:</span><span class="n">step</span><span class="p">]</span>
+<span class="gp">   ....:</span>
+
+<span class="gp">In [101]: </span><span class="n">rhyme</span> <span class="o">=</span> <span class="s">&#39;one fish, two fish, red fish, blue fish&#39;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="gp">In [102]: </span><span class="n">rhyme</span>
+<span class="go">Out[102]: </span><span class="p">[</span><span class="s">&#39;one&#39;</span><span class="p">,</span> <span class="s">&#39;fish,&#39;</span><span class="p">,</span> <span class="s">&#39;two&#39;</span><span class="p">,</span> <span class="s">&#39;fish,&#39;</span><span class="p">,</span> <span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="s">&#39;fish,&#39;</span><span class="p">,</span> <span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="s">&#39;fish&#39;</span><span class="p">]</span>
+
+<span class="gp">In [103]: </span><span class="n">slicer</span><span class="p">(</span><span class="n">rhyme</span><span class="p">)</span>
+<span class="go">Out[103]: </span><span class="p">[</span><span class="s">&#39;one&#39;</span><span class="p">,</span> <span class="s">&#39;fish,&#39;</span><span class="p">,</span> <span class="s">&#39;two&#39;</span><span class="p">,</span> <span class="s">&#39;fish,&#39;</span><span class="p">,</span> <span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="s">&#39;fish,&#39;</span><span class="p">,</span> <span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="s">&#39;fish&#39;</span><span class="p">]</span>
+
+<span class="gp">In [104]: </span><span class="n">slicer</span><span class="p">(</span><span class="n">rhyme</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">Out[104]: </span><span class="p">[</span><span class="s">&#39;one&#39;</span><span class="p">,</span> <span class="s">&#39;two&#39;</span><span class="p">,</span> <span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="s">&#39;blue&#39;</span><span class="p">]</span>
+
+<span class="gp">In [105]: </span><span class="n">slicer</span><span class="p">(</span><span class="n">rhyme</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">Out[105]: </span><span class="p">[</span><span class="s">&#39;fish,&#39;</span><span class="p">,</span> <span class="s">&#39;fish,&#39;</span><span class="p">,</span> <span class="s">&#39;fish,&#39;</span><span class="p">,</span> <span class="s">&#39;fish&#39;</span><span class="p">]</span>
+
+<span class="gp">In [106]: </span><span class="n">slicer</span><span class="p">(</span><span class="n">rhyme</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">Out[106]: </span><span class="p">[</span><span class="s">&#39;fish,&#39;</span><span class="p">,</span> <span class="s">&#39;fish,&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The order of the keyword arguments does not matter:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [107]: </span><span class="n">slicer</span><span class="p">(</span><span class="n">rhyme</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Out[107]: </span><span class="p">[</span><span class="s">&#39;fish,&#39;</span><span class="p">,</span> <span class="s">&#39;fish,&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>but it is good practice to use the same ordering as the function&#8217;s
+definition.</p>
+<p><em>Keyword arguments</em> are a very convenient feature for defining functions
+with a variable number of arguments, especially when default values are
+to be used in most calls to the function.</p>
+</div>
+<div class="section" id="passed-by-value">
+<h2>1.3.5.4. Passed by value<a class="headerlink" href="#passed-by-value" title="Permalink to this headline">¶</a></h2>
+<p>Can you modify the value of a variable inside a function? Most languages
+(C, Java, ...) distinguish &#8220;passing by value&#8221; and &#8220;passing by reference&#8221;.
+In Python, such a distinction is somewhat artificial, and it is a bit
+subtle whether your variables are going to be modified or not.
+Fortunately, there exist clear rules.</p>
+<p>Parameters to functions are refereence to objects, which are passed by
+value. When you pass a variable to a function, python passes the
+reference to the object to which the variable refers (the <strong>value</strong>).
+Not the variable itself.</p>
+<p>If the <strong>value</strong> is immutable, the function does not modify the caller&#8217;s
+variable.  If the <strong>value</strong> is mutable, the function may modify the
+caller&#8217;s variable in-place:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">try_to_modify</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">x</span> <span class="o">=</span> <span class="mi">23</span>
+<span class="gp">... </span>    <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="mi">99</span><span class="p">]</span> <span class="c"># new reference</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="mi">77</span>    <span class="c"># immutable variable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">99</span><span class="p">]</span>  <span class="c"># mutable variable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">28</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">try_to_modify</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="go">23</span>
+<span class="go">[99, 42]</span>
+<span class="go">[99]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">77</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">[99, 42]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="go">[28]</span>
+</pre></div>
+</div>
+<p>Functions have a local variable table. Called a <em>local namespace</em>.</p>
+<p>The variable <tt class="docutils literal"><span class="pre">x</span></tt> only exists within the function <em>foo</em>.</p>
+</div>
+<div class="section" id="global-variables">
+<h2>1.3.5.5. Global variables<a class="headerlink" href="#global-variables" title="Permalink to this headline">¶</a></h2>
+<p>Variables declared outside the function can be referenced within the
+function:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [114]: </span><span class="n">x</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="gp">In [115]: </span><span class="k">def</span> <span class="nf">addx</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+<span class="gp">   .....:</span>     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="gp">   .....:</span>
+
+<span class="gp">In [116]: </span><span class="n">addx</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">Out[116]: </span><span class="mi">15</span>
+</pre></div>
+</div>
+<p>But these &#8220;global&#8221; variables cannot be modified within the function,
+unless declared <strong>global</strong> in the function.</p>
+<p>This doesn&#8217;t work:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [117]: </span><span class="k">def</span> <span class="nf">setx</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+<span class="gp">   .....:</span>     <span class="n">x</span> <span class="o">=</span> <span class="n">y</span>
+<span class="gp">   .....:</span>     <span class="k">print</span><span class="p">(</span><span class="s">&#39;x is </span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">   .....:</span>
+<span class="gp">   .....:</span>
+
+<span class="gp">In [118]: </span><span class="n">setx</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">x is 10</span>
+
+<span class="gp">In [120]: </span><span class="n">x</span>
+<span class="go">Out[120]: </span><span class="mi">5</span>
+</pre></div>
+</div>
+<p>This works:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [121]: </span><span class="k">def</span> <span class="nf">setx</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+<span class="gp">   .....:</span>     <span class="k">global</span> <span class="n">x</span>
+<span class="gp">   .....:</span>     <span class="n">x</span> <span class="o">=</span> <span class="n">y</span>
+<span class="gp">   .....:</span>     <span class="k">print</span><span class="p">(</span><span class="s">&#39;x is </span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">   .....:</span>
+<span class="gp">   .....:</span>
+
+<span class="gp">In [122]: </span><span class="n">setx</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">x is 10</span>
+
+<span class="gp">In [123]: </span><span class="n">x</span>
+<span class="go">Out[123]: </span><span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="variable-number-of-parameters">
+<h2>1.3.5.6. Variable number of parameters<a class="headerlink" href="#variable-number-of-parameters" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Special forms of parameters:</dt>
+<dd><ul class="first last simple">
+<li>*args: any number of positional arguments packed into a tuple</li>
+<li>**kwargs: any number of keyword arguments packed into a dictionary</li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [35]: </span><span class="k">def</span> <span class="nf">variable_args</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">   ....:</span>     <span class="k">print</span> <span class="s">&#39;args is&#39;</span><span class="p">,</span> <span class="n">args</span>
+<span class="gp">   ....:</span>     <span class="k">print</span> <span class="s">&#39;kwargs is&#39;</span><span class="p">,</span> <span class="n">kwargs</span>
+<span class="gp">   ....:</span>
+
+<span class="gp">In [36]: </span><span class="n">variable_args</span><span class="p">(</span><span class="s">&#39;one&#39;</span><span class="p">,</span> <span class="s">&#39;two&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">args is (&#39;one&#39;, &#39;two&#39;)</span>
+<span class="go">kwargs is {&#39;y&#39;: 2, &#39;x&#39;: 1, &#39;z&#39;: 3}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="docstrings">
+<h2>1.3.5.7. Docstrings<a class="headerlink" href="#docstrings" title="Permalink to this headline">¶</a></h2>
+<p>Documention about what the function does and it&#8217;s parameters.  General
+convention:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [67]: </span><span class="k">def</span> <span class="nf">funcname</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+<span class="gp">   ....:</span>     <span class="sd">&quot;&quot;&quot;Concise one-line sentence describing the function.</span>
+<span class="gp">   ....:</span><span class="sd"></span>
+<span class="gp">   ....:</span><span class="sd">     Extended summary which can contain multiple paragraphs.</span>
+<span class="gp">   ....:</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="gp">   ....:</span>     <span class="c"># function body</span>
+<span class="gp">   ....:</span>     <span class="k">pass</span>
+<span class="gp">   ....:</span>
+
+<span class="gp">In [68]: </span><span class="n">funcname</span><span class="err">?</span>
+<span class="go">Type:               function</span>
+<span class="go">Base Class: &lt;type &#39;function&#39;&gt;</span>
+<span class="go">String Form:        &lt;function funcname at 0xeaa0f0&gt;</span>
+<span class="go">Namespace:  Interactive</span>
+<span class="go">File:               /Users/cburns/src/scipy2009/.../&lt;ipython console&gt;</span>
+<span class="go">Definition: funcname(params)</span>
+<span class="go">Docstring:</span>
+<span class="go">    Concise one-line sentence describing the function.</span>
+
+<span class="go">    Extended summary which can contain multiple paragraphs.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><strong>Docstring guidelines</strong></p>
+<p>For the sake of standardization, the <a class="reference external" href="http://www.python.org/dev/peps/pep-0257">Docstring
+Conventions</a> webpage
+documents the semantics and conventions associated with Python
+docstrings.</p>
+<p class="last">Also, the Numpy and Scipy modules have defined a precised standard
+for documenting scientific functions, that you may want to follow for
+your own functions, with a <tt class="docutils literal"><span class="pre">Parameters</span></tt> section, an <tt class="docutils literal"><span class="pre">Examples</span></tt>
+section, etc. See
+<a class="reference external" href="http://projects.scipy.org/numpy/wiki/CodingStyleGuidelines#docstring-standard">http://projects.scipy.org/numpy/wiki/CodingStyleGuidelines#docstring-standard</a>
+and <a class="reference external" href="http://projects.scipy.org/numpy/browser/trunk/doc/example.py#L37">http://projects.scipy.org/numpy/browser/trunk/doc/example.py#L37</a></p>
+</div>
+</div>
+<div class="section" id="functions-are-objects">
+<h2>1.3.5.8. Functions are objects<a class="headerlink" href="#functions-are-objects" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Functions are first-class objects, which means they can be:</dt>
+<dd><ul class="first last simple">
+<li>assigned to a variable</li>
+<li>an item in a list (or any collection)</li>
+<li>passed as an argument to another function.</li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [38]: </span><span class="n">va</span> <span class="o">=</span> <span class="n">variable_args</span>
+
+<span class="gp">In [39]: </span><span class="n">va</span><span class="p">(</span><span class="s">&#39;three&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">args is (&#39;three&#39;,)</span>
+<span class="go">kwargs is {&#39;y&#39;: 2, &#39;x&#39;: 1}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="methods">
+<h2>1.3.5.9. Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<p>Methods are functions attached to objects.  You&#8217;ve seen these in our
+examples on <strong>lists</strong>, <strong>dictionaries</strong>, <strong>strings</strong>, etc...</p>
+</div>
+<div class="section" id="exercices">
+<h2>1.3.5.10. Exercices<a class="headerlink" href="#exercices" title="Permalink to this headline">¶</a></h2>
+<div class="topic">
+<p class="topic-title first">Exercice: Quicksort</p>
+<p>Implement the quicksort algorithm, as defined by wikipedia:</p>
+<div class="highlight-python"><pre>function quicksort(array)
+    var list less, greater
+    if length(array) &lt; 2
+        return array
+    select and remove a pivot value pivot from array
+    for each x in array
+        if x &lt; pivot + 1 then append x to less
+        else append x to greater
+    return concatenate(quicksort(less), pivot, quicksort(greater))</pre>
+</div>
+</div>
+<div class="topic">
+<p class="topic-title first">Exercice: Fibonacci sequence</p>
+<p>Write a function that displays the <tt class="docutils literal"><span class="pre">n</span></tt> first terms of the Fibonacci
+sequence, defined by:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">u_0</span> <span class="pre">=</span> <span class="pre">1;</span> <span class="pre">u_1</span> <span class="pre">=</span> <span class="pre">1</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">u_(n+2)</span> <span class="pre">=</span> <span class="pre">u_(n+1)</span> <span class="pre">+</span> <span class="pre">u_n</span></tt></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="reusing_code.html" title="1.3.6. Reusing code: scripts and modules"
+             >next</a></li>
+        <li class="right" >
+          <a href="control_flow.html" title="1.3.4. Control Flow"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+          <li><a href="python_language.html" >1.3. A (very short) introduction to Python</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

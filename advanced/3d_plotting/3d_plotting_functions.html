@@ -1,0 +1,168 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.4.2. 3D plotting functions &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="2.4. 3D plotting with Mayavi" href="index.html" />
+    <link rel="next" title="2.4.3. Figures and decorations" href="figures_and_decorations.html" />
+    <link rel="prev" title="2.4.1. A simple example" href="simple_example.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="figures_and_decorations.html" title="2.4.3. Figures and decorations"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="simple_example.html" title="2.4.1. A simple example"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">2.4. 3D plotting with Mayavi</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="d-plotting-functions">
+<h1>2.4.2. 3D plotting functions<a class="headerlink" href="#d-plotting-functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="points">
+<h2>2.4.2.1. Points<a class="headerlink" href="#points" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">enthought.mayavi</span> <span class="kn">import</span> <span class="n">mlab</span>
+
+<span class="gp">In [3]: </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>
+
+<span class="gp">In [4]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">points3d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="go">Out[4]: </span><span class="o">&lt;</span><span class="n">enthought</span><span class="o">.</span><span class="n">mayavi</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">glyph</span><span class="o">.</span><span class="n">Glyph</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xc3c795c</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div align="center" class="align-center"><img alt="../../_images/points3d.png" class="align-center" src="../../_images/points3d.png" /></div>
+</div>
+<div class="section" id="lines">
+<h2>2.4.2.2. Lines<a class="headerlink" href="#lines" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [5]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+
+<span class="gp">In [6]: </span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+<span class="gp">In [7]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">plot3d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="go">Out[7]: </span><span class="o">&lt;</span><span class="n">enthought</span><span class="o">.</span><span class="n">mayavi</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">Surface</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xcc3e1dc</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div align="center" class="align-center"><img alt="../../_images/plot3d.png" class="align-center" src="../../_images/plot3d.png" /></div>
+</div>
+<div class="section" id="elevation-surface">
+<h2>2.4.2.3. Elevation surface<a class="headerlink" href="#elevation-surface" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [8]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+
+<span class="gp">In [9]: </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">100</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">100</span><span class="n">j</span><span class="p">]</span>
+
+<span class="gp">In [10]: </span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="gp">In [11]: </span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">/</span><span class="n">r</span>
+
+<span class="gp">In [12]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">surf</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">warp_scale</span><span class="o">=</span><span class="s">&#39;auto&#39;</span><span class="p">)</span>
+<span class="go">Out[12]: </span><span class="o">&lt;</span><span class="n">enthought</span><span class="o">.</span><span class="n">mayavi</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">Surface</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xcdb98fc</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div align="center" class="align-center"><img alt="../../_images/surf.png" class="align-center" src="../../_images/surf.png" /></div>
+</div>
+<div class="section" id="arbitrary-regular-mesh">
+<h2>2.4.2.4. Arbitrary regular mesh<a class="headerlink" href="#arbitrary-regular-mesh" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [13]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+
+<span class="gp">In [14]: </span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span><span class="mi">11</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span><span class="mi">11</span><span class="n">j</span><span class="p">]</span>
+
+<span class="gp">In [15]: </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+<span class="gp">In [16]: </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+<span class="gp">In [17]: </span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+
+<span class="gp">In [18]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+<span class="gp">In [19]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">representation</span><span class="o">=</span><span class="s">&#39;wireframe&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="go">Out[19]: </span><span class="o">&lt;</span><span class="n">enthought</span><span class="o">.</span><span class="n">mayavi</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">Surface</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xce1017c</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div align="center" class="align-center"><img alt="../../_images/mesh.png" class="align-center" src="../../_images/mesh.png" /></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A surface is defined by points <strong>connected</strong> to form triangles or
+polygones. In <cite>mlab.func</cite> and <cite>mlab.mesh</cite>, the connectivity is
+implicity given by the layout of the arrays. See also
+<cite>mlab.triangular_mesh</cite>.</p>
+</div>
+<p><strong>Our data is often more than points and values: it needs some
+connectivity information</strong></p>
+</div>
+<div class="section" id="volumetric-data">
+<h2>2.4.2.5. Volumetric data<a class="headerlink" href="#volumetric-data" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [20]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+
+<span class="gp">In [21]: </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="mi">64</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="mi">64</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="mi">64</span><span class="n">j</span><span class="p">]</span>
+
+<span class="gp">In [22]: </span><span class="n">values</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="mf">0.5</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="o">*</span><span class="n">z</span><span class="o">*</span><span class="mf">2.0</span>
+
+<span class="gp">In [23]: </span><span class="n">mlab</span><span class="o">.</span><span class="n">contour3d</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<span class="go">Out[24]: </span><span class="o">&lt;</span><span class="n">enthought</span><span class="o">.</span><span class="n">mayavi</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">iso_surface</span><span class="o">.</span><span class="n">IsoSurface</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xcfe392c</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div align="center" class="align-center"><img alt="../../_images/contour3d.png" class="align-center" src="../../_images/contour3d.png" /></div>
+<p><strong>This function works with a regular orthogonal grid:</strong></p>
+<blockquote>
+<a class="reference internal image-reference" href="../../_images/viz_volume_structure.png"><div align="center" class="align-center"><img alt="../../_images/viz_volume_structure.png" class="align-center" src="../../_images/viz_volume_structure.png" style="width: 278.6px; height: 221.2px;" /></div>
+</a>
+</blockquote>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="figures_and_decorations.html" title="2.4.3. Figures and decorations"
+             >next</a></li>
+        <li class="right" >
+          <a href="simple_example.html" title="2.4.1. A simple example"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" >2.4. 3D plotting with Mayavi</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

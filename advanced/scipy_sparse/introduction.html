@@ -1,0 +1,168 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.2.1. Introduction &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="2.2. Sparse Matrices in SciPy" href="index.html" />
+    <link rel="next" title="2.2.2. Storage Schemes" href="storage_schemes.html" />
+    <link rel="prev" title="2.2. Sparse Matrices in SciPy" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="storage_schemes.html" title="2.2.2. Storage Schemes"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="index.html" title="2.2. Sparse Matrices in SciPy"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">2.2. Sparse Matrices in SciPy</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="introduction">
+<h1>2.2.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>(dense) matrix is:</p>
+<ul class="simple">
+<li>mathematical object</li>
+<li>data structure for storing a 2D array of values</li>
+</ul>
+<p>important features:</p>
+<ul>
+<li><dl class="first docutils">
+<dt>memory allocated once for all items</dt>
+<dd><ul class="first last simple">
+<li>usually a contiguous chunk, think NumPy ndarray</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first"><em>fast</em> access to individual items (*)</p>
+</li>
+</ul>
+<div class="section" id="why-sparse-matrices">
+<h2>2.2.1.1. Why Sparse Matrices?<a class="headerlink" href="#why-sparse-matrices" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">the memory, that grows like <cite>n**2</cite></p>
+</li>
+<li><p class="first">small example (double precision matrix):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1e6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">8.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;size n&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;memory [MB]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="sparse-matrices-vs-sparse-matrix-storage-schemes">
+<h2>2.2.1.2. Sparse Matrices vs. Sparse Matrix Storage Schemes<a class="headerlink" href="#sparse-matrices-vs-sparse-matrix-storage-schemes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>sparse matrix is a matrix, which is <em>almost empty</em></li>
+<li>storing all the zeros is wasteful -&gt; store only nonzero items</li>
+<li>think <strong>compression</strong></li>
+<li>pros: huge memory savings</li>
+<li>cons: depends on actual storage scheme, (*) usually does not hold</li>
+</ul>
+</div>
+<div class="section" id="typical-applications">
+<h2>2.2.1.3. Typical Applications<a class="headerlink" href="#typical-applications" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><dl class="first docutils">
+<dt>solution of partial differential equations (PDEs)</dt>
+<dd><ul class="first last simple">
+<li>the <em>finite element method</em></li>
+<li>mechanical engineering, electrotechnics, physics, ...</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>graph theory</dt>
+<dd><ul class="first last simple">
+<li>nonzero at <cite>(i, j)</cite> means that node <cite>i</cite> is connected to node <cite>j</cite></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">...</p>
+</li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2>2.2.1.4. Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>recent versions of</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">numpy</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">scipy</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">matplotlib</span></tt> (optional)</li>
+<li><tt class="docutils literal"><span class="pre">ipython</span></tt> (the enhancements come handy)</li>
+</ul>
+</div>
+<div class="section" id="sparsity-structure-visualization">
+<h2>2.2.1.5. Sparsity Structure Visualization<a class="headerlink" href="#sparsity-structure-visualization" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">spy()</span></tt> from <tt class="docutils literal"><span class="pre">matplotlib</span></tt></li>
+<li>example plots:</li>
+</ul>
+<img alt="../../_images/graph.png" src="../../_images/graph.png" />
+<img alt="../../_images/graph_g.png" src="../../_images/graph_g.png" />
+<img alt="../../_images/graph_rcm.png" src="../../_images/graph_rcm.png" />
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="storage_schemes.html" title="2.2.2. Storage Schemes"
+             >next</a></li>
+        <li class="right" >
+          <a href="index.html" title="2.2. Sparse Matrices in SciPy"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3.10. Object-oriented programming (OOP) &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="1.3. A (very short) introduction to Python" href="python_language.html" />
+    <link rel="next" title="1.4. NumPy: creating and manipulating numerical data" href="../numpy/numpy.html" />
+    <link rel="prev" title="1.3.9. Exceptions handling in Python" href="exceptions.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../numpy/numpy.html" title="1.4. NumPy: creating and manipulating numerical data"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="exceptions.html" title="1.3.9. Exceptions handling in Python"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+          <li><a href="python_language.html" accesskey="U">1.3. A (very short) introduction to Python</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="object-oriented-programming-oop">
+<h1>1.3.10. Object-oriented programming (OOP)<a class="headerlink" href="#object-oriented-programming-oop" title="Permalink to this headline">¶</a></h1>
+<p>Python supports object-oriented programming (OOP). The goals of OOP are:</p>
+<blockquote>
+<ul class="simple">
+<li>to organize the code, and</li>
+<li>to re-use code in similar contexts.</li>
+</ul>
+</blockquote>
+<p>Here is a small example: we create a Student <strong>class</strong>, which is an object
+gathering several custom functions (<strong>methods</strong>) and variables (<strong>attributes</strong>),
+we will be able to use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Student</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">set_age</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">set_major</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">major</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">major</span> <span class="o">=</span> <span class="n">major</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anna</span> <span class="o">=</span> <span class="n">Student</span><span class="p">(</span><span class="s">&#39;anna&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anna</span><span class="o">.</span><span class="n">set_age</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anna</span><span class="o">.</span><span class="n">set_major</span><span class="p">(</span><span class="s">&#39;physics&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the previous example, the Student class has <tt class="docutils literal"><span class="pre">__init__</span></tt>, <tt class="docutils literal"><span class="pre">set_age</span></tt> and
+<tt class="docutils literal"><span class="pre">set_major</span></tt> methods. Its attributes are <tt class="docutils literal"><span class="pre">name</span></tt>, <tt class="docutils literal"><span class="pre">age</span></tt> and <tt class="docutils literal"><span class="pre">major</span></tt>. We
+can call these methods and attributes with the following notation:
+<tt class="docutils literal"><span class="pre">classinstance.method</span></tt> or  <tt class="docutils literal"><span class="pre">classinstance.attribute</span></tt>.  The <tt class="docutils literal"><span class="pre">__init__</span></tt>
+constructor is a special method we call with: <tt class="docutils literal"><span class="pre">MyClass(init</span> <span class="pre">parameters</span> <span class="pre">if</span>
+<span class="pre">any)</span></tt>.</p>
+<p>Now, suppose we want to create a new class MasterStudent with the same
+methods and attributes as the previous one, but with an additional
+<tt class="docutils literal"><span class="pre">internship</span></tt> attribute. We won&#8217;t copy the previous class, but
+<strong>inherit</strong> from it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MasterStudent</span><span class="p">(</span><span class="n">Student</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">internship</span> <span class="o">=</span> <span class="s">&#39;mandatory, from March to June&#39;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">james</span> <span class="o">=</span> <span class="n">MasterStudent</span><span class="p">(</span><span class="s">&#39;james&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">james</span><span class="o">.</span><span class="n">internship</span>
+<span class="go">&#39;mandatory, from March to June&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">james</span><span class="o">.</span><span class="n">set_age</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">james</span><span class="o">.</span><span class="n">age</span>
+<span class="go">23</span>
+</pre></div>
+</div>
+<p>The MasterStudent class inherited from the Student attributes and methods.</p>
+<p>Thanks to classes and object-oriented programming, we can organize code
+with different classes corresponding to different objects we encounter
+(an Experiment class, an Image class, a Flow class, etc.), with their own
+methods and attributes. Then we can use inheritance to consider
+variations around a base class and <strong>re-use</strong> code. Ex : from a Flow
+base class, we can create derived StokesFlow, TurbulentFlow,
+PotentialFlow, etc.</p>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../numpy/numpy.html" title="1.4. NumPy: creating and manipulating numerical data"
+             >next</a></li>
+        <li class="right" >
+          <a href="exceptions.html" title="1.3.9. Exceptions handling in Python"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+          <li><a href="python_language.html" >1.3. A (very short) introduction to Python</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

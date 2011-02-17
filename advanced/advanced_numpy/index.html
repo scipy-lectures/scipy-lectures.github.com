@@ -1,0 +1,136 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.1. Advanced Numpy &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="2. Advanced topics" href="../index.html" />
+    <link rel="next" title="2.1.1. Abstract" href="abstract.html" />
+    <link rel="prev" title="2. Advanced topics" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="abstract.html" title="2.1.1. Abstract"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../index.html" title="2. Advanced topics"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">2. Advanced topics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="advanced-numpy">
+<h1>2.1. Advanced Numpy<a class="headerlink" href="#advanced-numpy" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="abstract.html">2.1.1. Abstract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content.html">2.1.2. Advanced Numpy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content.html#life-of-ndarray">2.1.3. Life of ndarray</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="content.html#it-s">2.1.3.1. It&#8217;s...</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#block-of-memory">2.1.3.2. Block of memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#data-types">2.1.3.3. Data types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="content.html#the-descriptor">2.1.3.3.1. The descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="content.html#example-reading-wav-files">2.1.3.3.2. Example: reading <tt class="docutils literal"><span class="pre">.wav</span></tt> files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="content.html#casting-and-re-interpretation-views">2.1.3.3.3. Casting and re-interpretation/views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#indexing-scheme-strides">2.1.3.4. Indexing scheme: strides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="content.html#main-point">2.1.3.4.1. Main point</a></li>
+<li class="toctree-l3"><a class="reference internal" href="content.html#example-fake-dimensions-with-strides">2.1.3.4.2. Example: fake dimensions with strides</a></li>
+<li class="toctree-l3"><a class="reference internal" href="content.html#broadcasting">2.1.3.4.3. Broadcasting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="content.html#more-tricks-diagonals">2.1.3.4.4. More tricks: diagonals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="content.html#cpu-cache-effects">2.1.3.4.5. CPU cache effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="content.html#example-inplace-operations-caveat-emptor">2.1.3.4.6. Example: inplace operations (caveat emptor)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#findings-in-dissection">2.1.3.5. Findings in dissection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="content.html#universal-functions">2.1.4. Universal functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="content.html#what-they-are">2.1.4.1. What they are?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#exercise-building-an-ufunc-from-scratch">2.1.4.2. Exercise: building an ufunc from scratch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#solution-building-an-ufunc-from-scratch">2.1.4.3. Solution: building an ufunc from scratch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#generalized-ufuncs">2.1.4.4. Generalized ufuncs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="content.html#interoperability-features">2.1.5. Interoperability features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="content.html#sharing-multidimensional-typed-data">2.1.5.1. Sharing multidimensional, typed data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#the-old-buffer-protocol">2.1.5.2. The old buffer protocol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#id1">2.1.5.3. The old buffer protocol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#array-interface-protocol">2.1.5.4. Array interface protocol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#the-new-buffer-protocol-pep-3118">2.1.5.5. The new buffer protocol: PEP 3118</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#pep-3118-details">2.1.5.6. PEP 3118 &#8211; details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="content.html#siblings-chararray-maskedarray-matrix">2.1.6. Siblings: <tt class="docutils literal"><span class="pre">chararray</span></tt>, <tt class="docutils literal"><span class="pre">maskedarray</span></tt>, <tt class="docutils literal"><span class="pre">matrix</span></tt></a></li>
+<li class="toctree-l1"><a class="reference internal" href="content.html#summary">2.1.7. Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content.html#hit-list-of-the-future-for-numpy-core">2.1.8. Hit list of the future for Numpy core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content.html#contributing-to-numpy-scipy">2.1.9. Contributing to Numpy/Scipy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="content.html#why">2.1.9.1. Why</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#reporting-bugs">2.1.9.2. Reporting bugs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#contributing-to-documentation">2.1.9.3. Contributing to documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#contributing-features">2.1.9.4. Contributing features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#how-to-help-in-general">2.1.9.5. How to help, in general</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="content.html#python-2-and-3-single-code-base">2.1.10. Python 2 and 3, single code base</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="content.html#the-case-of-numpy">2.1.10.1. The case of Numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#the-case-of-scipy">2.1.10.2. The case of Scipy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#how">2.1.10.3. How?</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="abstract.html" title="2.1.1. Abstract"
+             >next</a></li>
+        <li class="right" >
+          <a href="../index.html" title="2. Advanced topics"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

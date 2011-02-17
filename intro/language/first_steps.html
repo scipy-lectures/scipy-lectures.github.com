@@ -1,0 +1,127 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3.1. First steps &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="1.3. A (very short) introduction to Python" href="python_language.html" />
+    <link rel="next" title="1.3.2. Basic types" href="basic_types.html" />
+    <link rel="prev" title="1.3. A (very short) introduction to Python" href="python_language.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="basic_types.html" title="1.3.2. Basic types"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="python_language.html" title="1.3. A (very short) introduction to Python"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+          <li><a href="python_language.html" accesskey="U">1.3. A (very short) introduction to Python</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="first-steps">
+<h1>1.3.1. First steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h1>
+<p>Start the <strong>Ipython</strong> shell (an enhanced interactive Python shell):</p>
+<ul class="simple">
+<li>by typing &#8220;Ipython&#8221; from a Linux/Mac terminal, or from the Windows cmd shell,</li>
+<li><strong>or</strong> by starting the program from a menu, e.g. in the Python(x,y) or
+EPD menu if you have installed one these scientific-Python suites.</li>
+</ul>
+<p>If you don&#8217;t have Ipython installed on your computer, other Python shells
+are available, such as the plain Python shell started by typing &#8220;python&#8221;
+in a terminal, or the Idle interpreter. However, we advise to use the
+Ipython shell because of its enhanced features, especially for
+interactive scientific computing.</p>
+<p>Once you have started the interpreter, type</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;Hello, world!&quot;</span>
+<span class="go">Hello, world!</span>
+</pre></div>
+</div>
+<p>The message &#8220;Hello, world!&#8221; is then displayed. You just executed your
+first Python instruction, congratulations!</p>
+<p>To get yourself started, type the following stack of instructions</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">a</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">&lt;type &#39;int&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">b</span>
+<span class="go">6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">*</span><span class="n">b</span>
+<span class="go">18</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="s">&#39;hello&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">&lt;type &#39;str&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">+</span> <span class="n">b</span>
+<span class="go">&#39;hellohello&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span><span class="o">*</span><span class="n">b</span>
+<span class="go">&#39;hellohello&#39;</span>
+</pre></div>
+</div>
+<p>Two objects <tt class="docutils literal"><span class="pre">a</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> have been defined above. Note that one does
+not declare the type of an object before assigning its value. In C,
+conversely, one should write:</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>In addition, the type of an object may change. <cite>b</cite> was first an integer,
+but it became a string when it was assigned the value <cite>hello</cite>. Operations
+on integers (<tt class="docutils literal"><span class="pre">b=2*a</span></tt>) are coded natively in the Python standard
+library, and so are some operations on strings such as additions and
+multiplications, which amount respectively to concatenation and
+repetition.</p>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="basic_types.html" title="1.3.2. Basic types"
+             >next</a></li>
+        <li class="right" >
+          <a href="python_language.html" title="1.3. A (very short) introduction to Python"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
+          <li><a href="python_language.html" >1.3. A (very short) introduction to Python</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

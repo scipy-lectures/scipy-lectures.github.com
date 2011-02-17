@@ -1,0 +1,191 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.2.2.2.4. Coordinate Format (COO) &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="2.2.2. Storage Schemes" href="storage_schemes.html" />
+    <link rel="next" title="2.2.2.2.5. Compressed Sparse Row Format (CSR)" href="csr_matrix.html" />
+    <link rel="prev" title="2.2.2.2.3. Dictionary of Keys Format (DOK)" href="dok_matrix.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="csr_matrix.html" title="2.2.2.2.5. Compressed Sparse Row Format (CSR)"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="dok_matrix.html" title="2.2.2.2.3. Dictionary of Keys Format (DOK)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li>
+          <li><a href="storage_schemes.html" accesskey="U">2.2.2. Storage Schemes</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="coordinate-format-coo">
+<h1>2.2.2.2.4. Coordinate Format (COO)<a class="headerlink" href="#coordinate-format-coo" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><dl class="first docutils">
+<dt>also known as the &#8216;ijv&#8217; or &#8216;triplet&#8217; format</dt>
+<dd><ul class="first last simple">
+<li>three NumPy arrays: <cite>row</cite>, <cite>col</cite>, <cite>data</cite></li>
+<li><cite>data[i]</cite> is value at <cite>(row[i], col[i])</cite> position</li>
+<li>permits duplicate entries</li>
+<li>subclass of <tt class="xref py py-class docutils literal"><span class="pre">_data_matrix</span></tt> (sparse matrix classes with
+<cite>.data</cite> attribute)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">fast format for constructing sparse matrices</p>
+</li>
+<li><dl class="first docutils">
+<dt>constructor accepts:</dt>
+<dd><ul class="first last simple">
+<li>dense matrix (array)</li>
+<li>sparse matrix</li>
+<li>shape tuple (create empty matrix)</li>
+<li><cite>(data, ij)</cite> tuple</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">very fast conversion to and from CSR/CSC formats</p>
+</li>
+<li><p class="first">fast matrix * vector (sparsetools)</p>
+</li>
+<li><dl class="first docutils">
+<dt>fast and easy item-wise operations</dt>
+<dd><ul class="first last simple">
+<li>manipulate data array directly (fast NumPy machinery)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">no slicing, no arithmetics (directly)</p>
+</li>
+<li><dl class="first docutils">
+<dt>use:</dt>
+<dd><ul class="first last">
+<li><p class="first">facilitates fast conversion among sparse formats</p>
+</li>
+<li><p class="first">when converting to other format (usually CSR or CSC), duplicate
+entries are summed together</p>
+<blockquote>
+<ul class="simple">
+<li>facilitates efficient construction of finite element
+matrices</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="examples">
+<h2>2.2.2.2.4.1. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">create empty COO matrix:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">coo_matrix</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+<span class="go">matrix([[0, 0, 0, 0],</span>
+<span class="go">        [0, 0, 0, 0],</span>
+<span class="go">        [0, 0, 0, 0]], dtype=int8)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">create using <cite>(data, ij)</cite> tuple:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">coo_matrix</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span>
+<span class="go">&lt;4x4 sparse matrix of type &#39;&lt;type &#39;numpy.int32&#39;&gt;&#39;</span>
+<span class="go">        with 4 stored elements in COOrdinate format&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+<span class="go">matrix([[4, 0, 9, 0],</span>
+<span class="go">        [0, 7, 0, 0],</span>
+<span class="go">        [0, 0, 0, 0],</span>
+<span class="go">        [0, 0, 0, 5]])</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">duplicates entries are summed together:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">coo_matrix</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+<span class="go">matrix([[3, 0, 1, 0],</span>
+<span class="go">        [0, 2, 0, 0],</span>
+<span class="go">        [0, 0, 0, 0],</span>
+<span class="go">        [0, 0, 0, 1]])</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">no slicing...:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="go">------------------------------------------------------------</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;ipython console&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n-Identifier">&lt;module&gt;</span>
+<span class="nc">TypeError</span>: <span class="n-Identifier">&#39;coo_matrix&#39; object is unsubscriptable</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="csr_matrix.html" title="2.2.2.2.5. Compressed Sparse Row Format (CSR)"
+             >next</a></li>
+        <li class="right" >
+          <a href="dok_matrix.html" title="2.2.2.2.3. Dictionary of Keys Format (DOK)"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li>
+          <li><a href="storage_schemes.html" >2.2.2. Storage Schemes</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

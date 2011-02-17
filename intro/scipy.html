@@ -1,0 +1,930 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.7. Scipy : high-level scientific computing &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../index.html" />
+    <link rel="up" title="1. Getting started with Python for science" href="index.html" />
+    <link rel="next" title="1.7.12.5. Maximum wind speed prediction at the Sprogø station" href="summary-exercices/stats-interpolate.html" />
+    <link rel="prev" title="1.6. Matplotlib" href="matplotlib/matplotlib.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="summary-exercices/stats-interpolate.html" title="1.7.12.5. Maximum wind speed prediction at the Sprogø station"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="matplotlib/matplotlib.html" title="1.6. Matplotlib"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">1. Getting started with Python for science</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="scipy-high-level-scientific-computing">
+<h1>1.7. Scipy : high-level scientific computing<a class="headerlink" href="#scipy-high-level-scientific-computing" title="Permalink to this headline">¶</a></h1>
+<div class="topic">
+<p class="topic-title first">Scipy</p>
+<p>The <tt class="docutils literal"><span class="pre">scipy</span></tt> package contains various toolboxes dedicated to common
+issues in scientific computing. Its different submodules correspond
+to different applications, such as interpolation, integration,
+optimization, image processing, statistics, special functions, etc.</p>
+<p><tt class="docutils literal"><span class="pre">scipy</span></tt> can be compared to other standard scientific-computing
+libraries, such as the GSL (GNU Scientific  Library for C and C++),
+or Matlab&#8217;s toolboxes. <tt class="docutils literal"><span class="pre">scipy</span></tt> is the core package for scientific
+routines in Python; it is meant to operate efficiently on <tt class="docutils literal"><span class="pre">numpy</span></tt>
+arrays, so that numpy and scipy work hand in hand.</p>
+<p>Before implementing a routine, if is worth checking if the desired
+data processing is not already implemented in Scipy. As
+non-professional programmers, scientists often tend to <strong>re-invent the
+wheel</strong>, which leads to buggy, non-optimal, difficult-to-share and
+unmaintainable code. By contrast, <tt class="docutils literal"><span class="pre">Scipy</span></tt>&#8216;s routines are optimized
+and tested, and should therefore be used when possible.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This tutorial is far from an introduction to numerical computing.
+As enumerating the different submodules and functions in scipy would
+be very boring, we concentrate instead on a few examples to give a
+general idea of how to use <tt class="docutils literal"><span class="pre">scipy</span></tt> for scientific computing.</p>
+</div>
+<p>To begin with</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy</span>
+</pre></div>
+</div>
+<p><cite>scipy</cite> is mainly composed of task-specific sub-modules:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>cluster</td>
+<td>Vector quantization / Kmeans</td>
+</tr>
+<tr><td>fftpack</td>
+<td>Fourier transform</td>
+</tr>
+<tr><td>integrate</td>
+<td>Integration routines</td>
+</tr>
+<tr><td>interpolate</td>
+<td>Interpolation</td>
+</tr>
+<tr><td>io</td>
+<td>Data input and output</td>
+</tr>
+<tr><td>linalg</td>
+<td>Linear algebra routines</td>
+</tr>
+<tr><td>maxentropy</td>
+<td>Routines for fitting maximum entropy models</td>
+</tr>
+<tr><td>ndimage</td>
+<td>n-dimensional image package</td>
+</tr>
+<tr><td>odr</td>
+<td>Orthogonal distance regression</td>
+</tr>
+<tr><td>optimize</td>
+<td>Optimization</td>
+</tr>
+<tr><td>signal</td>
+<td>Signal processing</td>
+</tr>
+<tr><td>sparse</td>
+<td>Sparse matrices</td>
+</tr>
+<tr><td>spatial</td>
+<td>Spatial data structures and algorithms</td>
+</tr>
+<tr><td>special</td>
+<td>Any special mathematical functions</td>
+</tr>
+<tr><td>stats</td>
+<td>Statistics</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="scipy-builds-upon-numpy">
+<h2>1.7.1. Scipy builds upon Numpy<a class="headerlink" href="#scipy-builds-upon-numpy" title="Permalink to this headline">¶</a></h2>
+<p>Numpy is required for running Scipy but also for using it. The most
+important type introduced to Python is the N dimensional array,
+and it can be seen that Scipy uses the same:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">ndarray</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Moreover most of the Scipy usual functions are provided by Numpy:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">cos</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>If you would like to know the objects used from Numpy, have a look at
+the  <tt class="docutils literal"><span class="pre">scipy.__file__[:-1]</span></tt> file. On version &#8216;0.6.0&#8217;, the whole Numpy
+namespace is imported by the line <tt class="docutils literal"><span class="pre">from</span> <span class="pre">numpy</span> <span class="pre">import</span> <span class="pre">*</span></tt>.</p>
+</div>
+<div class="section" id="file-input-output-scipy-io">
+<h2>1.7.2. File input/output: <tt class="docutils literal"><span class="pre">scipy.io</span></tt><a class="headerlink" href="#file-input-output-scipy-io" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Loading and saving matlab files:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">io</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">struct</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="s">&#39;file.mat&#39;</span><span class="p">,</span> <span class="n">struct_as_record</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">io</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="s">&#39;file.mat&#39;</span><span class="p">,</span> <span class="n">struct</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>See also:</p>
+<blockquote>
+<ul>
+<li><p class="first">Load text files:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Clever loading of text/csv files:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">recfromcsv</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Fast an efficient, but numpy-specific, binary format:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">load</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="signal-processing-scipy-signal">
+<h2>1.7.3. Signal processing: <tt class="docutils literal"><span class="pre">scipy.signal</span></tt><a class="headerlink" href="#signal-processing-scipy-signal" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
+</pre></div>
+</div>
+<ul>
+<li><p class="first">Detrend: remove linear trend from signal:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/demo_detrend.png"><img alt="../_images/demo_detrend.png" src="../_images/demo_detrend.png" style="width: 400.0px; height: 300.0px;" /></a>
+</li>
+<li><p class="first">Resample: resample a signal to <cite>n</cite> points using FFT.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="n">signal</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="s">&#39;ko&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/demo_resample.png"><img alt="../_images/demo_resample.png" src="../_images/demo_resample.png" style="width: 400.0px; height: 300.0px;" /></a>
+</li>
+<li><p class="first">Signal has many window function: <cite>hamming</cite>, <cite>bartlett</cite>, <cite>blackman</cite>...</p>
+</li>
+<li><p class="first">Signal has filtering (Gaussian, median filter, Wiener), but we will
+discuss this in the image paragraph.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="special-functions-scipy-special">
+<h2>1.7.4. Special functions: <tt class="docutils literal"><span class="pre">scipy.special</span></tt><a class="headerlink" href="#special-functions-scipy-special" title="Permalink to this headline">¶</a></h2>
+<p>Special functions are transcendal functions. The docstring of the module
+is well-written and we will not list them. Frequently used ones are:</p>
+<blockquote>
+<ul class="simple">
+<li>Bessel function, such as <cite>special.jn</cite> (nth integer order Bessel
+function)</li>
+<li>Elliptic function (<cite>special.ellipj</cite> for the Jacobian elliptic
+function, ...)</li>
+<li>Gamma function: <cite>special.gamma</cite>, alos note <cite>special.gammaln</cite> which
+will give the log of Gamma to a higher numerical precision.</li>
+<li>Erf, the area under a Gaussian curve: <cite>special.erf</cite></li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="statistics-and-random-numbers-scipy-stats">
+<h2>1.7.5. Statistics and random numbers: <tt class="docutils literal"><span class="pre">scipy.stats</span></tt><a class="headerlink" href="#statistics-and-random-numbers-scipy-stats" title="Permalink to this headline">¶</a></h2>
+<p>The module <cite>scipy.stats</cite> contains statistical tools and probabilistic
+description of random processes. Random number generators for various
+random process can be found in <cite>numpy.random</cite>.</p>
+<div class="section" id="histogram-and-probability-density-function">
+<h3>1.7.5.1. Histogram and probability density function<a class="headerlink" href="#histogram-and-probability-density-function" title="Permalink to this headline">¶</a></h3>
+<p>Given observations of a random process, their histogram is an estimator of
+the random process&#8217;s PDF (probability density function):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bins</span>
+<span class="go">array([-4, -3, -2, -1,  0,  1,  2,  3,  4])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">histogram</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bins</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bins</span>
+<span class="go">array([-3.5, -2.5, -1.5, -0.5,  0.5,  1.5,  2.5,  3.5])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">histogram</span><span class="p">)</span>
+<span class="gp">In [2]: </span><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/normal_distribution.png"><img alt="../_images/normal_distribution.png" src="../_images/normal_distribution.png" style="width: 400.0px; height: 300.0px;" /></a>
+<p>If we know that the random process belongs to a given family of random
+processes, such as normal processes, we can do a maximum-likelihood fit
+of the observations to estimate the parameters of the underlying
+distribution. Here we fit a normal process to the observed data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">loc</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loc</span>
+<span class="go">0.003738964114102075</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">std</span>
+<span class="go">0.97450996668871193</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="percentiles">
+<h3>1.7.5.2. Percentiles<a class="headerlink" href="#percentiles" title="Permalink to this headline">¶</a></h3>
+<p>The median is the value with half of the observations below, and half
+above:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">0.0071645570292782519</span>
+</pre></div>
+</div>
+<p>It is also called the percentile 50, because 50% of the observation are
+below it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">scoreatpercentile</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="go">0.0071645570292782519</span>
+</pre></div>
+</div>
+<p>Similarly, we can calculate the percentile 90:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">scoreatpercentile</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="go">1.2729556087871292</span>
+</pre></div>
+</div>
+<p>The percentile is an estimator of the CDF: cumulative distribution
+function.</p>
+</div>
+<div class="section" id="statistical-tests">
+<h3>1.7.5.3. Statistical tests<a class="headerlink" href="#statistical-tests" title="Permalink to this headline">¶</a></h3>
+<p>A statistical test is a decision indicator. For instance, if we have 2
+sets of observations, that we assume are generated from Gaussian
+processes, we can use a T-test to decide whether the two sets of
+observations are significantly different:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="go">(-2.389876434401887, 0.018586471712806949)</span>
+</pre></div>
+</div>
+<p>The resulting output is composed of:</p>
+<blockquote>
+<ul class="simple">
+<li>The T statistic value: it is a number the sign of which is
+proportional to the difference between the two random processes and
+the magnitude is related to the significance of this difference.</li>
+<li>the <em>p value</em>: the probability of both process being identical. If
+it is close to 1, the two process are almost certainly identical.
+The closer it is to zero, the more likely it is that the processes
+have different mean.</li>
+</ul>
+</blockquote>
+</div>
+</div>
+<div class="section" id="linear-algebra-operations-scipy-linalg">
+<h2>1.7.6. Linear algebra operations: <tt class="docutils literal"><span class="pre">scipy.linalg</span></tt><a class="headerlink" href="#linear-algebra-operations-scipy-linalg" title="Permalink to this headline">¶</a></h2>
+<p>First, the linalg module provides standard linear algebra operations.
+The <tt class="docutils literal"><span class="pre">det</span></tt> function computes the determinant of a square matrix:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>                <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+<span class="go">-2.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>                <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+<span class="go">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="nc">ValueError</span>: <span class="n-Identifier">expected square matrix</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">inv</span></tt> function computes the inverse of a square matrix:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>                <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iarr</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iarr</span>
+<span class="go">array([[-2. ,  1. ],</span>
+<span class="go">       [ 1.5, -0.5]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">iarr</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Note that in case you use the matrix type, the inverse is computed when
+requesting the <tt class="docutils literal"><span class="pre">I</span></tt> attribute:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">ma</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="n">iarr</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Finally computing the inverse of a singular matrix (its determinant is zero)
+will raise <tt class="docutils literal"><span class="pre">LinAlgError</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>                <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="nc">LinAlgError</span>: <span class="n-Identifier">singular matrix</span>
+</pre></div>
+</div>
+<p>More advanced operations are available like singular-value decomposition
+(SVD):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">uarr</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">vharr</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The resulting array spectrum is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span>
+<span class="go">array([  2.54368356e+01,   1.72261225e+00,   5.14037515e-16])</span>
+</pre></div>
+</div>
+<p>For the recomposition, an alias for manipulating matrix will first
+be defined:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">asmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asmatrix</span>
+</pre></div>
+</div>
+<p>then the steps are:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sarr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sarr</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spec</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">svd_mat</span> <span class="o">=</span> <span class="n">asmat</span><span class="p">(</span><span class="n">uarr</span><span class="p">)</span> <span class="o">*</span> <span class="n">asmat</span><span class="p">(</span><span class="n">sarr</span><span class="p">)</span> <span class="o">*</span> <span class="n">asmat</span><span class="p">(</span><span class="n">vharr</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">svd_mat</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>SVD is commonly used in statistics or signal processing.  Many other
+standard decompositions (QR, LU, Cholesky, Schur), as well as solvers
+for linear systems, are available in <tt class="docutils literal"><span class="pre">scipy.linalg</span></tt>.</p>
+</div>
+<div class="section" id="numerical-integration-scipy-integrate">
+<h2>1.7.7. Numerical integration: <tt class="docutils literal"><span class="pre">scipy.integrate</span></tt><a class="headerlink" href="#numerical-integration-scipy-integrate" title="Permalink to this headline">¶</a></h2>
+<p>The most generic integration routine is <tt class="docutils literal"><span class="pre">scipy.integrate.quad</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">res</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Others integration schemes are available with <tt class="docutils literal"><span class="pre">fixed_quad</span></tt>,
+<tt class="docutils literal"><span class="pre">quadrature</span></tt>, <tt class="docutils literal"><span class="pre">romberg</span></tt>.</p>
+<p><tt class="docutils literal"><span class="pre">scipy.integrate</span></tt> also features routines for Ordinary differential
+equations (ODE) integration. In particular, <tt class="docutils literal"><span class="pre">scipy.integrate.odeint</span></tt>
+is a general-purpose integrator using LSODA (Livermore solver for
+ordinary differential equations with automatic method switching
+for stiff and nonstiff problems), see the <a class="reference external" href="http://people.sc.fsu.edu/~jburkardt/f77_src/odepack/odepack.html">ODEPACK Fortran library</a>
+for more details.</p>
+<p><tt class="docutils literal"><span class="pre">odeint</span></tt> solves first-order ODE systems of the form:</p>
+<div class="highlight-python"><pre>``dy/dt = rhs(y1, y2, .., t0,...)``</pre>
+</div>
+<p>As an introduction, let us solve the ODE <tt class="docutils literal"><span class="pre">dy/dt</span> <span class="pre">=</span> <span class="pre">-2y</span></tt> between <tt class="docutils literal"><span class="pre">t</span> <span class="pre">=</span>
+<span class="pre">0..4</span></tt>, with the  initial condition <tt class="docutils literal"><span class="pre">y(t=0)</span> <span class="pre">=</span> <span class="pre">1</span></tt>. First the function
+computing the derivative of the position needs to be defined:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">calc_derivative</span><span class="p">(</span><span class="n">ypos</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">counter_arr</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">counter_arr</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">ypos</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>An extra argument <tt class="docutils literal"><span class="pre">counter_arr</span></tt> has been added to illustrate that the
+function may be called several times for a single time step, until solver
+convergence. The counter array is defined as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">counter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The trajectory will now be computed:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">yvec</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">calc_derivative</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">time_vec</span><span class="p">,</span>
+<span class="gp">... </span>                    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">counter</span><span class="p">,),</span> <span class="n">full_output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Thus the derivative function has been called more than 40 times:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">counter</span>
+<span class="go">array([129], dtype=uint16)</span>
+</pre></div>
+</div>
+<p>and the cumulative iterations number for the 10 first convergences
+can be obtained by:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s">&#39;nfe&#39;</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span>
+<span class="go">array([31, 35, 43, 49, 53, 57, 59, 63, 65, 69], dtype=int32)</span>
+</pre></div>
+</div>
+<p>The solver requires more iterations at start. The final trajectory is
+seen on the Matplotlib figure computed with <a class="reference external" href="data/odeint-introduction.py">odeint-introduction.py</a>.</p>
+<div align="center" class="align-center"><img alt="../_images/odeint-introduction.png" class="align-center" src="../_images/odeint-introduction.png" /></div>
+<p>Another example with <tt class="docutils literal"><span class="pre">odeint</span></tt> will be a damped spring-mass oscillator
+(2nd order oscillator). The position of a mass attached to a spring obeys
+the 2nd order ODE <tt class="docutils literal"><span class="pre">y''</span> <span class="pre">+</span> <span class="pre">2</span> <span class="pre">eps</span> <span class="pre">wo</span>&nbsp; <span class="pre">y'</span> <span class="pre">+</span> <span class="pre">wo^2</span> <span class="pre">y</span> <span class="pre">=</span> <span class="pre">0</span></tt> with <tt class="docutils literal"><span class="pre">wo^2</span> <span class="pre">=</span> <span class="pre">k/m</span></tt>
+being <tt class="docutils literal"><span class="pre">k</span></tt> the spring constant, <tt class="docutils literal"><span class="pre">m</span></tt> the mass and <tt class="docutils literal"><span class="pre">eps=c/(2</span> <span class="pre">m</span> <span class="pre">wo)</span></tt>
+with <tt class="docutils literal"><span class="pre">c</span></tt> the damping coefficient.
+For a computing example, the parameters will be:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mass</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c"># kg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kspring</span> <span class="o">=</span> <span class="mi">4</span> <span class="c"># N/m</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cviscous</span> <span class="o">=</span> <span class="mf">0.4</span> <span class="c"># N s/m</span>
+</pre></div>
+</div>
+<p>so the system will be underdamped because:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">eps</span> <span class="o">=</span> <span class="n">cviscous</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">mass</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">kspring</span><span class="o">/</span><span class="n">mass</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eps</span> <span class="o">&lt;</span> <span class="mi">1</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>For the <tt class="docutils literal"><span class="pre">odeint</span></tt> solver the 2nd order equation needs to be transformed in a
+system of two first-order equations for the vector <tt class="docutils literal"><span class="pre">Y=(y,</span> <span class="pre">y')</span></tt>.  It will
+be convenient to define <tt class="docutils literal"><span class="pre">nu</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">eps</span> <span class="pre">wo</span> <span class="pre">=</span> <span class="pre">c</span> <span class="pre">/</span> <span class="pre">m</span></tt> and <tt class="docutils literal"><span class="pre">om</span> <span class="pre">=</span> <span class="pre">wo^2</span> <span class="pre">=</span> <span class="pre">k/m</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">nu_coef</span> <span class="o">=</span> <span class="n">cviscous</span><span class="o">/</span><span class="n">mass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">om_coef</span> <span class="o">=</span> <span class="n">kspring</span><span class="o">/</span><span class="n">mass</span>
+</pre></div>
+</div>
+<p>Thus the function will calculate the velocity and acceleration by:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">calc_deri</span><span class="p">(</span><span class="n">yvec</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">nuc</span><span class="p">,</span> <span class="n">omc</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">(</span><span class="n">yvec</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">nuc</span> <span class="o">*</span> <span class="n">yvec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">omc</span> <span class="o">*</span> <span class="n">yvec</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">yarr</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">calc_deri</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">time_vec</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">nu_coef</span><span class="p">,</span> <span class="n">om_coef</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The final position and velocity are shown on a Matplotlib figure
+built with the <a class="reference external" href="data/odeint-damped-spring-mass.py">odeint-damped-spring-mass.py</a> script.</p>
+<div align="center" class="align-center"><img alt="../_images/odeint-damped-spring-mass.png" class="align-center" src="../_images/odeint-damped-spring-mass.png" /></div>
+<p>There is no Partial Differential Equations (PDE) solver
+in scipy. Some PDE packages are written in Python, such
+as <a class="reference external" href="http://www.ctcms.nist.gov/fipy/">fipy</a> or <a class="reference external" href="http://code.google.com/p/sfepy/">SfePy</a>.</p>
+</div>
+<div class="section" id="fast-fourier-transforms-scipy-fftpack">
+<h2>1.7.8. Fast Fourier transforms: <tt class="docutils literal"><span class="pre">scipy.fftpack</span></tt><a class="headerlink" href="#fast-fourier-transforms-scipy-fftpack" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">fftpack</span></tt> module allows to compute fast Fourier transforms.
+As an illustration, an input signal may look like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">time_step</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">period</span> <span class="o">=</span> <span class="mf">5.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">time_step</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">period</span> <span class="o">*</span> <span class="n">time_vec</span><span class="p">)</span> <span class="o">+</span> \
+<span class="gp">... </span>      <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">time_vec</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>However the observer does not know the signal frequency, only
+the sampling time step of the signal <tt class="docutils literal"><span class="pre">sig</span></tt>. But the signal
+is supposed to come from a real function so the Fourier transform
+will be symmetric.
+The <tt class="docutils literal"><span class="pre">fftfreq</span></tt> function will generate the sampling frequencies and
+<tt class="docutils literal"><span class="pre">fft</span></tt> will compute the fast fourier transform:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">fftpack</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample_freq</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">time_step</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sig_fft</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Nevertheless only the positive part will be used for finding the frequency
+because the resulting power is symmetric:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pidxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sample_freq</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freqs</span> <span class="o">=</span> <span class="n">sample_freq</span><span class="p">[</span><span class="n">pidxs</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sig_fft</span><span class="p">)[</span><span class="n">pidxs</span><span class="p">]</span>
+</pre></div>
+</div>
+<div align="center" class="align-center"><img alt="../_images/fftpack-frequency.png" class="align-center" src="../_images/fftpack-frequency.png" /></div>
+<p>Thus the signal frequency can be found by:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[</span><span class="n">power</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="n">period</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Now only the main signal component will be extracted from the
+Fourier transform:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sig_fft</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sample_freq</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">freq</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>The resulting signal can be computed by the <tt class="docutils literal"><span class="pre">ifft</span></tt> function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">main_sig</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">sig_fft</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The result is shown on the Matplotlib figure generated by the
+<a class="reference external" href="data/fftpack-illustration.py">fftpack-illustration.py</a> script.</p>
+<div align="center" class="align-center"><img alt="../_images/fftpack-signals.png" class="align-center" src="../_images/fftpack-signals.png" /></div>
+</div>
+<div class="section" id="interpolation-scipy-interpolate">
+<h2>1.7.9. Interpolation: <tt class="docutils literal"><span class="pre">scipy.interpolate</span></tt><a class="headerlink" href="#interpolation-scipy-interpolate" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">scipy.interpolate</span></tt> is useful for fitting a function from experimental
+data and thus evaluating points where no measure exists. The module is based
+on the <a class="reference external" href="http://www.netlib.org/dierckx/index.html">FITPACK Fortran subroutines</a> from the <a class="reference external" href="http://www.netlib.org">netlib</a> project.</p>
+<p>By imagining experimental data close to a sinus function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">measured_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noise</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">measures</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">measured_time</span><span class="p">)</span> <span class="o">+</span> <span class="n">noise</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">interp1d</span></tt> class can built a linear interpolation function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">linear_interp</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">measured_time</span><span class="p">,</span> <span class="n">measures</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then the <tt class="docutils literal"><span class="pre">linear_interp</span></tt> instance needs to be evaluated on time of
+interest:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">computed_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">linear_results</span> <span class="o">=</span> <span class="n">linear_interp</span><span class="p">(</span><span class="n">computed_time</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A cubic interpolation can also be selected by providing the <tt class="docutils literal"><span class="pre">kind</span></tt> optional
+keyword argument:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cubic_interp</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">measured_time</span><span class="p">,</span> <span class="n">measures</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s">&#39;cubic&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cubic_results</span> <span class="o">=</span> <span class="n">cubic_interp</span><span class="p">(</span><span class="n">computed_time</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The results are now gathered on a Matplotlib figure generated by
+the script <a class="reference external" href="data/scipy-interpolation.py">scipy-interpolation.py</a>.</p>
+<div align="center" class="align-center"><img alt="../_images/interpolation.png" class="align-center" src="../_images/interpolation.png" /></div>
+<p><tt class="docutils literal"><span class="pre">scipy.interpolate.interp2d</span></tt> is similar to <tt class="docutils literal"><span class="pre">interp1d</span></tt>, but for 2-D
+arrays. Note that for the <tt class="docutils literal"><span class="pre">interp</span></tt> family, the computed time must stay
+within the measured time range. See the summary exercice  on <a href="#id1"><span class="problematic" id="id2">`Maximum
+wind speed prediction at the Sprogø station`_</span></a> for a more advance spline
+interpolation example.</p>
+</div>
+<div class="section" id="optimization-and-fit-scipy-optimize">
+<h2>1.7.10. Optimization and fit: <tt class="docutils literal"><span class="pre">scipy.optimize</span></tt><a class="headerlink" href="#optimization-and-fit-scipy-optimize" title="Permalink to this headline">¶</a></h2>
+<p>Optimization is the problem of finding a numerical solution to a
+minimization or equality.</p>
+<p>The <tt class="docutils literal"><span class="pre">scipy.optimize</span></tt> module provides useful algorithms for function
+minimization (scalar or multi-dimensional), curve fitting and root
+finding.</p>
+<p><strong>Example: Minimizing a scalar function using different algorithms</strong></p>
+<p>Let&#8217;s define the following function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and plot it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> 
+</pre></div>
+</div>
+<div align="center" class="align-center"><img alt="../_images/minima-function.png" class="align-center" src="../_images/minima-function.png" /></div>
+<p>This function has a global minimum around -1.3 and a local minimum around 3.8.</p>
+<div class="section" id="local-convex-optimization">
+<h3>1.7.10.1. Local (convex) optimization<a class="headerlink" href="#local-convex-optimization" title="Permalink to this headline">¶</a></h3>
+<p>The general and efficient way to find a minimum for this function is to
+conduct a gradient descent starting from a given initial point. The BFGS
+algorithm is a good way of doing this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_bfgs</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="go">Optimization terminated successfully.</span>
+<span class="go">        Current function value: -7.945823</span>
+<span class="go">        Iterations: 5</span>
+<span class="go">        Function evaluations: 24</span>
+<span class="go">        Gradient evaluations: 8</span>
+<span class="go">array([-1.30644003])</span>
+</pre></div>
+</div>
+<p>This resolution takes 4.11ms on our computer.</p>
+<p>The problem with this approach is that, if the function has local minima (is
+not convex), the algorithm may find these local minima instead of the
+global minimum depending on the initial point. If we don&#8217;t know the
+neighborhood of the global minima to choose the initial point, we need to
+resort to costlier global opimtization.</p>
+</div>
+<div class="section" id="global-optimization">
+<h3>1.7.10.2. Global optimization<a class="headerlink" href="#global-optimization" title="Permalink to this headline">¶</a></h3>
+<p>To find the global minimum, the simplest algorithm is the brute force algorithm,
+in which the function is evaluated on each point of a given grid:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">brute</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">grid</span><span class="p">,))</span>
+<span class="go">array([-1.30641113])</span>
+</pre></div>
+</div>
+<p>This approach take 20 ms on our computer.</p>
+<p>This simple alorithm becomes very slow as the size of the grid grows, so you
+should use <tt class="docutils literal"><span class="pre">optimize.brent</span></tt> instead for scalar functions:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">brent</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="go">-1.3064400120612139</span>
+</pre></div>
+</div>
+<p>To find the local minimum, let&#8217;s add some constraints on the variable using
+<tt class="docutils literal"><span class="pre">optimize.fminbound</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># search the minimum only between 0 and 10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">fminbound</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="go">array([ 3.83746712])</span>
+</pre></div>
+</div>
+<p>You can find algorithms with the same functionalities for multi-dimensional
+problems in <tt class="docutils literal"><span class="pre">scipy.optimize</span></tt>.</p>
+<p>See the summary exercise on <a class="reference internal" href="summary-exercices/optimize-fit.html#summary-exercise-optimize"><em>Non linear least squares curve fitting: application to point extraction in topographical lidar data</em></a> for a
+more advanced example.</p>
+</div>
+</div>
+<div class="section" id="image-processing-scipy-ndimage">
+<h2>1.7.11. Image processing: <tt class="docutils literal"><span class="pre">scipy.ndimage</span></tt><a class="headerlink" href="#image-processing-scipy-ndimage" title="Permalink to this headline">¶</a></h2>
+<p>The submodule dedicated to image processing in scipy is <cite>scipy.ndimage</cite>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
+</pre></div>
+</div>
+<p>Image processing routines may be sorted according to the category of
+processing they perform.</p>
+<div class="section" id="geometrical-transformations-on-images">
+<h3>1.7.11.1. Geometrical transformations on images<a class="headerlink" href="#geometrical-transformations-on-images" title="Permalink to this headline">¶</a></h3>
+<p>Changing orientation, resolution, ..</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lena</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">lena</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shifted_lena</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">lena</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shifted_lena2</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">lena</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;nearest&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rotated_lena</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">lena</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cropped_lena</span> <span class="o">=</span> <span class="n">lena</span><span class="p">[</span><span class="mi">50</span><span class="p">:</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">:</span><span class="o">-</span><span class="mi">50</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zoomed_lena</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">zoom</span><span class="p">(</span><span class="n">lena</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zoomed_lena</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(1024, 1024)</span>
+</pre></div>
+</div>
+<div align="center" class="align-center"><img alt="../_images/lena_transforms.png" class="align-center" src="../_images/lena_transforms.png" /></div>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [35]: </span><span class="n">subplot</span><span class="p">(</span><span class="mi">151</span><span class="p">)</span>
+<span class="go">Out[35]: </span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x925f46c</span><span class="o">&gt;</span>
+
+<span class="gp">In [36]: </span><span class="n">imshow</span><span class="p">(</span><span class="n">shifted_lena</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<span class="go">Out[36]: </span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">AxesImage</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x9593f6c</span><span class="o">&gt;</span>
+
+<span class="gp">In [37]: </span><span class="n">axis</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+<span class="go">Out[37]: </span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">511.5</span><span class="p">,</span> <span class="mf">511.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="gp">In [39]: </span><span class="c"># etc.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="image-filtering">
+<h3>1.7.11.2. Image filtering<a class="headerlink" href="#image-filtering" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">lena</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">lena</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noisy_lena</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">lena</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noisy_lena</span> <span class="o">+=</span> <span class="n">lena</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">*</span><span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">lena</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blurred_lena</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">noisy_lena</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">median_lena</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">median_filter</span><span class="p">(</span><span class="n">blurred_lena</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy.signal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wiener_lena</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">wiener</span><span class="p">(</span><span class="n">blurred_lena</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+<div align="center" class="align-center"><img alt="../_images/filtered_lena.png" class="align-center" src="../_images/filtered_lena.png" /></div>
+<p>And many other filters in <tt class="docutils literal"><span class="pre">scipy.ndimage.filters</span></tt> and <tt class="docutils literal"><span class="pre">scipy.signal</span></tt>
+can be applied to images</p>
+<div class="topic">
+<p class="topic-title first">Exercise</p>
+<p>Compare histograms for the different filtered images.</p>
+</div>
+</div>
+<div class="section" id="mathematical-morphology">
+<h3>1.7.11.3. Mathematical morphology<a class="headerlink" href="#mathematical-morphology" title="Permalink to this headline">¶</a></h3>
+<p>Mathematical morphology is a mathematical theory that stems from set
+theory. It characterizes and transforms geometrical structures. Binary
+(black and white) images, in particular, can be transformed using this
+theory: the sets to be transformed are the sets of neighboring
+non-zero-valued pixels. The theory was also extended to gray-valued images.</p>
+<div align="center" class="align-center"><img alt="../_images/morpho_mat.png" class="align-center" src="../_images/morpho_mat.png" /></div>
+<p>Elementary mathematical-morphology operations use a <em>structuring element</em>
+in order to modify other geometrical structures.</p>
+<p>Let us first generate a structuring element</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">el</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">generate_binary_structure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">el</span>
+<span class="go">array([[False,  True, False],</span>
+<span class="go">       [ True,  True,  True],</span>
+<span class="go">       [False,  True, False]], dtype=bool)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">el</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+<span class="go">array([[0, 1, 0],</span>
+<span class="go">       [1, 1, 1],</span>
+<span class="go">       [0, 1, 0]])</span>
+</pre></div>
+</div>
+<ul>
+<li><p class="first"><strong>Erosion</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([[0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 1, 1, 1, 0, 0],</span>
+<span class="go">       [0, 0, 1, 1, 1, 0, 0],</span>
+<span class="go">       [0, 0, 1, 1, 1, 0, 0],</span>
+<span class="go">       [0, 0, 1, 1, 1, 0, 0],</span>
+<span class="go">       [0, 0, 1, 1, 1, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ndimage</span><span class="o">.</span><span class="n">binary_erosion</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="go">array([[0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 1, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 1, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 1, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c">#Erosion removes objects smaller than the structure</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ndimage</span><span class="o">.</span><span class="n">binary_erosion</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="go">array([[0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0]])</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Dilation</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([[ 0.,  0.,  0.,  0.,  0.],</span>
+<span class="go">       [ 0.,  0.,  0.,  0.,  0.],</span>
+<span class="go">       [ 0.,  0.,  1.,  0.,  0.],</span>
+<span class="go">       [ 0.,  0.,  0.,  0.,  0.],</span>
+<span class="go">       [ 0.,  0.,  0.,  0.,  0.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ndimage</span><span class="o">.</span><span class="n">binary_dilation</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="go">array([[ 0.,  0.,  0.,  0.,  0.],</span>
+<span class="go">       [ 0.,  0.,  1.,  0.,  0.],</span>
+<span class="go">       [ 0.,  1.,  1.,  1.,  0.],</span>
+<span class="go">       [ 0.,  0.,  1.,  0.,  0.],</span>
+<span class="go">       [ 0.,  0.,  0.,  0.,  0.]])</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Opening</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([[0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 1, 1, 1, 0],</span>
+<span class="go">       [0, 1, 1, 1, 0],</span>
+<span class="go">       [0, 1, 1, 1, 0],</span>
+<span class="go">       [0, 0, 0, 0, 1]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Opening removes small objects</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ndimage</span><span class="o">.</span><span class="n">binary_opening</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+<span class="go">array([[0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 1, 1, 1, 0],</span>
+<span class="go">       [0, 1, 1, 1, 0],</span>
+<span class="go">       [0, 1, 1, 1, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Opening can also smooth corners</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ndimage</span><span class="o">.</span><span class="n">binary_opening</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+<span class="go">array([[0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 1, 0, 0],</span>
+<span class="go">       [0, 1, 1, 1, 0],</span>
+<span class="go">       [0, 0, 1, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0]])</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Closing:</strong> <tt class="docutils literal"><span class="pre">ndimage.binary_closing</span></tt></p>
+</li>
+</ul>
+<div class="topic">
+<p class="topic-title first">Exercise</p>
+<p>Check that opening amounts to eroding, then dilating.</p>
+</div>
+<p>An opening operation removes small structures, while a closing operation
+fills small holes. Such operation can therefore be used to &#8220;clean&#8221; an
+image.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="o">-</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">+=</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">a</span><span class="o">&gt;=</span><span class="mf">0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">opened_mask</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">binary_opening</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">closed_mask</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">binary_closing</span><span class="p">(</span><span class="n">opened_mask</span><span class="p">)</span>
+</pre></div>
+</div>
+<div align="center" class="align-center"><img alt="../_images/morpho.png" class="align-center" src="../_images/morpho.png" /></div>
+<div class="topic">
+<p class="topic-title first">Exercise</p>
+<p>Check that the area of the reconstructed square is smaller
+than the area of the initial square. (The opposite would occur if the
+closing step was performed <em>before</em> the opening).</p>
+</div>
+<p>For <strong>gray-valued</strong> images, eroding (resp. dilating) amounts to replacing
+a pixel by the minimal (resp. maximal) value among pixels covered by the
+structuring element centered on the pixel of interest.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([[0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 3, 3, 3, 3, 3, 0],</span>
+<span class="go">       [0, 3, 3, 1, 3, 3, 0],</span>
+<span class="go">       [0, 3, 3, 3, 3, 3, 0],</span>
+<span class="go">       [0, 3, 3, 3, 2, 3, 0],</span>
+<span class="go">       [0, 3, 3, 3, 3, 3, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ndimage</span><span class="o">.</span><span class="n">grey_erosion</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="go">array([[0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 1, 1, 1, 0, 0],</span>
+<span class="go">       [0, 0, 1, 1, 1, 0, 0],</span>
+<span class="go">       [0, 0, 3, 2, 2, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0]])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="measurements-on-images">
+<h3>1.7.11.4. Measurements on images<a class="headerlink" href="#measurements-on-images" title="Permalink to this headline">¶</a></h3>
+<p>Let us first generate a nice synthetic binary image.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">x</span><span class="o">/</span><span class="mf">50.</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">y</span><span class="o">/</span><span class="mf">50.</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="o">/</span><span class="mf">50.</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">&gt;</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Now we look for various information about the objects in the image:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span><span class="p">,</span> <span class="n">nb</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nb</span>
+<span class="go">8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">areas</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">areas</span>
+<span class="go">[190.0, 45.0, 424.0, 278.0, 459.0, 190.0, 549.0, 424.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">maxima</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">maxima</span>
+<span class="go">[1.8023823799830032, 1.1352760475048373, 5.5195407887291426,</span>
+<span class="go">2.4961181804217221, 6.7167361922608864, 1.8023823799830032,</span>
+<span class="go">16.765472169131161, 5.5195407887291426]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ndimage</span><span class="o">.</span><span class="n">find_objects</span><span class="p">(</span><span class="n">labels</span><span class="o">==</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">[(slice(30, 48, None), slice(30, 48, None))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sl</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">find_objects</span><span class="p">(</span><span class="n">labels</span><span class="o">==</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">imshow</span><span class="p">(</span><span class="n">sig</span><span class="p">[</span><span class="n">sl</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div align="center" class="align-center"><img alt="../_images/measures.png" class="align-center" src="../_images/measures.png" /></div>
+<p>See the summary exercise on <a class="reference internal" href="summary-exercices/image-processing.html#summary-exercise-image-processing"><em>Image processing application: counting bubbles and unmolten grains</em></a> for a more
+advanced example.</p>
+</div>
+</div>
+<div class="section" id="summary-exercices-on-scientific-computing">
+<h2>1.7.12. Summary exercices on scientific computing<a class="headerlink" href="#summary-exercices-on-scientific-computing" title="Permalink to this headline">¶</a></h2>
+<p>The summary exercices use mainly Numpy, Scipy and Matplotlib. They first aim at
+providing real life examples on scientific computing with Python. Once the
+groundwork is introduced, the interested user is invited to try some exercices.</p>
+<p>Exercises:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="summary-exercices/stats-interpolate.html">1.7.12.5. Maximum wind speed prediction at the Sprogø station</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summary-exercices/optimize-fit.html">1.7.12.6. Non linear least squares curve fitting: application to point extraction in topographical lidar data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summary-exercices/image-processing.html">1.7.12.7. Image processing application: counting bubbles and unmolten grains</a></li>
+</ul>
+</div>
+<p>Proposed solutions:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="summary-exercices/answers_image_processing.html">1.7.12.8. Example of solution for the image processing exercise: unmolten grains in glass</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="summary-exercices/stats-interpolate.html" title="1.7.12.5. Maximum wind speed prediction at the Sprogø station"
+             >next</a></li>
+        <li class="right" >
+          <a href="matplotlib/matplotlib.html" title="1.6. Matplotlib"
+             >previous</a> |</li>
+        <li><a href="../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="index.html" >1. Getting started with Python for science</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

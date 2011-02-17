@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. Advanced topics &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../index.html" />
+    <link rel="next" title="2.1. Advanced Numpy" href="advanced_numpy/index.html" />
+    <link rel="prev" title="1.7.12.8. Example of solution for the image processing exercise: unmolten grains in glass" href="../intro/summary-exercices/answers_image_processing.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="advanced_numpy/index.html" title="2.1. Advanced Numpy"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../intro/summary-exercices/answers_image_processing.html" title="1.7.12.8. Example of solution for the image processing exercise: unmolten grains in glass"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Scipy lecture notes</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="advanced-topics">
+<h1>2. Advanced topics<a class="headerlink" href="#advanced-topics" title="Permalink to this headline">¶</a></h1>
+<style type="text/css">
+  div.bodywrapper blockquote {
+      margin: 0 ;
+  }
+
+  div.toctree-wrapper ul {
+      margin-top: 0 ;
+      margin-bottom: 0 ;
+      padding-left: 10px ;
+  }
+
+  li.toctree-l1 {
+      padding: 0 0 0.5em 0 ;
+      list-style-type: none;
+      font-size: 150% ;
+      font-weight: bold;
+  }
+
+  li.toctree-l1 ul {
+      padding-left: 40px ;
+  }
+
+  li.toctree-l2 {
+      font-size: 70% ;
+      list-style-type: square;
+      font-weight: normal;
+  }
+
+  li.toctree-l3 {
+      font-size: 85% ;
+      list-style-type: circle;
+      font-weight: normal;
+  }
+
+</style><div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="advanced_numpy/index.html">2.1. Advanced Numpy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced_numpy/abstract.html">2.1.1. Abstract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_numpy/content.html">2.1.2. Advanced Numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_numpy/content.html#life-of-ndarray">2.1.3. Life of ndarray</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#it-s">2.1.3.1. It&#8217;s...</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#block-of-memory">2.1.3.2. Block of memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#data-types">2.1.3.3. Data types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#indexing-scheme-strides">2.1.3.4. Indexing scheme: strides</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#findings-in-dissection">2.1.3.5. Findings in dissection</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_numpy/content.html#universal-functions">2.1.4. Universal functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#what-they-are">2.1.4.1. What they are?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#exercise-building-an-ufunc-from-scratch">2.1.4.2. Exercise: building an ufunc from scratch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#solution-building-an-ufunc-from-scratch">2.1.4.3. Solution: building an ufunc from scratch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#generalized-ufuncs">2.1.4.4. Generalized ufuncs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_numpy/content.html#interoperability-features">2.1.5. Interoperability features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#sharing-multidimensional-typed-data">2.1.5.1. Sharing multidimensional, typed data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#the-old-buffer-protocol">2.1.5.2. The old buffer protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#id1">2.1.5.3. The old buffer protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#array-interface-protocol">2.1.5.4. Array interface protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#the-new-buffer-protocol-pep-3118">2.1.5.5. The new buffer protocol: PEP 3118</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#pep-3118-details">2.1.5.6. PEP 3118 &#8211; details</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_numpy/content.html#siblings-chararray-maskedarray-matrix">2.1.6. Siblings: <tt class="docutils literal"><span class="pre">chararray</span></tt>, <tt class="docutils literal"><span class="pre">maskedarray</span></tt>, <tt class="docutils literal"><span class="pre">matrix</span></tt></a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_numpy/content.html#summary">2.1.7. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_numpy/content.html#hit-list-of-the-future-for-numpy-core">2.1.8. Hit list of the future for Numpy core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_numpy/content.html#contributing-to-numpy-scipy">2.1.9. Contributing to Numpy/Scipy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#why">2.1.9.1. Why</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#reporting-bugs">2.1.9.2. Reporting bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#contributing-to-documentation">2.1.9.3. Contributing to documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#contributing-features">2.1.9.4. Contributing features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#how-to-help-in-general">2.1.9.5. How to help, in general</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_numpy/content.html#python-2-and-3-single-code-base">2.1.10. Python 2 and 3, single code base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#the-case-of-numpy">2.1.10.1. The case of Numpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#the-case-of-scipy">2.1.10.2. The case of Scipy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_numpy/content.html#how">2.1.10.3. How?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scipy_sparse/index.html">2.2. Sparse Matrices in SciPy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scipy_sparse/introduction.html">2.2.1. Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scipy_sparse/introduction.html#why-sparse-matrices">2.2.1.1. Why Sparse Matrices?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scipy_sparse/introduction.html#sparse-matrices-vs-sparse-matrix-storage-schemes">2.2.1.2. Sparse Matrices vs. Sparse Matrix Storage Schemes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scipy_sparse/introduction.html#typical-applications">2.2.1.3. Typical Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scipy_sparse/introduction.html#prerequisites">2.2.1.4. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scipy_sparse/introduction.html#sparsity-structure-visualization">2.2.1.5. Sparsity Structure Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scipy_sparse/storage_schemes.html">2.2.2. Storage Schemes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scipy_sparse/storage_schemes.html#common-methods">2.2.2.1. Common Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scipy_sparse/storage_schemes.html#sparse-matrix-classes">2.2.2.2. Sparse Matrix Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scipy_sparse/storage_schemes.html#summary">2.2.2.3. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scipy_sparse/solvers.html">2.2.3. Linear System Solvers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scipy_sparse/solvers.html#sparse-direct-solvers">2.2.3.1. Sparse Direct Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scipy_sparse/solvers.html#iterative-solvers">2.2.3.2. Iterative Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scipy_sparse/solvers.html#eigenvalue-problem-solvers">2.2.3.3. Eigenvalue Problem Solvers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scipy_sparse/other_packages.html">2.2.4. Other Interesting Packages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sympy.html">2.3. Sympy : Symbolic Mathematics in Python</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#objectives">2.3.1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#what-is-sympy">2.3.2. What is SymPy?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#first-steps-with-sympy">2.3.3. First Steps with SymPy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#using-sympy-as-a-calculator">2.3.3.1. Using SymPy as a calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#exercises">2.3.3.2. Exercises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#symbols">2.3.3.3. Symbols</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#algebraic-manipulations">2.3.4. Algebraic manipulations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#expand">2.3.4.1. Expand</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#simplify">2.3.4.2. Simplify</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#id3">2.3.4.3. Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#calculus">2.3.5. Calculus</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#limits">2.3.5.1. Limits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#differentiation">2.3.5.2. Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#series-expansion">2.3.5.3. Series expansion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#id4">2.3.5.4. Exercises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#integration">2.3.5.5. Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#index-2">2.3.5.6. Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#equation-solving">2.3.6. Equation solving</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#id6">2.3.6.1. Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#linear-algebra">2.3.7. Linear Algebra</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#matrices">2.3.7.1. Matrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#differential-equations">2.3.7.2. Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sympy.html#id7">2.3.7.3. Exercises</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3d_plotting/index.html">2.4. 3D plotting with Mayavi</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="3d_plotting/simple_example.html">2.4.1. A simple example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3d_plotting/3d_plotting_functions.html">2.4.2. 3D plotting functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="3d_plotting/3d_plotting_functions.html#points">2.4.2.1. Points</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3d_plotting/3d_plotting_functions.html#lines">2.4.2.2. Lines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3d_plotting/3d_plotting_functions.html#elevation-surface">2.4.2.3. Elevation surface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3d_plotting/3d_plotting_functions.html#arbitrary-regular-mesh">2.4.2.4. Arbitrary regular mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3d_plotting/3d_plotting_functions.html#volumetric-data">2.4.2.5. Volumetric data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="3d_plotting/figures_and_decorations.html">2.4.3. Figures and decorations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="3d_plotting/figures_and_decorations.html#figure-management">2.4.3.1. Figure management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3d_plotting/figures_and_decorations.html#changing-plot-properties">2.4.3.2. Changing plot properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3d_plotting/figures_and_decorations.html#decorations">2.4.3.3. Decorations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="3d_plotting/interaction.html">2.4.4. Interaction</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="advanced_numpy/index.html" title="2.1. Advanced Numpy"
+             >next</a></li>
+        <li class="right" >
+          <a href="../intro/summary-exercices/answers_image_processing.html" title="1.7.12.8. Example of solution for the image processing exercise: unmolten grains in glass"
+             >previous</a> |</li>
+        <li><a href="../index.html">Scipy lecture notes</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>

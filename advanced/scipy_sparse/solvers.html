@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.2.3. Linear System Solvers &mdash; Scipy lecture notes</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2010',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Scipy lecture notes" href="../../index.html" />
+    <link rel="up" title="2.2. Sparse Matrices in SciPy" href="index.html" />
+    <link rel="next" title="2.2.4. Other Interesting Packages" href="other_packages.html" />
+    <link rel="prev" title="2.2.2.2.7. Block Compressed Row Format (BSR)" href="bsr_matrix.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="other_packages.html" title="2.2.4. Other Interesting Packages"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="bsr_matrix.html" title="2.2.2.2.7. Block Compressed Row Format (BSR)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">2.2. Sparse Matrices in SciPy</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="linear-system-solvers">
+<h1>2.2.3. Linear System Solvers<a class="headerlink" href="#linear-system-solvers" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p class="first">sparse matrix/eigenvalue problem solvers live in <tt class="xref py py-mod docutils literal"><span class="pre">scipy.sparse.linalg</span></tt></p>
+</li>
+<li><dl class="first docutils">
+<dt>the submodules:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-mod docutils literal"><span class="pre">dsolve</span></tt>: direct factorization methods for solving linear systems</li>
+<li><tt class="xref py py-mod docutils literal"><span class="pre">isolve</span></tt>: iterative methods for solving linear systems</li>
+<li><tt class="xref py py-mod docutils literal"><span class="pre">eigen</span></tt>: sparse eigenvalue problem solvers</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">all solvers are accessible from:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">as</span> <span class="nn">spla</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spla</span><span class="o">.</span><span class="n">__all__</span>
+<span class="go">[&#39;LinearOperator&#39;, &#39;Tester&#39;, &#39;arpack&#39;, &#39;aslinearoperator&#39;, &#39;bicg&#39;,</span>
+<span class="go">&#39;bicgstab&#39;, &#39;cg&#39;, &#39;cgs&#39;, &#39;csc_matrix&#39;, &#39;csr_matrix&#39;, &#39;dsolve&#39;,</span>
+<span class="go">&#39;eigen&#39;, &#39;eigen_symmetric&#39;, &#39;factorized&#39;, &#39;gmres&#39;, &#39;interface&#39;,</span>
+<span class="go">&#39;isolve&#39;, &#39;iterative&#39;, &#39;lgmres&#39;, &#39;linsolve&#39;, &#39;lobpcg&#39;, &#39;lsqr&#39;,</span>
+<span class="go">&#39;minres&#39;, &#39;np&#39;, &#39;qmr&#39;, &#39;speigs&#39;, &#39;spilu&#39;, &#39;splu&#39;, &#39;spsolve&#39;, &#39;svd&#39;,</span>
+<span class="go">&#39;test&#39;, &#39;umfpack&#39;, &#39;use_solver&#39;, &#39;utils&#39;, &#39;warnings&#39;]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="section" id="sparse-direct-solvers">
+<h2>2.2.3.1. Sparse Direct Solvers<a class="headerlink" href="#sparse-direct-solvers" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><dl class="first docutils">
+<dt>default solver: SuperLU 4.0</dt>
+<dd><ul class="first last simple">
+<li>included in SciPy</li>
+<li>real and complex systems</li>
+<li>both single and double precision</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>optional: umfpack</dt>
+<dd><ul class="first last simple">
+<li>real and complex systems</li>
+<li>double precision only</li>
+<li>recommended for performance</li>
+<li>wrappers now live in <tt class="xref py py-mod docutils literal"><span class="pre">scikits.umfpack</span></tt></li>
+<li>check-out the new <tt class="xref py py-mod docutils literal"><span class="pre">scikits.suitesparse</span></tt> by Nathaniel Smith</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="examples">
+<h3>2.2.3.1.1. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">import the whole module, and see its docstring:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy.sparse.linalg.dsolve</span> <span class="kn">as</span> <span class="nn">dsl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">dsl</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">both superlu and umfpack can be used (if the latter is installed) as
+follows:</p>
+<blockquote>
+<ul>
+<li><p class="first">prepare a linear system:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy.sparse</span> <span class="kn">as</span> <span class="nn">sps</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">spdiags</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+<span class="go">matrix([[ 1,  5,  0,  0,  0],</span>
+<span class="go">        [ 0,  2,  8,  0,  0],</span>
+<span class="go">        [ 0,  0,  3,  9,  0],</span>
+<span class="go">        [ 0,  0,  0,  4, 10],</span>
+<span class="go">        [ 0,  0,  0,  0,  5]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rhs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">solve as single precision real:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mtx1</span> <span class="o">=</span> <span class="n">mtx</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">dsl</span><span class="o">.</span><span class="n">spsolve</span><span class="p">(</span><span class="n">mtx1</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">use_umfpack</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;Error: &quot;</span><span class="p">,</span> <span class="n">mtx1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">b</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">solve as double precision real:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mtx2</span> <span class="o">=</span> <span class="n">mtx</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">dsl</span><span class="o">.</span><span class="n">spsolve</span><span class="p">(</span><span class="n">mtx2</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">use_umfpack</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;Error: &quot;</span><span class="p">,</span> <span class="n">mtx2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">b</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">solve as single precision complex:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mtx1</span> <span class="o">=</span> <span class="n">mtx</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">complex64</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">dsl</span><span class="o">.</span><span class="n">spsolve</span><span class="p">(</span><span class="n">mtx1</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">use_umfpack</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;Error: &quot;</span><span class="p">,</span> <span class="n">mtx1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">b</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">solve as double precision complex:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mtx2</span> <span class="o">=</span> <span class="n">mtx</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">dsl</span><span class="o">.</span><span class="n">spsolve</span><span class="p">(</span><span class="n">mtx2</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">use_umfpack</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;Error: &quot;</span><span class="p">,</span> <span class="n">mtx2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">b</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Construct a 1000x1000 lil_matrix and add some values to it, convert it</span>
+<span class="sd">to CSR format and solve A x = b for x:and solve a linear system with a</span>
+<span class="sd">direct solver.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.sparse</span> <span class="kn">as</span> <span class="nn">sps</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.linalg.dsolve</span> <span class="kn">import</span> <span class="n">linsolve</span>
+
+<span class="n">rand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span>
+
+<span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">lil_matrix</span><span class="p">((</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">mtx</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">100</span><span class="p">]</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">mtx</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">:</span><span class="mi">200</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtx</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">100</span><span class="p">]</span>
+<span class="n">mtx</span><span class="o">.</span><span class="n">setdiag</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">spy</span><span class="p">(</span><span class="n">mtx</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">mtx</span> <span class="o">=</span> <span class="n">mtx</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
+<span class="n">rhs</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">linsolve</span><span class="o">.</span><span class="n">spsolve</span><span class="p">(</span><span class="n">mtx</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&#39;rezidual:&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">mtx</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">rhs</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><a class="reference download internal" href="../../_downloads/direct_solve.py"><tt class="xref download docutils literal"><span class="pre">examples/direct_solve.py</span></tt></a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="iterative-solvers">
+<h2>2.2.3.2. Iterative Solvers<a class="headerlink" href="#iterative-solvers" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><dl class="first docutils">
+<dt>the <tt class="xref py py-mod docutils literal"><span class="pre">isolve</span></tt> module contains the following solvers:</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">bicg</span></tt> (BIConjugate Gradient)</li>
+<li><tt class="docutils literal"><span class="pre">bicgstab</span></tt> (BIConjugate Gradient STABilized)</li>
+<li><tt class="docutils literal"><span class="pre">cg</span></tt> (Conjugate Gradient) - symmetric positive definite matrices
+only</li>
+<li><tt class="docutils literal"><span class="pre">cgs</span></tt> (Conjugate Gradient Squared)</li>
+<li><tt class="docutils literal"><span class="pre">gmres</span></tt> (Generalized Minimal RESidual)</li>
+<li><tt class="docutils literal"><span class="pre">minres</span></tt> (MINimum RESidual)</li>
+<li><tt class="docutils literal"><span class="pre">qmr</span></tt> (Quasi-Minimal Residual)</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="common-parameters">
+<h3>2.2.3.2.1. Common Parameters<a class="headerlink" href="#common-parameters" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">mandatory:</p>
+<dl class="docutils">
+<dt>A <span class="classifier-delimiter">:</span> <span class="classifier">{sparse matrix, dense matrix, LinearOperator}</span></dt>
+<dd><p class="first last">The N-by-N matrix of the linear system.</p>
+</dd>
+<dt>b <span class="classifier-delimiter">:</span> <span class="classifier">{array, matrix}</span></dt>
+<dd><p class="first last">Right hand side of the linear system. Has shape (N,) or (N,1).</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">optional:</p>
+<dl class="docutils">
+<dt>x0 <span class="classifier-delimiter">:</span> <span class="classifier">{array, matrix}</span></dt>
+<dd><p class="first last">Starting guess for the solution.</p>
+</dd>
+<dt>tol <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Relative tolerance to achieve before terminating.</p>
+</dd>
+<dt>maxiter <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd><p class="first last">Maximum number of iterations.  Iteration will stop after maxiter
+steps even if the specified tolerance has not been achieved.</p>
+</dd>
+<dt>M <span class="classifier-delimiter">:</span> <span class="classifier">{sparse matrix, dense matrix, LinearOperator}</span></dt>
+<dd><p class="first last">Preconditioner for A.  The preconditioner should approximate the
+inverse of A.  Effective preconditioning dramatically improves the
+rate of convergence, which implies that fewer iterations are needed
+to reach a given error tolerance.</p>
+</dd>
+<dt>callback <span class="classifier-delimiter">:</span> <span class="classifier">function</span></dt>
+<dd><p class="first last">User-supplied function to call after each iteration.  It is called
+as callback(xk), where xk is the current solution vector.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="linearoperator-class">
+<h3>2.2.3.2.2. LinearOperator Class<a class="headerlink" href="#linearoperator-class" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">scipy.sparse.linalg.interface</span> <span class="kn">import</span> <span class="n">LinearOperator</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>common interface for performing matrix vector products</li>
+<li>useful abstraction that enables using dense and sparse matrices within
+the solvers, as well as <em>matrix-free</em> solutions</li>
+<li>has <cite>shape</cite> and <cite>matvec()</cite> (+ some optional parameters)</li>
+<li>example:</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">LinearOperator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">mv</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="o">*</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="o">*</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">LinearOperator</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">matvec</span><span class="o">=</span><span class="n">mv</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span>
+<span class="go">&lt;2x2 LinearOperator with unspecified dtype&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">matvec</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="go">array([ 2.,  3.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">array([ 2.,  3.])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-few-notes-on-preconditioning">
+<h3>2.2.3.2.3. A Few Notes on Preconditioning<a class="headerlink" href="#a-few-notes-on-preconditioning" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">problem specific</p>
+</li>
+<li><p class="first">often hard to develop</p>
+</li>
+<li><dl class="first docutils">
+<dt>if not sure, try ILU</dt>
+<dd><ul class="first last simple">
+<li>available in <tt class="xref py py-mod docutils literal"><span class="pre">dsolve</span></tt> as <tt class="xref py py-func docutils literal"><span class="pre">spilu()</span></tt></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="eigenvalue-problem-solvers">
+<h2>2.2.3.3. Eigenvalue Problem Solvers<a class="headerlink" href="#eigenvalue-problem-solvers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-eigen-module">
+<h3>2.2.3.3.1. The <tt class="xref py py-mod docutils literal"><span class="pre">eigen</span></tt> module<a class="headerlink" href="#the-eigen-module" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">arpack</span></tt>
+* a collection of Fortran77 subroutines designed to solve large scale eigenvalue problems</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">lobpcg</span></tt> (Locally Optimal Block Preconditioned Conjugate
+Gradient Method)
+* works very well in combination with <a class="reference external" href="http://code.google.com/p/pyamg/">PyAMG</a>
+* example by Nathan Bell:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Compute eigenvectors and eigenvalues using a preconditioned eigensolver</span>
+
+<span class="sd">In this example Smoothed Aggregation (SA) is used to precondition</span>
+<span class="sd">the LOBPCG eigensolver on a two-dimensional Poisson problem with</span>
+<span class="sd">Dirichlet boundary conditions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">lobpcg</span>
+
+<span class="kn">from</span> <span class="nn">pyamg</span> <span class="kn">import</span> <span class="n">smoothed_aggregation_solver</span>
+<span class="kn">from</span> <span class="nn">pyamg.gallery</span> <span class="kn">import</span> <span class="n">poisson</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">poisson</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">format</span><span class="o">=</span><span class="s">&#39;csr&#39;</span><span class="p">)</span>
+
+<span class="c"># create the AMG hierarchy</span>
+<span class="n">ml</span> <span class="o">=</span> <span class="n">smoothed_aggregation_solver</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+<span class="c"># initial approximation to the K eigenvectors</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">K</span><span class="p">)</span> 
+
+<span class="c"># preconditioner based on ml</span>
+<span class="n">M</span> <span class="o">=</span> <span class="n">ml</span><span class="o">.</span><span class="n">aspreconditioner</span><span class="p">()</span>
+
+<span class="c"># compute eigenvalues and eigenvectors with LOBPCG</span>
+<span class="n">W</span><span class="p">,</span><span class="n">V</span> <span class="o">=</span> <span class="n">lobpcg</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">largest</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+
+<span class="c">#plot the eigenvectors</span>
+<span class="kn">import</span> <span class="nn">pylab</span>
+
+<span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Eigenvector </span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="n">V</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>    
+</pre></div>
+</div>
+<ul class="simple">
+<li><a class="reference download internal" href="../../_downloads/pyamg_with_lobpcg.py"><tt class="xref download docutils literal"><span class="pre">examples/pyamg_with_lobpcg.py</span></tt></a></li>
+</ul>
+</li>
+<li><p class="first">example by Nils Wagner:</p>
+<ul class="simple">
+<li><a class="reference download internal" href="../../_downloads/lobpcg_sakurai.py"><tt class="xref download docutils literal"><span class="pre">examples/lobpcg_sakurai.py</span></tt></a></li>
+</ul>
+</li>
+<li><p class="first">output:</p>
+<div class="highlight-python"><pre>$ python examples/lobpcg_sakurai.py
+Results by LOBPCG for n=2500
+
+[ 0.06250083  0.06250028  0.06250007]
+
+Exact eigenvalues
+
+[ 0.06250005  0.0625002   0.06250044]
+
+Elapsed time 7.01</pre>
+</div>
+</li>
+</ul>
+<img alt="../../_images/lobpcg_eigenvalues.png" src="../../_images/lobpcg_eigenvalues.png" />
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="other_packages.html" title="2.2.4. Other Interesting Packages"
+             >next</a></li>
+        <li class="right" >
+          <a href="bsr_matrix.html" title="2.2.2.2.7. Block Compressed Row Format (BSR)"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
+          <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
+          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+    </div>
+  </body>
+</html>
