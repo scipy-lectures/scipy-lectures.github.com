@@ -3,13 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
     <title>1.3.6. Reusing code: scripts and modules &mdash; Scipy lecture notes</title>
+    
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -72,11 +75,11 @@ called <strong>test.py</strong></p>
 interpreter. This is maybe the most common use of scripts in scientific
 computing.</p>
 <blockquote>
-<ul class="simple">
+<div><ul class="simple">
 <li>in Ipython, the syntax to execute a script is <tt class="docutils literal"><span class="pre">%run</span>
 <span class="pre">script.py</span></tt>. For example,</li>
 </ul>
-</blockquote>
+</div></blockquote>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="o">%</span><span class="n">run</span> <span class="n">test</span><span class="o">.</span><span class="n">py</span>
 <span class="go">Hello</span>
 <span class="go">how</span>
@@ -121,7 +124,7 @@ you?
 <div class="section" id="importing-objects-from-modules">
 <h2>1.3.6.2. Importing objects from modules<a class="headerlink" href="#importing-objects-from-modules" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
+<div><div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
 
 <span class="gp">In [2]: </span><span class="n">os</span>
 <span class="go">Out[2]: </span><span class="o">&lt;</span><span class="n">module</span> <span class="s">&#39;os&#39;</span> <span class="kn">from</span> <span class="err">&#39;/</span><span class="nn">usr</span><span class="err">/</span><span class="nn">lib</span><span class="err">/</span><span class="nn">python2.6</span><span class="err">/</span><span class="nn">os.pyc</span><span class="err">&#39;&gt;</span>
@@ -140,19 +143,19 @@ you?
 <span class="go"> &#39;index.rst&#39;]</span>
 </pre></div>
 </div>
-</blockquote>
+</div></blockquote>
 <p>And also:</p>
 <blockquote>
-<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [4]: </span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
+<div><div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [4]: </span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
 </pre></div>
 </div>
-</blockquote>
+</div></blockquote>
 <p>Importing shorthands:</p>
 <blockquote>
-<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [5]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div><div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [5]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
-</blockquote>
+</div></blockquote>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="o">*</span>
@@ -197,7 +200,7 @@ classes) and that we want to reuse several times, we have to create our
 own <strong>modules</strong>.</p>
 <p>Let us create a module <cite>demo</cite> contained in the file <cite>demo.py</cite>:</p>
 <blockquote>
-<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot; A demo module. &quot;</span>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="s">&quot; A demo module. &quot;</span>
 
 <span class="k">def</span> <span class="nf">print_b</span><span class="p">():</span>
     <span class="s">&quot; Prints b &quot;</span>
@@ -212,11 +215,11 @@ own <strong>modules</strong>.</p>
 <span class="n">d</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 </div>
-</blockquote>
+</div></blockquote>
 <p>In this file, we defined two functions <cite>print_a</cite> and <cite>print_b</cite>. Suppose
 we want to call the <cite>print_a</cite> function from the interpreter. We could
 execute the file as a script, but since we just want to have access to
-the function <cite>test_a</cite>, we are rather going to <strong>import it as a module</strong>.
+the function <cite>print_a</cite>, we are rather going to <strong>import it as a module</strong>.
 The syntax is as follows.</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">demo</span>
 
@@ -293,21 +296,21 @@ object&#8217;s name, otherwise Python won&#8217;t recognize the instruction.</p>
 <p class="first admonition-title">Warning</p>
 <p><strong>Module caching</strong></p>
 <blockquote>
-Modules are cached: if you modify <cite>demo.py</cite> and re-import it in the
-old session, you will get the old one.</blockquote>
+<div>Modules are cached: if you modify <cite>demo.py</cite> and re-import it in the
+old session, you will get the old one.</div></blockquote>
 <p>Solution:</p>
 <blockquote class="last">
-<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [10]: </span><span class="nb">reload</span><span class="p">(</span><span class="n">demo</span><span class="p">)</span>
+<div><div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [10]: </span><span class="nb">reload</span><span class="p">(</span><span class="n">demo</span><span class="p">)</span>
 </pre></div>
 </div>
-</blockquote>
+</div></blockquote>
 </div>
 </div>
 <div class="section" id="main-and-module-loading">
 <h2>1.3.6.4. &#8216;__main__&#8217; and module loading<a class="headerlink" href="#main-and-module-loading" title="Permalink to this headline">¶</a></h2>
 <p>File <cite>demo2.py</cite>:</p>
 <blockquote>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="k">def</span> <span class="nf">print_a</span><span class="p">():</span>
     <span class="s">&quot; Prints a &quot;</span>
@@ -319,7 +322,7 @@ old session, you will get the old one.</blockquote>
     <span class="n">print_a</span><span class="p">()</span>
 </pre></div>
 </div>
-</blockquote>
+</div></blockquote>
 <p>Importing it:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [11]: </span><span class="kn">import</span> <span class="nn">demo2</span>
 <span class="go">b</span>
@@ -565,7 +568,7 @@ Code</a>.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2010.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/1f40a2bc5294.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/ce4bb37a1409.
     </div>
   </body>
 </html>
