@@ -3,20 +3,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.2.1. Introduction &mdash; Scipy lecture notes</title>
-    
+    <title>2.5.1. Introduction &mdash; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2010',
+        VERSION:     '2011',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,23 +23,23 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="Scipy lecture notes" href="../../index.html" />
-    <link rel="up" title="2.2. Sparse Matrices in SciPy" href="index.html" />
-    <link rel="next" title="2.2.2. Storage Schemes" href="storage_schemes.html" />
-    <link rel="prev" title="2.2. Sparse Matrices in SciPy" href="index.html" /> 
+    <link rel="up" title="2.5. Sparse Matrices in SciPy" href="index.html" />
+    <link rel="next" title="2.5.2. Storage Schemes" href="storage_schemes.html" />
+    <link rel="prev" title="2.5. Sparse Matrices in SciPy" href="index.html" /> 
   </head>
   <body>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="storage_schemes.html" title="2.2.2. Storage Schemes"
+          <a href="storage_schemes.html" title="2.5.2. Storage Schemes"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="index.html" title="2.2. Sparse Matrices in SciPy"
+          <a href="index.html" title="2.5. Sparse Matrices in SciPy"
              accesskey="P">previous</a> |</li>
         <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
           <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U">2.2. Sparse Matrices in SciPy</a> &raquo;</li> 
+          <li><a href="index.html" accesskey="U">2.5. Sparse Matrices in SciPy</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -51,7 +48,7 @@
           <div class="body">
             
   <div class="section" id="introduction">
-<h1>2.2.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<h1>2.5.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <p>(dense) matrix is:</p>
 <ul class="simple">
 <li>mathematical object</li>
@@ -71,9 +68,9 @@
 </li>
 </ul>
 <div class="section" id="why-sparse-matrices">
-<h2>2.2.1.1. Why Sparse Matrices?<a class="headerlink" href="#why-sparse-matrices" title="Permalink to this headline">¶</a></h2>
+<h2>2.5.1.1. Why Sparse Matrices?<a class="headerlink" href="#why-sparse-matrices" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><p class="first">the memory, that grows like <cite>n**2</cite></p>
+<li><p class="first">the memory, that grows like <tt class="xref py py-obj docutils literal"><span class="pre">n**2</span></tt></p>
 </li>
 <li><p class="first">small example (double precision matrix):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -89,7 +86,7 @@
 </ul>
 </div>
 <div class="section" id="sparse-matrices-vs-sparse-matrix-storage-schemes">
-<h2>2.2.1.2. Sparse Matrices vs. Sparse Matrix Storage Schemes<a class="headerlink" href="#sparse-matrices-vs-sparse-matrix-storage-schemes" title="Permalink to this headline">¶</a></h2>
+<h2>2.5.1.2. Sparse Matrices vs. Sparse Matrix Storage Schemes<a class="headerlink" href="#sparse-matrices-vs-sparse-matrix-storage-schemes" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>sparse matrix is a matrix, which is <em>almost empty</em></li>
 <li>storing all the zeros is wasteful -&gt; store only nonzero items</li>
@@ -99,7 +96,7 @@
 </ul>
 </div>
 <div class="section" id="typical-applications">
-<h2>2.2.1.3. Typical Applications<a class="headerlink" href="#typical-applications" title="Permalink to this headline">¶</a></h2>
+<h2>2.5.1.3. Typical Applications<a class="headerlink" href="#typical-applications" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><dl class="first docutils">
 <dt>solution of partial differential equations (PDEs)</dt>
@@ -113,7 +110,7 @@
 <li><dl class="first docutils">
 <dt>graph theory</dt>
 <dd><ul class="first last simple">
-<li>nonzero at <cite>(i, j)</cite> means that node <cite>i</cite> is connected to node <cite>j</cite></li>
+<li>nonzero at <tt class="xref py py-obj docutils literal"><span class="pre">(i,</span> <span class="pre">j)</span></tt> means that node <tt class="xref py py-obj docutils literal"><span class="pre">i</span></tt> is connected to node <tt class="xref py py-obj docutils literal"><span class="pre">j</span></tt></li>
 </ul>
 </dd>
 </dl>
@@ -123,7 +120,7 @@
 </ul>
 </div>
 <div class="section" id="prerequisites">
-<h2>2.2.1.4. Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<h2>2.5.1.4. Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <p>recent versions of</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">numpy</span></tt></li>
@@ -133,7 +130,7 @@
 </ul>
 </div>
 <div class="section" id="sparsity-structure-visualization">
-<h2>2.2.1.5. Sparsity Structure Visualization<a class="headerlink" href="#sparsity-structure-visualization" title="Permalink to this headline">¶</a></h2>
+<h2>2.5.1.5. Sparsity Structure Visualization<a class="headerlink" href="#sparsity-structure-visualization" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><tt class="xref py py-func docutils literal"><span class="pre">spy()</span></tt> from <tt class="docutils literal"><span class="pre">matplotlib</span></tt></li>
 <li>example plots:</li>
@@ -153,19 +150,19 @@
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="storage_schemes.html" title="2.2.2. Storage Schemes"
+          <a href="storage_schemes.html" title="2.5.2. Storage Schemes"
              >next</a></li>
         <li class="right" >
-          <a href="index.html" title="2.2. Sparse Matrices in SciPy"
+          <a href="index.html" title="2.5. Sparse Matrices in SciPy"
              >previous</a> |</li>
         <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
           <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
-          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li> 
+          <li><a href="index.html" >2.5. Sparse Matrices in SciPy</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2010.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/ce4bb37a1409.
+        &copy; Copyright 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.
     </div>
   </body>
 </html>

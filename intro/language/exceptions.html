@@ -3,20 +3,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1.3.9. Exceptions handling in Python &mdash; Scipy lecture notes</title>
-    
+    <title>1.2.9. Exceptions handling in Python &mdash; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2010',
+        VERSION:     '2011',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,23 +23,23 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="Scipy lecture notes" href="../../index.html" />
-    <link rel="up" title="1.3. A (very short) introduction to Python" href="python_language.html" />
-    <link rel="next" title="1.3.10. Object-oriented programming (OOP)" href="oop.html" />
-    <link rel="prev" title="1.3.8. Standard Library" href="standard_library.html" /> 
+    <link rel="up" title="1.2. The Python language" href="python_language.html" />
+    <link rel="next" title="1.2.10. Object-oriented programming (OOP)" href="oop.html" />
+    <link rel="prev" title="1.2.8. Standard Library" href="standard_library.html" /> 
   </head>
   <body>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="oop.html" title="1.3.10. Object-oriented programming (OOP)"
+          <a href="oop.html" title="1.2.10. Object-oriented programming (OOP)"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="standard_library.html" title="1.3.8. Standard Library"
+          <a href="standard_library.html" title="1.2.8. Standard Library"
              accesskey="P">previous</a> |</li>
         <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
           <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
-          <li><a href="python_language.html" accesskey="U">1.3. A (very short) introduction to Python</a> &raquo;</li> 
+          <li><a href="python_language.html" accesskey="U">1.2. The Python language</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -51,7 +48,7 @@
           <div class="body">
             
   <div class="section" id="exceptions-handling-in-python">
-<h1>1.3.9. Exceptions handling in Python<a class="headerlink" href="#exceptions-handling-in-python" title="Permalink to this headline">¶</a></h1>
+<h1>1.2.9. Exceptions handling in Python<a class="headerlink" href="#exceptions-handling-in-python" title="Permalink to this headline">¶</a></h1>
 <p>It is highly unlikely that you haven&#8217;t yet raised Exceptions if you have
 typed all the previous commands of the tutorial. For example, you may
 have raised an exception if you entered a command with a typo.</p>
@@ -59,7 +56,7 @@ have raised an exception if you entered a command with a typo.</p>
 Python code. In you own code, you may also catch errors, or define custom
 error types.</p>
 <div class="section" id="exceptions">
-<h2>1.3.9.1. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<h2>1.2.9.1. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
 <p>Exceptions are raised by errors in Python:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="mi">1</span><span class="o">/</span><span class="mi">0</span>
 <span class="go">---------------------------------------------------------------------------</span>
@@ -89,9 +86,9 @@ error types.</p>
 <p><strong>Different types of exceptions for different errors.</strong></p>
 </div>
 <div class="section" id="catching-exceptions">
-<h2>1.3.9.2. Catching exceptions<a class="headerlink" href="#catching-exceptions" title="Permalink to this headline">¶</a></h2>
+<h2>1.2.9.2. Catching exceptions<a class="headerlink" href="#catching-exceptions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="try-except">
-<h3>1.3.9.2.1. try/except<a class="headerlink" href="#try-except" title="Permalink to this headline">¶</a></h3>
+<h3>1.2.9.2.1. try/except<a class="headerlink" href="#try-except" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [8]: </span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
 <span class="go"> ....:     try:</span>
 <span class="go"> ....:         x = int(raw_input(&#39;Please enter a number: &#39;))</span>
@@ -110,7 +107,7 @@ error types.</p>
 </div>
 </div>
 <div class="section" id="try-finally">
-<h3>1.3.9.2.2. try/finally<a class="headerlink" href="#try-finally" title="Permalink to this headline">¶</a></h3>
+<h3>1.2.9.2.2. try/finally<a class="headerlink" href="#try-finally" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [10]: </span><span class="k">try</span><span class="p">:</span>
 <span class="go"> ....:    x = int(raw_input(&#39;Please enter a number: &#39;))</span>
 <span class="go"> ....: finally:</span>
@@ -126,7 +123,7 @@ error types.</p>
 <p>Important for resource management (e.g. closing a file)</p>
 </div>
 <div class="section" id="easier-to-ask-for-forgiveness-than-for-permission">
-<h3>1.3.9.2.3. Easier to ask for forgiveness than for permission<a class="headerlink" href="#easier-to-ask-for-forgiveness-than-for-permission" title="Permalink to this headline">¶</a></h3>
+<h3>1.2.9.2.3. Easier to ask for forgiveness than for permission<a class="headerlink" href="#easier-to-ask-for-forgiveness-than-for-permission" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [11]: </span><span class="k">def</span> <span class="nf">print_sorted</span><span class="p">(</span><span class="n">collection</span><span class="p">):</span>
 <span class="gp">   ....:</span>     <span class="k">try</span><span class="p">:</span>
 <span class="gp">   ....:</span>         <span class="n">collection</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
@@ -149,7 +146,7 @@ error types.</p>
 </div>
 </div>
 <div class="section" id="raising-exceptions">
-<h2>1.3.9.3. Raising exceptions<a class="headerlink" href="#raising-exceptions" title="Permalink to this headline">¶</a></h2>
+<h2>1.2.9.3. Raising exceptions<a class="headerlink" href="#raising-exceptions" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">Capturing and reraising an exception:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [15]: </span><span class="k">def</span> <span class="nf">filter_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
@@ -211,19 +208,19 @@ StopIteration) or not (e.g. custom error raising)</strong></p>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="oop.html" title="1.3.10. Object-oriented programming (OOP)"
+          <a href="oop.html" title="1.2.10. Object-oriented programming (OOP)"
              >next</a></li>
         <li class="right" >
-          <a href="standard_library.html" title="1.3.8. Standard Library"
+          <a href="standard_library.html" title="1.2.8. Standard Library"
              >previous</a> |</li>
         <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
           <li><a href="../index.html" >1. Getting started with Python for science</a> &raquo;</li>
-          <li><a href="python_language.html" >1.3. A (very short) introduction to Python</a> &raquo;</li> 
+          <li><a href="python_language.html" >1.2. The Python language</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2010.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/ce4bb37a1409.
+        &copy; Copyright 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.
     </div>
   </body>
 </html>

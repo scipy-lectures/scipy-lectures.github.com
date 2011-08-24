@@ -7,33 +7,32 @@
 Sympy : Symbolic Mathematics in Python
 ======================================
 
-.. only:: latex
+:author: Fabian Pedregosa
 
-    :author: Fabian Pedregosa
+.. topic:: Objectives
 
-Objectives
-==========
-
-At the end of this session you will be able to:
-
-  1. Evaluate expressions with arbitrary precission.
-  2. Perform algebraic manipulations on symbolic expressions.
-  3. Perform basic calculus tasks (limits, differentiation and
-     integration) with symbolic expressions.
-  4. Solve polynomial and trascendental equations.
-  5. Solve some differential equations.
+    1. Evaluate expressions with arbitrary precision.
+    2. Perform algebraic manipulations on symbolic expressions.
+    3. Perform basic calculus tasks (limits, differentiation and
+        integration) with symbolic expressions.
+    4. Solve polynomial and transcendental equations.
+    5. Solve some differential equations.
 
 .. role:: input(strong)
 
-What is SymPy?
-==============
+**What is SymPy?** SymPy is a Python library for symbolic mathematics. It
+aims become a full featured computer algebra system that can compete
+directly with commercial alternatives (Mathematica, Maple) while keeping
+the code as simple as possible in order to be comprehensible and easily
+extensible.  SymPy is written entirely in Python and does not require any
+external libraries.
 
-SymPy is a Python library for symbolic mathematics. It aims become a
-full featured computer algebra system thatn can compete directly with
-commercial alternatives (Mathematica, Maple) while keeping the code as
-simple as possible in order to be comprehensible and easily
-extensible.  SymPy is written entirely in Python and does not require
-any external libraries.
+Sympy documentation and packages for installation can be found on
+http://sympy.org/
+
+.. contents:: Chapters contents
+   :local:
+   :depth: 4
 
 
 First Steps with SymPy
@@ -43,7 +42,7 @@ First Steps with SymPy
 Using SymPy as a calculator
 ---------------------------
 
-Sympy defines three numerical types: Real, Rational and Integer.
+SymPy defines three numerical types: Real, Rational and Integer.
 
 The Rational class represents a rational number as a pair of two
 Integers: the numerator and the denominator, so Rational(1,2)
@@ -59,9 +58,9 @@ represents 1/2, Rational(5,2) 5/2 and so on::
     1
 
 SymPy uses mpmath in the background, which makes it possible to
-perform computations using arbitrary - precission arithmetic. That
+perform computations using arbitrary-precision arithmetic. That
 way, some special constants, like e, pi, oo (Infinity), are treated as
-symbols and can be evaluated with arbitrary precission::
+symbols and can be evaluated with arbitrary precision::
 
     >>> pi**2
     pi**2
@@ -86,8 +85,8 @@ There is also a class representing mathematical infinity, called
 Exercises
 ---------
 
-  1. Calculate :math:`\sqrt{2}` with 100 decimals.
-  2. Calculate :math:`1/2 + 1/3` in rational arithmetic.
+1. Calculate :math:`\sqrt{2}` with 100 decimals.
+2. Calculate :math:`1/2 + 1/3` in rational arithmetic.
 
 
 Symbols
@@ -149,14 +148,14 @@ simpler form::
 
 Simplification is a somewhat vague term, and more precises
 alternatives to simplify exists: powsimp (simplification of
-exponents), trigsimp (for trigonometrical expressions) , logcombine,
+exponents), trigsimp (for trigonometric expressions) , logcombine,
 radsimp, together.
 
 Exercises
 ---------
 
-  1. Calculate the expanded form of :math:`(x+y)^6`.
-  2. Symplify the trigonometrical expression sin(x) / cos(x)
+1. Calculate the expanded form of :math:`(x+y)^6`.
+2. Simplify the trigonometric expression sin(x) / cos(x)
 
   
 Calculus
@@ -165,7 +164,7 @@ Calculus
 Limits
 ------
 
-Limits are easy to use in sympy, they follow the syntax limit(function,
+Limits are easy to use in SymPy, they follow the syntax limit(function,
 variable, point), so to compute the limit of f(x) as x -> 0, you would issue
 limit(f, x, 0)::
 
@@ -232,9 +231,8 @@ a point. Use ``series(expr, var)``::
 Exercises
 ---------
 
-  1. Calculate :math:`\lim{x->0, sin(x)/x}`
-  2. Calulate the derivative of log(x) for x.
-
+1. Calculate :math:`\lim{x->0, sin(x)/x}`
+2. Calulate the derivative of log(x) for x.
 
 .. index:: integration
 
@@ -340,14 +338,14 @@ the expression True, it will return False::
 Exercises
 ---------
 
-  1. Solve the system of equations x + y = 2, 2*x + y = 0
-  2. Are there boolean values x, y that make (~x | y) & (~y | x) true?
+1. Solve the system of equations :math:`x + y = 2`, :math:`2\cdot x + y = 0`
+2. Are there boolean values ``x``, ``y`` that make ``(~x | y) & (~y | x)`` true?
 
 
 .. Polynomial computations
 .. =======================
 
-.. Sympy has a rich module of efficient polynomial routines. Some of the
+.. SymPy has a rich module of efficient polynomial routines. Some of the
 .. most commonly used methods are factor, gcd
 
 
@@ -366,7 +364,7 @@ Matrices are created as instances from the Matrix class::
     [1, 0]
     [0, 1]
 
-unlike a numpy array, you can also put Symbols in it::
+unlike a NumPy array, you can also put Symbols in it::
 
     >>> x = Symbol('x')
     >>> y = Symbol('y')
@@ -410,7 +408,10 @@ to force dsolve to resolve it as a separable equation.
 Exercises
 ---------
 
-  1. Solve the Bernoulli differential equation x*f(x).diff(x) + f(x) -
-  f(x)**2
-  2. Solve the same equation using hint='Bernoulli'. What do you observe ?
+1. Solve the Bernoulli differential equation x*f(x).diff(x) + f(x) - f(x)**2
 
+.. warning::
+
+   TODO: correct this equation and convert to math directive!
+
+2. Solve the same equation using hint='Bernoulli'. What do you observe ?

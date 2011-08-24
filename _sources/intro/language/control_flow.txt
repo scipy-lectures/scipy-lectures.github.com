@@ -9,7 +9,7 @@ if/elif/else
 .. sourcecode:: ipython
   
     In [1]: if 2**2 == 4:
-       ...:     print('Obvious!')
+       ...:     print 'Obvious!'
        ...: 
     Obvious!
 
@@ -117,13 +117,13 @@ Conditional Expressions
 
 * `if object`
 
-  Evaluates to True:
-    * any non-zero value
-    * any sequence with a length > 0
-
   Evaluates to False:
-    * any zero value
-    * any empty sequence
+    * any number equal to zero (0, 0.0, 0+0j)
+    * an empty container (list, tuple, set, dictionary, ...)
+    * ``False``, ``None``
+
+  Evaluates to True:
+    * everything else [#nonzero_note]_
 
 * `a == b`
 
@@ -136,7 +136,7 @@ Conditional Expressions
 
 * `a is b`
 
-  Tests identity: both objects are the same
+  Tests identity: both sides are the same object
 
   .. sourcecode:: ipython
 
@@ -170,7 +170,8 @@ Advanced iteration
 Iterate over any *sequence*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* You can iterate over any sequence (string, list, dictionary, file, ...)
+* You can iterate over any sequence (string, list, keys in a
+  dictionary, lines in a file, ...)
 
   .. sourcecode:: ipython
 
@@ -265,10 +266,13 @@ List Comprehensions
 
     Compute the decimals of Pi using the Wallis formula:
 
-    .. image:: pi_formula.png
-	:align: center
+    .. math::
+        \pi = 2 \prod_{i=1}^{\infty} \frac{4i^2}{4i^2 - 1}
 
 .. :ref:`pi_wallis`
 
 
+.. rubric:: Footnotes
 
+.. [#nonzero_note] User-defined classes can customize those rules by overriding
+      the special ``__nonzero__`` method.

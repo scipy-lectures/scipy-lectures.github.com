@@ -3,20 +3,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1.1. Scientific computing: why Python? &mdash; Scipy lecture notes</title>
-    
+    <title>1.1. Scientific computing with tools and workflow &mdash; Scipy lecture notes</title>
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2010',
+        VERSION:     '2011',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,7 +24,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="Scipy lecture notes" href="../index.html" />
     <link rel="up" title="1. Getting started with Python for science" href="index.html" />
-    <link rel="next" title="1.2. Building blocks of scientific computing with Python" href="workflow.html" />
+    <link rel="next" title="1.2. The Python language" href="language/python_language.html" />
     <link rel="prev" title="1. Getting started with Python for science" href="index.html" /> 
   </head>
   <body>
@@ -35,7 +32,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="workflow.html" title="1.2. Building blocks of scientific computing with Python"
+          <a href="language/python_language.html" title="1.2. The Python language"
              accesskey="N">next</a></li>
         <li class="right" >
           <a href="index.html" title="1. Getting started with Python for science"
@@ -49,10 +46,20 @@
       <div class="documentwrapper">
           <div class="body">
             
-  <div class="section" id="scientific-computing-why-python">
-<h1>1.1. Scientific computing: why Python?<a class="headerlink" href="#scientific-computing-why-python" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="scientific-computing-with-tools-and-workflow">
+<h1>1.1. Scientific computing with tools and workflow<a class="headerlink" href="#scientific-computing-with-tools-and-workflow" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">authors:</th><td class="field-body">Fernando Perez, Emmanuelle Gouillart, Gaël Varoquaux</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="why-python">
+<h2>1.1.1. Why Python?<a class="headerlink" href="#why-python" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="the-scientist-s-needs">
-<h2>1.1.1. The scientist&#8217;s needs<a class="headerlink" href="#the-scientist-s-needs" title="Permalink to this headline">¶</a></h2>
+<h3>1.1.1.1. The scientist&#8217;s needs<a class="headerlink" href="#the-scientist-s-needs" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Get data (simulation, experiment control)</li>
 <li>Manipulate and process data.</li>
@@ -62,7 +69,7 @@ write presentations.</li>
 </ul>
 </div>
 <div class="section" id="specifications">
-<h2>1.1.2. Specifications<a class="headerlink" href="#specifications" title="Permalink to this headline">¶</a></h2>
+<h3>1.1.1.2. Specifications<a class="headerlink" href="#specifications" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Rich collection of already existing <strong>bricks</strong> corresponding to classical
 numerical methods or basic actions: we don&#8217;t want to re-program the
@@ -83,7 +90,7 @@ a new software for each new problem.</li>
 </ul>
 </div>
 <div class="section" id="existing-solutions">
-<h2>1.1.3. Existing solutions<a class="headerlink" href="#existing-solutions" title="Permalink to this headline">¶</a></h2>
+<h3>1.1.1.3. Existing solutions<a class="headerlink" href="#existing-solutions" title="Permalink to this headline">¶</a></h3>
 <p>Which solutions do the scientists use to work?</p>
 <p><strong>Compiled languages: C, C++, Fortran, etc.</strong></p>
 <ul class="simple">
@@ -157,6 +164,120 @@ software or toolboxes.</li>
 </ul>
 </div>
 </div>
+<div class="section" id="scientific-python-building-blocks">
+<h2>1.1.2. Scientific Python building blocks<a class="headerlink" href="#scientific-python-building-blocks" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first"><strong>Python</strong>, a generic and modern computing language</p>
+<blockquote>
+<ul class="simple">
+<li>Python language: data types (<tt class="docutils literal"><span class="pre">string</span></tt>, <tt class="docutils literal"><span class="pre">int</span></tt>), flow control,
+data collections (lists, dictionaries), patterns, etc.</li>
+<li>Modules of the standard library.</li>
+<li>A large number of specialized modules or applications written in
+Python: web protocols, web framework, etc. ... and scientific
+computing.</li>
+<li>Development tools (automatic tests, documentation generation)</li>
+</ul>
+</blockquote>
+<a class="reference internal image-reference" href="../_images/snapshot_ipython.png"><img align="right" alt="../_images/snapshot_ipython.png" class="align-right" src="../_images/snapshot_ipython.png" style="width: 474.0px; height: 237.0px;" /></a>
+</li>
+<li><p class="first"><strong>IPython</strong>, an advanced <strong>Python shell</strong></p>
+<p><a class="reference external" href="http://ipython.scipy.org/moin/">http://ipython.scipy.org/moin/</a></p>
+</li>
+<li><p class="first"><strong>Numpy</strong> : provides powerful <strong>numerical arrays</strong> objects, and routines to
+manipulate them.</p>
+<p><a class="reference external" href="http://www.scipy.org/">http://www.scipy.org/</a></p>
+</li>
+</ul>
+<ul>
+<li><p class="first"><strong>Scipy</strong> : high-level data processing routines.
+Optimization, regression, interpolation, etc</p>
+<p><a class="reference external" href="http://www.scipy.org/">http://www.scipy.org/</a></p>
+</li>
+<li><p class="first"><strong>Matplotlib</strong> : 2-D visualization, &#8220;publication-ready&#8221; plots</p>
+<a class="reference internal image-reference" href="../_images/random_c.jpg"><img align="right" alt="../_images/random_c.jpg" class="align-right" src="../_images/random_c.jpg" style="width: 340.0px; height: 210.0px;" /></a>
+<p><a class="reference external" href="http://matplotlib.sourceforge.net/">http://matplotlib.sourceforge.net/</a></p>
+</li>
+<li><p class="first"><strong>Mayavi</strong> : 3-D visualization</p>
+<a class="reference internal image-reference" href="../_images/example_surface_from_irregular_data.jpg"><img align="right" alt="../_images/example_surface_from_irregular_data.jpg" class="align-right" src="../_images/example_surface_from_irregular_data.jpg" style="width: 240.0px; height: 190.8px;" /></a>
+<p><a class="reference external" href="http://code.enthought.com/projects/mayavi/">http://code.enthought.com/projects/mayavi/</a></p>
+</li>
+</ul>
+<div style="padding-top: 9em;"></div></div>
+<div class="section" id="the-interactive-workflow-ipython-and-a-text-editor">
+<h2>1.1.3. The interactive workflow: IPython and a text editor<a class="headerlink" href="#the-interactive-workflow-ipython-and-a-text-editor" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<strong>Interactive work to test and understand algorithm</strong></blockquote>
+<p>Python is a general-purpose language. As such, there is not one blessed
+environement to work into, and not only one way of using it. Although
+this makes it harder for beginners to find their way, it makes it
+possible for Python to be used to write programs, in web servers, or
+embedded devices. Here, we describe an interactive workflow with IPython
+that is handy to explore and understand algorithms.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Reference document for this section:</p>
+<p class="last"><strong>IPython user manual:</strong> <a class="reference external" href="http://ipython.scipy.org/doc/manual/html/">http://ipython.scipy.org/doc/manual/html/</a></p>
+</div>
+<div class="section" id="command-line-interaction">
+<h3>1.1.3.1. Command line interaction<a class="headerlink" href="#command-line-interaction" title="Permalink to this headline">¶</a></h3>
+<p>Start <tt class="xref py py-obj docutils literal"><span class="pre">ipython</span></tt>:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="k">print</span><span class="p">(</span><span class="s">&#39;Hello world&#39;</span><span class="p">)</span>
+<span class="go">Hello world</span>
+</pre></div>
+</div>
+<p>Getting help:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [2]: </span><span class="k">print</span><span class="err">?</span>
+<span class="go">Type:               builtin_function_or_method</span>
+<span class="go">Base Class:         &lt;type &#39;builtin_function_or_method&#39;&gt;</span>
+<span class="go">String Form:        &lt;built-in function print&gt;</span>
+<span class="go">Namespace:          Python builtin</span>
+<span class="go">Docstring:</span>
+<span class="go">    print(value, ..., sep=&#39; &#39;, end=&#39;\n&#39;, file=sys.stdout)</span>
+
+<span class="go">    Prints the values to a stream, or to sys.stdout by default.</span>
+<span class="go">    Optional keyword arguments:</span>
+<span class="go">    file: a file-like object (stream); defaults to the current sys.stdout.</span>
+<span class="go">    sep:  string inserted between values, default a space.</span>
+<span class="go">    end:  string appended after the last value, default a newline.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="elaboration-of-the-algorithm-in-an-editor">
+<h3>1.1.3.2. Elaboration of the algorithm in an editor<a class="headerlink" href="#elaboration-of-the-algorithm-in-an-editor" title="Permalink to this headline">¶</a></h3>
+<p>Create a file <tt class="xref py py-obj docutils literal"><span class="pre">my_file.py</span></tt> in a text editor. Under EPD, you can use
+<tt class="xref py py-obj docutils literal"><span class="pre">Scite</span></tt>, available from the start menu. Under Python(x,y), you can use
+Spyder. Under Ubuntu, if you don&#8217;t already have your favorite editor, I
+would advise installing <tt class="xref py py-obj docutils literal"><span class="pre">Stani's</span> <span class="pre">Python</span> <span class="pre">editor</span></tt>. In the file, add the
+following lines:</p>
+<div class="highlight-python"><pre>s = `Hello world`
+print(s)</pre>
+</div>
+<p>Now, you can run it in ipython and explore the resulting variables:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [3]: </span><span class="o">%</span><span class="n">run</span> <span class="n">my_file</span><span class="o">.</span><span class="n">py</span>
+<span class="go">Hello word</span>
+
+<span class="gp">In [4]: </span><span class="n">s</span>
+<span class="go">Out[4]: </span><span class="s">&#39;Hello word&#39;</span>
+
+<span class="gp">In [5]: </span><span class="o">%</span><span class="n">whos</span>
+<span class="go">Variable   Type    Data/Info</span>
+<span class="go">----------------------------</span>
+<span class="go">s          str     Hello word</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<div class="topic">
+<p class="topic-title first"><strong>From a script to functions</strong></p>
+<ul class="simple">
+<li>A script is not reusable, functions are.</li>
+<li>Thinking in terms of functions helps breaking the problem in small
+blocks.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 
 
           </div>
@@ -167,7 +288,7 @@ software or toolboxes.</li>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="workflow.html" title="1.2. Building blocks of scientific computing with Python"
+          <a href="language/python_language.html" title="1.2. The Python language"
              >next</a></li>
         <li class="right" >
           <a href="index.html" title="1. Getting started with Python for science"
@@ -177,8 +298,8 @@ software or toolboxes.</li>
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2010.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/ce4bb37a1409.
+        &copy; Copyright 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.
     </div>
   </body>
 </html>

@@ -3,20 +3,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.2.2.2.1. Diagonal Format (DIA) &mdash; Scipy lecture notes</title>
-    
+    <title>2.5.2.2.1. Diagonal Format (DIA) &mdash; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2010',
+        VERSION:     '2011',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,24 +23,24 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="Scipy lecture notes" href="../../index.html" />
-    <link rel="up" title="2.2.2. Storage Schemes" href="storage_schemes.html" />
-    <link rel="next" title="2.2.2.2.2. List of Lists Format (LIL)" href="lil_matrix.html" />
-    <link rel="prev" title="2.2.2. Storage Schemes" href="storage_schemes.html" /> 
+    <link rel="up" title="2.5.2. Storage Schemes" href="storage_schemes.html" />
+    <link rel="next" title="2.5.2.2.2. List of Lists Format (LIL)" href="lil_matrix.html" />
+    <link rel="prev" title="2.5.2. Storage Schemes" href="storage_schemes.html" /> 
   </head>
   <body>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="lil_matrix.html" title="2.2.2.2.2. List of Lists Format (LIL)"
+          <a href="lil_matrix.html" title="2.5.2.2.2. List of Lists Format (LIL)"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="storage_schemes.html" title="2.2.2. Storage Schemes"
+          <a href="storage_schemes.html" title="2.5.2. Storage Schemes"
              accesskey="P">previous</a> |</li>
         <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
           <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
-          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li>
-          <li><a href="storage_schemes.html" accesskey="U">2.2.2. Storage Schemes</a> &raquo;</li> 
+          <li><a href="index.html" >2.5. Sparse Matrices in SciPy</a> &raquo;</li>
+          <li><a href="storage_schemes.html" accesskey="U">2.5.2. Storage Schemes</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -52,16 +49,16 @@
           <div class="body">
             
   <div class="section" id="diagonal-format-dia">
-<h1>2.2.2.2.1. Diagonal Format (DIA)<a class="headerlink" href="#diagonal-format-dia" title="Permalink to this headline">¶</a></h1>
+<h1>2.5.2.2.1. Diagonal Format (DIA)<a class="headerlink" href="#diagonal-format-dia" title="Permalink to this headline">¶</a></h1>
 <ul>
 <li><p class="first">very simple scheme</p>
 </li>
 <li><dl class="first docutils">
-<dt>diagonals in dense NumPy array of shape <cite>(n_diag, length)</cite></dt>
+<dt>diagonals in dense NumPy array of shape <tt class="xref py py-obj docutils literal"><span class="pre">(n_diag,</span> <span class="pre">length)</span></tt></dt>
 <dd><ul class="first last simple">
 <li>fixed length -&gt; waste space a bit when far from main diagonal</li>
 <li>subclass of <tt class="xref py py-class docutils literal"><span class="pre">_data_matrix</span></tt> (sparse matrix classes with
-<cite>.data</cite> attribute)</li>
+<tt class="xref py py-obj docutils literal"><span class="pre">data</span></tt> attribute)</li>
 </ul>
 </dd>
 </dl>
@@ -92,7 +89,7 @@
 <li>dense matrix (array)</li>
 <li>sparse matrix</li>
 <li>shape tuple (create empty matrix)</li>
-<li><cite>(data, offsets)</cite> tuple</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">(data,</span> <span class="pre">offsets)</span></tt> tuple</li>
 </ul>
 </dd>
 </dl>
@@ -111,7 +108,7 @@
 </li>
 </ul>
 <div class="section" id="examples">
-<h2>2.2.2.2.1.1. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<h2>2.5.2.2.1.1. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">create some DIA matrices:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -199,20 +196,20 @@
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="lil_matrix.html" title="2.2.2.2.2. List of Lists Format (LIL)"
+          <a href="lil_matrix.html" title="2.5.2.2.2. List of Lists Format (LIL)"
              >next</a></li>
         <li class="right" >
-          <a href="storage_schemes.html" title="2.2.2. Storage Schemes"
+          <a href="storage_schemes.html" title="2.5.2. Storage Schemes"
              >previous</a> |</li>
         <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
           <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
-          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li>
-          <li><a href="storage_schemes.html" >2.2.2. Storage Schemes</a> &raquo;</li> 
+          <li><a href="index.html" >2.5. Sparse Matrices in SciPy</a> &raquo;</li>
+          <li><a href="storage_schemes.html" >2.5.2. Storage Schemes</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2010.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/ce4bb37a1409.
+        &copy; Copyright 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.
     </div>
   </body>
 </html>

@@ -3,20 +3,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.2.2.2.6. Compressed Sparse Column Format (CSC) &mdash; Scipy lecture notes</title>
-    
+    <title>2.5.2.2.6. Compressed Sparse Column Format (CSC) &mdash; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2010',
+        VERSION:     '2011',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,24 +23,24 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="Scipy lecture notes" href="../../index.html" />
-    <link rel="up" title="2.2.2. Storage Schemes" href="storage_schemes.html" />
-    <link rel="next" title="2.2.2.2.7. Block Compressed Row Format (BSR)" href="bsr_matrix.html" />
-    <link rel="prev" title="2.2.2.2.5. Compressed Sparse Row Format (CSR)" href="csr_matrix.html" /> 
+    <link rel="up" title="2.5.2. Storage Schemes" href="storage_schemes.html" />
+    <link rel="next" title="2.5.2.2.7. Block Compressed Row Format (BSR)" href="bsr_matrix.html" />
+    <link rel="prev" title="2.5.2.2.5. Compressed Sparse Row Format (CSR)" href="csr_matrix.html" /> 
   </head>
   <body>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="bsr_matrix.html" title="2.2.2.2.7. Block Compressed Row Format (BSR)"
+          <a href="bsr_matrix.html" title="2.5.2.2.7. Block Compressed Row Format (BSR)"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="csr_matrix.html" title="2.2.2.2.5. Compressed Sparse Row Format (CSR)"
+          <a href="csr_matrix.html" title="2.5.2.2.5. Compressed Sparse Row Format (CSR)"
              accesskey="P">previous</a> |</li>
         <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
           <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
-          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li>
-          <li><a href="storage_schemes.html" accesskey="U">2.2.2. Storage Schemes</a> &raquo;</li> 
+          <li><a href="index.html" >2.5. Sparse Matrices in SciPy</a> &raquo;</li>
+          <li><a href="storage_schemes.html" accesskey="U">2.5.2. Storage Schemes</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -52,23 +49,23 @@
           <div class="body">
             
   <div class="section" id="compressed-sparse-column-format-csc">
-<h1>2.2.2.2.6. Compressed Sparse Column Format (CSC)<a class="headerlink" href="#compressed-sparse-column-format-csc" title="Permalink to this headline">¶</a></h1>
+<h1>2.5.2.2.6. Compressed Sparse Column Format (CSC)<a class="headerlink" href="#compressed-sparse-column-format-csc" title="Permalink to this headline">¶</a></h1>
 <ul>
 <li><dl class="first docutils">
 <dt>column oriented</dt>
 <dd><ul class="first last">
 <li><dl class="first docutils">
-<dt>three NumPy arrays: <cite>indices</cite>, <cite>indptr</cite>, <cite>data</cite></dt>
+<dt>three NumPy arrays: <tt class="xref py py-obj docutils literal"><span class="pre">indices</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">indptr</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">data</span></tt></dt>
 <dd><ul class="first last simple">
-<li><cite>indices</cite> is array of row indices</li>
-<li><cite>data</cite> is array of corresponding nonzero values</li>
-<li><cite>indptr</cite> points to column starts in <cite>indices</cite> and <cite>data</cite></li>
-<li>length is <cite>n_col + 1</cite>, last item = number of values = length of both
-<cite>indices</cite> and <cite>data</cite></li>
-<li>nonzero values of the <cite>i</cite>-th column are <cite>data[indptr[i]:indptr[i+1]]</cite>
-with row indices <cite>indices[indptr[i]:indptr[i+1]]</cite></li>
-<li>item <cite>(i, j)</cite> can be accessed as <cite>data[indptr[j]+k]</cite>, where <cite>k</cite> is
-position of <cite>i</cite> in <cite>indices[indptr[j]:indptr[j+1]]</cite></li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">indices</span></tt> is array of row indices</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">data</span></tt> is array of corresponding nonzero values</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">indptr</span></tt> points to column starts in <tt class="xref py py-obj docutils literal"><span class="pre">indices</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">data</span></tt></li>
+<li>length is <tt class="xref py py-obj docutils literal"><span class="pre">n_col</span> <span class="pre">+</span> <span class="pre">1</span></tt>, last item = number of values = length of both
+<tt class="xref py py-obj docutils literal"><span class="pre">indices</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">data</span></tt></li>
+<li>nonzero values of the <tt class="xref py py-obj docutils literal"><span class="pre">i</span></tt>-th column are <tt class="xref py py-obj docutils literal"><span class="pre">data[indptr[i]:indptr[i+1]]</span></tt>
+with row indices <tt class="xref py py-obj docutils literal"><span class="pre">indices[indptr[i]:indptr[i+1]]</span></tt></li>
+<li>item <tt class="xref py py-obj docutils literal"><span class="pre">(i,</span> <span class="pre">j)</span></tt> can be accessed as <tt class="xref py py-obj docutils literal"><span class="pre">data[indptr[j]+k]</span></tt>, where <tt class="xref py py-obj docutils literal"><span class="pre">k</span></tt> is
+position of <tt class="xref py py-obj docutils literal"><span class="pre">i</span></tt> in <tt class="xref py py-obj docutils literal"><span class="pre">indices[indptr[j]:indptr[j+1]]</span></tt></li>
 </ul>
 </dd>
 </dl>
@@ -77,7 +74,7 @@ position of <cite>i</cite> in <cite>indices[indptr[j]:indptr[j+1]]</cite></li>
 <dt>subclass of <tt class="xref py py-class docutils literal"><span class="pre">_cs_matrix</span></tt> (common CSR/CSC functionality)</dt>
 <dd><ul class="first last simple">
 <li>subclass of <tt class="xref py py-class docutils literal"><span class="pre">_data_matrix</span></tt> (sparse matrix classes with
-<cite>.data</cite> attribute)</li>
+<tt class="xref py py-obj docutils literal"><span class="pre">data</span></tt> attribute)</li>
 </ul>
 </dd>
 </dl>
@@ -94,8 +91,8 @@ position of <cite>i</cite> in <cite>indices[indptr[j]:indptr[j+1]]</cite></li>
 <li>dense matrix (array)</li>
 <li>sparse matrix</li>
 <li>shape tuple (create empty matrix)</li>
-<li><cite>(data, ij)</cite> tuple</li>
-<li><cite>(data, indices, indptr)</cite> tuple</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">(data,</span> <span class="pre">ij)</span></tt> tuple</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">(data,</span> <span class="pre">indices,</span> <span class="pre">indptr)</span></tt> tuple</li>
 </ul>
 </dd>
 </dl>
@@ -114,7 +111,7 @@ position of <cite>i</cite> in <cite>indices[indptr[j]:indptr[j+1]]</cite></li>
 </li>
 </ul>
 <div class="section" id="examples">
-<h2>2.2.2.2.6.1. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<h2>2.5.2.2.6.1. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">create empty CSC matrix:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
@@ -125,7 +122,7 @@ position of <cite>i</cite> in <cite>indices[indptr[j]:indptr[j+1]]</cite></li>
 </pre></div>
 </div>
 </li>
-<li><p class="first">create using <cite>(data, ij)</cite> tuple:</p>
+<li><p class="first">create using <tt class="xref py py-obj docutils literal"><span class="pre">(data,</span> <span class="pre">ij)</span></tt> tuple:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
@@ -146,7 +143,7 @@ position of <cite>i</cite> in <cite>indices[indptr[j]:indptr[j+1]]</cite></li>
 </pre></div>
 </div>
 </li>
-<li><p class="first">create using <cite>(data, indices, indptr)</cite> tuple:</p>
+<li><p class="first">create using <tt class="xref py py-obj docutils literal"><span class="pre">(data,</span> <span class="pre">indices,</span> <span class="pre">indptr)</span></tt> tuple:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">indptr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
@@ -171,20 +168,20 @@ position of <cite>i</cite> in <cite>indices[indptr[j]:indptr[j+1]]</cite></li>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="bsr_matrix.html" title="2.2.2.2.7. Block Compressed Row Format (BSR)"
+          <a href="bsr_matrix.html" title="2.5.2.2.7. Block Compressed Row Format (BSR)"
              >next</a></li>
         <li class="right" >
-          <a href="csr_matrix.html" title="2.2.2.2.5. Compressed Sparse Row Format (CSR)"
+          <a href="csr_matrix.html" title="2.5.2.2.5. Compressed Sparse Row Format (CSR)"
              >previous</a> |</li>
         <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
           <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
-          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li>
-          <li><a href="storage_schemes.html" >2.2.2. Storage Schemes</a> &raquo;</li> 
+          <li><a href="index.html" >2.5. Sparse Matrices in SciPy</a> &raquo;</li>
+          <li><a href="storage_schemes.html" >2.5.2. Storage Schemes</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2010.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/ce4bb37a1409.
+        &copy; Copyright 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.
     </div>
   </body>
 </html>

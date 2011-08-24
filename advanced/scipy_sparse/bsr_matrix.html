@@ -3,20 +3,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.2.2.2.7. Block Compressed Row Format (BSR) &mdash; Scipy lecture notes</title>
-    
+    <title>2.5.2.2.7. Block Compressed Row Format (BSR) &mdash; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2010',
+        VERSION:     '2011',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,24 +23,24 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="Scipy lecture notes" href="../../index.html" />
-    <link rel="up" title="2.2.2. Storage Schemes" href="storage_schemes.html" />
-    <link rel="next" title="2.2.3. Linear System Solvers" href="solvers.html" />
-    <link rel="prev" title="2.2.2.2.6. Compressed Sparse Column Format (CSC)" href="csc_matrix.html" /> 
+    <link rel="up" title="2.5.2. Storage Schemes" href="storage_schemes.html" />
+    <link rel="next" title="2.5.3. Linear System Solvers" href="solvers.html" />
+    <link rel="prev" title="2.5.2.2.6. Compressed Sparse Column Format (CSC)" href="csc_matrix.html" /> 
   </head>
   <body>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="solvers.html" title="2.2.3. Linear System Solvers"
+          <a href="solvers.html" title="2.5.3. Linear System Solvers"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="csc_matrix.html" title="2.2.2.2.6. Compressed Sparse Column Format (CSC)"
+          <a href="csc_matrix.html" title="2.5.2.2.6. Compressed Sparse Column Format (CSC)"
              accesskey="P">previous</a> |</li>
         <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
           <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
-          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li>
-          <li><a href="storage_schemes.html" accesskey="U">2.2.2. Storage Schemes</a> &raquo;</li> 
+          <li><a href="index.html" >2.5. Sparse Matrices in SciPy</a> &raquo;</li>
+          <li><a href="storage_schemes.html" accesskey="U">2.5.2. Storage Schemes</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -52,20 +49,20 @@
           <div class="body">
             
   <div class="section" id="block-compressed-row-format-bsr">
-<h1>2.2.2.2.7. Block Compressed Row Format (BSR)<a class="headerlink" href="#block-compressed-row-format-bsr" title="Permalink to this headline">¶</a></h1>
+<h1>2.5.2.2.7. Block Compressed Row Format (BSR)<a class="headerlink" href="#block-compressed-row-format-bsr" title="Permalink to this headline">¶</a></h1>
 <ul>
 <li><p class="first">basically a CSR with dense sub-matrices of fixed shape instead of scalar
 items</p>
 <blockquote>
-<div><ul>
-<li><p class="first">block size <cite>(R, C)</cite> must evenly divide the shape of the matrix
-<cite>(M, N)</cite></p>
+<ul>
+<li><p class="first">block size <tt class="xref py py-obj docutils literal"><span class="pre">(R,</span> <span class="pre">C)</span></tt> must evenly divide the shape of the matrix
+<tt class="xref py py-obj docutils literal"><span class="pre">(M,</span> <span class="pre">N)</span></tt></p>
 </li>
 <li><dl class="first docutils">
-<dt>three NumPy arrays: <cite>indices</cite>, <cite>indptr</cite>, <cite>data</cite></dt>
+<dt>three NumPy arrays: <tt class="xref py py-obj docutils literal"><span class="pre">indices</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">indptr</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">data</span></tt></dt>
 <dd><ul class="first last simple">
-<li><cite>indices</cite> is array of column indices for each block</li>
-<li><cite>data</cite> is array of corresponding nonzero values of shape <cite>(nnz, R, C)</cite></li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">indices</span></tt> is array of column indices for each block</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">data</span></tt> is array of corresponding nonzero values of shape <tt class="xref py py-obj docutils literal"><span class="pre">(nnz,</span> <span class="pre">R,</span> <span class="pre">C)</span></tt></li>
 <li>...</li>
 </ul>
 </dd>
@@ -75,13 +72,13 @@ items</p>
 <dt>subclass of <tt class="xref py py-class docutils literal"><span class="pre">_cs_matrix</span></tt> (common CSR/CSC functionality)</dt>
 <dd><ul class="first last simple">
 <li>subclass of <tt class="xref py py-class docutils literal"><span class="pre">_data_matrix</span></tt> (sparse matrix classes with
-<cite>.data</cite> attribute)</li>
+<tt class="xref py py-obj docutils literal"><span class="pre">data</span></tt> attribute)</li>
 </ul>
 </dd>
 </dl>
 </li>
 </ul>
-</div></blockquote>
+</blockquote>
 </li>
 <li><p class="first">fast matrix vector products and other arithmetics (sparsetools)</p>
 </li>
@@ -91,8 +88,8 @@ items</p>
 <li>dense matrix (array)</li>
 <li>sparse matrix</li>
 <li>shape tuple (create empty matrix)</li>
-<li><cite>(data, ij)</cite> tuple</li>
-<li><cite>(data, indices, indptr)</cite> tuple</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">(data,</span> <span class="pre">ij)</span></tt> tuple</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">(data,</span> <span class="pre">indices,</span> <span class="pre">indptr)</span></tt> tuple</li>
 </ul>
 </dd>
 </dl>
@@ -111,7 +108,7 @@ sparse matrices with dense sub-matrices</p>
 </li>
 </ul>
 <div class="section" id="examples">
-<h2>2.2.2.2.7.1. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<h2>2.5.2.2.7.1. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">create empty BSR matrix with (1, 1) block size (like CSR...):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mtx</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">bsr_matrix</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
@@ -140,7 +137,7 @@ sparse matrices with dense sub-matrices</p>
 <li>a bug?</li>
 </ul>
 </li>
-<li><p class="first">create using <cite>(data, ij)</cite> tuple with (1, 1) block size (like CSR...):</p>
+<li><p class="first">create using <tt class="xref py py-obj docutils literal"><span class="pre">(data,</span> <span class="pre">ij)</span></tt> tuple with (1, 1) block size (like CSR...):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
@@ -171,7 +168,7 @@ sparse matrices with dense sub-matrices</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">create using <cite>(data, indices, indptr)</cite> tuple with (2, 2) block size:</p>
+<li><p class="first">create using <tt class="xref py py-obj docutils literal"><span class="pre">(data,</span> <span class="pre">indices,</span> <span class="pre">indptr)</span></tt> tuple with (2, 2) block size:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">indptr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -217,20 +214,20 @@ sparse matrices with dense sub-matrices</p>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="solvers.html" title="2.2.3. Linear System Solvers"
+          <a href="solvers.html" title="2.5.3. Linear System Solvers"
              >next</a></li>
         <li class="right" >
-          <a href="csc_matrix.html" title="2.2.2.2.6. Compressed Sparse Column Format (CSC)"
+          <a href="csc_matrix.html" title="2.5.2.2.6. Compressed Sparse Column Format (CSC)"
              >previous</a> |</li>
         <li><a href="../../index.html">Scipy lecture notes</a> &raquo;</li>
           <li><a href="../index.html" >2. Advanced topics</a> &raquo;</li>
-          <li><a href="index.html" >2.2. Sparse Matrices in SciPy</a> &raquo;</li>
-          <li><a href="storage_schemes.html" >2.2.2. Storage Schemes</a> &raquo;</li> 
+          <li><a href="index.html" >2.5. Sparse Matrices in SciPy</a> &raquo;</li>
+          <li><a href="storage_schemes.html" >2.5.2. Storage Schemes</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2010.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1pre/ce4bb37a1409.
+        &copy; Copyright 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.
     </div>
   </body>
 </html>
