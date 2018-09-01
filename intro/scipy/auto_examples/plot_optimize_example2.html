@@ -5,14 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>1.5.12.14. Minima and roots of a function &#8212; Scipy lecture notes</title>
+    <title>1.5.12.15. Minima and roots of a function &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2017.1.1',
+        VERSION:     '2018.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="1.5.12.15. Optimization of a two-parameter function" href="plot_2d_minimization.html" />
-    <link rel="prev" title="1.5.12.13. Demo connected components" href="plot_connect_measurements.html" />
+    <link rel="next" title="1.5.12.16. Optimization of a two-parameter function" href="plot_2d_minimization.html" />
+    <link rel="prev" title="1.5.12.14. Demo connected components" href="plot_connect_measurements.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -133,10 +133,10 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_2d_minimization.html" title="1.5.12.15. Optimization of a two-parameter function"
+          <a href="plot_2d_minimization.html" title="1.5.12.16. Optimization of a two-parameter function"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="plot_connect_measurements.html" title="1.5.12.13. Demo connected components"
+          <a href="plot_connect_measurements.html" title="1.5.12.14. Demo connected components"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >1. Getting started with Python for science</a> &#187;</li>
@@ -169,16 +169,20 @@ $(function () {
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="minima-and-roots-of-a-function">
-<span id="sphx-glr-intro-scipy-auto-examples-plot-optimize-example2-py"></span><h1>1.5.12.14. Minima and roots of a function<a class="headerlink" href="#minima-and-roots-of-a-function" title="Permalink to this headline">¶</a></h1>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-intro-scipy-auto-examples-plot-optimize-example2-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="minima-and-roots-of-a-function">
+<span id="sphx-glr-intro-scipy-auto-examples-plot-optimize-example2-py"></span><h1>1.5.12.15. Minima and roots of a function<a class="headerlink" href="#minima-and-roots-of-a-function" title="Permalink to this headline">¶</a></h1>
 <p>Demos finding minima and roots of a function.</p>
 <div class="section" id="define-the-function">
 <h2>Define the function<a class="headerlink" href="#define-the-function" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
 <div class="newline"></div><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<div class="newline"></div>    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">10</span><span class="o">*</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sin.html#numpy.sin" title="View documentation for numpy.sin"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 </div>
@@ -188,49 +192,49 @@ $(function () {
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Global optimization</span>
 <div class="newline"></div><span class="n">grid</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
-<div class="newline"></div><span class="n">xmin_global</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">brute</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="p">))</span>
+<div class="newline"></div><span class="n">xmin_global</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.brute.html#scipy.optimize.brute" title="View documentation for scipy.optimize.brute"><span class="n">optimize</span><span class="o">.</span><span class="n">brute</span></a><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="p">))</span>
 <div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Global minima found </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">xmin_global</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Constrain optimization</span>
-<div class="newline"></div><span class="n">xmin_local</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">fminbound</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class="newline"></div><span class="n">xmin_local</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fminbound.html#scipy.optimize.fminbound" title="View documentation for scipy.optimize.fminbound"><span class="n">optimize</span><span class="o">.</span><span class="n">fminbound</span></a><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Local minimum found </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">xmin_local</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">Global</span> <span class="n">minima</span> <span class="n">found</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.30641113</span><span class="p">]</span>
-<div class="newline"></div><span class="n">Local</span> <span class="n">minimum</span> <span class="n">found</span> <span class="mf">3.8374671195</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Global minima found [-1.30641113]
+<div class="newline"></div>Local minimum found 3.8374671194983834
 <div class="newline"></div></pre></div>
 </div>
 </div>
 <div class="section" id="root-finding">
 <h2>Root finding<a class="headerlink" href="#root-finding" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">root</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># our initial guess is 1</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">root</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.root.html#scipy.optimize.root" title="View documentation for scipy.optimize.root"><span class="n">optimize</span><span class="o">.</span><span class="n">root</span></a><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># our initial guess is 1</span>
 <div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s2">&quot;First root found </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">root</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
-<div class="newline"></div><span class="n">root2</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="p">)</span>
+<div class="newline"></div><span class="n">root2</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.root.html#scipy.optimize.root" title="View documentation for scipy.optimize.root"><span class="n">optimize</span><span class="o">.</span><span class="n">root</span></a><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="p">)</span>
 <div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Second root found </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">root2</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">First</span> <span class="n">root</span> <span class="n">found</span> <span class="p">[</span> <span class="mf">0.</span><span class="p">]</span>
-<div class="newline"></div><span class="n">Second</span> <span class="n">root</span> <span class="n">found</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.47948183</span><span class="p">]</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>First root found [0.]
+<div class="newline"></div>Second root found [-2.47948183]
 <div class="newline"></div></pre></div>
 </div>
 </div>
 <div class="section" id="plot-function-minima-and-roots">
 <h2>Plot function, minima, and roots<a class="headerlink" href="#plot-function-minima-and-roots" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <div class="newline"></div><span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Plot the function</span>
 <div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;f(x)&quot;</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Plot the minima</span>
-<div class="newline"></div><span class="n">xmins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xmin_global</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xmin_local</span><span class="p">])</span>
+<div class="newline"></div><span class="n">xmins</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="n">xmin_global</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xmin_local</span><span class="p">])</span>
 <div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xmins</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">xmins</span><span class="p">),</span> <span class="s1">&#39;go&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Minima&quot;</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Plot the roots</span>
-<div class="newline"></div><span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">root</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">root2</span><span class="o">.</span><span class="n">x</span><span class="p">])</span>
+<div class="newline"></div><span class="n">roots</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="n">root</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">root2</span><span class="o">.</span><span class="n">x</span><span class="p">])</span>
 <div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">roots</span><span class="p">),</span> <span class="s1">&#39;kv&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Roots&quot;</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Decorate the figure</span>
@@ -238,18 +242,18 @@ $(function () {
 <div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;f(x)&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_optimize_example2_001.png" class="align-center" src="../../../_images/sphx_glr_plot_optimize_example2_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.151 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<img alt="../../../_images/sphx_glr_plot_optimize_example2_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_optimize_example2_001.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.101 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-intro-scipy-auto-examples-plot-optimize-example2-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_optimize_example2.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_optimize_example2.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_optimize_example2.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_optimize_example2.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
 </div>
 </div>
@@ -263,7 +267,7 @@ $(function () {
 	<div class="sidebartoc">
   <h3><a href="../../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">1.5.12.14. Minima and roots of a function</a><ul>
+<li><a class="reference internal" href="#">1.5.12.15. Minima and roots of a function</a><ul>
 <li><a class="reference internal" href="#define-the-function">Define the function</a></li>
 <li><a class="reference internal" href="#find-minima">Find minima</a></li>
 <li><a class="reference internal" href="#root-finding">Root finding</a></li>
@@ -299,10 +303,10 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_2d_minimization.html" title="1.5.12.15. Optimization of a two-parameter function"
+          <a href="plot_2d_minimization.html" title="1.5.12.16. Optimization of a two-parameter function"
              >next</a></li>
         <li class="right" >
-          <a href="plot_connect_measurements.html" title="1.5.12.13. Demo connected components"
+          <a href="plot_connect_measurements.html" title="1.5.12.14. Demo connected components"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >1. Getting started with Python for science</a> &#187;</li>
@@ -330,7 +334,7 @@ $(function () {
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>

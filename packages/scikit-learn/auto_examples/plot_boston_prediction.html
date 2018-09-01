@@ -5,14 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>3.6.9.11. A simple regression analysis on the Boston housing data &#8212; Scipy lecture notes</title>
+    <title>3.6.10.11. A simple regression analysis on the Boston housing data &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2017.1.1',
+        VERSION:     '2018.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="3.6.9.12. Nearest-neighbor prediction on iris" href="plot_iris_knn.html" />
-    <link rel="prev" title="3.6.9.10. Plot fitting a 9th order polynomial" href="plot_polynomial_regression.html" />
+    <link rel="next" title="3.6.10.12. Nearest-neighbor prediction on iris" href="plot_iris_knn.html" />
+    <link rel="prev" title="3.6.10.10. Plot fitting a 9th order polynomial" href="plot_polynomial_regression.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -133,10 +133,10 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_iris_knn.html" title="3.6.9.12. Nearest-neighbor prediction on iris"
+          <a href="plot_iris_knn.html" title="3.6.10.12. Nearest-neighbor prediction on iris"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="plot_polynomial_regression.html" title="3.6.9.10. Plot fitting a 9th order polynomial"
+          <a href="plot_polynomial_regression.html" title="3.6.10.10. Plot fitting a 9th order polynomial"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
@@ -169,119 +169,123 @@ $(function () {
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="a-simple-regression-analysis-on-the-boston-housing-data">
-<span id="sphx-glr-packages-scikit-learn-auto-examples-plot-boston-prediction-py"></span><h1>3.6.9.11. A simple regression analysis on the Boston housing data<a class="headerlink" href="#a-simple-regression-analysis-on-the-boston-housing-data" title="Permalink to this headline">¶</a></h1>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-packages-scikit-learn-auto-examples-plot-boston-prediction-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="a-simple-regression-analysis-on-the-boston-housing-data">
+<span id="sphx-glr-packages-scikit-learn-auto-examples-plot-boston-prediction-py"></span><h1>3.6.10.11. A simple regression analysis on the Boston housing data<a class="headerlink" href="#a-simple-regression-analysis-on-the-boston-housing-data" title="Permalink to this headline">¶</a></h1>
 <p>Here we perform a simple regression analysis on the Boston housing
 data, exploring two types of regressors.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_boston</span>
-<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <span class="n">load_boston</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_boston.html#sklearn.datasets.load_boston" title="View documentation for sklearn.datasets.load_boston"><span class="n">load_boston</span></a>
+<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_boston.html#sklearn.datasets.load_boston" title="View documentation for sklearn.datasets.load_boston"><span class="n">load_boston</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Print a histogram of the quantity to predict: price</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;price ($1000s)&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.hist.html#matplotlib.pyplot.hist" title="View documentation for matplotlib.pyplot.hist"><span class="n">plt</span><span class="o">.</span><span class="n">hist</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;price ($1000s)&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_boston_prediction_001.png" class="align-center" src="../../../_images/sphx_glr_plot_boston_prediction_001.png" />
+<img alt="../../../_images/sphx_glr_plot_boston_prediction_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_boston_prediction_001.png" />
 <p>Print the join histogram for each feature</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">feature_names</span><span class="p">):</span>
-<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Price&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">feature_name</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.scatter.html#matplotlib.pyplot.scatter" title="View documentation for matplotlib.pyplot.scatter"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;Price&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="n">feature_name</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <ul class="sphx-glr-horizontal">
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_002.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_002.png" src="../../../_images/sphx_glr_plot_boston_prediction_002.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_002.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_002.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_003.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_003.png" src="../../../_images/sphx_glr_plot_boston_prediction_003.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_003.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_003.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_004.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_004.png" src="../../../_images/sphx_glr_plot_boston_prediction_004.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_004.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_004.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_005.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_005.png" src="../../../_images/sphx_glr_plot_boston_prediction_005.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_005.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_005.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_006.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_006.png" src="../../../_images/sphx_glr_plot_boston_prediction_006.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_006.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_006.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_007.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_007.png" src="../../../_images/sphx_glr_plot_boston_prediction_007.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_007.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_007.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_008.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_008.png" src="../../../_images/sphx_glr_plot_boston_prediction_008.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_008.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_008.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_009.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_009.png" src="../../../_images/sphx_glr_plot_boston_prediction_009.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_009.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_009.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_010.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_010.png" src="../../../_images/sphx_glr_plot_boston_prediction_010.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_010.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_010.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_011.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_011.png" src="../../../_images/sphx_glr_plot_boston_prediction_011.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_011.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_011.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_012.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_012.png" src="../../../_images/sphx_glr_plot_boston_prediction_012.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_012.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_012.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_013.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_013.png" src="../../../_images/sphx_glr_plot_boston_prediction_013.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_013.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_013.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_boston_prediction_014.png"><img alt="../../../_images/sphx_glr_plot_boston_prediction_014.png" src="../../../_images/sphx_glr_plot_boston_prediction_014.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_boston_prediction_014.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_boston_prediction_014.png" />
 </li>
 </ul>
 <p>Simple prediction</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<div class="newline"></div><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
+<div class="newline"></div><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
-<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="View documentation for sklearn.linear_model.LinearRegression"><span class="n">LinearRegression</span></a>
+<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="View documentation for sklearn.linear_model.LinearRegression"><span class="n">LinearRegression</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div><span class="n">predicted</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 <div class="newline"></div><span class="n">expected</span> <span class="o">=</span> <span class="n">y_test</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="s1">&#39;--k&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;True price ($1000s)&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Predicted price ($1000s)&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.scatter.html#matplotlib.pyplot.scatter" title="View documentation for matplotlib.pyplot.scatter"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span></a><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="s1">&#39;--k&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axis.html#matplotlib.pyplot.axis" title="View documentation for matplotlib.pyplot.axis"><span class="n">plt</span><span class="o">.</span><span class="n">axis</span></a><span class="p">(</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;True price ($1000s)&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;Predicted price ($1000s)&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_boston_prediction_015.png" class="align-center" src="../../../_images/sphx_glr_plot_boston_prediction_015.png" />
+<img alt="../../../_images/sphx_glr_plot_boston_prediction_015.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_boston_prediction_015.png" />
 <p>Prediction with gradient boosted tree</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingRegressor</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="View documentation for sklearn.ensemble.GradientBoostingRegressor"><span class="n">GradientBoostingRegressor</span></a>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <span class="n">GradientBoostingRegressor</span><span class="p">()</span>
+<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="View documentation for sklearn.ensemble.GradientBoostingRegressor"><span class="n">GradientBoostingRegressor</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">predicted</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 <div class="newline"></div><span class="n">expected</span> <span class="o">=</span> <span class="n">y_test</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="s1">&#39;--k&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;True price ($1000s)&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Predicted price ($1000s)&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.scatter.html#matplotlib.pyplot.scatter" title="View documentation for matplotlib.pyplot.scatter"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span></a><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="s1">&#39;--k&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axis.html#matplotlib.pyplot.axis" title="View documentation for matplotlib.pyplot.axis"><span class="n">plt</span><span class="o">.</span><span class="n">axis</span></a><span class="p">(</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;True price ($1000s)&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;Predicted price ($1000s)&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_boston_prediction_016.png" class="align-center" src="../../../_images/sphx_glr_plot_boston_prediction_016.png" />
+<img alt="../../../_images/sphx_glr_plot_boston_prediction_016.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_boston_prediction_016.png" />
 <p>Print the error rate</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s2">&quot;RMS: </span><span class="si">%r</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">predicted</span> <span class="o">-</span> <span class="n">expected</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s2">&quot;RMS: </span><span class="si">%r</span><span class="s2"> &quot;</span> <span class="o">%</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sqrt.html#numpy.sqrt" title="View documentation for numpy.sqrt"><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean" title="View documentation for numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">((</span><span class="n">predicted</span> <span class="o">-</span> <span class="n">expected</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">RMS</span><span class="p">:</span> <span class="mf">3.3940265988986305</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>RMS: 3.3078607546696053
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  2.312 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  1.223 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-scikit-learn-auto-examples-plot-boston-prediction-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_boston_prediction.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_boston_prediction.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_boston_prediction.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_boston_prediction.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
 </div>
 
@@ -319,10 +323,10 @@ data, exploring two types of regressors.</p>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_iris_knn.html" title="3.6.9.12. Nearest-neighbor prediction on iris"
+          <a href="plot_iris_knn.html" title="3.6.10.12. Nearest-neighbor prediction on iris"
              >next</a></li>
         <li class="right" >
-          <a href="plot_polynomial_regression.html" title="3.6.9.10. Plot fitting a 9th order polynomial"
+          <a href="plot_polynomial_regression.html" title="3.6.10.10. Plot fitting a 9th order polynomial"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
@@ -350,7 +354,7 @@ data, exploring two types of regressors.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>

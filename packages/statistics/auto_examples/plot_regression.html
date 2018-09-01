@@ -12,7 +12,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2017.1.1',
+        VERSION:     '2018.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -169,7 +169,11 @@ $(function () {
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="simple-regression">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-packages-statistics-auto-examples-plot-regression-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="simple-regression">
 <span id="sphx-glr-packages-statistics-auto-examples-plot-regression-py"></span><h1>3.1.6.4. Simple Regression<a class="headerlink" href="#simple-regression" title="Permalink to this headline">¶</a></h1>
 <p>Fit a simple linear regression using ‘statsmodels’, compute corresponding
 p-values.</p>
@@ -186,24 +190,24 @@ p-values.</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>Generate and show the data</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># To get reproducable values, provide a seed value</span>
-<div class="newline"></div><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.random.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.random.html#numpy.random.normal" title="View documentation for numpy.random.normal"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span></a><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.normal.html#numpy.random.normal" title="View documentation for numpy.random.normal"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span></a><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Plot the data</span>
-<div class="newline"></div><a href="http://matplotlib.org/api/figure_api.html#module-matplotlib.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_regression_001.png" class="align-center" src="../../../_images/sphx_glr_plot_regression_001.png" />
+<img alt="../../../_images/sphx_glr_plot_regression_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_regression_001.png" />
 <p>Multilinear regression model, calculating fit, P-values, confidence
 intervals etc.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Convert the data into a Pandas DataFrame to use the formulas framework</span>
 <div class="newline"></div><span class="c1"># in statsmodels</span>
-<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.html#pandas.DataFrame" title="View documentation for pandas.DataFrame"><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span></a><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">})</span>
+<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="View documentation for pandas.DataFrame"><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span></a><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">})</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Fit the model</span>
 <div class="newline"></div><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s2">&quot;y ~ x&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
@@ -219,57 +223,57 @@ intervals etc.</p>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">OLS</span> <span class="n">Regression</span> <span class="n">Results</span>
-<div class="newline"></div><span class="o">==============================================================================</span>
-<div class="newline"></div><span class="n">Dep</span><span class="o">.</span> <span class="n">Variable</span><span class="p">:</span>                      <span class="n">y</span>   <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                       <span class="mf">0.804</span>
-<div class="newline"></div><span class="n">Model</span><span class="p">:</span>                            <span class="n">OLS</span>   <span class="n">Adj</span><span class="o">.</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                  <span class="mf">0.794</span>
-<div class="newline"></div><span class="n">Method</span><span class="p">:</span>                 <span class="n">Least</span> <span class="n">Squares</span>   <span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">:</span>                     <span class="mf">74.03</span>
-<div class="newline"></div><span class="n">Date</span><span class="p">:</span>                <span class="n">Tue</span><span class="p">,</span> <span class="mi">25</span> <span class="n">Apr</span> <span class="mi">2017</span>   <span class="n">Prob</span> <span class="p">(</span><span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">):</span>           <span class="mf">8.56e-08</span>
-<div class="newline"></div><span class="n">Time</span><span class="p">:</span>                        <span class="mi">10</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">29</span>   <span class="n">Log</span><span class="o">-</span><span class="n">Likelihood</span><span class="p">:</span>                <span class="o">-</span><span class="mf">57.988</span>
-<div class="newline"></div><span class="n">No</span><span class="o">.</span> <span class="n">Observations</span><span class="p">:</span>                  <span class="mi">20</span>   <span class="n">AIC</span><span class="p">:</span>                             <span class="mf">120.0</span>
-<div class="newline"></div><span class="n">Df</span> <span class="n">Residuals</span><span class="p">:</span>                      <span class="mi">18</span>   <span class="n">BIC</span><span class="p">:</span>                             <span class="mf">122.0</span>
-<div class="newline"></div><span class="n">Df</span> <span class="n">Model</span><span class="p">:</span>                           <span class="mi">1</span>
-<div class="newline"></div><span class="n">Covariance</span> <span class="n">Type</span><span class="p">:</span>            <span class="n">nonrobust</span>
-<div class="newline"></div><span class="o">==============================================================================</span>
-<div class="newline"></div>                 <span class="n">coef</span>    <span class="n">std</span> <span class="n">err</span>          <span class="n">t</span>      <span class="n">P</span><span class="o">&gt;|</span><span class="n">t</span><span class="o">|</span>      <span class="p">[</span><span class="mf">0.025</span>      <span class="mf">0.975</span><span class="p">]</span>
-<div class="newline"></div><span class="o">------------------------------------------------------------------------------</span>
-<div class="newline"></div><span class="n">Intercept</span>     <span class="o">-</span><span class="mf">5.5335</span>      <span class="mf">1.036</span>     <span class="o">-</span><span class="mf">5.342</span>      <span class="mf">0.000</span>      <span class="o">-</span><span class="mf">7.710</span>      <span class="o">-</span><span class="mf">3.357</span>
-<div class="newline"></div><span class="n">x</span>              <span class="mf">2.9369</span>      <span class="mf">0.341</span>      <span class="mf">8.604</span>      <span class="mf">0.000</span>       <span class="mf">2.220</span>       <span class="mf">3.654</span>
-<div class="newline"></div><span class="o">==============================================================================</span>
-<div class="newline"></div><span class="n">Omnibus</span><span class="p">:</span>                        <span class="mf">0.100</span>   <span class="n">Durbin</span><span class="o">-</span><span class="n">Watson</span><span class="p">:</span>                   <span class="mf">2.956</span>
-<div class="newline"></div><span class="n">Prob</span><span class="p">(</span><span class="n">Omnibus</span><span class="p">):</span>                  <span class="mf">0.951</span>   <span class="n">Jarque</span><span class="o">-</span><span class="n">Bera</span> <span class="p">(</span><span class="n">JB</span><span class="p">):</span>                <span class="mf">0.322</span>
-<div class="newline"></div><span class="n">Skew</span><span class="p">:</span>                          <span class="o">-</span><span class="mf">0.058</span>   <span class="n">Prob</span><span class="p">(</span><span class="n">JB</span><span class="p">):</span>                        <span class="mf">0.851</span>
-<div class="newline"></div><span class="n">Kurtosis</span><span class="p">:</span>                       <span class="mf">2.390</span>   <span class="n">Cond</span><span class="o">.</span> <span class="n">No</span><span class="o">.</span>                         <span class="mf">3.03</span>
-<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>OLS Regression Results
+<div class="newline"></div>==============================================================================
+<div class="newline"></div>Dep. Variable:                      y   R-squared:                       0.804
+<div class="newline"></div>Model:                            OLS   Adj. R-squared:                  0.794
+<div class="newline"></div>Method:                 Least Squares   F-statistic:                     74.03
+<div class="newline"></div>Date:                Sat, 01 Sep 2018   Prob (F-statistic):           8.56e-08
+<div class="newline"></div>Time:                        18:51:55   Log-Likelihood:                -57.988
+<div class="newline"></div>No. Observations:                  20   AIC:                             120.0
+<div class="newline"></div>Df Residuals:                      18   BIC:                             122.0
+<div class="newline"></div>Df Model:                           1
+<div class="newline"></div>Covariance Type:            nonrobust
+<div class="newline"></div>==============================================================================
+<div class="newline"></div>                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+<div class="newline"></div>------------------------------------------------------------------------------
+<div class="newline"></div>Intercept     -5.5335      1.036     -5.342      0.000      -7.710      -3.357
+<div class="newline"></div>x              2.9369      0.341      8.604      0.000       2.220       3.654
+<div class="newline"></div>==============================================================================
+<div class="newline"></div>Omnibus:                        0.100   Durbin-Watson:                   2.956
+<div class="newline"></div>Prob(Omnibus):                  0.951   Jarque-Bera (JB):                0.322
+<div class="newline"></div>Skew:                          -0.058   Prob(JB):                        0.851
+<div class="newline"></div>Kurtosis:                       2.390   Cond. No.                         3.03
+<div class="newline"></div>==============================================================================
 <div class="newline"></div>
-<div class="newline"></div><span class="n">Warnings</span><span class="p">:</span>
-<div class="newline"></div><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">Standard</span> <span class="n">Errors</span> <span class="n">assume</span> <span class="n">that</span> <span class="n">the</span> <span class="n">covariance</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">the</span> <span class="n">errors</span> <span class="ow">is</span> <span class="n">correctly</span> <span class="n">specified</span><span class="o">.</span>
+<div class="newline"></div>Warnings:
+<div class="newline"></div>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 <div class="newline"></div>
-<div class="newline"></div><span class="n">ANOVA</span> <span class="n">results</span>
-<div class="newline"></div>            <span class="n">df</span>       <span class="n">sum_sq</span>      <span class="n">mean_sq</span>          <span class="n">F</span>        <span class="n">PR</span><span class="p">(</span><span class="o">&gt;</span><span class="n">F</span><span class="p">)</span>
-<div class="newline"></div><span class="n">x</span>          <span class="mf">1.0</span>  <span class="mf">1588.873443</span>  <span class="mf">1588.873443</span>  <span class="mf">74.029383</span>  <span class="mf">8.560649e-08</span>
-<div class="newline"></div><span class="n">Residual</span>  <span class="mf">18.0</span>   <span class="mf">386.329330</span>    <span class="mf">21.462741</span>        <span class="n">NaN</span>           <span class="n">NaN</span>
+<div class="newline"></div>ANOVA results
+<div class="newline"></div>            df       sum_sq      mean_sq          F        PR(&gt;F)
+<div class="newline"></div>x          1.0  1588.873443  1588.873443  74.029383  8.560649e-08
+<div class="newline"></div>Residual  18.0   386.329330    21.462741        NaN           NaN
 <div class="newline"></div></pre></div>
 </div>
 <p>Plot the fitted model</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Retrieve the parameter estimates</span>
 <div class="newline"></div><span class="n">offset</span><span class="p">,</span> <span class="n">coef</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">_results</span><span class="o">.</span><span class="n">params</span>
-<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">*</span><span class="n">coef</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
-<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">*</span><span class="n">coef</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_regression_002.png" class="align-center" src="../../../_images/sphx_glr_plot_regression_002.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.135 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<img alt="../../../_images/sphx_glr_plot_regression_002.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_regression_002.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.101 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-statistics-auto-examples-plot-regression-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_regression.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_regression.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_regression.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_regression.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="http://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
 </div>
 
@@ -338,7 +342,7 @@ intervals etc.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>

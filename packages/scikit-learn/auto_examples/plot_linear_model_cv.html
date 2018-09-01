@@ -5,14 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>3.6.9.6. Use the RidgeCV and LassoCV to set the regularization parameter &#8212; Scipy lecture notes</title>
+    <title>3.6.10.6. Use the RidgeCV and LassoCV to set the regularization parameter &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2017.1.1',
+        VERSION:     '2018.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="3.6.9.7. Plot variance and regularization in linear models" href="plot_variance_linear_regr.html" />
-    <link rel="prev" title="3.6.9.5. tSNE to visualize digits" href="plot_tsne.html" />
+    <link rel="next" title="3.6.10.7. Plot variance and regularization in linear models" href="plot_variance_linear_regr.html" />
+    <link rel="prev" title="3.6.10.5. tSNE to visualize digits" href="plot_tsne.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -133,10 +133,10 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_variance_linear_regr.html" title="3.6.9.7. Plot variance and regularization in linear models"
+          <a href="plot_variance_linear_regr.html" title="3.6.10.7. Plot variance and regularization in linear models"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="plot_tsne.html" title="3.6.9.5. tSNE to visualize digits"
+          <a href="plot_tsne.html" title="3.6.10.5. tSNE to visualize digits"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
@@ -169,32 +169,36 @@ $(function () {
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="use-the-ridgecv-and-lassocv-to-set-the-regularization-parameter">
-<span id="sphx-glr-packages-scikit-learn-auto-examples-plot-linear-model-cv-py"></span><h1>3.6.9.6. Use the RidgeCV and LassoCV to set the regularization parameter<a class="headerlink" href="#use-the-ridgecv-and-lassocv-to-set-the-regularization-parameter" title="Permalink to this headline">¶</a></h1>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-packages-scikit-learn-auto-examples-plot-linear-model-cv-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="use-the-ridgecv-and-lassocv-to-set-the-regularization-parameter">
+<span id="sphx-glr-packages-scikit-learn-auto-examples-plot-linear-model-cv-py"></span><h1>3.6.10.6. Use the RidgeCV and LassoCV to set the regularization parameter<a class="headerlink" href="#use-the-ridgecv-and-lassocv-to-set-the-regularization-parameter" title="Permalink to this headline">¶</a></h1>
 <p>Load the diabetes dataset</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_diabetes</span>
-<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <span class="n">load_diabetes</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="View documentation for sklearn.datasets.load_diabetes"><span class="n">load_diabetes</span></a>
+<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="View documentation for sklearn.datasets.load_diabetes"><span class="n">load_diabetes</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
 <div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">442</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>(442, 10)
 <div class="newline"></div></pre></div>
 </div>
 <p>Compute the cross-validation score with the default hyper-parameters</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span><span class="p">,</span> <span class="n">Lasso</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="View documentation for sklearn.linear_model.Ridge"><span class="n">Ridge</span></a><span class="p">,</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso" title="View documentation for sklearn.linear_model.Lasso"><span class="n">Lasso</span></a>
 <div class="newline"></div>
-<div class="newline"></div><span class="k">for</span> <span class="n">Model</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Ridge</span><span class="p">,</span> <span class="n">Lasso</span><span class="p">]:</span>
+<div class="newline"></div><span class="k">for</span> <span class="n">Model</span> <span class="ow">in</span> <span class="p">[</span><a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="View documentation for sklearn.linear_model.Ridge"><span class="n">Ridge</span></a><span class="p">,</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso" title="View documentation for sklearn.linear_model.Lasso"><span class="n">Lasso</span></a><span class="p">]:</span>
 <div class="newline"></div>    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
 <div class="newline"></div>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-<div class="newline"></div>                      <span class="n">cross_val_score</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+<div class="newline"></div>                      <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">Ridge</span><span class="p">:</span> <span class="mf">0.409427438303</span>
-<div class="newline"></div><span class="n">Lasso</span><span class="p">:</span> <span class="mf">0.353800083299</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Ridge: 0.40942743830329875
+<div class="newline"></div>Lasso: 0.35380008329932017
 <div class="newline"></div></pre></div>
 </div>
 <p>We compute the cross-validation score as a function of alpha, the
@@ -202,31 +206,31 @@ strength of the regularization for Lasso and Ridge</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">alphas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<div class="newline"></div><span class="n">alphas</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.logspace.html#numpy.logspace" title="View documentation for numpy.logspace"><span class="n">np</span><span class="o">.</span><span class="n">logspace</span></a><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="k">for</span> <span class="n">Model</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Lasso</span><span class="p">,</span> <span class="n">Ridge</span><span class="p">]:</span>
-<div class="newline"></div>    <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">Model</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="newline"></div><span class="k">for</span> <span class="n">Model</span> <span class="ow">in</span> <span class="p">[</span><a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso" title="View documentation for sklearn.linear_model.Lasso"><span class="n">Lasso</span></a><span class="p">,</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="View documentation for sklearn.linear_model.Ridge"><span class="n">Ridge</span></a><span class="p">]:</span>
+<div class="newline"></div>    <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a><span class="p">(</span><span class="n">Model</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <div class="newline"></div>            <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">alphas</span><span class="p">]</span>
-<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alphas</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">Model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">alphas</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">Model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;cross validation score&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;cross validation score&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_linear_model_cv_001.png" class="align-center" src="../../../_images/sphx_glr_plot_linear_model_cv_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.626 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<img alt="../../../_images/sphx_glr_plot_linear_model_cv_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_linear_model_cv_001.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.344 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-scikit-learn-auto-examples-plot-linear-model-cv-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_linear_model_cv.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_linear_model_cv.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_linear_model_cv.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_linear_model_cv.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
 </div>
 
@@ -264,10 +268,10 @@ strength of the regularization for Lasso and Ridge</p>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_variance_linear_regr.html" title="3.6.9.7. Plot variance and regularization in linear models"
+          <a href="plot_variance_linear_regr.html" title="3.6.10.7. Plot variance and regularization in linear models"
              >next</a></li>
         <li class="right" >
-          <a href="plot_tsne.html" title="3.6.9.5. tSNE to visualize digits"
+          <a href="plot_tsne.html" title="3.6.10.5. tSNE to visualize digits"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
@@ -295,7 +299,7 @@ strength of the regularization for Lasso and Ridge</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>

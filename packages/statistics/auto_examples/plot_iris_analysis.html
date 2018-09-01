@@ -12,7 +12,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2017.1.1',
+        VERSION:     '2018.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -169,7 +169,11 @@ $(function () {
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="analysis-of-iris-petal-and-sepal-sizes">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-packages-statistics-auto-examples-plot-iris-analysis-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="analysis-of-iris-petal-and-sepal-sizes">
 <span id="sphx-glr-packages-statistics-auto-examples-plot-iris-analysis-py"></span><h1>3.1.6.3. Analysis of Iris petal and sepal sizes<a class="headerlink" href="#analysis-of-iris-petal-and-sepal-sizes" title="Permalink to this headline">¶</a></h1>
 <p>Ilustrate an analysis on a real dataset:</p>
 <ul class="simple">
@@ -186,21 +190,21 @@ of a continuous confound</li>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">import</span> <span class="n">ols</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Load the data</span>
-<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.html#pandas.read_csv" title="View documentation for pandas.read_csv"><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="s1">&#39;iris.csv&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html#pandas.read_csv" title="View documentation for pandas.read_csv"><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="s1">&#39;iris.csv&#39;</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Plot a scatter matrix</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Express the names as categories</span>
-<div class="newline"></div><span class="n">categories</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.html#pandas.Categorical" title="View documentation for pandas.Categorical"><span class="n">pandas</span><span class="o">.</span><span class="n">Categorical</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<div class="newline"></div><span class="n">categories</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Categorical.html#pandas.Categorical" title="View documentation for pandas.Categorical"><span class="n">pandas</span><span class="o">.</span><span class="n">Categorical</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># The parameter &#39;c&#39; is passed to plt.scatter and will control the color</span>
 <div class="newline"></div><span class="n">plotting</span><span class="o">.</span><span class="n">scatter_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">categories</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.gcf.html#matplotlib.pyplot.gcf" title="View documentation for matplotlib.pyplot.gcf"><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span></a><span class="p">()</span>
+<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.gcf.html#matplotlib.pyplot.gcf" title="View documentation for matplotlib.pyplot.gcf"><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;blue: setosa, green: versicolor, red: virginica&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_iris_analysis_001.png" class="align-center" src="../../../_images/sphx_glr_plot_iris_analysis_001.png" />
+<img alt="../../../_images/sphx_glr_plot_iris_analysis_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_iris_analysis_001.png" />
 <p>Statistical analysis</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Let us try to explain the sepal length as a function of the petal</span>
 <div class="newline"></div><span class="c1"># width and the category of iris</span>
@@ -213,49 +217,49 @@ of a continuous confound</li>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Testing the difference between effect of versicolor and virginica&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">f_test</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
-<div class="newline"></div><a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">OLS</span> <span class="n">Regression</span> <span class="n">Results</span>
-<div class="newline"></div><span class="o">==============================================================================</span>
-<div class="newline"></div><span class="n">Dep</span><span class="o">.</span> <span class="n">Variable</span><span class="p">:</span>            <span class="n">sepal_width</span>   <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                       <span class="mf">0.478</span>
-<div class="newline"></div><span class="n">Model</span><span class="p">:</span>                            <span class="n">OLS</span>   <span class="n">Adj</span><span class="o">.</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                  <span class="mf">0.468</span>
-<div class="newline"></div><span class="n">Method</span><span class="p">:</span>                 <span class="n">Least</span> <span class="n">Squares</span>   <span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">:</span>                     <span class="mf">44.63</span>
-<div class="newline"></div><span class="n">Date</span><span class="p">:</span>                <span class="n">Tue</span><span class="p">,</span> <span class="mi">25</span> <span class="n">Apr</span> <span class="mi">2017</span>   <span class="n">Prob</span> <span class="p">(</span><span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="p">):</span>           <span class="mf">1.58e-20</span>
-<div class="newline"></div><span class="n">Time</span><span class="p">:</span>                        <span class="mi">10</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">29</span>   <span class="n">Log</span><span class="o">-</span><span class="n">Likelihood</span><span class="p">:</span>                <span class="o">-</span><span class="mf">38.185</span>
-<div class="newline"></div><span class="n">No</span><span class="o">.</span> <span class="n">Observations</span><span class="p">:</span>                 <span class="mi">150</span>   <span class="n">AIC</span><span class="p">:</span>                             <span class="mf">84.37</span>
-<div class="newline"></div><span class="n">Df</span> <span class="n">Residuals</span><span class="p">:</span>                     <span class="mi">146</span>   <span class="n">BIC</span><span class="p">:</span>                             <span class="mf">96.41</span>
-<div class="newline"></div><span class="n">Df</span> <span class="n">Model</span><span class="p">:</span>                           <span class="mi">3</span>
-<div class="newline"></div><span class="n">Covariance</span> <span class="n">Type</span><span class="p">:</span>            <span class="n">nonrobust</span>
-<div class="newline"></div><span class="o">======================================================================================</span>
-<div class="newline"></div>                         <span class="n">coef</span>    <span class="n">std</span> <span class="n">err</span>          <span class="n">t</span>      <span class="n">P</span><span class="o">&gt;|</span><span class="n">t</span><span class="o">|</span>      <span class="p">[</span><span class="mf">0.025</span>      <span class="mf">0.975</span><span class="p">]</span>
-<div class="newline"></div><span class="o">--------------------------------------------------------------------------------------</span>
-<div class="newline"></div><span class="n">Intercept</span>              <span class="mf">2.9813</span>      <span class="mf">0.099</span>     <span class="mf">29.989</span>      <span class="mf">0.000</span>       <span class="mf">2.785</span>       <span class="mf">3.178</span>
-<div class="newline"></div><span class="n">name</span><span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">versicolor</span><span class="p">]</span>    <span class="o">-</span><span class="mf">1.4821</span>      <span class="mf">0.181</span>     <span class="o">-</span><span class="mf">8.190</span>      <span class="mf">0.000</span>      <span class="o">-</span><span class="mf">1.840</span>      <span class="o">-</span><span class="mf">1.124</span>
-<div class="newline"></div><span class="n">name</span><span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">virginica</span><span class="p">]</span>     <span class="o">-</span><span class="mf">1.6635</span>      <span class="mf">0.256</span>     <span class="o">-</span><span class="mf">6.502</span>      <span class="mf">0.000</span>      <span class="o">-</span><span class="mf">2.169</span>      <span class="o">-</span><span class="mf">1.158</span>
-<div class="newline"></div><span class="n">petal_length</span>           <span class="mf">0.2983</span>      <span class="mf">0.061</span>      <span class="mf">4.920</span>      <span class="mf">0.000</span>       <span class="mf">0.178</span>       <span class="mf">0.418</span>
-<div class="newline"></div><span class="o">==============================================================================</span>
-<div class="newline"></div><span class="n">Omnibus</span><span class="p">:</span>                        <span class="mf">2.868</span>   <span class="n">Durbin</span><span class="o">-</span><span class="n">Watson</span><span class="p">:</span>                   <span class="mf">1.753</span>
-<div class="newline"></div><span class="n">Prob</span><span class="p">(</span><span class="n">Omnibus</span><span class="p">):</span>                  <span class="mf">0.238</span>   <span class="n">Jarque</span><span class="o">-</span><span class="n">Bera</span> <span class="p">(</span><span class="n">JB</span><span class="p">):</span>                <span class="mf">2.885</span>
-<div class="newline"></div><span class="n">Skew</span><span class="p">:</span>                          <span class="o">-</span><span class="mf">0.082</span>   <span class="n">Prob</span><span class="p">(</span><span class="n">JB</span><span class="p">):</span>                        <span class="mf">0.236</span>
-<div class="newline"></div><span class="n">Kurtosis</span><span class="p">:</span>                       <span class="mf">3.659</span>   <span class="n">Cond</span><span class="o">.</span> <span class="n">No</span><span class="o">.</span>                         <span class="mf">54.0</span>
-<div class="newline"></div><span class="o">==============================================================================</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>OLS Regression Results
+<div class="newline"></div>==============================================================================
+<div class="newline"></div>Dep. Variable:            sepal_width   R-squared:                       0.478
+<div class="newline"></div>Model:                            OLS   Adj. R-squared:                  0.468
+<div class="newline"></div>Method:                 Least Squares   F-statistic:                     44.63
+<div class="newline"></div>Date:                Sat, 01 Sep 2018   Prob (F-statistic):           1.58e-20
+<div class="newline"></div>Time:                        18:51:55   Log-Likelihood:                -38.185
+<div class="newline"></div>No. Observations:                 150   AIC:                             84.37
+<div class="newline"></div>Df Residuals:                     146   BIC:                             96.41
+<div class="newline"></div>Df Model:                           3
+<div class="newline"></div>Covariance Type:            nonrobust
+<div class="newline"></div>======================================================================================
+<div class="newline"></div>                         coef    std err          t      P&gt;|t|      [0.025      0.975]
+<div class="newline"></div>--------------------------------------------------------------------------------------
+<div class="newline"></div>Intercept              2.9813      0.099     29.989      0.000       2.785       3.178
+<div class="newline"></div>name[T.versicolor]    -1.4821      0.181     -8.190      0.000      -1.840      -1.124
+<div class="newline"></div>name[T.virginica]     -1.6635      0.256     -6.502      0.000      -2.169      -1.158
+<div class="newline"></div>petal_length           0.2983      0.061      4.920      0.000       0.178       0.418
+<div class="newline"></div>==============================================================================
+<div class="newline"></div>Omnibus:                        2.868   Durbin-Watson:                   1.753
+<div class="newline"></div>Prob(Omnibus):                  0.238   Jarque-Bera (JB):                2.885
+<div class="newline"></div>Skew:                          -0.082   Prob(JB):                        0.236
+<div class="newline"></div>Kurtosis:                       3.659   Cond. No.                         54.0
+<div class="newline"></div>==============================================================================
 <div class="newline"></div>
-<div class="newline"></div><span class="n">Warnings</span><span class="p">:</span>
-<div class="newline"></div><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">Standard</span> <span class="n">Errors</span> <span class="n">assume</span> <span class="n">that</span> <span class="n">the</span> <span class="n">covariance</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">the</span> <span class="n">errors</span> <span class="ow">is</span> <span class="n">correctly</span> <span class="n">specified</span><span class="o">.</span>
-<div class="newline"></div><span class="n">Testing</span> <span class="n">the</span> <span class="n">difference</span> <span class="n">between</span> <span class="n">effect</span> <span class="n">of</span> <span class="n">versicolor</span> <span class="ow">and</span> <span class="n">virginica</span>
-<div class="newline"></div><span class="o">&lt;</span><span class="n">F</span> <span class="n">test</span><span class="p">:</span> <span class="n">F</span><span class="o">=</span><span class="n">array</span><span class="p">([[</span> <span class="mf">3.24533535</span><span class="p">]]),</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.073690587817</span><span class="p">,</span> <span class="n">df_denom</span><span class="o">=</span><span class="mi">146</span><span class="p">,</span> <span class="n">df_num</span><span class="o">=</span><span class="mi">1</span><span class="o">&gt;</span>
+<div class="newline"></div>Warnings:
+<div class="newline"></div>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+<div class="newline"></div>Testing the difference between effect of versicolor and virginica
+<div class="newline"></div>&lt;F test: F=array([[3.24533535]]), p=0.07369058781701113, df_denom=146, df_num=1&gt;
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.404 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.944 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-statistics-auto-examples-plot-iris-analysis-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_iris_analysis.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_iris_analysis.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_iris_analysis.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_iris_analysis.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="http://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
 </div>
 
@@ -324,7 +328,7 @@ of a continuous confound</li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>

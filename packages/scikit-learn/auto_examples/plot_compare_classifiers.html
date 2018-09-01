@@ -5,14 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>3.6.9.9. Compare classifiers on the digits data &#8212; Scipy lecture notes</title>
+    <title>3.6.10.9. Compare classifiers on the digits data &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2017.1.1',
+        VERSION:     '2018.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="3.6.9.10. Plot fitting a 9th order polynomial" href="plot_polynomial_regression.html" />
-    <link rel="prev" title="3.6.9.8. Simple picture of the formal problem of machine learning" href="plot_separator.html" />
+    <link rel="next" title="3.6.10.10. Plot fitting a 9th order polynomial" href="plot_polynomial_regression.html" />
+    <link rel="prev" title="3.6.10.8. Simple picture of the formal problem of machine learning" href="plot_separator.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -133,10 +133,10 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_polynomial_regression.html" title="3.6.9.10. Plot fitting a 9th order polynomial"
+          <a href="plot_polynomial_regression.html" title="3.6.10.10. Plot fitting a 9th order polynomial"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="plot_separator.html" title="3.6.9.8. Simple picture of the formal problem of machine learning"
+          <a href="plot_separator.html" title="3.6.10.8. Simple picture of the formal problem of machine learning"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
@@ -169,77 +169,81 @@ $(function () {
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="compare-classifiers-on-the-digits-data">
-<span id="sphx-glr-packages-scikit-learn-auto-examples-plot-compare-classifiers-py"></span><h1>3.6.9.9. Compare classifiers on the digits data<a class="headerlink" href="#compare-classifiers-on-the-digits-data" title="Permalink to this headline">¶</a></h1>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-packages-scikit-learn-auto-examples-plot-compare-classifiers-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="compare-classifiers-on-the-digits-data">
+<span id="sphx-glr-packages-scikit-learn-auto-examples-plot-compare-classifiers-py"></span><h1>3.6.10.9. Compare classifiers on the digits data<a class="headerlink" href="#compare-classifiers-on-the-digits-data" title="Permalink to this headline">¶</a></h1>
 <p>Compare the performance of a variety of classifiers on a test set for the
 digits data.</p>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">LinearSVC</span><span class="p">:</span> <span class="mf">0.927190026916</span>
-<div class="newline"></div><span class="n">GaussianNB</span><span class="p">:</span> <span class="mf">0.833274168101</span>
-<div class="newline"></div><span class="n">KNeighborsClassifier</span><span class="p">:</span> <span class="mf">0.980456280495</span>
-<div class="newline"></div><span class="o">------------------</span>
-<div class="newline"></div><span class="n">LinearSVC</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">):</span> <span class="mf">0.932590198804</span>
-<div class="newline"></div><span class="n">LinearSVC</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">):</span> <span class="mf">0.916587424989</span>
-<div class="newline"></div><span class="o">-------------------</span>
-<div class="newline"></div><span class="n">KNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span> <span class="mf">0.991367521884</span>
-<div class="newline"></div><span class="n">KNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span> <span class="mf">0.984844206884</span>
-<div class="newline"></div><span class="n">KNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span> <span class="mf">0.986775344954</span>
-<div class="newline"></div><span class="n">KNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span> <span class="mf">0.980371905382</span>
-<div class="newline"></div><span class="n">KNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span> <span class="mf">0.980456280495</span>
-<div class="newline"></div><span class="n">KNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span> <span class="mf">0.975792419414</span>
-<div class="newline"></div><span class="n">KNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span> <span class="mf">0.978064579214</span>
-<div class="newline"></div><span class="n">KNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span> <span class="mf">0.978064579214</span>
-<div class="newline"></div><span class="n">KNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">9</span><span class="p">):</span> <span class="mf">0.978064579214</span>
-<div class="newline"></div><span class="n">KNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span> <span class="mf">0.975555089773</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>LinearSVC: 0.9370307807021948
+<div class="newline"></div>GaussianNB: 0.8332741681010101
+<div class="newline"></div>KNeighborsClassifier: 0.9804562804949924
+<div class="newline"></div>------------------
+<div class="newline"></div>LinearSVC(loss=&#39;l1&#39;): 0.9411259626578682
+<div class="newline"></div>LinearSVC(loss=&#39;l2&#39;): 0.9341635132052719
+<div class="newline"></div>-------------------
+<div class="newline"></div>KNeighbors(n_neighbors=1): 0.9913675218842191
+<div class="newline"></div>KNeighbors(n_neighbors=2): 0.9848442068835102
+<div class="newline"></div>KNeighbors(n_neighbors=3): 0.9867753449543099
+<div class="newline"></div>KNeighbors(n_neighbors=4): 0.9803719053818863
+<div class="newline"></div>KNeighbors(n_neighbors=5): 0.9804562804949924
+<div class="newline"></div>KNeighbors(n_neighbors=6): 0.9757924194139573
+<div class="newline"></div>KNeighbors(n_neighbors=7): 0.9780645792142071
+<div class="newline"></div>KNeighbors(n_neighbors=8): 0.9780645792142071
+<div class="newline"></div>KNeighbors(n_neighbors=9): 0.9780645792142071
+<div class="newline"></div>KNeighbors(n_neighbors=10): 0.9755550897728812
 <div class="newline"></div></pre></div>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">model_selection</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">metrics</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">LinearSVC</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="View documentation for sklearn.svm.LinearSVC"><span class="n">LinearSVC</span></a>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB" title="View documentation for sklearn.naive_bayes.GaussianNB"><span class="n">GaussianNB</span></a>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier" title="View documentation for sklearn.neighbors.KNeighborsClassifier"><span class="n">KNeighborsClassifier</span></a>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">digits</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_digits</span><span class="p">()</span>
+<div class="newline"></div><span class="n">digits</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">datasets</span><span class="o">.</span><span class="n">load_digits</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">X</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span>
 <div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span>
-<div class="newline"></div><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+<div class="newline"></div><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">model_selection</span><span class="o">.</span><span class="n">train_test_split</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
 <div class="newline"></div>                            <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="k">for</span> <span class="n">Model</span> <span class="ow">in</span> <span class="p">[</span><span class="n">LinearSVC</span><span class="p">,</span> <span class="n">GaussianNB</span><span class="p">,</span> <span class="n">KNeighborsClassifier</span><span class="p">]:</span>
+<div class="newline"></div><span class="k">for</span> <span class="n">Model</span> <span class="ow">in</span> <span class="p">[</span><a href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="View documentation for sklearn.svm.LinearSVC"><span class="n">LinearSVC</span></a><span class="p">,</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB" title="View documentation for sklearn.naive_bayes.GaussianNB"><span class="n">GaussianNB</span></a><span class="p">,</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier" title="View documentation for sklearn.neighbors.KNeighborsClassifier"><span class="n">KNeighborsClassifier</span></a><span class="p">]:</span>
 <div class="newline"></div>    <span class="n">clf</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div>    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 <div class="newline"></div>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
-<div class="newline"></div>          <span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)))</span>
+<div class="newline"></div>          <span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html#sklearn.metrics.f1_score" title="View documentation for sklearn.metrics.f1_score"><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)))</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s1">&#39;------------------&#39;</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># test SVC loss</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">loss</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="s1">&#39;l2&#39;</span><span class="p">]:</span>
-<div class="newline"></div>    <span class="n">clf</span> <span class="o">=</span> <span class="n">LinearSVC</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">clf</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="View documentation for sklearn.svm.LinearSVC"><span class="n">LinearSVC</span></a><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div>    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 <div class="newline"></div>    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;LinearSVC(loss=&#39;{0}&#39;): {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span>
-<div class="newline"></div>          <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)))</span>
+<div class="newline"></div>          <a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html#sklearn.metrics.f1_score" title="View documentation for sklearn.metrics.f1_score"><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)))</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s1">&#39;-------------------&#39;</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># test the number of neighbors</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">n_neighbors</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
-<div class="newline"></div>    <span class="n">clf</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">clf</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier" title="View documentation for sklearn.neighbors.KNeighborsClassifier"><span class="n">KNeighborsClassifier</span></a><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div>    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 <div class="newline"></div>    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;KNeighbors(n_neighbors={0}): {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_neighbors</span><span class="p">,</span>
-<div class="newline"></div>        <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)))</span>
+<div class="newline"></div>        <a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html#sklearn.metrics.f1_score" title="View documentation for sklearn.metrics.f1_score"><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)))</span>
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.380 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  1.051 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-scikit-learn-auto-examples-plot-compare-classifiers-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_compare_classifiers.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_compare_classifiers.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_compare_classifiers.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_compare_classifiers.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
 </div>
 
@@ -277,10 +281,10 @@ digits data.</p>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_polynomial_regression.html" title="3.6.9.10. Plot fitting a 9th order polynomial"
+          <a href="plot_polynomial_regression.html" title="3.6.10.10. Plot fitting a 9th order polynomial"
              >next</a></li>
         <li class="right" >
-          <a href="plot_separator.html" title="3.6.9.8. Simple picture of the formal problem of machine learning"
+          <a href="plot_separator.html" title="3.6.10.8. Simple picture of the formal problem of machine learning"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
@@ -308,7 +312,7 @@ digits data.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>

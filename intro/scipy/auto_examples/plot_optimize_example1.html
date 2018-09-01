@@ -12,7 +12,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2017.1.1',
+        VERSION:     '2018.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -169,67 +169,71 @@ $(function () {
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="finding-the-minimum-of-a-smooth-function">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-intro-scipy-auto-examples-plot-optimize-example1-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="finding-the-minimum-of-a-smooth-function">
 <span id="sphx-glr-intro-scipy-auto-examples-plot-optimize-example1-py"></span><h1>1.5.12.1. Finding the minimum of a smooth function<a class="headerlink" href="#finding-the-minimum-of-a-smooth-function" title="Permalink to this headline">¶</a></h1>
 <p>Demos various methods to find the minimum of a function.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<div class="newline"></div>    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">10</span><span class="o">*</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sin.html#numpy.sin" title="View documentation for numpy.sin"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_optimize_example1_001.png" class="align-center" src="../../../_images/sphx_glr_plot_optimize_example1_001.png" />
+<img alt="../../../_images/sphx_glr_plot_optimize_example1_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_optimize_example1_001.png" />
 <p>Now find the minimum with a few methods</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># The default (Nelder Mead)</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="View documentation for scipy.optimize.minimize"><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span></a><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">fun</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.945823375615215</span>
-<div class="newline"></div> <span class="n">hess_inv</span><span class="p">:</span> <span class="n">array</span><span class="p">([[</span> <span class="mf">0.08589237</span><span class="p">]])</span>
-<div class="newline"></div>      <span class="n">jac</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span> <span class="o">-</span><span class="mf">1.19209290e-06</span><span class="p">])</span>
-<div class="newline"></div>  <span class="n">message</span><span class="p">:</span> <span class="s1">&#39;Optimization terminated successfully.&#39;</span>
-<div class="newline"></div>     <span class="n">nfev</span><span class="p">:</span> <span class="mi">18</span>
-<div class="newline"></div>      <span class="n">nit</span><span class="p">:</span> <span class="mi">5</span>
-<div class="newline"></div>     <span class="n">njev</span><span class="p">:</span> <span class="mi">6</span>
-<div class="newline"></div>   <span class="n">status</span><span class="p">:</span> <span class="mi">0</span>
-<div class="newline"></div>  <span class="n">success</span><span class="p">:</span> <span class="kc">True</span>
-<div class="newline"></div>        <span class="n">x</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.30644012</span><span class="p">])</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>fun: 0.0
+<div class="newline"></div> hess_inv: array([[1021.1]])
+<div class="newline"></div>      jac: array([10.00000001])
+<div class="newline"></div>  message: &#39;Maximum number of iterations has been exceeded.&#39;
+<div class="newline"></div>     nfev: 3
+<div class="newline"></div>      nit: 200
+<div class="newline"></div>     njev: 1
+<div class="newline"></div>   status: 1
+<div class="newline"></div>  success: False
+<div class="newline"></div>        x: array([-1.01])
 <div class="newline"></div></pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">))</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="View documentation for scipy.optimize.minimize"><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span></a><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">))</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">fun</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">7.94582338</span><span class="p">])</span>
-<div class="newline"></div> <span class="n">hess_inv</span><span class="p">:</span> <span class="o">&lt;</span><span class="mi">1</span><span class="n">x1</span> <span class="n">LbfgsInvHessProduct</span> <span class="k">with</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="o">&gt;</span>
-<div class="newline"></div>      <span class="n">jac</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span> <span class="o">-</span><span class="mf">1.42108547e-06</span><span class="p">])</span>
-<div class="newline"></div>  <span class="n">message</span><span class="p">:</span> <span class="s1">&#39;CONVERGENCE: NORM_OF_PROJECTED_GRADIENT_&lt;=_PGTOL&#39;</span>
-<div class="newline"></div>     <span class="n">nfev</span><span class="p">:</span> <span class="mi">12</span>
-<div class="newline"></div>      <span class="n">nit</span><span class="p">:</span> <span class="mi">5</span>
-<div class="newline"></div>   <span class="n">status</span><span class="p">:</span> <span class="mi">0</span>
-<div class="newline"></div>  <span class="n">success</span><span class="p">:</span> <span class="kc">True</span>
-<div class="newline"></div>        <span class="n">x</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.30644013</span><span class="p">])</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>fun: array([-7.94582338])
+<div class="newline"></div> hess_inv: &lt;1x1 LbfgsInvHessProduct with dtype=float64&gt;
+<div class="newline"></div>      jac: array([-1.42108547e-06])
+<div class="newline"></div>  message: b&#39;CONVERGENCE: NORM_OF_PROJECTED_GRADIENT_&lt;=_PGTOL&#39;
+<div class="newline"></div>     nfev: 12
+<div class="newline"></div>      nit: 5
+<div class="newline"></div>   status: 0
+<div class="newline"></div>  success: True
+<div class="newline"></div>        x: array([-1.30644013])
 <div class="newline"></div></pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.106 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.049 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-intro-scipy-auto-examples-plot-optimize-example1-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_optimize_example1.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_optimize_example1.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_optimize_example1.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_optimize_example1.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
 </div>
 
@@ -298,7 +302,7 @@ $(function () {
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>

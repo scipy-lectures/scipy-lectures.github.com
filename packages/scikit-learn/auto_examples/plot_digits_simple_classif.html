@@ -5,14 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>3.6.9.13. Simple visualization and classification of the digits dataset &#8212; Scipy lecture notes</title>
+    <title>3.6.10.13. Simple visualization and classification of the digits dataset &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2017.1.1',
+        VERSION:     '2018.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="3.6.9.14. The eigenfaces example: chaining PCA and SVMs" href="plot_eigenfaces.html" />
-    <link rel="prev" title="3.6.9.12. Nearest-neighbor prediction on iris" href="plot_iris_knn.html" />
+    <link rel="next" title="3.6.10.14. The eigenfaces example: chaining PCA and SVMs" href="plot_eigenfaces.html" />
+    <link rel="prev" title="3.6.10.12. Nearest-neighbor prediction on iris" href="plot_iris_knn.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -133,10 +133,10 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_eigenfaces.html" title="3.6.9.14. The eigenfaces example: chaining PCA and SVMs"
+          <a href="plot_eigenfaces.html" title="3.6.10.14. The eigenfaces example: chaining PCA and SVMs"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="plot_iris_knn.html" title="3.6.9.12. Nearest-neighbor prediction on iris"
+          <a href="plot_iris_knn.html" title="3.6.10.12. Nearest-neighbor prediction on iris"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
@@ -169,19 +169,23 @@ $(function () {
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="simple-visualization-and-classification-of-the-digits-dataset">
-<span id="sphx-glr-packages-scikit-learn-auto-examples-plot-digits-simple-classif-py"></span><h1>3.6.9.13. Simple visualization and classification of the digits dataset<a class="headerlink" href="#simple-visualization-and-classification-of-the-digits-dataset" title="Permalink to this headline">¶</a></h1>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-packages-scikit-learn-auto-examples-plot-digits-simple-classif-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="simple-visualization-and-classification-of-the-digits-dataset">
+<span id="sphx-glr-packages-scikit-learn-auto-examples-plot-digits-simple-classif-py"></span><h1>3.6.10.13. Simple visualization and classification of the digits dataset<a class="headerlink" href="#simple-visualization-and-classification-of-the-digits-dataset" title="Permalink to this headline">¶</a></h1>
 <p>Plot the first few samples of the digits dataset and a 2D representation
 built using PCA, then do a simple classification</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
-<div class="newline"></div><span class="n">digits</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">load_digits</span></a>
+<div class="newline"></div><span class="n">digits</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">load_digits</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <div class="section" id="plot-the-data-images-of-digits">
 <h2>Plot the data: images of digits<a class="headerlink" href="#plot-the-data-images-of-digits" title="Permalink to this headline">¶</a></h2>
 <p>Each data in a 8x8 image</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>  <span class="c1"># figure size in inches</span>
+<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>  <span class="c1"># figure size in inches</span>
 <div class="newline"></div><span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span>
@@ -191,31 +195,31 @@ built using PCA, then do a simple classification</p>
 <div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_digits_simple_classif_001.png" class="align-center" src="../../../_images/sphx_glr_plot_digits_simple_classif_001.png" />
+<img alt="../../../_images/sphx_glr_plot_digits_simple_classif_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_digits_simple_classif_001.png" />
 </div>
 <div class="section" id="plot-a-projection-on-the-2-first-principal-axis">
 <h2>Plot a projection on the 2 first principal axis<a class="headerlink" href="#plot-a-projection-on-the-2-first-principal-axis" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
-<div class="newline"></div><span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="View documentation for sklearn.decomposition.PCA"><span class="n">PCA</span></a>
+<div class="newline"></div><span class="n">pca</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="View documentation for sklearn.decomposition.PCA"><span class="n">PCA</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <div class="newline"></div><span class="n">proj</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">proj</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">proj</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Paired&quot;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.scatter.html#matplotlib.pyplot.scatter" title="View documentation for matplotlib.pyplot.scatter"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span></a><span class="p">(</span><span class="n">proj</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">proj</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Paired&quot;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_digits_simple_classif_002.png" class="align-center" src="../../../_images/sphx_glr_plot_digits_simple_classif_002.png" />
+<img alt="../../../_images/sphx_glr_plot_digits_simple_classif_002.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_digits_simple_classif_002.png" />
 </div>
 <div class="section" id="classify-with-gaussian-naive-bayes">
 <h2>Classify with Gaussian naive Bayes<a class="headerlink" href="#classify-with-gaussian-naive-bayes" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB" title="View documentation for sklearn.naive_bayes.GaussianNB"><span class="n">GaussianNB</span></a>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># split the data into training and validation sets</span>
-<div class="newline"></div><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<div class="newline"></div><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># train the model</span>
-<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB" title="View documentation for sklearn.naive_bayes.GaussianNB"><span class="n">GaussianNB</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># use the model to predict the labels of the test data</span>
@@ -223,7 +227,7 @@ built using PCA, then do a simple classification</p>
 <div class="newline"></div><span class="n">expected</span> <span class="o">=</span> <span class="n">y_test</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Plot the prediction</span>
-<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>  <span class="c1"># figure size in inches</span>
+<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>  <span class="c1"># figure size in inches</span>
 <div class="newline"></div><span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># plot the digits: each image is 8x8 pixels</span>
@@ -239,7 +243,7 @@ built using PCA, then do a simple classification</p>
 <div class="newline"></div>        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">predicted</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_digits_simple_classif_003.png" class="align-center" src="../../../_images/sphx_glr_plot_digits_simple_classif_003.png" />
+<img alt="../../../_images/sphx_glr_plot_digits_simple_classif_003.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_digits_simple_classif_003.png" />
 </div>
 <div class="section" id="quantify-the-performance">
 <h2>Quantify the performance<a class="headerlink" href="#quantify-the-performance" title="Permalink to this headline">¶</a></h2>
@@ -249,7 +253,7 @@ built using PCA, then do a simple classification</p>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="mi">395</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>402
 <div class="newline"></div></pre></div>
 </div>
 <p>The total number of data points</p>
@@ -257,7 +261,7 @@ built using PCA, then do a simple classification</p>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="mi">450</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>450
 <div class="newline"></div></pre></div>
 </div>
 <p>And now, the ration of correct predictions</p>
@@ -266,53 +270,53 @@ built using PCA, then do a simple classification</p>
 </div>
 <p>Print the classification report</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">))</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html#sklearn.metrics.classification_report" title="View documentation for sklearn.metrics.classification_report"><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span></a><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">))</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">precision</span>    <span class="n">recall</span>  <span class="n">f1</span><span class="o">-</span><span class="n">score</span>   <span class="n">support</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>precision    recall  f1-score   support
 <div class="newline"></div>
-<div class="newline"></div>          <span class="mi">0</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>        <span class="mi">47</span>
-<div class="newline"></div>          <span class="mi">1</span>       <span class="mf">0.74</span>      <span class="mf">0.91</span>      <span class="mf">0.82</span>        <span class="mi">46</span>
-<div class="newline"></div>          <span class="mi">2</span>       <span class="mf">0.97</span>      <span class="mf">0.81</span>      <span class="mf">0.89</span>        <span class="mi">48</span>
-<div class="newline"></div>          <span class="mi">3</span>       <span class="mf">1.00</span>      <span class="mf">0.81</span>      <span class="mf">0.89</span>        <span class="mi">42</span>
-<div class="newline"></div>          <span class="mi">4</span>       <span class="mf">0.96</span>      <span class="mf">0.92</span>      <span class="mf">0.94</span>        <span class="mi">49</span>
-<div class="newline"></div>          <span class="mi">5</span>       <span class="mf">0.86</span>      <span class="mf">0.95</span>      <span class="mf">0.90</span>        <span class="mi">40</span>
-<div class="newline"></div>          <span class="mi">6</span>       <span class="mf">0.94</span>      <span class="mf">0.98</span>      <span class="mf">0.96</span>        <span class="mi">48</span>
-<div class="newline"></div>          <span class="mi">7</span>       <span class="mf">0.79</span>      <span class="mf">0.98</span>      <span class="mf">0.87</span>        <span class="mi">46</span>
-<div class="newline"></div>          <span class="mi">8</span>       <span class="mf">0.67</span>      <span class="mf">0.73</span>      <span class="mf">0.70</span>        <span class="mi">45</span>
-<div class="newline"></div>          <span class="mi">9</span>       <span class="mf">1.00</span>      <span class="mf">0.64</span>      <span class="mf">0.78</span>        <span class="mi">39</span>
+<div class="newline"></div>          0       0.98      1.00      0.99        53
+<div class="newline"></div>          1       0.82      0.88      0.85        42
+<div class="newline"></div>          2       0.90      0.91      0.90        57
+<div class="newline"></div>          3       0.94      0.76      0.84        38
+<div class="newline"></div>          4       0.97      0.85      0.91        40
+<div class="newline"></div>          5       0.93      0.96      0.95        45
+<div class="newline"></div>          6       0.95      0.97      0.96        40
+<div class="newline"></div>          7       0.78      0.98      0.87        51
+<div class="newline"></div>          8       0.78      0.87      0.82        46
+<div class="newline"></div>          9       1.00      0.66      0.79        38
 <div class="newline"></div>
-<div class="newline"></div><span class="n">avg</span> <span class="o">/</span> <span class="n">total</span>       <span class="mf">0.89</span>      <span class="mf">0.88</span>      <span class="mf">0.88</span>       <span class="mi">450</span>
+<div class="newline"></div>avg / total       0.90      0.89      0.89       450
 <div class="newline"></div></pre></div>
 </div>
 <p>Print the confusion matrix</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">))</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html#sklearn.metrics.confusion_matrix" title="View documentation for sklearn.metrics.confusion_matrix"><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span></a><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">))</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">47</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span> <span class="mi">0</span> <span class="mi">42</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">2</span>  <span class="mi">0</span>  <span class="mi">2</span>  <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span> <span class="mi">0</span>  <span class="mi">4</span> <span class="mi">39</span>  <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">3</span>  <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span> <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">0</span> <span class="mi">34</span>  <span class="mi">0</span>  <span class="mi">2</span>  <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">4</span>  <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span> <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span> <span class="mi">45</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">4</span>  <span class="mi">0</span>  <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span> <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span> <span class="mi">38</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">2</span>  <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span> <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span> <span class="mi">47</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span> <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span> <span class="mi">45</span>  <span class="mi">0</span>  <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span> <span class="mi">0</span>  <span class="mi">7</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">5</span> <span class="mi">33</span>  <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span> <span class="mi">0</span>  <span class="mi">3</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">4</span>  <span class="mi">0</span>  <span class="mi">2</span>  <span class="mi">5</span> <span class="mi">25</span><span class="p">]]</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>[[53  0  0  0  0  0  0  0  0  0]
+<div class="newline"></div> [ 0 37  1  0  0  0  2  1  1  0]
+<div class="newline"></div> [ 0  2 52  0  1  0  0  0  2  0]
+<div class="newline"></div> [ 0  0  3 29  0  1  0  1  4  0]
+<div class="newline"></div> [ 0  1  0  0 34  0  0  4  1  0]
+<div class="newline"></div> [ 0  0  0  1  0 43  0  0  1  0]
+<div class="newline"></div> [ 0  0  0  0  0  1 39  0  0  0]
+<div class="newline"></div> [ 0  0  0  0  0  1  0 50  0  0]
+<div class="newline"></div> [ 0  4  0  0  0  0  0  2 40  0]
+<div class="newline"></div> [ 1  1  2  1  0  0  0  6  2 25]]
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  12.905 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  4.225 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-scikit-learn-auto-examples-plot-digits-simple-classif-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_digits_simple_classif.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_digits_simple_classif.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_digits_simple_classif.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_digits_simple_classif.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
 </div>
 </div>
@@ -326,7 +330,7 @@ built using PCA, then do a simple classification</p>
 	<div class="sidebartoc">
   <h3><a href="../../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">3.6.9.13. Simple visualization and classification of the digits dataset</a><ul>
+<li><a class="reference internal" href="#">3.6.10.13. Simple visualization and classification of the digits dataset</a><ul>
 <li><a class="reference internal" href="#plot-the-data-images-of-digits">Plot the data: images of digits</a></li>
 <li><a class="reference internal" href="#plot-a-projection-on-the-2-first-principal-axis">Plot a projection on the 2 first principal axis</a></li>
 <li><a class="reference internal" href="#classify-with-gaussian-naive-bayes">Classify with Gaussian naive Bayes</a></li>
@@ -362,10 +366,10 @@ built using PCA, then do a simple classification</p>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_eigenfaces.html" title="3.6.9.14. The eigenfaces example: chaining PCA and SVMs"
+          <a href="plot_eigenfaces.html" title="3.6.10.14. The eigenfaces example: chaining PCA and SVMs"
              >next</a></li>
         <li class="right" >
-          <a href="plot_iris_knn.html" title="3.6.9.12. Nearest-neighbor prediction on iris"
+          <a href="plot_iris_knn.html" title="3.6.10.12. Nearest-neighbor prediction on iris"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
@@ -393,7 +397,7 @@ built using PCA, then do a simple classification</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>

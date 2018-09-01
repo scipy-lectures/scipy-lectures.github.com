@@ -12,7 +12,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '2017.1.1',
+        VERSION:     '2018.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -169,7 +169,11 @@ $(function () {
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="image-denoising-by-fft">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-intro-scipy-auto-examples-solutions-plot-fft-image-denoise-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="image-denoising-by-fft">
 <span id="sphx-glr-intro-scipy-auto-examples-solutions-plot-fft-image-denoise-py"></span><h1>Image denoising by FFT<a class="headerlink" href="#image-denoising-by-fft" title="Permalink to this headline">¶</a></h1>
 <p>Denoise an image (<a class="reference download internal" href="../../../../_downloads/moonlanding.png" download=""><code class="xref download docutils literal"><span class="pre">../../../../data/moonlanding.png</span></code></a>) by
 implementing a blur with an FFT.</p>
@@ -183,34 +187,34 @@ implementing a blur with an FFT.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">im</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;../../../../data/moonlanding.png&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<div class="newline"></div><span class="n">im</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imread.html#matplotlib.pyplot.imread" title="View documentation for matplotlib.pyplot.imread"><span class="n">plt</span><span class="o">.</span><span class="n">imread</span></a><span class="p">(</span><span class="s1">&#39;../../../../data/moonlanding.png&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Original image&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="View documentation for matplotlib.pyplot.imshow"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Original image&#39;</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_001.png" class="align-center" src="../../../../_images/sphx_glr_plot_fft_image_denoise_001.png" />
+<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_001.png" class="sphx-glr-single-img" src="../../../../_images/sphx_glr_plot_fft_image_denoise_001.png" />
 </div>
 <div class="section" id="compute-the-2d-fft-of-the-input-image">
 <h2>Compute the 2d FFT of the input image<a class="headerlink" href="#compute-the-2d-fft-of-the-input-image" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">fftpack</span>
-<div class="newline"></div><span class="n">im_fft</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">fft2</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<div class="newline"></div><span class="n">im_fft</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.fft2.html#scipy.fftpack.fft2" title="View documentation for scipy.fftpack.fft2"><span class="n">fftpack</span><span class="o">.</span><span class="n">fft2</span></a><span class="p">(</span><span class="n">im</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Show the results</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">def</span> <span class="nf">plot_spectrum</span><span class="p">(</span><span class="n">im_fft</span><span class="p">):</span>
-<div class="newline"></div>    <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LogNorm</span>
+<div class="newline"></div>    <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.LogNorm.html#matplotlib.colors.LogNorm" title="View documentation for matplotlib.colors.LogNorm"><span class="n">LogNorm</span></a>
 <div class="newline"></div>    <span class="c1"># A logarithmic colormap</span>
-<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">im_fft</span><span class="p">),</span> <span class="n">norm</span><span class="o">=</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
-<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="View documentation for matplotlib.pyplot.imshow"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">im_fft</span><span class="p">),</span> <span class="n">norm</span><span class="o">=</span><a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.LogNorm.html#matplotlib.colors.LogNorm" title="View documentation for matplotlib.colors.LogNorm"><span class="n">LogNorm</span></a><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">()</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">plot_spectrum</span><span class="p">(</span><span class="n">im_fft</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Fourier transform&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Fourier transform&#39;</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_002.png" class="align-center" src="../../../../_images/sphx_glr_plot_fft_image_denoise_002.png" />
+<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_002.png" class="sphx-glr-single-img" src="../../../../_images/sphx_glr_plot_fft_image_denoise_002.png" />
 </div>
 <div class="section" id="filter-in-fft">
 <h2>Filter in FFT<a class="headerlink" href="#filter-in-fft" title="Permalink to this headline">¶</a></h2>
@@ -234,50 +238,50 @@ implementing a blur with an FFT.</p>
 <div class="newline"></div><span class="c1"># Similarly with the columns:</span>
 <div class="newline"></div><span class="n">im_fft2</span><span class="p">[:,</span> <span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">keep_fraction</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">keep_fraction</span><span class="p">))]</span> <span class="o">=</span> <span class="mi">0</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">plot_spectrum</span><span class="p">(</span><span class="n">im_fft2</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Filtered Spectrum&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Filtered Spectrum&#39;</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_003.png" class="align-center" src="../../../../_images/sphx_glr_plot_fft_image_denoise_003.png" />
+<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_003.png" class="sphx-glr-single-img" src="../../../../_images/sphx_glr_plot_fft_image_denoise_003.png" />
 </div>
 <div class="section" id="reconstruct-the-final-image">
 <h2>Reconstruct the final image<a class="headerlink" href="#reconstruct-the-final-image" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Reconstruct the denoised image from the filtered spectrum, keep only the</span>
 <div class="newline"></div><span class="c1"># real part for display.</span>
-<div class="newline"></div><span class="n">im_new</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">ifft2</span><span class="p">(</span><span class="n">im_fft2</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+<div class="newline"></div><span class="n">im_new</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.ifft2.html#scipy.fftpack.ifft2" title="View documentation for scipy.fftpack.ifft2"><span class="n">fftpack</span><span class="o">.</span><span class="n">ifft2</span></a><span class="p">(</span><span class="n">im_fft2</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im_new</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Reconstructed Image&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="View documentation for matplotlib.pyplot.imshow"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><span class="n">im_new</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Reconstructed Image&#39;</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_004.png" class="align-center" src="../../../../_images/sphx_glr_plot_fft_image_denoise_004.png" />
+<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_004.png" class="sphx-glr-single-img" src="../../../../_images/sphx_glr_plot_fft_image_denoise_004.png" />
 </div>
 <div class="section" id="easier-and-better-scipy-ndimage-gaussian-filter">
-<h2>Easier and better: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter.html#scipy.ndimage.gaussian_filter" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.ndimage.gaussian_filter()</span></code></a><a class="headerlink" href="#easier-and-better-scipy-ndimage-gaussian-filter" title="Permalink to this headline">¶</a></h2>
+<h2>Easier and better: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter.html#scipy.ndimage.gaussian_filter" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.ndimage.gaussian_filter()</span></code></a><a class="headerlink" href="#easier-and-better-scipy-ndimage-gaussian-filter" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div>Implementing filtering directly with FFTs is tricky and time consuming.
-We can use the Gaussian filter from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/ndimage.html#module-scipy.ndimage" title="(in SciPy v1.0.0)"><code class="xref py py-mod docutils literal"><span class="pre">scipy.ndimage</span></code></a></div></blockquote>
+We can use the Gaussian filter from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/ndimage.html#module-scipy.ndimage" title="(in SciPy v1.1.0)"><code class="xref py py-mod docutils literal"><span class="pre">scipy.ndimage</span></code></a></div></blockquote>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
-<div class="newline"></div><span class="n">im_blur</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<div class="newline"></div><span class="n">im_blur</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter.html#scipy.ndimage.gaussian_filter" title="View documentation for scipy.ndimage.gaussian_filter"><span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span></a><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im_blur</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Blurred image&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="View documentation for matplotlib.pyplot.imshow"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><span class="n">im_blur</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Blurred image&#39;</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_005.png" class="align-center" src="../../../../_images/sphx_glr_plot_fft_image_denoise_005.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.868 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_005.png" class="sphx-glr-single-img" src="../../../../_images/sphx_glr_plot_fft_image_denoise_005.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.275 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-intro-scipy-auto-examples-solutions-plot-fft-image-denoise-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../../_downloads/plot_fft_image_denoise.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_fft_image_denoise.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../../_downloads/plot_fft_image_denoise.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_fft_image_denoise.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
 </div>
 </div>
@@ -359,7 +363,7 @@ We can use the Gaussian filter from <a class="reference external" href="https://
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>

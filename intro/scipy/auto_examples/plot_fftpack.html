@@ -5,14 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>1.5.12.17. Plotting and manipulating FFTs for filtering &#8212; Scipy lecture notes</title>
+    <title>1.5.12.18. Plotting and manipulating FFTs for filtering &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2017.1.1',
+        VERSION:     '2018.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Crude periodicity finding" href="solutions/plot_periodicity_finder.html" />
-    <link rel="prev" title="1.5.12.16. Plot filtering on images" href="plot_image_filters.html" />
+    <link rel="prev" title="1.5.12.17. Plot filtering on images" href="plot_image_filters.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -136,7 +136,7 @@ $(function () {
           <a href="solutions/plot_periodicity_finder.html" title="Crude periodicity finding"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="plot_image_filters.html" title="1.5.12.16. Plot filtering on images"
+          <a href="plot_image_filters.html" title="1.5.12.17. Plot filtering on images"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >1. Getting started with Python for science</a> &#187;</li>
@@ -169,12 +169,16 @@ $(function () {
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="plotting-and-manipulating-ffts-for-filtering">
-<span id="sphx-glr-intro-scipy-auto-examples-plot-fftpack-py"></span><h1>1.5.12.17. Plotting and manipulating FFTs for filtering<a class="headerlink" href="#plotting-and-manipulating-ffts-for-filtering" title="Permalink to this headline">¶</a></h1>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-intro-scipy-auto-examples-plot-fftpack-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="plotting-and-manipulating-ffts-for-filtering">
+<span id="sphx-glr-intro-scipy-auto-examples-plot-fftpack-py"></span><h1>1.5.12.18. Plotting and manipulating FFTs for filtering<a class="headerlink" href="#plotting-and-manipulating-ffts-for-filtering" title="Permalink to this headline">¶</a></h1>
 <p>Plot the power of the FFT of a signal and inverse FFT back to reconstruct
 a signal.</p>
-<p>This example demonstrate <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.fft.html#scipy.fftpack.fft" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.fftpack.fft()</span></code></a>,
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.fftfreq.html#scipy.fftpack.fftfreq" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.fftpack.fftfreq()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.ifft.html#scipy.fftpack.ifft" title="(in SciPy v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.fftpack.ifft()</span></code></a>. It
+<p>This example demonstrate <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.fft.html#scipy.fftpack.fft" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.fftpack.fft()</span></code></a>,
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.fftfreq.html#scipy.fftpack.fftfreq" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.fftpack.fftfreq()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.ifft.html#scipy.fftpack.ifft" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.fftpack.ifft()</span></code></a>. It
 implements a basic filter that is very suboptimal, and should not be
 used.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -185,58 +189,58 @@ used.</p>
 <div class="section" id="generate-the-signal">
 <h2>Generate the signal<a class="headerlink" href="#generate-the-signal" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Seed the random number generator</span>
-<div class="newline"></div><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<div class="newline"></div><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">time_step</span> <span class="o">=</span> <span class="mf">0.02</span>
 <div class="newline"></div><span class="n">period</span> <span class="o">=</span> <span class="mf">5.</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">time_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">time_step</span><span class="p">)</span>
-<div class="newline"></div><span class="n">sig</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">period</span> <span class="o">*</span> <span class="n">time_vec</span><span class="p">)</span>
-<div class="newline"></div>       <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">time_vec</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+<div class="newline"></div><span class="n">time_vec</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">time_step</span><span class="p">)</span>
+<div class="newline"></div><span class="n">sig</span> <span class="o">=</span> <span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sin.html#numpy.sin" title="View documentation for numpy.sin"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <a href="https://docs.scipy.org/doc/numpy/reference/constants.html#numpy.pi" title="View documentation for numpy.pi"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">/</span> <span class="n">period</span> <span class="o">*</span> <span class="n">time_vec</span><span class="p">)</span>
+<div class="newline"></div>       <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randn.html#numpy.random.randn" title="View documentation for numpy.random.randn"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><span class="n">time_vec</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_vec</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original signal&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">time_vec</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original signal&#39;</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_fftpack_001.png" class="align-center" src="../../../_images/sphx_glr_plot_fftpack_001.png" />
+<img alt="../../../_images/sphx_glr_plot_fftpack_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_fftpack_001.png" />
 </div>
 <div class="section" id="compute-and-plot-the-power">
 <h2>Compute and plot the power<a class="headerlink" href="#compute-and-plot-the-power" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># The FFT of the signal</span>
-<div class="newline"></div><span class="n">sig_fft</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
+<div class="newline"></div><span class="n">sig_fft</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.fft.html#scipy.fftpack.fft" title="View documentation for scipy.fftpack.fft"><span class="n">fftpack</span><span class="o">.</span><span class="n">fft</span></a><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># And the power (sig_fft is of complex dtype)</span>
 <div class="newline"></div><span class="n">power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sig_fft</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># The corresponding frequencies</span>
-<div class="newline"></div><span class="n">sample_freq</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">time_step</span><span class="p">)</span>
+<div class="newline"></div><span class="n">sample_freq</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.fftfreq.html#scipy.fftpack.fftfreq" title="View documentation for scipy.fftpack.fftfreq"><span class="n">fftpack</span><span class="o">.</span><span class="n">fftfreq</span></a><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">time_step</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Plot the FFT power</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sample_freq</span><span class="p">,</span> <span class="n">power</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency [Hz]&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;plower&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">sample_freq</span><span class="p">,</span> <span class="n">power</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;Frequency [Hz]&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;plower&#39;</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Find the peak frequency: we can focus on only the positive frequencies</span>
-<div class="newline"></div><span class="n">pos_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sample_freq</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pos_mask</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.where.html#numpy.where" title="View documentation for numpy.where"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">(</span><span class="n">sample_freq</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 <div class="newline"></div><span class="n">freqs</span> <span class="o">=</span> <span class="n">sample_freq</span><span class="p">[</span><span class="n">pos_mask</span><span class="p">]</span>
 <div class="newline"></div><span class="n">peak_freq</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[</span><span class="n">power</span><span class="p">[</span><span class="n">pos_mask</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Check that it does indeed correspond to the frequency that we generate</span>
 <div class="newline"></div><span class="c1"># the signal with</span>
-<div class="newline"></div><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">peak_freq</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="n">period</span><span class="p">)</span>
+<div class="newline"></div><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html#numpy.allclose" title="View documentation for numpy.allclose"><span class="n">np</span><span class="o">.</span><span class="n">allclose</span></a><span class="p">(</span><span class="n">peak_freq</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="n">period</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># An inner plot to show the peak frequency</span>
-<div class="newline"></div><span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Peak frequency&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqs</span><span class="p">[:</span><span class="mi">8</span><span class="p">],</span> <span class="n">power</span><span class="p">[:</span><span class="mi">8</span><span class="p">])</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
+<div class="newline"></div><span class="n">axes</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">([</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Peak frequency&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">[:</span><span class="mi">8</span><span class="p">],</span> <span class="n">power</span><span class="p">[:</span><span class="mi">8</span><span class="p">])</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.setp.html#matplotlib.pyplot.setp" title="View documentation for matplotlib.pyplot.setp"><span class="n">plt</span><span class="o">.</span><span class="n">setp</span></a><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># scipy.signal.find_peaks_cwt can also be used for more advanced</span>
 <div class="newline"></div><span class="c1"># peak detection</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_fftpack_002.png" class="align-center" src="../../../_images/sphx_glr_plot_fftpack_002.png" />
+<img alt="../../../_images/sphx_glr_plot_fftpack_002.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_fftpack_002.png" />
 </div>
 <div class="section" id="remove-all-the-high-frequencies">
 <h2>Remove all the high frequencies<a class="headerlink" href="#remove-all-the-high-frequencies" title="Permalink to this headline">¶</a></h2>
@@ -245,32 +249,32 @@ used.</p>
 frequencies to signal.</div></blockquote>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">high_freq_fft</span> <span class="o">=</span> <span class="n">sig_fft</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <div class="newline"></div><span class="n">high_freq_fft</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sample_freq</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">peak_freq</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-<div class="newline"></div><span class="n">filtered_sig</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">high_freq_fft</span><span class="p">)</span>
+<div class="newline"></div><span class="n">filtered_sig</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.ifft.html#scipy.fftpack.ifft" title="View documentation for scipy.fftpack.ifft"><span class="n">fftpack</span><span class="o">.</span><span class="n">ifft</span></a><span class="p">(</span><span class="n">high_freq_fft</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_vec</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original signal&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_vec</span><span class="p">,</span> <span class="n">filtered_sig</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Filtered signal&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [s]&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">time_vec</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original signal&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">time_vec</span><span class="p">,</span> <span class="n">filtered_sig</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Filtered signal&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;Time [s]&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_fftpack_003.png" class="align-center" src="../../../_images/sphx_glr_plot_fftpack_003.png" />
+<img alt="../../../_images/sphx_glr_plot_fftpack_003.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_fftpack_003.png" />
 <p><strong>Note</strong> This is actually a bad way of creating a filter: such brutal
 cut-off in frequency space does not control distorsion on the signal.</p>
 <p>Filters should be created using the scipy filter design code</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.466 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.140 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-intro-scipy-auto-examples-plot-fftpack-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_fftpack.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_fftpack.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_fftpack.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_fftpack.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
 </div>
 </div>
@@ -284,7 +288,7 @@ cut-off in frequency space does not control distorsion on the signal.</p>
 	<div class="sidebartoc">
   <h3><a href="../../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">1.5.12.17. Plotting and manipulating FFTs for filtering</a><ul>
+<li><a class="reference internal" href="#">1.5.12.18. Plotting and manipulating FFTs for filtering</a><ul>
 <li><a class="reference internal" href="#generate-the-signal">Generate the signal</a></li>
 <li><a class="reference internal" href="#compute-and-plot-the-power">Compute and plot the power</a></li>
 <li><a class="reference internal" href="#remove-all-the-high-frequencies">Remove all the high frequencies</a></li>
@@ -322,7 +326,7 @@ cut-off in frequency space does not control distorsion on the signal.</p>
           <a href="solutions/plot_periodicity_finder.html" title="Crude periodicity finding"
              >next</a></li>
         <li class="right" >
-          <a href="plot_image_filters.html" title="1.5.12.16. Plot filtering on images"
+          <a href="plot_image_filters.html" title="1.5.12.17. Plot filtering on images"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >1. Getting started with Python for science</a> &#187;</li>
@@ -350,7 +354,7 @@ cut-off in frequency space does not control distorsion on the signal.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>

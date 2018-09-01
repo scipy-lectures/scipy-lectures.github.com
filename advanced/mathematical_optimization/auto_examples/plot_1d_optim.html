@@ -5,14 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>2.7.4.7. Brent’s method &#8212; Scipy lecture notes</title>
+    <title>2.7.4.8. Brent’s method &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2017.1.1',
+        VERSION:     '2018.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="2.7.4.8. Constraint optimization: visualizing the geometry" href="plot_constraints.html" />
-    <link rel="prev" title="2.7.4.6. Optimization with constraints" href="plot_non_bounds_constraints.html" />
+    <link rel="next" title="2.7.4.9. Constraint optimization: visualizing the geometry" href="plot_constraints.html" />
+    <link rel="prev" title="2.7.4.7. Optimization with constraints" href="plot_non_bounds_constraints.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -133,10 +133,10 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_constraints.html" title="2.7.4.8. Constraint optimization: visualizing the geometry"
+          <a href="plot_constraints.html" title="2.7.4.9. Constraint optimization: visualizing the geometry"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="plot_non_bounds_constraints.html" title="2.7.4.6. Optimization with constraints"
+          <a href="plot_non_bounds_constraints.html" title="2.7.4.7. Optimization with constraints"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >2. Advanced topics</a> &#187;</li>
@@ -169,22 +169,26 @@ $(function () {
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="brent-s-method">
-<span id="sphx-glr-advanced-mathematical-optimization-auto-examples-plot-1d-optim-py"></span><h1>2.7.4.7. Brent’s method<a class="headerlink" href="#brent-s-method" title="Permalink to this headline">¶</a></h1>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-advanced-mathematical-optimization-auto-examples-plot-1d-optim-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="brent-s-method">
+<span id="sphx-glr-advanced-mathematical-optimization-auto-examples-plot-1d-optim-py"></span><h1>2.7.4.8. Brent’s method<a class="headerlink" href="#brent-s-method" title="Permalink to this headline">¶</a></h1>
 <p>Illustration of 1D optimization: Brent’s method</p>
 <ul class="sphx-glr-horizontal">
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_1d_optim_001.png"><img alt="../../../_images/sphx_glr_plot_1d_optim_001.png" src="../../../_images/sphx_glr_plot_1d_optim_001.png" style="width: 141.0px; height: 117.5px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_1d_optim_001.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_1d_optim_001.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_1d_optim_002.png"><img alt="../../../_images/sphx_glr_plot_1d_optim_002.png" src="../../../_images/sphx_glr_plot_1d_optim_002.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_1d_optim_002.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_1d_optim_002.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_1d_optim_003.png"><img alt="../../../_images/sphx_glr_plot_1d_optim_003.png" src="../../../_images/sphx_glr_plot_1d_optim_003.png" style="width: 141.0px; height: 117.5px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_1d_optim_003.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_1d_optim_003.png" />
 </li>
-<li><a class="first reference internal image-reference" href="../../../_images/sphx_glr_plot_1d_optim_004.png"><img alt="../../../_images/sphx_glr_plot_1d_optim_004.png" src="../../../_images/sphx_glr_plot_1d_optim_004.png" style="width: 188.0px; height: 141.0px;" /></a>
+<li><img alt="../../../_images/sphx_glr_plot_1d_optim_004.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_1d_optim_004.png" />
 </li>
 </ul>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">Converged</span> <span class="n">at</span>  <span class="mi">6</span>
-<div class="newline"></div><span class="n">Converged</span> <span class="n">at</span>  <span class="mi">23</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Converged at  6
+<div class="newline"></div>Converged at  23
 <div class="newline"></div></pre></div>
 </div>
 <div class="line-block">
@@ -194,11 +198,11 @@ $(function () {
 <div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<div class="newline"></div><span class="n">x_0</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.exp" title="View documentation for numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<div class="newline"></div><span class="n">x_0</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.exp.html#numpy.exp" title="View documentation for numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<div class="newline"></div>    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x_0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">epsilon</span><span class="o">*</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.exp" title="View documentation for numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span> <span class="o">-</span> <span class="n">x_0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x_0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">epsilon</span><span class="o">*</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.exp.html#numpy.exp" title="View documentation for numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span> <span class="o">-</span> <span class="n">x_0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">for</span> <span class="n">epsilon</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))</span>
@@ -212,8 +216,8 @@ $(function () {
 <div class="newline"></div>    <span class="n">all_x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 <div class="newline"></div>    <span class="n">all_y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 <div class="newline"></div>    <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
-<div class="newline"></div>        <span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">minimize_scalar</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">bracket</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Brent&quot;</span><span class="p">,</span>
-<div class="newline"></div>                    <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;maxiter&quot;</span><span class="p">:</span> <span class="nb">iter</span><span class="p">},</span> <span class="n">tol</span><span class="o">=</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.finfo" title="View documentation for numpy.finfo"><span class="n">np</span><span class="o">.</span><span class="n">finfo</span></a><span class="p">(</span><span class="mf">1.</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
+<div class="newline"></div>        <span class="n">result</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize_scalar.html#scipy.optimize.minimize_scalar" title="View documentation for scipy.optimize.minimize_scalar"><span class="n">optimize</span><span class="o">.</span><span class="n">minimize_scalar</span></a><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">bracket</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Brent&quot;</span><span class="p">,</span>
+<div class="newline"></div>                    <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;maxiter&quot;</span><span class="p">:</span> <span class="nb">iter</span><span class="p">},</span> <span class="n">tol</span><span class="o">=</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.finfo.html#numpy.finfo" title="View documentation for numpy.finfo"><span class="n">np</span><span class="o">.</span><span class="n">finfo</span></a><span class="p">(</span><span class="mf">1.</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
 <div class="newline"></div>        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
 <div class="newline"></div>            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Converged at &#39;</span><span class="p">,</span> <span class="nb">iter</span><span class="p">)</span>
 <div class="newline"></div>            <span class="k">break</span>
@@ -222,7 +226,7 @@ $(function () {
 <div class="newline"></div>        <span class="n">all_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_x</span><span class="p">)</span>
 <div class="newline"></div>        <span class="n">all_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">this_x</span><span class="p">))</span>
 <div class="newline"></div>        <span class="k">if</span> <span class="nb">iter</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
-<div class="newline"></div>            <span class="n">pl</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">this_x</span> <span class="o">-</span> <span class="o">.</span><span class="mo">05</span><span class="o">*</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.html#numpy.sign" title="View documentation for numpy.sign"><span class="n">np</span><span class="o">.</span><span class="n">sign</span></a><span class="p">(</span><span class="n">this_x</span><span class="p">)</span> <span class="o">-</span> <span class="o">.</span><span class="mo">05</span><span class="p">,</span>
+<div class="newline"></div>            <span class="n">pl</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">this_x</span> <span class="o">-</span> <span class="o">.</span><span class="mo">05</span><span class="o">*</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sign.html#numpy.sign" title="View documentation for numpy.sign"><span class="n">np</span><span class="o">.</span><span class="n">sign</span></a><span class="p">(</span><span class="n">this_x</span><span class="p">)</span> <span class="o">-</span> <span class="o">.</span><span class="mo">05</span><span class="p">,</span>
 <div class="newline"></div>                    <span class="n">f</span><span class="p">(</span><span class="n">this_x</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.2</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="mi">3</span> <span class="o">-</span> <span class="nb">iter</span> <span class="o">%</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
 <div class="newline"></div>                    <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <div class="newline"></div>
@@ -241,14 +245,14 @@ $(function () {
 <div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.632 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.350 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-advanced-mathematical-optimization-auto-examples-plot-1d-optim-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_1d_optim.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_1d_optim.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_1d_optim.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_1d_optim.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
 </div>
 
@@ -286,10 +290,10 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_constraints.html" title="2.7.4.8. Constraint optimization: visualizing the geometry"
+          <a href="plot_constraints.html" title="2.7.4.9. Constraint optimization: visualizing the geometry"
              >next</a></li>
         <li class="right" >
-          <a href="plot_non_bounds_constraints.html" title="2.7.4.6. Optimization with constraints"
+          <a href="plot_non_bounds_constraints.html" title="2.7.4.7. Optimization with constraints"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >2. Advanced topics</a> &#187;</li>
@@ -317,7 +321,7 @@ $(function () {
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>

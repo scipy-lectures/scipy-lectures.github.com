@@ -5,14 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>3.6.9.14. The eigenfaces example: chaining PCA and SVMs &#8212; Scipy lecture notes</title>
+    <title>3.6.10.14. The eigenfaces example: chaining PCA and SVMs &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2017.1.1',
+        VERSION:     '2018.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="3.6.9.15. Example of linear and non-linear models" href="plot_svm_non_linear.html" />
-    <link rel="prev" title="3.6.9.13. Simple visualization and classification of the digits dataset" href="plot_digits_simple_classif.html" />
+    <link rel="next" title="3.6.10.15. Example of linear and non-linear models" href="plot_svm_non_linear.html" />
+    <link rel="prev" title="3.6.10.13. Simple visualization and classification of the digits dataset" href="plot_digits_simple_classif.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -133,10 +133,10 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_svm_non_linear.html" title="3.6.9.15. Example of linear and non-linear models"
+          <a href="plot_svm_non_linear.html" title="3.6.10.15. Example of linear and non-linear models"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="plot_digits_simple_classif.html" title="3.6.9.13. Simple visualization and classification of the digits dataset"
+          <a href="plot_digits_simple_classif.html" title="3.6.10.13. Simple visualization and classification of the digits dataset"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
@@ -169,8 +169,12 @@ $(function () {
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="the-eigenfaces-example-chaining-pca-and-svms">
-<span id="sphx-glr-packages-scikit-learn-auto-examples-plot-eigenfaces-py"></span><h1>3.6.9.14. The eigenfaces example: chaining PCA and SVMs<a class="headerlink" href="#the-eigenfaces-example-chaining-pca-and-svms" title="Permalink to this headline">¶</a></h1>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-packages-scikit-learn-auto-examples-plot-eigenfaces-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="the-eigenfaces-example-chaining-pca-and-svms">
+<span id="sphx-glr-packages-scikit-learn-auto-examples-plot-eigenfaces-py"></span><h1>3.6.10.14. The eigenfaces example: chaining PCA and SVMs<a class="headerlink" href="#the-eigenfaces-example-chaining-pca-and-svms" title="Permalink to this headline">¶</a></h1>
 <p>The goal of this example is to show how an unsupervised method and a
 supervised one can be chained for better prediction. It starts with a
 didactic but lengthy way of doing things, and finishes with the
@@ -178,24 +182,24 @@ idiomatic approach to pipelining in scikit-learn.</p>
 <p>Here we’ll take a look at a simple facial recognition example. Ideally,
 we would use a dataset consisting of a subset of the <a class="reference external" href="http://vis-www.cs.umass.edu/lfw/">Labeled Faces in
 the Wild</a> data that is available
-with <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_lfw_people.html#sklearn.datasets.fetch_lfw_people" title="(in scikit-learn v0.19.1)"><code class="xref py py-func docutils literal"><span class="pre">sklearn.datasets.fetch_lfw_people()</span></code></a>. However, this is a
+with <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_lfw_people.html#sklearn.datasets.fetch_lfw_people" title="(in scikit-learn v0.19.2)"><code class="xref py py-func docutils literal"><span class="pre">sklearn.datasets.fetch_lfw_people()</span></code></a>. However, this is a
 relatively large download (~200MB) so we will do the tutorial on a
 simpler, less rich dataset. Feel free to explore the LFW dataset.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
-<div class="newline"></div><span class="n">faces</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">fetch_olivetti_faces</span><span class="p">()</span>
+<div class="newline"></div><span class="n">faces</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_olivetti_faces.html#sklearn.datasets.fetch_olivetti_faces" title="View documentation for sklearn.datasets.fetch_olivetti_faces"><span class="n">datasets</span><span class="o">.</span><span class="n">fetch_olivetti_faces</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">faces</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Let’s visualize these faces to see what we’re working with</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <div class="newline"></div><span class="c1"># plot several images</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
 <div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">bone</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_eigenfaces_001.png" class="align-center" src="../../../_images/sphx_glr_plot_eigenfaces_001.png" />
+<img alt="../../../_images/sphx_glr_plot_eigenfaces_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_eigenfaces_001.png" />
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">Note is that these faces have already been localized and scaled to a
@@ -210,15 +214,15 @@ resource is
 </div>
 <p>We’ll perform a Support Vector classification of the images. We’ll do a
 typical train-test split on the images:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<div class="newline"></div><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
+<div class="newline"></div><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
 <div class="newline"></div>        <span class="n">faces</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">4096</span><span class="p">)</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">4096</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>(300, 4096) (100, 4096)
 <div class="newline"></div></pre></div>
 </div>
 <div class="section" id="preprocessing-principal-component-analysis">
@@ -227,35 +231,35 @@ typical train-test split on the images:</p>
 features to a manageable size, while maintaining most of the information
 in the dataset.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">decomposition</span>
-<div class="newline"></div><span class="n">pca</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pca</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="View documentation for sklearn.decomposition.PCA"><span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <div class="newline"></div><span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>One interesting part of PCA is that it computes the “mean” face, which
 can be interesting to examine:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">mean_</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="View documentation for matplotlib.pyplot.imshow"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">mean_</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
 <div class="newline"></div>           <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">bone</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_eigenfaces_002.png" class="align-center" src="../../../_images/sphx_glr_plot_eigenfaces_002.png" />
+<img alt="../../../_images/sphx_glr_plot_eigenfaces_002.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_eigenfaces_002.png" />
 <p>The principal components measure deviations about this mean along
 orthogonal axes.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">4096</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>(150, 4096)
 <div class="newline"></div></pre></div>
 </div>
 <p>It is also interesting to visualize these principal components:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
 <div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
 <div class="newline"></div>              <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">bone</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_eigenfaces_003.png" class="align-center" src="../../../_images/sphx_glr_plot_eigenfaces_003.png" />
+<img alt="../../../_images/sphx_glr_plot_eigenfaces_003.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_eigenfaces_003.png" />
 <p>The components (“eigenfaces”) are ordered by their importance from
 top-left to bottom-right. We see that the first few components seem to
 primarily take care of lighting conditions; the remaining components
@@ -268,14 +272,14 @@ and test data onto the PCA basis:</p>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>(300, 150)
 <div class="newline"></div></pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">X_test_pca</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>(100, 150)
 <div class="newline"></div></pre></div>
 </div>
 <p>These projected components correspond to factors in a linear combination
@@ -287,7 +291,7 @@ face.</p>
 <p>Now we’ll perform support-vector-machine classification on this reduced
 dataset:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
-<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="View documentation for sklearn.svm.SVC"><span class="n">svm</span><span class="o">.</span><span class="n">SVC</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
 <div class="newline"></div><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_pca</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -295,90 +299,90 @@ dataset:</p>
 might plot a few of the test-cases with the labels learned from the
 training set:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
 <div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
 <div class="newline"></div>              <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">bone</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_pca</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+<div class="newline"></div>    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_pca</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/constants.html#numpy.newaxis" title="View documentation for numpy.newaxis"><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span></a><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
 <div class="newline"></div>    <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;black&#39;</span> <span class="k">if</span> <span class="n">y_pred</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
 <div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">y_pred</span><span class="p">],</span>
 <div class="newline"></div>                 <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;small&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../../_images/sphx_glr_plot_eigenfaces_004.png" class="align-center" src="../../../_images/sphx_glr_plot_eigenfaces_004.png" />
+<img alt="../../../_images/sphx_glr_plot_eigenfaces_004.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_eigenfaces_004.png" />
 <p>The classifier is correct on an impressive number of images given the
 simplicity of its learning model! Using a linear classifier on 150
 features derived from the pixel-level data, the algorithm correctly
 identifies a large number of the people in the images.</p>
 <p>Again, we can quantify this effectiveness using one of several measures
-from <a class="reference external" href="http://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.19.1)"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics</span></code></a>. First we can do the classification
+from <a class="reference external" href="http://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.19.2)"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics</span></code></a>. First we can do the classification
 report, which shows the precision, recall and other measures of the
 “goodness” of the classification:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
 <div class="newline"></div><span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_pca</span><span class="p">)</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html#sklearn.metrics.classification_report" title="View documentation for sklearn.metrics.classification_report"><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">precision</span>    <span class="n">recall</span>  <span class="n">f1</span><span class="o">-</span><span class="n">score</span>   <span class="n">support</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>precision    recall  f1-score   support
 <div class="newline"></div>
-<div class="newline"></div>          <span class="mi">0</span>       <span class="mf">1.00</span>      <span class="mf">0.67</span>      <span class="mf">0.80</span>         <span class="mi">6</span>
-<div class="newline"></div>          <span class="mi">1</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">4</span>
-<div class="newline"></div>          <span class="mi">2</span>       <span class="mf">0.50</span>      <span class="mf">1.00</span>      <span class="mf">0.67</span>         <span class="mi">2</span>
-<div class="newline"></div>          <span class="mi">3</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">1</span>
-<div class="newline"></div>          <span class="mi">4</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">1</span>
-<div class="newline"></div>          <span class="mi">5</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">5</span>
-<div class="newline"></div>          <span class="mi">6</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">4</span>
-<div class="newline"></div>          <span class="mi">7</span>       <span class="mf">1.00</span>      <span class="mf">0.67</span>      <span class="mf">0.80</span>         <span class="mi">3</span>
-<div class="newline"></div>          <span class="mi">9</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">1</span>
-<div class="newline"></div>         <span class="mi">10</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">4</span>
-<div class="newline"></div>         <span class="mi">11</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">1</span>
-<div class="newline"></div>         <span class="mi">12</span>       <span class="mf">0.67</span>      <span class="mf">1.00</span>      <span class="mf">0.80</span>         <span class="mi">2</span>
-<div class="newline"></div>         <span class="mi">13</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">3</span>
-<div class="newline"></div>         <span class="mi">14</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">5</span>
-<div class="newline"></div>         <span class="mi">15</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">3</span>
-<div class="newline"></div>         <span class="mi">17</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">6</span>
-<div class="newline"></div>         <span class="mi">19</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">4</span>
-<div class="newline"></div>         <span class="mi">20</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">1</span>
-<div class="newline"></div>         <span class="mi">21</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">1</span>
-<div class="newline"></div>         <span class="mi">22</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">2</span>
-<div class="newline"></div>         <span class="mi">23</span>       <span class="mf">0.50</span>      <span class="mf">1.00</span>      <span class="mf">0.67</span>         <span class="mi">1</span>
-<div class="newline"></div>         <span class="mi">24</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">2</span>
-<div class="newline"></div>         <span class="mi">25</span>       <span class="mf">1.00</span>      <span class="mf">0.50</span>      <span class="mf">0.67</span>         <span class="mi">2</span>
-<div class="newline"></div>         <span class="mi">26</span>       <span class="mf">1.00</span>      <span class="mf">0.75</span>      <span class="mf">0.86</span>         <span class="mi">4</span>
-<div class="newline"></div>         <span class="mi">27</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">1</span>
-<div class="newline"></div>         <span class="mi">28</span>       <span class="mf">0.67</span>      <span class="mf">1.00</span>      <span class="mf">0.80</span>         <span class="mi">2</span>
-<div class="newline"></div>         <span class="mi">29</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">3</span>
-<div class="newline"></div>         <span class="mi">30</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">4</span>
-<div class="newline"></div>         <span class="mi">31</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">3</span>
-<div class="newline"></div>         <span class="mi">32</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">3</span>
-<div class="newline"></div>         <span class="mi">33</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">2</span>
-<div class="newline"></div>         <span class="mi">34</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">3</span>
-<div class="newline"></div>         <span class="mi">35</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">1</span>
-<div class="newline"></div>         <span class="mi">36</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">3</span>
-<div class="newline"></div>         <span class="mi">37</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">3</span>
-<div class="newline"></div>         <span class="mi">38</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">1</span>
-<div class="newline"></div>         <span class="mi">39</span>       <span class="mf">1.00</span>      <span class="mf">1.00</span>      <span class="mf">1.00</span>         <span class="mi">3</span>
+<div class="newline"></div>          0       1.00      0.67      0.80         6
+<div class="newline"></div>          1       1.00      1.00      1.00         4
+<div class="newline"></div>          2       0.50      1.00      0.67         2
+<div class="newline"></div>          3       1.00      1.00      1.00         1
+<div class="newline"></div>          4       0.50      1.00      0.67         1
+<div class="newline"></div>          5       1.00      1.00      1.00         5
+<div class="newline"></div>          6       1.00      1.00      1.00         4
+<div class="newline"></div>          7       1.00      0.67      0.80         3
+<div class="newline"></div>          9       1.00      1.00      1.00         1
+<div class="newline"></div>         10       1.00      1.00      1.00         4
+<div class="newline"></div>         11       1.00      1.00      1.00         1
+<div class="newline"></div>         12       1.00      1.00      1.00         2
+<div class="newline"></div>         13       1.00      1.00      1.00         3
+<div class="newline"></div>         14       1.00      1.00      1.00         5
+<div class="newline"></div>         15       0.75      1.00      0.86         3
+<div class="newline"></div>         17       1.00      1.00      1.00         6
+<div class="newline"></div>         19       1.00      1.00      1.00         4
+<div class="newline"></div>         20       1.00      1.00      1.00         1
+<div class="newline"></div>         21       1.00      1.00      1.00         1
+<div class="newline"></div>         22       1.00      1.00      1.00         2
+<div class="newline"></div>         23       1.00      1.00      1.00         1
+<div class="newline"></div>         24       1.00      1.00      1.00         2
+<div class="newline"></div>         25       1.00      0.50      0.67         2
+<div class="newline"></div>         26       1.00      0.75      0.86         4
+<div class="newline"></div>         27       1.00      1.00      1.00         1
+<div class="newline"></div>         28       0.67      1.00      0.80         2
+<div class="newline"></div>         29       1.00      1.00      1.00         3
+<div class="newline"></div>         30       1.00      1.00      1.00         4
+<div class="newline"></div>         31       1.00      1.00      1.00         3
+<div class="newline"></div>         32       1.00      1.00      1.00         3
+<div class="newline"></div>         33       1.00      1.00      1.00         2
+<div class="newline"></div>         34       1.00      1.00      1.00         3
+<div class="newline"></div>         35       1.00      1.00      1.00         1
+<div class="newline"></div>         36       1.00      1.00      1.00         3
+<div class="newline"></div>         37       1.00      1.00      1.00         3
+<div class="newline"></div>         38       1.00      1.00      1.00         1
+<div class="newline"></div>         39       1.00      1.00      1.00         3
 <div class="newline"></div>
-<div class="newline"></div><span class="n">avg</span> <span class="o">/</span> <span class="n">total</span>       <span class="mf">0.97</span>      <span class="mf">0.95</span>      <span class="mf">0.95</span>       <span class="mi">100</span>
+<div class="newline"></div>avg / total       0.97      0.95      0.95       100
 <div class="newline"></div></pre></div>
 </div>
 <p>Another interesting metric is the <em>confusion matrix</em>, which indicates
 how often any two items are mixed-up. The confusion matrix of a perfect
 classifier would only have nonzero entries on the diagonal, with zeros
 on the off-diagonal:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html#sklearn.metrics.confusion_matrix" title="View documentation for sklearn.metrics.confusion_matrix"><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">4</span> <span class="mi">0</span> <span class="mi">0</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span><span class="mi">0</span> <span class="mi">4</span> <span class="mi">0</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">2</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="o">...</span><span class="p">,</span>
-<div class="newline"></div> <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="o">...</span><span class="p">,</span> <span class="mi">3</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span><span class="p">]]</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>[[4 0 0 ... 0 0 0]
+<div class="newline"></div> [0 4 0 ... 0 0 0]
+<div class="newline"></div> [0 0 2 ... 0 0 0]
+<div class="newline"></div> ...
+<div class="newline"></div> [0 0 0 ... 3 0 0]
+<div class="newline"></div> [0 0 0 ... 0 1 0]
+<div class="newline"></div> [0 0 0 ... 0 0 3]]
 <div class="newline"></div></pre></div>
 </div>
 </div>
@@ -390,25 +394,25 @@ into the input of a second estimator is a commonly used pattern; for
 this reason scikit-learn provides a <code class="docutils literal"><span class="pre">Pipeline</span></code> object which automates
 this process. The above problem can be re-expressed as a pipeline as
 follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
-<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">)),</span>
-<div class="newline"></div>                <span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">svm</span><span class="o">.</span><span class="n">LinearSVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))])</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a>
+<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a><span class="p">([(</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="View documentation for sklearn.decomposition.PCA"><span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">)),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="View documentation for sklearn.svm.LinearSVC"><span class="n">svm</span><span class="o">.</span><span class="n">LinearSVC</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))])</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
-<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html#sklearn.metrics.confusion_matrix" title="View documentation for sklearn.metrics.confusion_matrix"><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span></a><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">5</span> <span class="mi">0</span> <span class="mi">0</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span><span class="mi">0</span> <span class="mi">4</span> <span class="mi">0</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="o">...</span><span class="p">,</span>
-<div class="newline"></div> <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="o">...</span><span class="p">,</span> <span class="mi">3</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
-<div class="newline"></div> <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span><span class="p">]]</span>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>[[2 0 0 ... 0 0 0]
+<div class="newline"></div> [0 4 0 ... 0 0 0]
+<div class="newline"></div> [0 0 1 ... 0 0 0]
+<div class="newline"></div> ...
+<div class="newline"></div> [0 0 0 ... 3 0 0]
+<div class="newline"></div> [0 0 0 ... 0 1 0]
+<div class="newline"></div> [0 0 0 ... 0 0 3]]
 <div class="newline"></div></pre></div>
 </div>
 </div>
@@ -420,14 +424,14 @@ broadly-applicable technique, which can be useful for a wide array of
 data types. Research in the field of facial recognition in particular,
 however, has shown that other more specific feature extraction methods
 are can be much more effective.</p>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  8.566 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  4.327 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-scikit-learn-auto-examples-plot-eigenfaces-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_eigenfaces.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_eigenfaces.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_eigenfaces.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_eigenfaces.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
 </div>
 </div>
@@ -441,7 +445,7 @@ are can be much more effective.</p>
 	<div class="sidebartoc">
   <h3><a href="../../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">3.6.9.14. The eigenfaces example: chaining PCA and SVMs</a><ul>
+<li><a class="reference internal" href="#">3.6.10.14. The eigenfaces example: chaining PCA and SVMs</a><ul>
 <li><a class="reference internal" href="#preprocessing-principal-component-analysis">Preprocessing: Principal Component Analysis</a></li>
 <li><a class="reference internal" href="#doing-the-learning-support-vector-machines">Doing the Learning: Support Vector Machines</a></li>
 <li><a class="reference internal" href="#pipelining">Pipelining</a></li>
@@ -477,10 +481,10 @@ are can be much more effective.</p>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_svm_non_linear.html" title="3.6.9.15. Example of linear and non-linear models"
+          <a href="plot_svm_non_linear.html" title="3.6.10.15. Example of linear and non-linear models"
              >next</a></li>
         <li class="right" >
-          <a href="plot_digits_simple_classif.html" title="3.6.9.13. Simple visualization and classification of the digits dataset"
+          <a href="plot_digits_simple_classif.html" title="3.6.10.13. Simple visualization and classification of the digits dataset"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
@@ -508,7 +512,7 @@ are can be much more effective.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>

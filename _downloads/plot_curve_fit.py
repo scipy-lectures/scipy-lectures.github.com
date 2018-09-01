@@ -1,34 +1,46 @@
 """
+===============
 Curve fitting
-=============
+===============
 
-A curve fitting example
+Demos a simple curve fitting
 """
 
+############################################################
+# First generate some data
 import numpy as np
-from scipy import optimize
-import pylab as pl
 
+# Seed the random number generator for reproducibility
 np.random.seed(0)
 
-# Our test function
-def f(t, omega, phi):
-    return np.cos(omega * t + phi)
+x_data = np.linspace(-5, 5, num=50)
+y_data = 2.9 * np.sin(1.5 * x_data) + np.random.normal(size=50)
 
-# Our x and y data
-x = np.linspace(0, 3, 50)
-y = f(x, 1.5, 1) + .1*np.random.normal(size=50)
+# And plot it
+import matplotlib.pyplot as plt
+plt.figure(figsize=(6, 4))
+plt.scatter(x_data, y_data)
 
-# Fit the model: the parameters omega and phi can be found in the
-# `params` vector
-params, params_cov = optimize.curve_fit(f, x, y)
+############################################################
+# Now fit a simple sine function to the data
+from scipy import optimize
 
-# plot the data and the fitted curve
-t = np.linspace(0, 3, 1000)
+def test_func(x, a, b):
+    return a * np.sin(b * x)
 
-pl.figure(1)
-pl.clf()
-pl.plot(x, y, 'bx')
-pl.plot(t, f(t, *params), 'r-')
-pl.show()
+params, params_covariance = optimize.curve_fit(test_func, x_data, y_data,
+                                               p0=[2, 2])
 
+print(params)
+
+############################################################
+# And plot the resulting curve on the data
+
+plt.figure(figsize=(6, 4))
+plt.scatter(x_data, y_data, label='Data')
+plt.plot(x_data, test_func(x_data, params[0], params[1]),
+         label='Fitted function')
+
+plt.legend(loc='best')
+
+plt.show()
