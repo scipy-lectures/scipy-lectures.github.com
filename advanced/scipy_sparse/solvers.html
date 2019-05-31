@@ -172,7 +172,7 @@ $(function () {
   <div class="section" id="linear-system-solvers">
 <h1>2.5.3. Linear System Solvers<a class="headerlink" href="#linear-system-solvers" title="Permalink to this headline">¶</a></h1>
 <ul>
-<li><p class="first">sparse matrix/eigenvalue problem solvers live in <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/sparse.linalg.html#module-scipy.sparse.linalg" title="(in SciPy v1.1.0)"><code class="xref py py-mod docutils literal"><span class="pre">scipy.sparse.linalg</span></code></a></p>
+<li><p class="first">sparse matrix/eigenvalue problem solvers live in <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/sparse.linalg.html#module-scipy.sparse.linalg" title="(in SciPy v1.3.0)"><code class="xref py py-mod docutils literal"><span class="pre">scipy.sparse.linalg</span></code></a></p>
 </li>
 <li><dl class="first docutils">
 <dt>the submodules:</dt>
@@ -455,6 +455,7 @@ Gradient Method)
 <div class="newline"></div>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">scipy</span>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="k">import</span> <span class="n">lobpcg</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">pyamg</span> <span class="k">import</span> <span class="n">smoothed_aggregation_solver</span>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">pyamg.gallery</span> <span class="k">import</span> <span class="n">poisson</span>
@@ -477,17 +478,15 @@ Gradient Method)
 <div class="newline"></div>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1">#plot the eigenvectors</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span>
-<div class="newline"></div>
-<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
-<div class="newline"></div>    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Eigenvector </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">pylab</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="n">V</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
-<div class="newline"></div>    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>    
+<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Eigenvector </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="n">V</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>    
 <div class="newline"></div></pre></div>
 </div>
 <ul class="simple">

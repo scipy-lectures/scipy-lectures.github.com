@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="3. Packages and applications" href="../../packages/index.html" />
-    <link rel="prev" title="2.7.4.12. Gradient descent" href="../mathematical_optimization/auto_examples/plot_gradient_descent.html" />
+    <link rel="prev" title="2.7.4.11. Gradient descent" href="../mathematical_optimization/auto_examples/plot_gradient_descent.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -136,7 +136,7 @@ $(function () {
           <a href="../../packages/index.html" title="3. Packages and applications"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="../mathematical_optimization/auto_examples/plot_gradient_descent.html" title="2.7.4.12. Gradient descent"
+          <a href="../mathematical_optimization/auto_examples/plot_gradient_descent.html" title="2.7.4.11. Gradient descent"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">2. Advanced topics</a> &#187;</li>
@@ -287,7 +287,7 @@ math library available to Python:</p>
 <div class="newline"></div><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cm">/*  wrapped cosine function */</span>
-<div class="newline"></div><span class="k">static</span> <span class="n">PyObject</span><span class="o">*</span> <span class="n">cos_func</span><span class="p">(</span><span class="n">PyObject</span><span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span><span class="o">*</span> <span class="n">args</span><span class="p">)</span>
+<div class="newline"></div><span class="k">static</span> <span class="n">PyObject</span><span class="o">*</span> <span class="nf">cos_func</span><span class="p">(</span><span class="n">PyObject</span><span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span><span class="o">*</span> <span class="n">args</span><span class="p">)</span>
 <div class="newline"></div><span class="p">{</span>
 <div class="newline"></div>    <span class="kt">double</span> <span class="n">value</span><span class="p">;</span>
 <div class="newline"></div>    <span class="kt">double</span> <span class="n">answer</span><span class="p">;</span>
@@ -303,7 +303,7 @@ math library available to Python:</p>
 <div class="newline"></div>    <span class="n">answer</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
 <div class="newline"></div>
 <div class="newline"></div>    <span class="cm">/*  construct the output from cos, from c double to python float */</span>
-<div class="newline"></div>    <span class="k">return</span> <span class="nf">Py_BuildValue</span><span class="p">(</span><span class="s">&quot;f&quot;</span><span class="p">,</span> <span class="n">answer</span><span class="p">);</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">Py_BuildValue</span><span class="p">(</span><span class="s">&quot;f&quot;</span><span class="p">,</span> <span class="n">answer</span><span class="p">);</span>
 <div class="newline"></div><span class="p">}</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cm">/*  define functions in module */</span>
@@ -442,7 +442,7 @@ returns a resulting new array.</p>
 <div class="newline"></div><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cm">/*  wrapped cosine function */</span>
-<div class="newline"></div><span class="k">static</span> <span class="n">PyObject</span><span class="o">*</span> <span class="n">cos_func_np</span><span class="p">(</span><span class="n">PyObject</span><span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span><span class="o">*</span> <span class="n">args</span><span class="p">)</span>
+<div class="newline"></div><span class="k">static</span> <span class="n">PyObject</span><span class="o">*</span> <span class="nf">cos_func_np</span><span class="p">(</span><span class="n">PyObject</span><span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span><span class="o">*</span> <span class="n">args</span><span class="p">)</span>
 <div class="newline"></div><span class="p">{</span>
 <div class="newline"></div>
 <div class="newline"></div>    <span class="n">PyArrayObject</span> <span class="o">*</span><span class="n">in_array</span><span class="p">;</span>
@@ -509,14 +509,39 @@ returns a resulting new array.</p>
 <div class="newline"></div>     <span class="p">{</span><span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">}</span>
 <div class="newline"></div><span class="p">};</span>
 <div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div><span class="cp">#if PY_MAJOR_VERSION &gt;= 3</span>
 <div class="newline"></div><span class="cm">/* module initialization */</span>
-<div class="newline"></div><span class="n">PyMODINIT_FUNC</span>
-<div class="newline"></div><span class="nf">initcos_module_np</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<div class="newline"></div><span class="p">{</span>
-<div class="newline"></div>     <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">Py_InitModule</span><span class="p">(</span><span class="s">&quot;cos_module_np&quot;</span><span class="p">,</span> <span class="n">CosMethods</span><span class="p">);</span>
-<div class="newline"></div>     <span class="cm">/* IMPORTANT: this must be called */</span>
-<div class="newline"></div>     <span class="n">import_array</span><span class="p">();</span>
+<div class="newline"></div><span class="cm">/* Python version 3*/</span>
+<div class="newline"></div><span class="k">static</span> <span class="k">struct</span> <span class="n">PyModuleDef</span> <span class="n">cModPyDem</span> <span class="o">=</span> <span class="p">{</span>
+<div class="newline"></div>    <span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span>
+<div class="newline"></div>    <span class="s">&quot;cos_module&quot;</span><span class="p">,</span> <span class="s">&quot;Some documentation&quot;</span><span class="p">,</span>
+<div class="newline"></div>    <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+<div class="newline"></div>    <span class="n">CosMethods</span>
+<div class="newline"></div><span class="p">};</span>
+<div class="newline"></div><span class="n">PyMODINIT_FUNC</span> <span class="nf">PyInit_cos_module_np</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+<div class="newline"></div>    <span class="n">PyObject</span> <span class="o">*</span><span class="n">module</span><span class="p">;</span>
+<div class="newline"></div>    <span class="n">module</span> <span class="o">=</span> <span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cModPyDem</span><span class="p">);</span>
+<div class="newline"></div>    <span class="k">if</span><span class="p">(</span><span class="n">module</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<div class="newline"></div>    <span class="cm">/* IMPORTANT: this must be called */</span>
+<div class="newline"></div>    <span class="n">import_array</span><span class="p">();</span>
+<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="n">PyErr_Occurred</span><span class="p">())</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">module</span><span class="p">;</span>
 <div class="newline"></div><span class="p">}</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cp">#else</span>
+<div class="newline"></div><span class="cm">/* module initialization */</span>
+<div class="newline"></div><span class="cm">/* Python version 2 */</span>
+<div class="newline"></div><span class="n">PyMODINIT_FUNC</span> <span class="nf">initcos_module_np</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+<div class="newline"></div>    <span class="n">PyObject</span> <span class="o">*</span><span class="n">module</span><span class="p">;</span>
+<div class="newline"></div>    <span class="n">module</span> <span class="o">=</span> <span class="n">Py_InitModule</span><span class="p">(</span><span class="s">&quot;cos_module_np&quot;</span><span class="p">,</span> <span class="n">CosMethods</span><span class="p">);</span>
+<div class="newline"></div>    <span class="k">if</span><span class="p">(</span><span class="n">module</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+<div class="newline"></div>    <span class="cm">/* IMPORTANT: this must be called */</span>
+<div class="newline"></div>    <span class="n">import_array</span><span class="p">();</span>
+<div class="newline"></div>    <span class="k">return</span><span class="p">;</span>
+<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div>
+<div class="newline"></div><span class="cp">#endif</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>To compile this we can use distutils again. However we need to be sure to
@@ -536,12 +561,12 @@ include the Numpy headers by using :func:<code class="docutils literal"><span cl
 script:</p>
 <div class="highlight-numpy"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cos_module_np</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
 <div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">cos_module_np</span><span class="o">.</span><span class="n">cos_func_np</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>And this should result in the following figure:</p>
@@ -664,7 +689,7 @@ an input and an output array, computes the cosine of the input array and
 stores the result in the output array.</p>
 <p>The library consists of the following header file (although this is not
 strictly needed for this example, we list it for completeness):</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>The function implementation resides in the following C source file:</p>
@@ -672,7 +697,7 @@ strictly needed for this example, we list it for completeness):</p>
 <div class="newline"></div>
 <div class="newline"></div><span class="cm">/*  Compute the cosine of each element in in_array, storing the result in</span>
 <div class="newline"></div><span class="cm"> *  out_array. */</span>
-<div class="newline"></div><span class="kt">void</span> <span class="n">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">){</span>
+<div class="newline"></div><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">){</span>
 <div class="newline"></div>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
 <div class="newline"></div>    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
 <div class="newline"></div>        <span class="n">out_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">in_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
@@ -735,22 +760,22 @@ must use a combination of <code class="docutils literal"><span class="pre">make<
 <li>Note the inherent limitation of contiguous single dimensional Numpy arrays,
 since the C functions requires this kind of buffer.</li>
 <li>Also note that the output array must be preallocated, for example with
-<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html#numpy.zeros" title="(in NumPy v1.15)"><code class="xref py py-func docutils literal"><span class="pre">numpy.zeros()</span></code></a> and the function will write into it’s buffer.</li>
+<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html#numpy.zeros" title="(in NumPy v1.16)"><code class="xref py py-func docutils literal"><span class="pre">numpy.zeros()</span></code></a> and the function will write into it’s buffer.</li>
 <li>Although the original signature of the <code class="docutils literal"><span class="pre">cos_doubles</span></code> function is <code class="docutils literal"><span class="pre">ARRAY,</span>
 <span class="pre">ARRAY,</span> <span class="pre">int</span></code> the final <code class="docutils literal"><span class="pre">cos_doubles_func</span></code> takes only two Numpy arrays as
 arguments.</li>
 </ul>
 <p>And, as before, we convince ourselves that it worked:</p>
 <div class="highlight-numpy"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">cos_doubles</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
 <div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">empty_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">cos_doubles</span><span class="o">.</span><span class="n">cos_doubles_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/test_cos_doubles.png"><img alt="../../_images/test_cos_doubles.png" src="../../_images/test_cos_doubles.png" style="width: 637.5px; height: 190.0px;" /></a>
@@ -787,13 +812,13 @@ the wrapping process, may be a bit tricky to understand.</p>
 been written in <code class="docutils literal"><span class="pre">c</span></code> and consists of the source file <code class="docutils literal"><span class="pre">cos_module.c</span></code>:</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kt">double</span> <span class="n">cos_func</span><span class="p">(</span><span class="kt">double</span> <span class="n">arg</span><span class="p">){</span>
+<div class="newline"></div><span class="kt">double</span> <span class="nf">cos_func</span><span class="p">(</span><span class="kt">double</span> <span class="n">arg</span><span class="p">){</span>
 <div class="newline"></div>    <span class="k">return</span> <span class="n">cos</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span>
 <div class="newline"></div><span class="p">}</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>and the header file <code class="docutils literal"><span class="pre">cos_module.h</span></code>:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">double</span> <span class="n">cos_func</span><span class="p">(</span><span class="kt">double</span> <span class="n">arg</span><span class="p">);</span>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">double</span> <span class="nf">cos_func</span><span class="p">(</span><span class="kt">double</span> <span class="n">arg</span><span class="p">);</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>And our goal is to expose the <code class="docutils literal"><span class="pre">cos_func</span></code> to Python. To achieve this with
@@ -907,14 +932,14 @@ file. This interface file defines various so-called <em>typemaps</em> which supp
 conversion between Numpy arrays and C-Arrays. In the following example we will
 take a quick look at how such typemaps work in practice.</p>
 <p>We have the same <code class="docutils literal"><span class="pre">cos_doubles</span></code> function as in the ctypes example:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
 <div class="newline"></div></pre></div>
 </div>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cm">/*  Compute the cosine of each element in in_array, storing the result in</span>
 <div class="newline"></div><span class="cm"> *  out_array. */</span>
-<div class="newline"></div><span class="kt">void</span> <span class="n">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">){</span>
+<div class="newline"></div><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">){</span>
 <div class="newline"></div>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
 <div class="newline"></div>    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
 <div class="newline"></div>        <span class="n">out_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">in_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
@@ -1004,15 +1029,15 @@ expose the functionality through <code class="docutils literal"><span class="pre
 </div>
 <p>And, as before, we convince ourselves that it worked:</p>
 <div class="highlight-numpy"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">cos_doubles</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
 <div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">empty_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">cos_doubles</span><span class="o">.</span><span class="n">cos_doubles_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/test_cos_doubles1.png"><img alt="../../_images/test_cos_doubles1.png" src="../../_images/test_cos_doubles1.png" style="width: 637.5px; height: 190.0px;" /></a>
@@ -1160,14 +1185,14 @@ want to pass Numpy arrays as C arrays to your Cython wrapped C functions, there
 is a section about this in the <a class="reference external" href="http://wiki.cython.org/tutorials/NumpyPointerToC">Cython wiki</a>.</p>
 <p>In the following example, we will show how to wrap the familiar <code class="docutils literal"><span class="pre">cos_doubles</span></code>
 function using Cython.</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
 <div class="newline"></div></pre></div>
 </div>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cm">/*  Compute the cosine of each element in in_array, storing the result in</span>
 <div class="newline"></div><span class="cm"> *  out_array. */</span>
-<div class="newline"></div><span class="kt">void</span> <span class="n">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">){</span>
+<div class="newline"></div><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">){</span>
 <div class="newline"></div>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
 <div class="newline"></div>    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
 <div class="newline"></div>        <span class="n">out_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">in_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
@@ -1237,15 +1262,15 @@ function using Cython.</p>
 </div>
 <p>And, as before, we convince ourselves that it worked:</p>
 <div class="highlight-numpy"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">cos_doubles</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
 <div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">empty_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">cos_doubles</span><span class="o">.</span><span class="n">cos_doubles_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<div class="newline"></div><span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/test_cos_doubles2.png"><img alt="../../_images/test_cos_doubles2.png" src="../../_images/test_cos_doubles2.png" style="width: 637.5px; height: 190.0px;" /></a>
@@ -1463,7 +1488,7 @@ you, thus making it more like the Numpy-C-API example.</li>
           <a href="../../packages/index.html" title="3. Packages and applications"
              >next</a></li>
         <li class="right" >
-          <a href="../mathematical_optimization/auto_examples/plot_gradient_descent.html" title="2.7.4.12. Gradient descent"
+          <a href="../mathematical_optimization/auto_examples/plot_gradient_descent.html" title="2.7.4.11. Gradient descent"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >2. Advanced topics</a> &#187;</li>

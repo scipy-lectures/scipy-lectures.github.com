@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>2.7.4.11. Alternating optimization &#8212; Scipy lecture notes</title>
+    <title>2.7.4.10. Alternating optimization &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="2.7.4.12. Gradient descent" href="plot_gradient_descent.html" />
-    <link rel="prev" title="2.7.4.10. Plotting the comparison of optimizers" href="plot_compare_optimizers.html" />
+    <link rel="next" title="2.7.4.11. Gradient descent" href="plot_gradient_descent.html" />
+    <link rel="prev" title="2.7.4.9. Plotting the comparison of optimizers" href="plot_compare_optimizers.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -133,10 +133,10 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_gradient_descent.html" title="2.7.4.12. Gradient descent"
+          <a href="plot_gradient_descent.html" title="2.7.4.11. Gradient descent"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="plot_compare_optimizers.html" title="2.7.4.10. Plotting the comparison of optimizers"
+          <a href="plot_compare_optimizers.html" title="2.7.4.9. Plotting the comparison of optimizers"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >2. Advanced topics</a> &#187;</li>
@@ -174,7 +174,7 @@ $(function () {
 <p class="last">Click <a class="reference internal" href="#sphx-glr-download-advanced-mathematical-optimization-auto-examples-plot-exercise-ill-conditioned-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="alternating-optimization">
-<span id="sphx-glr-advanced-mathematical-optimization-auto-examples-plot-exercise-ill-conditioned-py"></span><h1>2.7.4.11. Alternating optimization<a class="headerlink" href="#alternating-optimization" title="Permalink to this headline">¶</a></h1>
+<span id="sphx-glr-advanced-mathematical-optimization-auto-examples-plot-exercise-ill-conditioned-py"></span><h1>2.7.4.10. Alternating optimization<a class="headerlink" href="#alternating-optimization" title="Permalink to this headline">¶</a></h1>
 <p>The challenge here is that Hessian of the problem is a very
 ill-conditioned matrix. This can easily be seen, as the Hessian of the
 first term in simply 2*np.dot(K.T, K). Thus the conditioning of the
@@ -183,7 +183,7 @@ problem can be judged from looking at the conditioning of K.</p>
 <div class="newline"></div>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div>
 <div class="newline"></div><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <div class="newline"></div>
@@ -203,17 +203,17 @@ problem can be judged from looking at the conditioning of K.</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>Some pretty plotting</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.clf.html#matplotlib.pyplot.clf" title="View documentation for matplotlib.pyplot.clf"><span class="n">plt</span><span class="o">.</span><span class="n">clf</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">Z</span> <span class="o">=</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mgrid.html#numpy.mgrid" title="View documentation for numpy.mgrid"><span class="n">np</span><span class="o">.</span><span class="n">mgrid</span></a><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">:</span><span class="mf">1.5</span><span class="p">:</span><span class="mi">100j</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.1</span><span class="p">:</span><span class="mf">1.1</span><span class="p">:</span><span class="mi">100j</span><span class="p">]</span>
 <div class="newline"></div><span class="c1"># Complete in the additional dimensions with zeros</span>
 <div class="newline"></div><span class="n">Z</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html#numpy.reshape" title="View documentation for numpy.reshape"><span class="n">np</span><span class="o">.</span><span class="n">reshape</span></a><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <div class="newline"></div><span class="n">Z</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 <div class="newline"></div><span class="n">Z</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.apply_along_axis.html#numpy.apply_along_axis" title="View documentation for numpy.apply_along_axis"><span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span></a><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
 <div class="newline"></div><span class="n">Z</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html#numpy.reshape" title="View documentation for numpy.reshape"><span class="n">np</span><span class="o">.</span><span class="n">reshape</span></a><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray_r</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">],</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="View documentation for matplotlib.pyplot.imshow"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray_r</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">],</span>
 <div class="newline"></div>          <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gnuplot</span><span class="p">)</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.contour.html#matplotlib.pyplot.contour" title="View documentation for matplotlib.pyplot.contour"><span class="n">plt</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gnuplot</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># A reference but slow solution:</span>
 <div class="newline"></div><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -251,20 +251,20 @@ problem can be judged from looking at the conditioning of K.</p>
 <div class="newline"></div>    <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sqrt.html#numpy.sqrt" title="View documentation for numpy.sqrt"><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sum.html#numpy.sum" title="View documentation for numpy.sum"><span class="n">np</span><span class="o">.</span><span class="n">sum</span></a><span class="p">((</span><span class="n">x_newton</span> <span class="o">-</span> <span class="n">x_ref</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)),</span>
 <div class="newline"></div>    <span class="n">f</span><span class="p">(</span><span class="n">x_newton</span><span class="p">)</span> <span class="o">-</span> <span class="n">f_ref</span><span class="p">))</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <img alt="../../../_images/sphx_glr_plot_exercise_ill_conditioned_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_exercise_ill_conditioned_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Powell: time 0.26s
-<div class="newline"></div>       BFGS: time 5.86s, x error 10.39, f error 31006.85
-<div class="newline"></div>     L-BFGS: time 0.05s, x error 0.02, f error -0.02
-<div class="newline"></div>  BFGS w f&#39;: time 5.87s, x error 10.39, f error 31006.85
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Powell: time 0.36s
+<div class="newline"></div>       BFGS: time 0.99s, x error 0.02, f error -0.02
+<div class="newline"></div>     L-BFGS: time 0.08s, x error 0.02, f error -0.02
+<div class="newline"></div>  BFGS w f&#39;: time 0.08s, x error 0.02, f error -0.02
 <div class="newline"></div>L-BFGS w f&#39;: time 0.00s, x error 0.02, f error -0.02
-<div class="newline"></div>     Newton: time 0.00s, x error 6.24, f error 8444.13
+<div class="newline"></div>     Newton: time 0.01s, x error 0.02, f error -0.02
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  12.396 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  1.950 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-advanced-mathematical-optimization-auto-examples-plot-exercise-ill-conditioned-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_exercise_ill_conditioned.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_exercise_ill_conditioned.py</span></code></a></div>
@@ -309,10 +309,10 @@ problem can be judged from looking at the conditioning of K.</p>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_gradient_descent.html" title="2.7.4.12. Gradient descent"
+          <a href="plot_gradient_descent.html" title="2.7.4.11. Gradient descent"
              >next</a></li>
         <li class="right" >
-          <a href="plot_compare_optimizers.html" title="2.7.4.10. Plotting the comparison of optimizers"
+          <a href="plot_compare_optimizers.html" title="2.7.4.9. Plotting the comparison of optimizers"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >2. Advanced topics</a> &#187;</li>

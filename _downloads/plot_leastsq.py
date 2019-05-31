@@ -1,4 +1,0 @@
-"""
-Demo scipy.optimize.leastsq
-"""
-

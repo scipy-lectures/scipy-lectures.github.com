@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="3.3.9.11. Watershed and random walker for segmentation" href="plot_segmentations.html" />
-    <link rel="prev" title="3.3.9.9. Affine transform" href="plot_features.html" />
+    <link rel="prev" title="3.3.9.9. Labelling connected components of an image" href="plot_labels.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -136,7 +136,7 @@ $(function () {
           <a href="plot_segmentations.html" title="3.3.9.11. Watershed and random walker for segmentation"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="plot_features.html" title="3.3.9.9. Affine transform"
+          <a href="plot_labels.html" title="3.3.9.9. Labelling connected components of an image"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>
@@ -184,10 +184,10 @@ a Gaussian filter, a median filter, and total variation denoising.</p>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">filters</span>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">restoration</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">coins</span> <span class="o">=</span> <a href="http://scikit-image.org/docs/stable/api/skimage.data.html#skimage.data.coins" title="View documentation for skimage.data.coins"><span class="n">data</span><span class="o">.</span><span class="n">coins</span></a><span class="p">()</span>
-<div class="newline"></div><span class="n">gaussian_filter_coins</span> <span class="o">=</span> <a href="http://scikit-image.org/docs/stable/api/skimage.filters.html#skimage.filters.gaussian" title="View documentation for skimage.filters.gaussian"><span class="n">filters</span><span class="o">.</span><span class="n">gaussian</span></a><span class="p">(</span><span class="n">coins</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<div class="newline"></div><span class="n">med_filter_coins</span> <span class="o">=</span> <a href="http://scikit-image.org/docs/stable/api/skimage.filters.html#skimage.filters.median" title="View documentation for skimage.filters.median"><span class="n">filters</span><span class="o">.</span><span class="n">median</span></a><span class="p">(</span><span class="n">coins</span><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ones.html#numpy.ones" title="View documentation for numpy.ones"><span class="n">np</span><span class="o">.</span><span class="n">ones</span></a><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
-<div class="newline"></div><span class="n">tv_filter_coins</span> <span class="o">=</span> <a href="http://scikit-image.org/docs/stable/api/skimage.restoration.html#skimage.restoration.denoise_tv_chambolle" title="View documentation for skimage.restoration.denoise_tv_chambolle"><span class="n">restoration</span><span class="o">.</span><span class="n">denoise_tv_chambolle</span></a><span class="p">(</span><span class="n">coins</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<div class="newline"></div><span class="n">coins</span> <span class="o">=</span> <a href="https://scikit-image.org/docs/stable/api/skimage.data.html#skimage.data.coins" title="View documentation for skimage.data.coins"><span class="n">data</span><span class="o">.</span><span class="n">coins</span></a><span class="p">()</span>
+<div class="newline"></div><span class="n">gaussian_filter_coins</span> <span class="o">=</span> <a href="https://scikit-image.org/docs/stable/api/skimage.filters.html#skimage.filters.gaussian" title="View documentation for skimage.filters.gaussian"><span class="n">filters</span><span class="o">.</span><span class="n">gaussian</span></a><span class="p">(</span><span class="n">coins</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div><span class="n">med_filter_coins</span> <span class="o">=</span> <a href="https://scikit-image.org/docs/stable/api/skimage.filters.html#skimage.filters.median" title="View documentation for skimage.filters.median"><span class="n">filters</span><span class="o">.</span><span class="n">median</span></a><span class="p">(</span><span class="n">coins</span><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ones.html#numpy.ones" title="View documentation for numpy.ones"><span class="n">np</span><span class="o">.</span><span class="n">ones</span></a><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+<div class="newline"></div><span class="n">tv_filter_coins</span> <span class="o">=</span> <a href="https://scikit-image.org/docs/stable/api/skimage.restoration.html#skimage.restoration.denoise_tv_chambolle" title="View documentation for skimage.restoration.denoise_tv_chambolle"><span class="n">restoration</span><span class="o">.</span><span class="n">denoise_tv_chambolle</span></a><span class="p">(</span><span class="n">coins</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">141</span><span class="p">)</span>
@@ -212,7 +212,7 @@ a Gaussian filter, a median filter, and total variation denoising.</p>
 <div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.228 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.159 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-scikit-image-auto-examples-plot-filter-coins-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_filter_coins.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_filter_coins.py</span></code></a></div>
@@ -260,7 +260,7 @@ a Gaussian filter, a median filter, and total variation denoising.</p>
           <a href="plot_segmentations.html" title="3.3.9.11. Watershed and random walker for segmentation"
              >next</a></li>
         <li class="right" >
-          <a href="plot_features.html" title="3.3.9.9. Affine transform"
+          <a href="plot_labels.html" title="3.3.9.9. Labelling connected components of an image"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >3. Packages and applications</a> &#187;</li>

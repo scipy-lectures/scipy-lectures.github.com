@@ -443,7 +443,7 @@ the 9th order one?
 
 Let's look at the ground truth:
 
-.. figure:: auto_examples/images/sphx_glr_plot_polynomial_regression_002.png
+.. figure:: auto_examples/images/sphx_glr_plot_polynomial_regression_003.png
    :align: center
    :scale: 90
    :target: auto_examples/plot_polynomial_regression.html
@@ -728,7 +728,7 @@ The ``DESCR`` variable has a long description of the dataset::
     ...
 
 It often helps to quickly visualize pieces of the data using histograms,
-scatter plots, or other plot types. With pylab, let us show a
+scatter plots, or other plot types. With matplotlib, let us show a
 histogram of the target values: the median price in each neighborhood::
 
     >>> plt.hist(data.target)  # doctest: +ELLIPSIS
@@ -747,7 +747,7 @@ others for our problem::
     >>> for index, feature_name in enumerate(data.feature_names):
     ...     plt.figure()
     ...     plt.scatter(data.data[:, index], data.target)  # doctest: +ELLIPSIS
-    <matplotlib.figure.Figure object...
+    <Figure size...
 
 .. image:: auto_examples/images/sphx_glr_plot_boston_prediction_002.png
    :width: 32%  
@@ -1264,13 +1264,13 @@ is now centered on both components with unit variance::
 
     >>> X_pca.mean(axis=0) # doctest: +ELLIPSIS
     array([ ...e-15,  ...e-15])
-    >>> X_pca.std(axis=0)
+    >>> X_pca.std(axis=0, ddof=1)
     array([ 1.,  1.])
 
 Furthermore, the samples components do no longer carry any linear
 correlation::
 
-    >>> np.corrcoef(X_pca.T)  # doctest: +ELLIPSIS
+    >>> np.corrcoef(X_pca.T)  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     array([[  1.00000000e+00,   ...],
            [  ...,   1.00000000e+00]])
 

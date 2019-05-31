@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>2.7.4.8. Brent’s method &#8212; Scipy lecture notes</title>
+    <title>2.7.4.7. Brent’s method &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="2.7.4.9. Constraint optimization: visualizing the geometry" href="plot_constraints.html" />
-    <link rel="prev" title="2.7.4.7. Optimization with constraints" href="plot_non_bounds_constraints.html" />
+    <link rel="next" title="2.7.4.8. Constraint optimization: visualizing the geometry" href="plot_constraints.html" />
+    <link rel="prev" title="2.7.4.6. Optimization with constraints" href="plot_non_bounds_constraints.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -133,10 +133,10 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_constraints.html" title="2.7.4.9. Constraint optimization: visualizing the geometry"
+          <a href="plot_constraints.html" title="2.7.4.8. Constraint optimization: visualizing the geometry"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="plot_non_bounds_constraints.html" title="2.7.4.7. Optimization with constraints"
+          <a href="plot_non_bounds_constraints.html" title="2.7.4.6. Optimization with constraints"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >2. Advanced topics</a> &#187;</li>
@@ -174,7 +174,7 @@ $(function () {
 <p class="last">Click <a class="reference internal" href="#sphx-glr-download-advanced-mathematical-optimization-auto-examples-plot-1d-optim-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="brent-s-method">
-<span id="sphx-glr-advanced-mathematical-optimization-auto-examples-plot-1d-optim-py"></span><h1>2.7.4.8. Brent’s method<a class="headerlink" href="#brent-s-method" title="Permalink to this headline">¶</a></h1>
+<span id="sphx-glr-advanced-mathematical-optimization-auto-examples-plot-1d-optim-py"></span><h1>2.7.4.7. Brent’s method<a class="headerlink" href="#brent-s-method" title="Permalink to this headline">¶</a></h1>
 <p>Illustration of 1D optimization: Brent’s method</p>
 <ul class="sphx-glr-horizontal">
 <li><img alt="../../../_images/sphx_glr_plot_1d_optim_001.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_1d_optim_001.png" />
@@ -195,7 +195,7 @@ $(function () {
 <div class="line"><br /></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -205,11 +205,11 @@ $(function () {
 <div class="newline"></div>    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x_0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">epsilon</span><span class="o">*</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.exp.html#numpy.exp" title="View documentation for numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span> <span class="o">-</span> <span class="n">x_0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">for</span> <span class="n">epsilon</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))</span>
-<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <div class="newline"></div>
 <div class="newline"></div>    <span class="c1"># A convex function</span>
-<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div>    <span class="c1"># Apply brent method. To have access to the iteration, do this in an</span>
 <div class="newline"></div>    <span class="c1"># artificial way: allow the algorithm to iter only once</span>
@@ -226,26 +226,26 @@ $(function () {
 <div class="newline"></div>        <span class="n">all_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_x</span><span class="p">)</span>
 <div class="newline"></div>        <span class="n">all_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">this_x</span><span class="p">))</span>
 <div class="newline"></div>        <span class="k">if</span> <span class="nb">iter</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
-<div class="newline"></div>            <span class="n">pl</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">this_x</span> <span class="o">-</span> <span class="o">.</span><span class="mo">05</span><span class="o">*</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sign.html#numpy.sign" title="View documentation for numpy.sign"><span class="n">np</span><span class="o">.</span><span class="n">sign</span></a><span class="p">(</span><span class="n">this_x</span><span class="p">)</span> <span class="o">-</span> <span class="o">.</span><span class="mo">05</span><span class="p">,</span>
+<div class="newline"></div>            <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.text.html#matplotlib.pyplot.text" title="View documentation for matplotlib.pyplot.text"><span class="n">plt</span><span class="o">.</span><span class="n">text</span></a><span class="p">(</span><span class="n">this_x</span> <span class="o">-</span> <span class="o">.</span><span class="mo">05</span><span class="o">*</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sign.html#numpy.sign" title="View documentation for numpy.sign"><span class="n">np</span><span class="o">.</span><span class="n">sign</span></a><span class="p">(</span><span class="n">this_x</span><span class="p">)</span> <span class="o">-</span> <span class="o">.</span><span class="mo">05</span><span class="p">,</span>
 <div class="newline"></div>                    <span class="n">f</span><span class="p">(</span><span class="n">this_x</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.2</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="mi">3</span> <span class="o">-</span> <span class="nb">iter</span> <span class="o">%</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
 <div class="newline"></div>                    <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">all_x</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">all_y</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;k+&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">all_x</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">all_y</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;k+&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">all_x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">all_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;rx&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">all_x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">all_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;rx&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axis.html#matplotlib.pyplot.axis" title="View documentation for matplotlib.pyplot.axis"><span class="n">plt</span><span class="o">.</span><span class="n">axis</span></a><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylim.html#matplotlib.pyplot.ylim" title="View documentation for matplotlib.pyplot.ylim"><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span></a><span class="p">(</span><span class="n">ymin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">all_y</span> <span class="o">-</span> <span class="n">all_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Error on f(x)&#39;</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration&#39;</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">pl</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.semilogy.html#matplotlib.pyplot.semilogy" title="View documentation for matplotlib.pyplot.semilogy"><span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">all_y</span> <span class="o">-</span> <span class="n">all_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;Error on f(x)&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;Iteration&#39;</span><span class="p">)</span>
+<div class="newline"></div>    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">pl</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.350 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.278 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-advanced-mathematical-optimization-auto-examples-plot-1d-optim-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_1d_optim.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_1d_optim.py</span></code></a></div>
@@ -290,10 +290,10 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="plot_constraints.html" title="2.7.4.9. Constraint optimization: visualizing the geometry"
+          <a href="plot_constraints.html" title="2.7.4.8. Constraint optimization: visualizing the geometry"
              >next</a></li>
         <li class="right" >
-          <a href="plot_non_bounds_constraints.html" title="2.7.4.7. Optimization with constraints"
+          <a href="plot_non_bounds_constraints.html" title="2.7.4.6. Optimization with constraints"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >2. Advanced topics</a> &#187;</li>

@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="2.7.4.1. Non convex" href="auto_examples/non_convex.html" />
+    <link rel="next" title="2.7.4.1. Noisy optimization problem" href="auto_examples/plot_noisy.html" />
     <link rel="prev" title="2.6.8.24. Segmentation with spectral clustering" href="../image_processing/auto_examples/plot_spectral_clustering.html" />
    
     <link rel="stylesheet"
@@ -133,7 +133,7 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="auto_examples/non_convex.html" title="2.7.4.1. Non convex"
+          <a href="auto_examples/plot_noisy.html" title="2.7.4.1. Noisy optimization problem"
              accesskey="N">next</a></li>
         <li class="right" >
           <a href="../image_processing/auto_examples/plot_spectral_clustering.html" title="2.6.8.24. Segmentation with spectral clustering"
@@ -175,7 +175,7 @@ $(function () {
 problem of finding numerically minimums (or maximums or zeros) of
 a function. In this context, the function is called <em>cost function</em>, or
 <em>objective function</em>, or <em>energy</em>.</p>
-<p>Here, we are interested in using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html#module-scipy.optimize" title="(in SciPy v1.1.0)"><code class="xref py py-mod docutils literal"><span class="pre">scipy.optimize</span></code></a> for black-box
+<p>Here, we are interested in using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html#module-scipy.optimize" title="(in SciPy v1.3.0)"><code class="xref py py-mod docutils literal"><span class="pre">scipy.optimize</span></code></a> for black-box
 optimization: we do not rely on the mathematical expression of the
 function that we are optimizing. Note that this expression can often be
 used for more efficient, non black-box, optimization.</p>
@@ -237,48 +237,48 @@ by Nocedal and Wright. Detailed reference on gradient descent methods.</li>
 </style><div class="contents local topic" id="chapters-contents">
 <p class="topic-title first">Chapters contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#knowing-your-problem" id="id32">Knowing your problem</a><ul>
-<li><a class="reference internal" href="#convex-versus-non-convex-optimization" id="id33">Convex versus non-convex optimization</a></li>
-<li><a class="reference internal" href="#smooth-and-non-smooth-problems" id="id34">Smooth and non-smooth problems</a></li>
-<li><a class="reference internal" href="#noisy-versus-exact-cost-functions" id="id35">Noisy versus exact cost functions</a></li>
-<li><a class="reference internal" href="#constraints" id="id36">Constraints</a></li>
+<li><a class="reference internal" href="#knowing-your-problem" id="id30">Knowing your problem</a><ul>
+<li><a class="reference internal" href="#convex-versus-non-convex-optimization" id="id31">Convex versus non-convex optimization</a></li>
+<li><a class="reference internal" href="#smooth-and-non-smooth-problems" id="id32">Smooth and non-smooth problems</a></li>
+<li><a class="reference internal" href="#noisy-versus-exact-cost-functions" id="id33">Noisy versus exact cost functions</a></li>
+<li><a class="reference internal" href="#constraints" id="id34">Constraints</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#a-review-of-the-different-optimizers" id="id37">A review of the different optimizers</a><ul>
-<li><a class="reference internal" href="#getting-started-1d-optimization" id="id38">Getting started: 1D optimization</a></li>
-<li><a class="reference internal" href="#gradient-based-methods" id="id39">Gradient based methods</a></li>
-<li><a class="reference internal" href="#newton-and-quasi-newton-methods" id="id40">Newton and quasi-newton methods</a></li>
+<li><a class="reference internal" href="#a-review-of-the-different-optimizers" id="id35">A review of the different optimizers</a><ul>
+<li><a class="reference internal" href="#getting-started-1d-optimization" id="id36">Getting started: 1D optimization</a></li>
+<li><a class="reference internal" href="#gradient-based-methods" id="id37">Gradient based methods</a></li>
+<li><a class="reference internal" href="#newton-and-quasi-newton-methods" id="id38">Newton and quasi-newton methods</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#full-code-examples" id="id41">Full code examples</a></li>
-<li><a class="reference internal" href="#examples-for-the-mathematical-optimization-chapter" id="id42">Examples for the mathematical optimization chapter</a><ul>
-<li><a class="reference internal" href="#gradient-less-methods" id="id43">Gradient-less methods</a></li>
-<li><a class="reference internal" href="#global-optimizers" id="id44">Global optimizers</a></li>
+<li><a class="reference internal" href="#full-code-examples" id="id39">Full code examples</a></li>
+<li><a class="reference internal" href="#examples-for-the-mathematical-optimization-chapter" id="id40">Examples for the mathematical optimization chapter</a><ul>
+<li><a class="reference internal" href="#gradient-less-methods" id="id41">Gradient-less methods</a></li>
+<li><a class="reference internal" href="#global-optimizers" id="id42">Global optimizers</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#practical-guide-to-optimization-with-scipy" id="id45">Practical guide to optimization with scipy</a><ul>
-<li><a class="reference internal" href="#choosing-a-method" id="id46">Choosing a method</a></li>
-<li><a class="reference internal" href="#making-your-optimizer-faster" id="id47">Making your optimizer faster</a></li>
-<li><a class="reference internal" href="#computing-gradients" id="id48">Computing gradients</a></li>
-<li><a class="reference internal" href="#synthetic-exercices" id="id49">Synthetic exercices</a></li>
+<li><a class="reference internal" href="#practical-guide-to-optimization-with-scipy" id="id43">Practical guide to optimization with scipy</a><ul>
+<li><a class="reference internal" href="#choosing-a-method" id="id44">Choosing a method</a></li>
+<li><a class="reference internal" href="#making-your-optimizer-faster" id="id45">Making your optimizer faster</a></li>
+<li><a class="reference internal" href="#computing-gradients" id="id46">Computing gradients</a></li>
+<li><a class="reference internal" href="#synthetic-exercices" id="id47">Synthetic exercices</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#special-case-non-linear-least-squares" id="id50">Special case: non-linear least-squares</a><ul>
-<li><a class="reference internal" href="#minimizing-the-norm-of-a-vector-function" id="id51">Minimizing the norm of a vector function</a></li>
-<li><a class="reference internal" href="#curve-fitting" id="id52">Curve fitting</a></li>
+<li><a class="reference internal" href="#special-case-non-linear-least-squares" id="id48">Special case: non-linear least-squares</a><ul>
+<li><a class="reference internal" href="#minimizing-the-norm-of-a-vector-function" id="id49">Minimizing the norm of a vector function</a></li>
+<li><a class="reference internal" href="#curve-fitting" id="id50">Curve fitting</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#optimization-with-constraints" id="id53">Optimization with constraints</a><ul>
-<li><a class="reference internal" href="#box-bounds" id="id54">Box bounds</a></li>
-<li><a class="reference internal" href="#general-constraints" id="id55">General constraints</a></li>
+<li><a class="reference internal" href="#optimization-with-constraints" id="id51">Optimization with constraints</a><ul>
+<li><a class="reference internal" href="#box-bounds" id="id52">Box bounds</a></li>
+<li><a class="reference internal" href="#general-constraints" id="id53">General constraints</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id2" id="id56">Full code examples</a></li>
-<li><a class="reference internal" href="#id3" id="id57">Examples for the mathematical optimization chapter</a></li>
+<li><a class="reference internal" href="#id2" id="id54">Full code examples</a></li>
+<li><a class="reference internal" href="#id3" id="id55">Examples for the mathematical optimization chapter</a></li>
 </ul>
 </div>
 <div class="section" id="knowing-your-problem">
-<h2><a class="toc-backref" href="#id32">2.7.1. Knowing your problem</a><a class="headerlink" href="#knowing-your-problem" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id30">2.7.1. Knowing your problem</a><a class="headerlink" href="#knowing-your-problem" title="Permalink to this headline">¶</a></h2>
 <p>Not all optimization problems are equal. Knowing your problem enables you
 to choose the right tool.</p>
 <div class="topic">
@@ -288,7 +288,7 @@ to choose the right tool.</p>
 on which the search is performed.</p>
 </div>
 <div class="section" id="convex-versus-non-convex-optimization">
-<h3><a class="toc-backref" href="#id33">2.7.1.1. Convex versus non-convex optimization</a><a class="headerlink" href="#convex-versus-non-convex-optimization" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id31">2.7.1.1. Convex versus non-convex optimization</a><a class="headerlink" href="#convex-versus-non-convex-optimization" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
 <col width="50%" />
@@ -318,7 +318,7 @@ also a global minimum. Then, in some sense, the minimum is unique.</p>
 </div>
 </div>
 <div class="section" id="smooth-and-non-smooth-problems">
-<h3><a class="toc-backref" href="#id34">2.7.1.2. Smooth and non-smooth problems</a><a class="headerlink" href="#smooth-and-non-smooth-problems" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id32">2.7.1.2. Smooth and non-smooth problems</a><a class="headerlink" href="#smooth-and-non-smooth-problems" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
 <col width="50%" />
@@ -342,7 +342,7 @@ is an example of methods which deal very efficiently with
 piece-wise linear functions).</p>
 </div>
 <div class="section" id="noisy-versus-exact-cost-functions">
-<h3><a class="toc-backref" href="#id35">2.7.1.3. Noisy versus exact cost functions</a><a class="headerlink" href="#noisy-versus-exact-cost-functions" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id33">2.7.1.3. Noisy versus exact cost functions</a><a class="headerlink" href="#noisy-versus-exact-cost-functions" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
 <col width="50%" />
@@ -364,7 +364,7 @@ optimization.</p>
 </div>
 </div>
 <div class="section" id="constraints">
-<h3><a class="toc-backref" href="#id36">2.7.1.4. Constraints</a><a class="headerlink" href="#constraints" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id34">2.7.1.4. Constraints</a><a class="headerlink" href="#constraints" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
 <col width="50%" />
@@ -383,11 +383,11 @@ optimization.</p>
 </div>
 </div>
 <div class="section" id="a-review-of-the-different-optimizers">
-<h2><a class="toc-backref" href="#id37">2.7.2. A review of the different optimizers</a><a class="headerlink" href="#a-review-of-the-different-optimizers" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id35">2.7.2. A review of the different optimizers</a><a class="headerlink" href="#a-review-of-the-different-optimizers" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="getting-started-1d-optimization">
-<h3><a class="toc-backref" href="#id38">2.7.2.1. Getting started: 1D optimization</a><a class="headerlink" href="#getting-started-1d-optimization" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id36">2.7.2.1. Getting started: 1D optimization</a><a class="headerlink" href="#getting-started-1d-optimization" title="Permalink to this headline">¶</a></h3>
 <p>Let’s get started by finding the minimum of the scalar function
-<img class="math" src="../../_images/math/c8b2b4fa34dbb68f7c75a530d0fc24e3c4a6c6f1.png" alt="f(x)=\exp[(x-0.7)^2]"/>. <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize_scalar.html#scipy.optimize.minimize_scalar" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize_scalar()</span></code></a> uses
+<img class="math" src="../../_images/math/c8b2b4fa34dbb68f7c75a530d0fc24e3c4a6c6f1.png" alt="f(x)=\exp[(x-0.7)^2]"/>. <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize_scalar.html#scipy.optimize.minimize_scalar" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize_scalar()</span></code></a> uses
 Brent’s method to find the minimum of a function:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">optimize</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -399,7 +399,7 @@ Brent’s method to find the minimum of a function:</p>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x_min</span> 
 <div class="newline"></div><span class="go">0.699999999...</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x_min</span> <span class="o">-</span> <span class="mf">0.7</span> 
-<div class="newline"></div><span class="go">-2.160590595323697e-10</span>
+<div class="newline"></div><span class="go">-2.16...e-10</span>
 <div class="newline"></div></pre></div>
 </div>
 <table border="1" class="docutils">
@@ -427,12 +427,12 @@ optimizer avoided the local minimum is a matter of luck.</td>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize_scalar.html#scipy.optimize.minimize_scalar" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize_scalar()</span></code></a> can also be used for optimization
+<p class="last"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize_scalar.html#scipy.optimize.minimize_scalar" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize_scalar()</span></code></a> can also be used for optimization
 constrained to an interval using the parameter <code class="docutils literal"><span class="pre">bounds</span></code>.</p>
 </div>
 </div>
 <div class="section" id="gradient-based-methods">
-<h3><a class="toc-backref" href="#id39">2.7.2.2. Gradient based methods</a><a class="headerlink" href="#gradient-based-methods" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id37">2.7.2.2. Gradient based methods</a><a class="headerlink" href="#gradient-based-methods" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="some-intuitions-about-gradient-descent">
 <h4>Some intuitions about gradient descent<a class="headerlink" href="#some-intuitions-about-gradient-descent" title="Permalink to this headline">¶</a></h4>
 <p>Here we focus on <strong>intuitions</strong>, not code. Code will follow.</p>
@@ -528,7 +528,7 @@ gradient and sharp turns are reduced.</p>
 </tr>
 </tbody>
 </table>
-<p>scipy provides <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a> to find the minimum of scalar
+<p>scipy provides <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a> to find the minimum of scalar
 functions of one or more variables. The simple conjugate gradient method can
 be used by setting the parameter <code class="docutils literal"><span class="pre">method</span></code> to CG</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>   <span class="c1"># The rosenbrock function</span>
@@ -566,7 +566,7 @@ without the gradient.</p>
 </div>
 </div>
 <div class="section" id="newton-and-quasi-newton-methods">
-<h3><a class="toc-backref" href="#id40">2.7.2.3. Newton and quasi-newton methods</a><a class="headerlink" href="#newton-and-quasi-newton-methods" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id38">2.7.2.3. Newton and quasi-newton methods</a><a class="headerlink" href="#newton-and-quasi-newton-methods" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="newton-methods-using-the-hessian-2nd-differential">
 <h4>Newton methods: using the Hessian (2nd differential)<a class="headerlink" href="#newton-methods-using-the-hessian-2nd-differential" title="Permalink to this headline">¶</a></h4>
 <p><a class="reference external" href="http://en.wikipedia.org/wiki/Newton%27s_method_in_optimization">Newton methods</a> use a
@@ -602,7 +602,7 @@ and leads to oscillations.</p>
 </tbody>
 </table>
 <p>In scipy, you can use the Newton method by setting <code class="docutils literal"><span class="pre">method</span></code> to Newton-CG in
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a>. Here, CG refers to the fact that an internal
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a>. Here, CG refers to the fact that an internal
 inversion of the Hessian is performed by conjugate gradient</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>   <span class="c1"># The rosenbrock function</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
@@ -648,7 +648,7 @@ and unstable (large scale &gt; 250).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Newton optimizers should not to be confused with Newton’s root finding
-method, based on the same principles, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.newton.html#scipy.optimize.newton" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.newton()</span></code></a>.</p>
+method, based on the same principles, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.newton.html#scipy.optimize.newton" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.newton()</span></code></a>.</p>
 </div>
 </div>
 <div class="section" id="quasi-newton-methods-approximating-the-hessian-on-the-fly">
@@ -659,77 +659,71 @@ each step an approximation of the Hessian.</p>
 </div>
 </div>
 <div class="section" id="full-code-examples">
-<h2><a class="toc-backref" href="#id41">2.7.3. Full code examples</a><a class="headerlink" href="#full-code-examples" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id39">2.7.3. Full code examples</a><a class="headerlink" href="#full-code-examples" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="examples-for-the-mathematical-optimization-chapter">
-<h2><a class="toc-backref" href="#id42">2.7.4. Examples for the mathematical optimization chapter</a><a class="headerlink" href="#examples-for-the-mathematical-optimization-chapter" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Demo non-convex problems "><div class="figure" id="id8">
-<img alt="../../_images/sphx_glr_non_convex_thumb.png" src="../../_images/sphx_glr_non_convex_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/non_convex.html#sphx-glr-advanced-mathematical-optimization-auto-examples-non-convex-py"><span class="std std-ref">Non convex</span></a></span></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="Draws a figure explaining noisy vs non-noisy optimization "><div class="figure" id="id9">
+<h2><a class="toc-backref" href="#id40">2.7.4. Examples for the mathematical optimization chapter</a><a class="headerlink" href="#examples-for-the-mathematical-optimization-chapter" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Draws a figure explaining noisy vs non-noisy optimization "><div class="figure" id="id8">
 <img alt="../../_images/sphx_glr_plot_noisy_thumb.png" src="../../_images/sphx_glr_plot_noisy_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_noisy.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-noisy-py"><span class="std std-ref">Noisy optimization problem</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Draws a figure to explain smooth versus non smooth optimization. "><div class="figure" id="id10">
+<div class="sphx-glr-thumbcontainer" tooltip="Draws a figure to explain smooth versus non smooth optimization. "><div class="figure" id="id9">
 <img alt="../../_images/sphx_glr_plot_smooth_thumb.png" src="../../_images/sphx_glr_plot_smooth_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_smooth.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-smooth-py"><span class="std std-ref">Smooth vs non-smooth</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="A curve fitting example "><div class="figure" id="id11">
+<div class="sphx-glr-thumbcontainer" tooltip="A curve fitting example "><div class="figure" id="id10">
 <img alt="../../_images/sphx_glr_plot_curve_fitting_thumb.png" src="../../_images/sphx_glr_plot_curve_fitting_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_curve_fitting.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-curve-fitting-py"><span class="std std-ref">Curve fitting</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="A figure showing the definition of a convex function "><div class="figure" id="id12">
+<div class="sphx-glr-thumbcontainer" tooltip="A figure showing the definition of a convex function "><div class="figure" id="id11">
 <img alt="../../_images/sphx_glr_plot_convex_thumb.png" src="../../_images/sphx_glr_plot_convex_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_convex.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-convex-py"><span class="std std-ref">Convex function</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="An excercise of finding minimum. This excercise is hard because the function is very flat aroun..."><div class="figure" id="id13">
+<div class="sphx-glr-thumbcontainer" tooltip="An excercise of finding minimum. This excercise is hard because the function is very flat aroun..."><div class="figure" id="id12">
 <img alt="../../_images/sphx_glr_plot_exercise_flat_minimum_thumb.png" src="../../_images/sphx_glr_plot_exercise_flat_minimum_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_exercise_flat_minimum.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-exercise-flat-minimum-py"><span class="std std-ref">Finding a minimum in a flat neighborhood</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="An example showing how to do optimization with general constraints using SLSQP and cobyla. "><div class="figure" id="id14">
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing how to do optimization with general constraints using SLSQP and cobyla. "><div class="figure" id="id13">
 <img alt="../../_images/sphx_glr_plot_non_bounds_constraints_thumb.png" src="../../_images/sphx_glr_plot_non_bounds_constraints_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_non_bounds_constraints.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-non-bounds-constraints-py"><span class="std std-ref">Optimization with constraints</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Illustration of 1D optimization: Brent&#x27;s method "><div class="figure" id="id15">
+<div class="sphx-glr-thumbcontainer" tooltip="Illustration of 1D optimization: Brent&#x27;s method "><div class="figure" id="id14">
 <img alt="../../_images/sphx_glr_plot_1d_optim_thumb.png" src="../../_images/sphx_glr_plot_1d_optim_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_1d_optim.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-1d-optim-py"><span class="std std-ref">Brent’s method</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="A small figure explaining optimization with constraints "><div class="figure" id="id16">
+<div class="sphx-glr-thumbcontainer" tooltip="A small figure explaining optimization with constraints "><div class="figure" id="id15">
 <img alt="../../_images/sphx_glr_plot_constraints_thumb.png" src="../../_images/sphx_glr_plot_constraints_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_constraints.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-constraints-py"><span class="std std-ref">Constraint optimization: visualizing the geometry</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Plots the results from the comparison of optimizers."><div class="figure" id="id17">
+<div class="sphx-glr-thumbcontainer" tooltip="Plots the results from the comparison of optimizers."><div class="figure" id="id16">
 <img alt="../../_images/sphx_glr_plot_compare_optimizers_thumb.png" src="../../_images/sphx_glr_plot_compare_optimizers_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_compare_optimizers.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-compare-optimizers-py"><span class="std std-ref">Plotting the comparison of optimizers</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="The challenge here is that Hessian of the problem is a very ill-conditioned matrix. This can ea..."><div class="figure" id="id18">
+<div class="sphx-glr-thumbcontainer" tooltip="The challenge here is that Hessian of the problem is a very ill-conditioned matrix. This can ea..."><div class="figure" id="id17">
 <img alt="../../_images/sphx_glr_plot_exercise_ill_conditioned_thumb.png" src="../../_images/sphx_glr_plot_exercise_ill_conditioned_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_exercise_ill_conditioned.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-exercise-ill-conditioned-py"><span class="std std-ref">Alternating optimization</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="An example demoing gradient descent by creating figures that trace the evolution of the optimiz..."><div class="figure" id="id19">
+<div class="sphx-glr-thumbcontainer" tooltip="An example demoing gradient descent by creating figures that trace the evolution of the optimiz..."><div class="figure" id="id18">
 <img alt="../../_images/sphx_glr_plot_gradient_descent_thumb.png" src="../../_images/sphx_glr_plot_gradient_descent_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_gradient_descent.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-gradient-descent-py"><span class="std std-ref">Gradient descent</span></a></span></p>
 </div>
@@ -808,7 +802,7 @@ are also supported by L-BFGS-B:</p>
 <div class="newline"></div></pre></div>
 </div>
 <div class="section" id="gradient-less-methods">
-<h3><a class="toc-backref" href="#id43">2.7.4.13. Gradient-less methods</a><a class="headerlink" href="#gradient-less-methods" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id41">2.7.4.12. Gradient-less methods</a><a class="headerlink" href="#gradient-less-methods" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="a-shooting-method-the-powell-algorithm">
 <h4>A shooting method: the Powell algorithm<a class="headerlink" href="#a-shooting-method-the-powell-algorithm" title="Permalink to this headline">¶</a></h4>
 <p>Almost a gradient approach</p>
@@ -860,7 +854,7 @@ methods on smooth, non-noisy functions.</p>
 </tr>
 </tbody>
 </table>
-<p>Using the Nelder-Mead solver in <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a>:</p>
+<p>Using the Nelder-Mead solver in <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>   <span class="c1"># The rosenbrock function</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Nelder-Mead&quot;</span><span class="p">)</span> 
@@ -879,17 +873,17 @@ methods on smooth, non-noisy functions.</p>
 </div>
 </div>
 <div class="section" id="global-optimizers">
-<h3><a class="toc-backref" href="#id44">2.7.4.14. Global optimizers</a><a class="headerlink" href="#global-optimizers" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id42">2.7.4.13. Global optimizers</a><a class="headerlink" href="#global-optimizers" title="Permalink to this headline">¶</a></h3>
 <p>If your problem does not admit a unique local minimum (which can be hard
 to test unless the function is convex), and you do not have prior
 information to initialize the optimization close to the solution, you
 may need a global optimizer.</p>
 <div class="section" id="brute-force-a-grid-search">
 <h4>Brute force: a grid search<a class="headerlink" href="#brute-force-a-grid-search" title="Permalink to this headline">¶</a></h4>
-<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.brute.html#scipy.optimize.brute" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.brute()</span></code></a> evaluates the function on a given grid of
+<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.brute.html#scipy.optimize.brute" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.brute()</span></code></a> evaluates the function on a given grid of
 parameters and returns the parameters corresponding to the minimum
 value. The parameters are specified with ranges given to
-<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mgrid.html#numpy.mgrid" title="(in NumPy v1.15)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.mgrid</span></code></a>. By default, 20 steps are taken in each direction:</p>
+<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mgrid.html#numpy.mgrid" title="(in NumPy v1.16)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.mgrid</span></code></a>. By default, 20 steps are taken in each direction:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>   <span class="c1"># The rosenbrock function</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">brute</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span> 
@@ -900,11 +894,11 @@ value. The parameters are specified with ranges given to
 </div>
 </div>
 <div class="section" id="practical-guide-to-optimization-with-scipy">
-<h2><a class="toc-backref" href="#id45">2.7.5. Practical guide to optimization with scipy</a><a class="headerlink" href="#practical-guide-to-optimization-with-scipy" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id43">2.7.5. Practical guide to optimization with scipy</a><a class="headerlink" href="#practical-guide-to-optimization-with-scipy" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="choosing-a-method">
-<h3><a class="toc-backref" href="#id46">2.7.5.1. Choosing a method</a><a class="headerlink" href="#choosing-a-method" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id44">2.7.5.1. Choosing a method</a><a class="headerlink" href="#choosing-a-method" title="Permalink to this headline">¶</a></h3>
 <p>All methods are exposed as the <code class="docutils literal"><span class="pre">method</span></code> argument of
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a>.</p>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a>.</p>
 <a class="reference internal image-reference" href="../../_images/sphx_glr_plot_compare_optimizers_001.png"><img alt="../../_images/sphx_glr_plot_compare_optimizers_001.png" class="align-center" src="../../_images/sphx_glr_plot_compare_optimizers_001.png" style="width: 95%;" /></a>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -948,7 +942,7 @@ is better than BFGS at optimizing computationally cheap functions.</li>
 </table>
 </div>
 <div class="section" id="making-your-optimizer-faster">
-<h3><a class="toc-backref" href="#id47">2.7.5.2. Making your optimizer faster</a><a class="headerlink" href="#making-your-optimizer-faster" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id45">2.7.5.2. Making your optimizer faster</a><a class="headerlink" href="#making-your-optimizer-faster" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Choose the right method (see above), do compute analytically the
 gradient and Hessian, if you can.</li>
@@ -961,7 +955,7 @@ another.</li>
 </ul>
 </div>
 <div class="section" id="computing-gradients">
-<h3><a class="toc-backref" href="#id48">2.7.5.3. Computing gradients</a><a class="headerlink" href="#computing-gradients" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id46">2.7.5.3. Computing gradients</a><a class="headerlink" href="#computing-gradients" title="Permalink to this headline">¶</a></h3>
 <p>Computing gradients, and even more Hessians, is very tedious but worth
 the effort. Symbolic computation with <a class="reference internal" href="../../packages/sympy.html#sympy"><span class="std std-ref">Sympy</span></a> may come in
 handy.</p>
@@ -969,19 +963,19 @@ handy.</p>
 <p class="first admonition-title">Warning</p>
 <p>A <em>very</em> common source of optimization not converging well is human
 error in the computation of the gradient. You can use
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.check_grad.html#scipy.optimize.check_grad" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.check_grad()</span></code></a> to check that your gradient is
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.check_grad.html#scipy.optimize.check_grad" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.check_grad()</span></code></a> to check that your gradient is
 correct. It returns the norm of the different between the gradient
 given, and a gradient computed numerically:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="o">.</span><span class="n">check_grad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">jacobian</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 <div class="newline"></div><span class="go">2.384185791015625e-07</span>
 <div class="newline"></div></pre></div>
 </div>
-<p class="last">See also <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.approx_fprime.html#scipy.optimize.approx_fprime" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.approx_fprime()</span></code></a> to find your errors.</p>
+<p class="last">See also <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.approx_fprime.html#scipy.optimize.approx_fprime" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.approx_fprime()</span></code></a> to find your errors.</p>
 </div>
 </div>
 <div class="section" id="synthetic-exercices">
-<h3><a class="toc-backref" href="#id49">2.7.5.4. Synthetic exercices</a><a class="headerlink" href="#synthetic-exercices" title="Permalink to this headline">¶</a></h3>
-<a class="reference external image-reference" href="auto_examples/plot_exercise_ill_conditioned.html"><img alt="../../_images/sphx_glr_plot_exercise_ill_conditioned_001.png" class="align-right" src="../../_images/sphx_glr_plot_exercise_ill_conditioned_001.png" style="width: 280.0px; height: 210.0px;" /></a>
+<h3><a class="toc-backref" href="#id47">2.7.5.4. Synthetic exercices</a><a class="headerlink" href="#synthetic-exercices" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_exercise_ill_conditioned.html"><img alt="../../_images/sphx_glr_plot_exercise_ill_conditioned_001.png" class="align-right" src="../../_images/sphx_glr_plot_exercise_ill_conditioned_001.png" style="width: 224.0px; height: 168.0px;" /></a>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercice: A simple (?) quadratic function</strong></p>
 <p>Optimize the following function, using K[0] as a starting point:</p>
@@ -1001,16 +995,16 @@ working well?</p>
 a minimum in (0, 0). Starting from an initialization at (1, 1), try
 to get within 1e-8 of this minimum point.</p>
 <p class="centered">
-<strong><a class="reference external" href="auto_examples/plot_exercise_flat_minimum.html"><img alt="flat_min_0" src="../../_images/sphx_glr_plot_exercise_flat_minimum_000.png" style="width: 384.0px; height: 288.0px;" /></a> <a class="reference external" href="auto_examples/plot_exercise_flat_minimum.html"><img alt="flat_min_1" src="../../_images/sphx_glr_plot_exercise_flat_minimum_001.png" style="width: 384.0px; height: 288.0px;" /></a></strong></p></div>
+<strong><a class="reference external" href="auto_examples/plot_exercise_flat_minimum.html"><img alt="flat_min_0" src="../../_images/sphx_glr_plot_exercise_flat_minimum_000.png" style="width: 307.2px; height: 230.39999999999998px;" /></a> <a class="reference external" href="auto_examples/plot_exercise_flat_minimum.html"><img alt="flat_min_1" src="../../_images/sphx_glr_plot_exercise_flat_minimum_001.png" style="width: 307.2px; height: 230.39999999999998px;" /></a></strong></p></div>
 </div>
 </div>
 <div class="section" id="special-case-non-linear-least-squares">
-<h2><a class="toc-backref" href="#id50">2.7.6. Special case: non-linear least-squares</a><a class="headerlink" href="#special-case-non-linear-least-squares" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id48">2.7.6. Special case: non-linear least-squares</a><a class="headerlink" href="#special-case-non-linear-least-squares" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="minimizing-the-norm-of-a-vector-function">
-<h3><a class="toc-backref" href="#id51">2.7.6.1. Minimizing the norm of a vector function</a><a class="headerlink" href="#minimizing-the-norm-of-a-vector-function" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id49">2.7.6.1. Minimizing the norm of a vector function</a><a class="headerlink" href="#minimizing-the-norm-of-a-vector-function" title="Permalink to this headline">¶</a></h3>
 <p>Least square problems, minimizing the norm of a vector function, have a
 specific structure that can be used in the <a class="reference external" href="https://en.wikipedia.org/wiki/Levenberg-Marquardt_algorithm">Levenberg–Marquardt algorithm</a>
-implemented in <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html#scipy.optimize.leastsq" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.leastsq()</span></code></a>.</p>
+implemented in <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html#scipy.optimize.leastsq" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.leastsq()</span></code></a>.</p>
 <p>Lets try to minimize the norm of the following vectorial function:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
@@ -1056,16 +1050,16 @@ of parameters to optimize.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">If the function is linear, this is a linear-algebra problem, and
-should be solved with <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.lstsq.html#scipy.linalg.lstsq" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.linalg.lstsq()</span></code></a>.</p>
+should be solved with <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.lstsq.html#scipy.linalg.lstsq" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.linalg.lstsq()</span></code></a>.</p>
 </div>
 </div>
 <div class="section" id="curve-fitting">
-<h3><a class="toc-backref" href="#id52">2.7.6.2. Curve fitting</a><a class="headerlink" href="#curve-fitting" title="Permalink to this headline">¶</a></h3>
-<a class="reference external image-reference" href="auto_examples/plot_curve_fitting.html"><img alt="../../_images/sphx_glr_plot_curve_fitting_001.png" class="align-right" src="../../_images/sphx_glr_plot_curve_fitting_001.png" style="width: 384.0px; height: 288.0px;" /></a>
+<h3><a class="toc-backref" href="#id50">2.7.6.2. Curve fitting</a><a class="headerlink" href="#curve-fitting" title="Permalink to this headline">¶</a></h3>
+<a class="reference external image-reference" href="auto_examples/plot_curve_fitting.html"><img alt="../../_images/sphx_glr_plot_curve_fitting_001.png" class="align-right" src="../../_images/sphx_glr_plot_curve_fitting_001.png" style="width: 307.2px; height: 230.39999999999998px;" /></a>
 <p>Least square problems occur often when fitting a non-linear to data.
 While it is possible to construct our optimization problem ourselves,
 scipy provides a helper function for this purpose:
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy.optimize.curve_fit" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.curve_fit()</span></code></a>:</p>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy.optimize.curve_fit" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.curve_fit()</span></code></a>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">omega</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">phi</span><span class="p">)</span>
 <div class="newline"></div>
@@ -1084,13 +1078,13 @@ scipy provides a helper function for this purpose:
 </div>
 </div>
 <div class="section" id="optimization-with-constraints">
-<h2><a class="toc-backref" href="#id53">2.7.7. Optimization with constraints</a><a class="headerlink" href="#optimization-with-constraints" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id51">2.7.7. Optimization with constraints</a><a class="headerlink" href="#optimization-with-constraints" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="box-bounds">
-<h3><a class="toc-backref" href="#id54">2.7.7.1. Box bounds</a><a class="headerlink" href="#box-bounds" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id52">2.7.7.1. Box bounds</a><a class="headerlink" href="#box-bounds" title="Permalink to this headline">¶</a></h3>
 <p>Box bounds correspond to limiting each of the individual parameters of
 the optimization. Note that some problems that are not originally written
 as box bounds can be rewritten as such via change of variables. Both
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize_scalar.html#scipy.optimize.minimize_scalar" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize_scalar()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize_scalar.html#scipy.optimize.minimize_scalar" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize_scalar()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.minimize()</span></code></a>
 support bound constraints with the parameter <code class="docutils literal"><span class="pre">bounds</span></code>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>   <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
@@ -1109,11 +1103,11 @@ support bound constraints with the parameter <code class="docutils literal"><spa
 <a class="reference external image-reference" href="auto_examples/plot_constraints.html"><img alt="../../_images/sphx_glr_plot_constraints_002.png" class="align-right" src="../../_images/sphx_glr_plot_constraints_002.png" style="width: 225.0px; height: 187.5px;" /></a>
 </div>
 <div class="section" id="general-constraints">
-<h3><a class="toc-backref" href="#id55">2.7.7.2. General constraints</a><a class="headerlink" href="#general-constraints" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id53">2.7.7.2. General constraints</a><a class="headerlink" href="#general-constraints" title="Permalink to this headline">¶</a></h3>
 <p>Equality and inequality constraints specified as functions: <img class="math" src="../../_images/math/6504e3f0bdd624bb75e2c6f760ac542612e8e8fa.png" alt="f(x) = 0"/>
 and <img class="math" src="../../_images/math/a82ae2f507c0518d5157707f511738073b04ce5b.png" alt="g(x) &lt; 0"/>.</p>
 <ul>
-<li><p class="first"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_slsqp.html#scipy.optimize.fmin_slsqp" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.fmin_slsqp()</span></code></a> Sequential least square programming:
+<li><p class="first"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_slsqp.html#scipy.optimize.fmin_slsqp" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.fmin_slsqp()</span></code></a> Sequential least square programming:
 equality and inequality constraints:</p>
 <a class="reference external image-reference" href="auto_examples/plot_non_bounds_constraints.html"><img alt="../../_images/sphx_glr_plot_non_bounds_constraints_001.png" class="align-right" src="../../_images/sphx_glr_plot_non_bounds_constraints_001.png" style="width: 225.0px; height: 187.5px;" /></a>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -1153,77 +1147,71 @@ using a mathematical trick known as <a class="reference external" href="https://
 </div>
 </div>
 <div class="section" id="id2">
-<h2><a class="toc-backref" href="#id56">2.7.8. Full code examples</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id54">2.7.8. Full code examples</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="id3">
-<h2><a class="toc-backref" href="#id57">2.7.9. Examples for the mathematical optimization chapter</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Demo non-convex problems "><div class="figure" id="id20">
-<img alt="../../_images/sphx_glr_non_convex_thumb.png" src="../../_images/sphx_glr_non_convex_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/non_convex.html#sphx-glr-advanced-mathematical-optimization-auto-examples-non-convex-py"><span class="std std-ref">Non convex</span></a></span></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="Draws a figure explaining noisy vs non-noisy optimization "><div class="figure" id="id21">
+<h2><a class="toc-backref" href="#id55">2.7.9. Examples for the mathematical optimization chapter</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Draws a figure explaining noisy vs non-noisy optimization "><div class="figure" id="id19">
 <img alt="../../_images/sphx_glr_plot_noisy_thumb.png" src="../../_images/sphx_glr_plot_noisy_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_noisy.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-noisy-py"><span class="std std-ref">Noisy optimization problem</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Draws a figure to explain smooth versus non smooth optimization. "><div class="figure" id="id22">
+<div class="sphx-glr-thumbcontainer" tooltip="Draws a figure to explain smooth versus non smooth optimization. "><div class="figure" id="id20">
 <img alt="../../_images/sphx_glr_plot_smooth_thumb.png" src="../../_images/sphx_glr_plot_smooth_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_smooth.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-smooth-py"><span class="std std-ref">Smooth vs non-smooth</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="A curve fitting example "><div class="figure" id="id23">
+<div class="sphx-glr-thumbcontainer" tooltip="A curve fitting example "><div class="figure" id="id21">
 <img alt="../../_images/sphx_glr_plot_curve_fitting_thumb.png" src="../../_images/sphx_glr_plot_curve_fitting_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_curve_fitting.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-curve-fitting-py"><span class="std std-ref">Curve fitting</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="A figure showing the definition of a convex function "><div class="figure" id="id24">
+<div class="sphx-glr-thumbcontainer" tooltip="A figure showing the definition of a convex function "><div class="figure" id="id22">
 <img alt="../../_images/sphx_glr_plot_convex_thumb.png" src="../../_images/sphx_glr_plot_convex_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_convex.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-convex-py"><span class="std std-ref">Convex function</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="An excercise of finding minimum. This excercise is hard because the function is very flat aroun..."><div class="figure" id="id25">
+<div class="sphx-glr-thumbcontainer" tooltip="An excercise of finding minimum. This excercise is hard because the function is very flat aroun..."><div class="figure" id="id23">
 <img alt="../../_images/sphx_glr_plot_exercise_flat_minimum_thumb.png" src="../../_images/sphx_glr_plot_exercise_flat_minimum_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_exercise_flat_minimum.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-exercise-flat-minimum-py"><span class="std std-ref">Finding a minimum in a flat neighborhood</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="An example showing how to do optimization with general constraints using SLSQP and cobyla. "><div class="figure" id="id26">
+<div class="sphx-glr-thumbcontainer" tooltip="An example showing how to do optimization with general constraints using SLSQP and cobyla. "><div class="figure" id="id24">
 <img alt="../../_images/sphx_glr_plot_non_bounds_constraints_thumb.png" src="../../_images/sphx_glr_plot_non_bounds_constraints_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_non_bounds_constraints.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-non-bounds-constraints-py"><span class="std std-ref">Optimization with constraints</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Illustration of 1D optimization: Brent&#x27;s method "><div class="figure" id="id27">
+<div class="sphx-glr-thumbcontainer" tooltip="Illustration of 1D optimization: Brent&#x27;s method "><div class="figure" id="id25">
 <img alt="../../_images/sphx_glr_plot_1d_optim_thumb.png" src="../../_images/sphx_glr_plot_1d_optim_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_1d_optim.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-1d-optim-py"><span class="std std-ref">Brent’s method</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="A small figure explaining optimization with constraints "><div class="figure" id="id28">
+<div class="sphx-glr-thumbcontainer" tooltip="A small figure explaining optimization with constraints "><div class="figure" id="id26">
 <img alt="../../_images/sphx_glr_plot_constraints_thumb.png" src="../../_images/sphx_glr_plot_constraints_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_constraints.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-constraints-py"><span class="std std-ref">Constraint optimization: visualizing the geometry</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Plots the results from the comparison of optimizers."><div class="figure" id="id29">
+<div class="sphx-glr-thumbcontainer" tooltip="Plots the results from the comparison of optimizers."><div class="figure" id="id27">
 <img alt="../../_images/sphx_glr_plot_compare_optimizers_thumb.png" src="../../_images/sphx_glr_plot_compare_optimizers_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_compare_optimizers.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-compare-optimizers-py"><span class="std std-ref">Plotting the comparison of optimizers</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="The challenge here is that Hessian of the problem is a very ill-conditioned matrix. This can ea..."><div class="figure" id="id30">
+<div class="sphx-glr-thumbcontainer" tooltip="The challenge here is that Hessian of the problem is a very ill-conditioned matrix. This can ea..."><div class="figure" id="id28">
 <img alt="../../_images/sphx_glr_plot_exercise_ill_conditioned_thumb.png" src="../../_images/sphx_glr_plot_exercise_ill_conditioned_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_exercise_ill_conditioned.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-exercise-ill-conditioned-py"><span class="std std-ref">Alternating optimization</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="An example demoing gradient descent by creating figures that trace the evolution of the optimiz..."><div class="figure" id="id31">
+<div class="sphx-glr-thumbcontainer" tooltip="An example demoing gradient descent by creating figures that trace the evolution of the optimiz..."><div class="figure" id="id29">
 <img alt="../../_images/sphx_glr_plot_gradient_descent_thumb.png" src="../../_images/sphx_glr_plot_gradient_descent_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="auto_examples/plot_gradient_descent.html#sphx-glr-advanced-mathematical-optimization-auto-examples-plot-gradient-descent-py"><span class="std std-ref">Gradient descent</span></a></span></p>
 </div>
@@ -1273,12 +1261,12 @@ using a mathematical trick known as <a class="reference external" href="https://
 </li>
 <li><a class="reference internal" href="#full-code-examples">2.7.3. Full code examples</a></li>
 <li><a class="reference internal" href="#examples-for-the-mathematical-optimization-chapter">2.7.4. Examples for the mathematical optimization chapter</a><ul>
-<li><a class="reference internal" href="#gradient-less-methods">2.7.4.13. Gradient-less methods</a><ul>
+<li><a class="reference internal" href="#gradient-less-methods">2.7.4.12. Gradient-less methods</a><ul>
 <li><a class="reference internal" href="#a-shooting-method-the-powell-algorithm">A shooting method: the Powell algorithm</a></li>
 <li><a class="reference internal" href="#simplex-method-the-nelder-mead">Simplex method: the Nelder-Mead</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#global-optimizers">2.7.4.14. Global optimizers</a><ul>
+<li><a class="reference internal" href="#global-optimizers">2.7.4.13. Global optimizers</a><ul>
 <li><a class="reference internal" href="#brute-force-a-grid-search">Brute force: a grid search</a></li>
 </ul>
 </li>
@@ -1336,7 +1324,7 @@ using a mathematical trick known as <a class="reference external" href="https://
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="auto_examples/non_convex.html" title="2.7.4.1. Non convex"
+          <a href="auto_examples/plot_noisy.html" title="2.7.4.1. Noisy optimization problem"
              >next</a></li>
         <li class="right" >
           <a href="../image_processing/auto_examples/plot_spectral_clustering.html" title="2.6.8.24. Segmentation with spectral clustering"

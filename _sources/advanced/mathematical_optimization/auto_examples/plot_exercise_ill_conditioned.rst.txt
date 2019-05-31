@@ -23,7 +23,7 @@ problem can be judged from looking at the conditioning of K.
 
     import numpy as np
     from scipy import optimize
-    import pylab as pl
+    import matplotlib.pyplot as plt
 
     np.random.seed(0)
 
@@ -55,17 +55,17 @@ Some pretty plotting
 .. code-block:: python
 
 
-    pl.figure(1)
-    pl.clf()
+    plt.figure(1)
+    plt.clf()
     Z = X, Y = np.mgrid[-1.5:1.5:100j, -1.1:1.1:100j]
     # Complete in the additional dimensions with zeros
     Z = np.reshape(Z, (2, -1)).copy()
     Z.resize((100, Z.shape[-1]))
     Z = np.apply_along_axis(f, 0, Z)
     Z = np.reshape(Z, X.shape)
-    pl.imshow(Z.T, cmap=pl.cm.gray_r, extent=[-1.5, 1.5, -1.1, 1.1],
+    plt.imshow(Z.T, cmap=plt.cm.gray_r, extent=[-1.5, 1.5, -1.1, 1.1],
               origin='lower')
-    pl.contour(X, Y, Z, cmap=pl.cm.gnuplot)
+    plt.contour(X, Y, Z, cmap=plt.cm.gnuplot)
 
     # A reference but slow solution:
     t0 = time.time()
@@ -103,7 +103,7 @@ Some pretty plotting
         time.time() - t0, np.sqrt(np.sum((x_newton - x_ref)**2)),
         f(x_newton) - f_ref))
 
-    pl.show()
+    plt.show()
 
 
 
@@ -117,15 +117,15 @@ Some pretty plotting
 
  .. code-block:: none
 
-    Powell: time 0.26s
-           BFGS: time 5.86s, x error 10.39, f error 31006.85
-         L-BFGS: time 0.05s, x error 0.02, f error -0.02
-      BFGS w f': time 5.87s, x error 10.39, f error 31006.85
+    Powell: time 0.36s
+           BFGS: time 0.99s, x error 0.02, f error -0.02
+         L-BFGS: time 0.08s, x error 0.02, f error -0.02
+      BFGS w f': time 0.08s, x error 0.02, f error -0.02
     L-BFGS w f': time 0.00s, x error 0.02, f error -0.02
-         Newton: time 0.00s, x error 6.24, f error 8444.13
+         Newton: time 0.01s, x error 0.02, f error -0.02
 
 
-**Total running time of the script:** ( 0 minutes  12.396 seconds)
+**Total running time of the script:** ( 0 minutes  1.950 seconds)
 
 
 .. _sphx_glr_download_advanced_mathematical_optimization_auto_examples_plot_exercise_ill_conditioned.py:

@@ -182,11 +182,11 @@ idiomatic approach to pipelining in scikit-learn.</p>
 <p>Here we’ll take a look at a simple facial recognition example. Ideally,
 we would use a dataset consisting of a subset of the <a class="reference external" href="http://vis-www.cs.umass.edu/lfw/">Labeled Faces in
 the Wild</a> data that is available
-with <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_lfw_people.html#sklearn.datasets.fetch_lfw_people" title="(in scikit-learn v0.19.2)"><code class="xref py py-func docutils literal"><span class="pre">sklearn.datasets.fetch_lfw_people()</span></code></a>. However, this is a
+with <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_lfw_people.html#sklearn.datasets.fetch_lfw_people" title="(in scikit-learn v0.21.2)"><code class="xref py py-func docutils literal"><span class="pre">sklearn.datasets.fetch_lfw_people()</span></code></a>. However, this is a
 relatively large download (~200MB) so we will do the tutorial on a
 simpler, less rich dataset. Feel free to explore the LFW dataset.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
-<div class="newline"></div><span class="n">faces</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_olivetti_faces.html#sklearn.datasets.fetch_olivetti_faces" title="View documentation for sklearn.datasets.fetch_olivetti_faces"><span class="n">datasets</span><span class="o">.</span><span class="n">fetch_olivetti_faces</span></a><span class="p">()</span>
+<div class="newline"></div><span class="n">faces</span> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_olivetti_faces.html#sklearn.datasets.fetch_olivetti_faces" title="View documentation for sklearn.datasets.fetch_olivetti_faces"><span class="n">datasets</span><span class="o">.</span><span class="n">fetch_olivetti_faces</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">faces</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -214,8 +214,8 @@ resource is
 </div>
 <p>We’ll perform a Support Vector classification of the images. We’ll do a
 typical train-test split on the images:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
-<div class="newline"></div><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
+<div class="newline"></div><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
 <div class="newline"></div>        <span class="n">faces</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -231,7 +231,7 @@ typical train-test split on the images:</p>
 features to a manageable size, while maintaining most of the information
 in the dataset.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">decomposition</span>
-<div class="newline"></div><span class="n">pca</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="View documentation for sklearn.decomposition.PCA"><span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="newline"></div><span class="n">pca</span> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="View documentation for sklearn.decomposition.PCA"><span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <div class="newline"></div><span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -291,7 +291,7 @@ face.</p>
 <p>Now we’ll perform support-vector-machine classification on this reduced
 dataset:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
-<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="View documentation for sklearn.svm.SVC"><span class="n">svm</span><span class="o">.</span><span class="n">SVC</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="View documentation for sklearn.svm.SVC"><span class="n">svm</span><span class="o">.</span><span class="n">SVC</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
 <div class="newline"></div><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_pca</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -316,12 +316,12 @@ simplicity of its learning model! Using a linear classifier on 150
 features derived from the pixel-level data, the algorithm correctly
 identifies a large number of the people in the images.</p>
 <p>Again, we can quantify this effectiveness using one of several measures
-from <a class="reference external" href="http://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.19.2)"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics</span></code></a>. First we can do the classification
+from <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.21.2)"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics</span></code></a>. First we can do the classification
 report, which shows the precision, recall and other measures of the
 “goodness” of the classification:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
 <div class="newline"></div><span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_pca</span><span class="p">)</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html#sklearn.metrics.classification_report" title="View documentation for sklearn.metrics.classification_report"><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html#sklearn.metrics.classification_report" title="View documentation for sklearn.metrics.classification_report"><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -372,17 +372,17 @@ report, which shows the precision, recall and other measures of the
 how often any two items are mixed-up. The confusion matrix of a perfect
 classifier would only have nonzero entries on the diagonal, with zeros
 on the off-diagonal:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html#sklearn.metrics.confusion_matrix" title="View documentation for sklearn.metrics.confusion_matrix"><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html#sklearn.metrics.confusion_matrix" title="View documentation for sklearn.metrics.confusion_matrix"><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>[[4 0 0 ... 0 0 0]
-<div class="newline"></div> [0 4 0 ... 0 0 0]
-<div class="newline"></div> [0 0 2 ... 0 0 0]
-<div class="newline"></div> ...
-<div class="newline"></div> [0 0 0 ... 3 0 0]
-<div class="newline"></div> [0 0 0 ... 0 1 0]
-<div class="newline"></div> [0 0 0 ... 0 0 3]]
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>[[4 0 0 ..., 0 0 0]
+<div class="newline"></div> [0 4 0 ..., 0 0 0]
+<div class="newline"></div> [0 0 2 ..., 0 0 0]
+<div class="newline"></div> ...,
+<div class="newline"></div> [0 0 0 ..., 3 0 0]
+<div class="newline"></div> [0 0 0 ..., 0 1 0]
+<div class="newline"></div> [0 0 0 ..., 0 0 3]]
 <div class="newline"></div></pre></div>
 </div>
 </div>
@@ -394,25 +394,25 @@ into the input of a second estimator is a commonly used pattern; for
 this reason scikit-learn provides a <code class="docutils literal"><span class="pre">Pipeline</span></code> object which automates
 this process. The above problem can be re-expressed as a pipeline as
 follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a>
-<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a><span class="p">([(</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="View documentation for sklearn.decomposition.PCA"><span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">)),</span>
-<div class="newline"></div>                <span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <a href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="View documentation for sklearn.svm.LinearSVC"><span class="n">svm</span><span class="o">.</span><span class="n">LinearSVC</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))])</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a>
+<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a><span class="p">([(</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="View documentation for sklearn.decomposition.PCA"><span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">)),</span>
+<div class="newline"></div>                <span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="View documentation for sklearn.svm.LinearSVC"><span class="n">svm</span><span class="o">.</span><span class="n">LinearSVC</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))])</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html#sklearn.metrics.confusion_matrix" title="View documentation for sklearn.metrics.confusion_matrix"><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span></a><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html#sklearn.metrics.confusion_matrix" title="View documentation for sklearn.metrics.confusion_matrix"><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span></a><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
 <div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>[[2 0 0 ... 0 0 0]
-<div class="newline"></div> [0 4 0 ... 0 0 0]
-<div class="newline"></div> [0 0 1 ... 0 0 0]
-<div class="newline"></div> ...
-<div class="newline"></div> [0 0 0 ... 3 0 0]
-<div class="newline"></div> [0 0 0 ... 0 1 0]
-<div class="newline"></div> [0 0 0 ... 0 0 3]]
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>[[2 0 0 ..., 0 0 0]
+<div class="newline"></div> [0 4 0 ..., 0 0 0]
+<div class="newline"></div> [0 0 1 ..., 0 0 0]
+<div class="newline"></div> ...,
+<div class="newline"></div> [0 0 0 ..., 3 0 0]
+<div class="newline"></div> [0 0 0 ..., 0 1 0]
+<div class="newline"></div> [0 0 0 ..., 0 0 3]]
 <div class="newline"></div></pre></div>
 </div>
 </div>
@@ -424,7 +424,7 @@ broadly-applicable technique, which can be useful for a wide array of
 data types. Research in the field of facial recognition in particular,
 however, has shown that other more specific feature extraction methods
 are can be much more effective.</p>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  4.327 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  2.401 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-scikit-learn-auto-examples-plot-eigenfaces-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_eigenfaces.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_eigenfaces.py</span></code></a></div>

@@ -190,15 +190,15 @@ of a continuous confound</li>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">import</span> <span class="n">ols</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Load the data</span>
-<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html#pandas.read_csv" title="View documentation for pandas.read_csv"><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="s1">&#39;iris.csv&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html#pandas.read_csv" title="View documentation for pandas.read_csv"><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="s1">&#39;iris.csv&#39;</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Plot a scatter matrix</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Express the names as categories</span>
-<div class="newline"></div><span class="n">categories</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Categorical.html#pandas.Categorical" title="View documentation for pandas.Categorical"><span class="n">pandas</span><span class="o">.</span><span class="n">Categorical</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<div class="newline"></div><span class="n">categories</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Categorical.html#pandas.Categorical" title="View documentation for pandas.Categorical"><span class="n">pandas</span><span class="o">.</span><span class="n">Categorical</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># The parameter &#39;c&#39; is passed to plt.scatter and will control the color</span>
-<div class="newline"></div><span class="n">plotting</span><span class="o">.</span><span class="n">scatter_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">categories</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plotting</span><span class="o">.</span><span class="n">scatter_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">categories</span><span class="o">.</span><span class="n">codes</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.gcf.html#matplotlib.pyplot.gcf" title="View documentation for matplotlib.pyplot.gcf"><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;blue: setosa, green: versicolor, red: virginica&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
@@ -226,8 +226,8 @@ of a continuous confound</li>
 <div class="newline"></div>Dep. Variable:            sepal_width   R-squared:                       0.478
 <div class="newline"></div>Model:                            OLS   Adj. R-squared:                  0.468
 <div class="newline"></div>Method:                 Least Squares   F-statistic:                     44.63
-<div class="newline"></div>Date:                Sat, 01 Sep 2018   Prob (F-statistic):           1.58e-20
-<div class="newline"></div>Time:                        18:51:55   Log-Likelihood:                -38.185
+<div class="newline"></div>Date:                Fri, 31 May 2019   Prob (F-statistic):           1.58e-20
+<div class="newline"></div>Time:                        14:14:28   Log-Likelihood:                -38.185
 <div class="newline"></div>No. Observations:                 150   AIC:                             84.37
 <div class="newline"></div>Df Residuals:                     146   BIC:                             96.41
 <div class="newline"></div>Df Model:                           3
@@ -249,10 +249,10 @@ of a continuous confound</li>
 <div class="newline"></div>Warnings:
 <div class="newline"></div>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 <div class="newline"></div>Testing the difference between effect of versicolor and virginica
-<div class="newline"></div>&lt;F test: F=array([[3.24533535]]), p=0.07369058781701113, df_denom=146, df_num=1&gt;
+<div class="newline"></div>&lt;F test: F=array([[ 3.24533535]]), p=0.07369058781700906, df_denom=146, df_num=1&gt;
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.944 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.451 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-statistics-auto-examples-plot-iris-analysis-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_iris_analysis.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_iris_analysis.py</span></code></a></div>

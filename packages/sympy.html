@@ -484,7 +484,7 @@ variables using <code class="xref py py-func docutils literal"><span class="pre"
 supposed to be equaled to 0. It also has (limited) support for transcendental
 equations:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sym</span><span class="o">.</span><span class="n">solveset</span><span class="p">(</span><span class="n">sym</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-<div class="newline"></div><span class="go">{I*(2*n*pi + pi) | n in Integers()}</span>
+<div class="newline"></div><span class="go">{I*(2*n*pi + pi) | n in Integers}</span>
 <div class="newline"></div></pre></div>
 </div>
 <div class="topic">
@@ -590,23 +590,9 @@ find the best possible resolution system. For example, if you know
 that it is a separable equations, you can use keyword <code class="docutils literal"><span class="pre">hint='separable'</span></code>
 to force dsolve to resolve it as a separable equation:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sym</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">sym</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">sym</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="n">sym</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">sym</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">hint</span><span class="o">=</span><span class="s1">&#39;separable&#39;</span><span class="p">)</span> 
-<div class="newline"></div><span class="go">              /     _________________\                  /     ________________</span>
-<div class="newline"></div><span class="go">              |    /      C1         |                  |    /      C1</span>
-<div class="newline"></div><span class="go">[f(x) = - asin|   /  ----------- + 1 | + pi, f(x) = asin|   /  ----------- + 1</span>
-<div class="newline"></div><span class="go">              |  /      2            |                  |  /      2</span>
-<div class="newline"></div><span class="go">              \\/    sin (x) - 1     /                  \\/    sin (x) - 1</span>
-<div class="newline"></div>
-<div class="newline"></div><span class="go">_\                   /     _________________\             /     ______________</span>
-<div class="newline"></div><span class="go"> |                   |    /      C1         |             |    /      C1</span>
-<div class="newline"></div><span class="go"> | + pi, f(x) = -asin|   /  ----------- + 1 |, f(x) = asin|   /  ----------- +</span>
-<div class="newline"></div><span class="go"> |                   |  /      2            |             |  /      2</span>
-<div class="newline"></div><span class="go"> /                   \\/    sin (x) - 1     /             \\/    sin (x) - 1</span>
-<div class="newline"></div>
-<div class="newline"></div><span class="go"> ___\</span>
-<div class="newline"></div><span class="go">    |</span>
-<div class="newline"></div><span class="go">  1 |]</span>
-<div class="newline"></div><span class="go">    |</span>
-<div class="newline"></div><span class="go">    /</span>
+<div class="newline"></div><span class="go">               /  C1  \                    /  C1  \</span>
+<div class="newline"></div><span class="go"> [f(x) = - acos|------| + 2*pi, f(x) = acos|------|]</span>
+<div class="newline"></div><span class="go">               \cos(x)/                    \cos(x)/</span>
 <div class="newline"></div></pre></div>
 </div>
 <div class="green topic">
