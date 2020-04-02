@@ -4,21 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>3.1. Statistics in Python &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '2019.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -65,8 +57,7 @@ $(function () {
 </script>
 
 
-  </head>
-  <body>
+  </head><body>
    <!-- Use the header to add javascript -->
     
 
@@ -180,7 +171,7 @@ $(function () {
 <li><a class="reference external" href="http://seaborn.pydata.org">Seaborn</a></li>
 </ul>
 <p>To install Python and these dependencies, we recommend that you
-download <a class="reference external" href="http://continuum.io/downloads">Anaconda Python</a> or
+download <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda Python</a> or
 <a class="reference external" href="https://store.enthought.com/">Enthought Canopy</a>, or preferably use
 the package manager if you are under Ubuntu or other linux.</p>
 </div>
@@ -260,8 +251,8 @@ of a claim actually matters to many people.</p>
 or <em>features</em>. The data can than be seen as a 2D table, or matrix, with
 columns giving the different attributes of the data, and rows the
 observations. For instance, the data contained in
-<a class="reference download internal" href="../../_downloads/brain_size.csv" download=""><code class="xref download docutils literal"><span class="pre">examples/brain_size.csv</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;&quot;</span><span class="p">;</span><span class="s2">&quot;Gender&quot;</span><span class="p">;</span><span class="s2">&quot;FSIQ&quot;</span><span class="p">;</span><span class="s2">&quot;VIQ&quot;</span><span class="p">;</span><span class="s2">&quot;PIQ&quot;</span><span class="p">;</span><span class="s2">&quot;Weight&quot;</span><span class="p">;</span><span class="s2">&quot;Height&quot;</span><span class="p">;</span><span class="s2">&quot;MRI_Count&quot;</span>
+<a class="reference download internal" href="../../_downloads/brain_size.csv" download=""><code class="xref download docutils literal notranslate"><span class="pre">examples/brain_size.csv</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;&quot;</span><span class="p">;</span><span class="s2">&quot;Gender&quot;</span><span class="p">;</span><span class="s2">&quot;FSIQ&quot;</span><span class="p">;</span><span class="s2">&quot;VIQ&quot;</span><span class="p">;</span><span class="s2">&quot;PIQ&quot;</span><span class="p">;</span><span class="s2">&quot;Weight&quot;</span><span class="p">;</span><span class="s2">&quot;Height&quot;</span><span class="p">;</span><span class="s2">&quot;MRI_Count&quot;</span>
 <div class="newline"></div><span class="s2">&quot;1&quot;</span><span class="p">;</span><span class="s2">&quot;Female&quot;</span><span class="p">;</span><span class="mi">133</span><span class="p">;</span><span class="mi">132</span><span class="p">;</span><span class="mi">124</span><span class="p">;</span><span class="s2">&quot;118&quot;</span><span class="p">;</span><span class="s2">&quot;64.5&quot;</span><span class="p">;</span><span class="mi">816932</span>
 <div class="newline"></div><span class="s2">&quot;2&quot;</span><span class="p">;</span><span class="s2">&quot;Male&quot;</span><span class="p">;</span><span class="mi">140</span><span class="p">;</span><span class="mi">150</span><span class="p">;</span><span class="mi">124</span><span class="p">;</span><span class="s2">&quot;.&quot;</span><span class="p">;</span><span class="s2">&quot;72.5&quot;</span><span class="p">;</span><span class="mi">1001121</span>
 <div class="newline"></div><span class="s2">&quot;3&quot;</span><span class="p">;</span><span class="s2">&quot;Male&quot;</span><span class="p">;</span><span class="mi">139</span><span class="p">;</span><span class="mi">123</span><span class="p">;</span><span class="mi">150</span><span class="p">;</span><span class="s2">&quot;143&quot;</span><span class="p">;</span><span class="s2">&quot;73.3&quot;</span><span class="p">;</span><span class="mi">1038437</span>
@@ -275,8 +266,8 @@ observations. For instance, the data contained in
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">We will store and manipulate this data in a
-<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a>, from the <a class="reference external" href="http://pandas.pydata.org">pandas</a> module. It is the Python equivalent of
-the spreadsheet table. It is different from a 2D <code class="docutils literal"><span class="pre">numpy</span></code> array as it
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>, from the <a class="reference external" href="http://pandas.pydata.org">pandas</a> module. It is the Python equivalent of
+the spreadsheet table. It is different from a 2D <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array as it
 has named columns, can contain a mixture of different data types by
 column, and has elaborate selection and pivotal mechanisms.</p>
 </div>
@@ -289,7 +280,7 @@ column, and has elaborate selection and pivotal mechanisms.</p>
 <p><strong>Reading from a CSV file:</strong> Using the above CSV file that gives
 observations of brain size and weight and IQ (Willerman et al. 1991), the
 data are a mixture of numerical and categorical values:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/brain_size.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>  
 <div class="newline"></div><span class="go">    Unnamed: 0  Gender  FSIQ  VIQ  PIQ  Weight  Height  MRI_Count</span>
@@ -311,27 +302,27 @@ not be able to do statistical analysis.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><strong>Creating from arrays</strong>: A <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a> can also be seen
+<p><strong>Creating from arrays</strong>: A <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> can also be seen
 as a dictionary of 1D ‘series’, eg arrays or lists. If we have 3
-<code class="docutils literal"><span class="pre">numpy</span></code> arrays:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">sin_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">cos_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<p>We can expose them as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s1">&#39;sin&#39;</span><span class="p">:</span> <span class="n">sin_t</span><span class="p">,</span> <span class="s1">&#39;cos&#39;</span><span class="p">:</span> <span class="n">cos_t</span><span class="p">})</span>  
-<div class="newline"></div><span class="go">         cos       sin         t</span>
-<div class="newline"></div><span class="go">0   0.960170  0.279415 -6.000000</span>
-<div class="newline"></div><span class="go">1   0.609977  0.792419 -5.368421</span>
-<div class="newline"></div><span class="go">2   0.024451  0.999701 -4.736842</span>
-<div class="newline"></div><span class="go">3  -0.570509  0.821291 -4.105263</span>
-<div class="newline"></div><span class="go">4  -0.945363  0.326021 -3.473684</span>
-<div class="newline"></div><span class="go">5  -0.955488 -0.295030 -2.842105</span>
-<div class="newline"></div><span class="go">6  -0.596979 -0.802257 -2.210526</span>
-<div class="newline"></div><span class="go">7  -0.008151 -0.999967 -1.578947</span>
-<div class="newline"></div><span class="go">8   0.583822 -0.811882 -0.947368</span>
+<p>We can expose them as a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s1">&#39;sin&#39;</span><span class="p">:</span> <span class="n">sin_t</span><span class="p">,</span> <span class="s1">&#39;cos&#39;</span><span class="p">:</span> <span class="n">cos_t</span><span class="p">})</span>  
+<div class="newline"></div><span class="go">           t       sin       cos</span>
+<div class="newline"></div><span class="go">0  -6.000000  0.279415  0.960170</span>
+<div class="newline"></div><span class="go">1  -5.368421  0.792419  0.609977</span>
+<div class="newline"></div><span class="go">2  -4.736842  0.999701  0.024451</span>
+<div class="newline"></div><span class="go">3  -4.105263  0.821291 -0.570509</span>
+<div class="newline"></div><span class="go">4  -3.473684  0.326021 -0.945363</span>
+<div class="newline"></div><span class="go">5  -2.842105 -0.295030 -0.955488</span>
+<div class="newline"></div><span class="go">6  -2.210526 -0.802257 -0.596979</span>
+<div class="newline"></div><span class="go">7  -1.578947 -0.999967 -0.008151</span>
+<div class="newline"></div><span class="go">8  -0.947368 -0.811882  0.583822</span>
 <div class="newline"></div><span class="gp">...</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -346,8 +337,8 @@ SQL, excel files, or other formats. See the <a class="reference external" href="
 </div>
 <div class="section" id="manipulating-data">
 <h4>Manipulating data<a class="headerlink" href="#manipulating-data" title="Permalink to this headline">¶</a></h4>
-<p><cite>data</cite> is a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a>, that resembles R’s dataframe:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>    <span class="c1"># 40 rows and 8 columns</span>
+<p><cite>data</cite> is a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>, that resembles R’s dataframe:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>    <span class="c1"># 40 rows and 8 columns</span>
 <div class="newline"></div><span class="go">(40, 8)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">columns</span>  <span class="c1"># It has columns   </span>
@@ -369,13 +360,13 @@ SQL, excel files, or other formats. See the <a class="reference external" href="
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">For a quick view on a large dataframe, use its <cite>describe</cite>
-method: <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.describe.html#pandas.DataFrame.describe" title="(in pandas v0.24.2)"><code class="xref py py-meth docutils literal"><span class="pre">pandas.DataFrame.describe()</span></code></a>.</p>
+method: <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.describe.html#pandas.DataFrame.describe" title="(in pandas v1.0.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pandas.DataFrame.describe()</span></code></a>.</p>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p><strong>groupby</strong>: splitting a dataframe on values of categorical variables:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_gender</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Gender&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_gender</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Gender&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">gender</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">groupby_gender</span><span class="p">[</span><span class="s1">&#39;VIQ&#39;</span><span class="p">]:</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="nb">print</span><span class="p">((</span><span class="n">gender</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
 <div class="newline"></div><span class="go">(&#39;Female&#39;, 109.45)</span>
@@ -384,7 +375,7 @@ method: <a class="reference external" href="http://pandas.pydata.org/pandas-docs
 </div>
 <p><cite>groupby_gender</cite> is a powerful object that exposes many
 operations on the resulting group of dataframes:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_gender</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_gender</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <div class="newline"></div><span class="go">        Unnamed: 0   FSIQ     VIQ     PIQ      Weight     Height  MRI_Count</span>
 <div class="newline"></div><span class="go">Gender</span>
 <div class="newline"></div><span class="go">Female       19.65  111.9  109.45  110.45  137.200000  65.765000   862654.6</span>
@@ -428,16 +419,16 @@ example</span>).</p>
 </div>
 <div class="section" id="plotting-data">
 <h4>Plotting data<a class="headerlink" href="#plotting-data" title="Permalink to this headline">¶</a></h4>
-<p>Pandas comes with some plotting tools (<code class="xref py py-mod docutils literal"><span class="pre">pandas.tools.plotting</span></code>, using
+<p>Pandas comes with some plotting tools (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas.tools.plotting</span></code>, using
 matplotlib behind the scene) to display statistics of the data in
 dataframes:</p>
 <p><strong>Scatter matrices</strong>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pandas.tools</span> <span class="k">import</span> <span class="n">plotting</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pandas.tools</span> <span class="kn">import</span> <span class="n">plotting</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plotting</span><span class="o">.</span><span class="n">scatter_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s1">&#39;Weight&#39;</span><span class="p">,</span> <span class="s1">&#39;Height&#39;</span><span class="p">,</span> <span class="s1">&#39;MRI_Count&#39;</span><span class="p">]])</span>   
 <div class="newline"></div></pre></div>
 </div>
 <a class="reference external image-reference" href="auto_examples/plot_pandas.html"><img alt="../../_images/sphx_glr_plot_pandas_002.png" class="align-center" src="../../_images/sphx_glr_plot_pandas_002.png" style="width: 448.0px; height: 336.0px;" /></a>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plotting</span><span class="o">.</span><span class="n">scatter_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">,</span> <span class="s1">&#39;VIQ&#39;</span><span class="p">,</span> <span class="s1">&#39;FSIQ&#39;</span><span class="p">]])</span>   
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plotting</span><span class="o">.</span><span class="n">scatter_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">,</span> <span class="s1">&#39;VIQ&#39;</span><span class="p">,</span> <span class="s1">&#39;FSIQ&#39;</span><span class="p">]])</span>   
 <div class="newline"></div></pre></div>
 </div>
 <div class="sidebar">
@@ -456,8 +447,8 @@ think that the 2 sub-populations correspond to gender?</p>
 <div class="section" id="hypothesis-testing-comparing-two-groups">
 <h2><a class="toc-backref" href="#id13">3.1.2. Hypothesis testing: comparing two groups</a><a class="headerlink" href="#hypothesis-testing-comparing-two-groups" title="Permalink to this headline">¶</a></h2>
 <p>For simple <a class="reference external" href="https://en.wikipedia.org/wiki/Statistical_hypothesis_testing">statistical tests</a>, we will
-use the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/stats.html#module-scipy.stats" title="(in SciPy v1.3.0)"><code class="xref py py-mod docutils literal"><span class="pre">scipy.stats</span></code></a> sub-module of <a class="reference external" href="http://docs.scipy.org/doc/">scipy</a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">stats</span>
+use the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/stats.html#module-scipy.stats" title="(in SciPy v1.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.stats</span></code></a> sub-module of <a class="reference external" href="http://docs.scipy.org/doc/">scipy</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
 <div class="newline"></div></pre></div>
 </div>
 <div class="admonition seealso">
@@ -470,13 +461,13 @@ the <a class="reference internal" href="../../intro/scipy.html#scipy"><span clas
 <div class="section" id="sample-t-test-testing-the-value-of-a-population-mean">
 <h4>1-sample t-test: testing the value of a population mean<a class="headerlink" href="#sample-t-test-testing-the-value-of-a-population-mean" title="Permalink to this headline">¶</a></h4>
 <a class="reference internal image-reference" href="../../_images/two_sided.png"><img alt="../../_images/two_sided.png" class="align-right" src="../../_images/two_sided.png" style="width: 228.5px; height: 223.5px;" /></a>
-<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_1samp.html#scipy.stats.ttest_1samp" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.stats.ttest_1samp()</span></code></a> tests if the population mean of data is
+<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_1samp.html#scipy.stats.ttest_1samp" title="(in SciPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.stats.ttest_1samp()</span></code></a> tests if the population mean of data is
 likely to be equal to a given value (technically if observations are
 drawn from a Gaussian distributions of given population mean). It returns
 the <a class="reference external" href="https://en.wikipedia.org/wiki/Student%27s_t-test">T statistic</a>,
 and the <a class="reference external" href="https://en.wikipedia.org/wiki/P-value">p-value</a> (see the
 function’s help):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_1samp</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;VIQ&#39;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>   
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_1samp</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;VIQ&#39;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>   
 <div class="newline"></div><span class="go">Ttest_1sampResult(statistic=30.088099970..., pvalue=1.32891964...e-28)</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -490,8 +481,8 @@ the IQ (VIQ measure) is not 0.</p>
 <h4>2-sample t-test: testing for difference across populations<a class="headerlink" href="#sample-t-test-testing-for-difference-across-populations" title="Permalink to this headline">¶</a></h4>
 <p>We have seen above that the mean VIQ in the male and female populations
 were different. To test if this is significant, we do a 2-sample t-test
-with <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html#scipy.stats.ttest_ind" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.stats.ttest_ind()</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">female_viq</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Female&#39;</span><span class="p">][</span><span class="s1">&#39;VIQ&#39;</span><span class="p">]</span>
+with <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html#scipy.stats.ttest_ind" title="(in SciPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.stats.ttest_ind()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">female_viq</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Female&#39;</span><span class="p">][</span><span class="s1">&#39;VIQ&#39;</span><span class="p">]</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">male_viq</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Male&#39;</span><span class="p">][</span><span class="s1">&#39;VIQ&#39;</span><span class="p">]</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">female_viq</span><span class="p">,</span> <span class="n">male_viq</span><span class="p">)</span>   
 <div class="newline"></div><span class="go">Ttest_indResult(statistic=-0.77261617232..., pvalue=0.4445287677858...)</span>
@@ -504,7 +495,7 @@ with <a class="reference external" href="https://docs.scipy.org/doc/scipy/refere
 <a class="reference external image-reference" href="auto_examples/plot_pandas.html"><img alt="../../_images/sphx_glr_plot_paired_boxplots_001.png" class="align-right" src="../../_images/sphx_glr_plot_paired_boxplots_001.png" style="width: 280.0px; height: 210.0px;" /></a>
 <p>PIQ, VIQ, and FSIQ give 3 measures of IQ. Let us test if FISQ and PIQ are
 significantly different. We can use a 2 sample test:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">])</span>   
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">])</span>   
 <div class="newline"></div><span class="go">Ttest_indResult(statistic=0.46563759638..., pvalue=0.64277250...)</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -512,13 +503,13 @@ significantly different. We can use a 2 sample test:</p>
 between observations: FSIQ and PIQ are measured on the same individuals.
 Thus the variance due to inter-subject variability is confounding, and
 can be removed, using a “paired test”, or <a class="reference external" href="https://en.wikipedia.org/wiki/Repeated_measures_design">“repeated measures test”</a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_rel</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">])</span>   
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_rel</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">])</span>   
 <div class="newline"></div><span class="go">Ttest_relResult(statistic=1.784201940..., pvalue=0.082172638183...)</span>
 <div class="newline"></div></pre></div>
 </div>
 <a class="reference external image-reference" href="auto_examples/plot_pandas.html"><img alt="../../_images/sphx_glr_plot_paired_boxplots_002.png" class="align-right" src="../../_images/sphx_glr_plot_paired_boxplots_002.png" style="width: 240.0px; height: 180.0px;" /></a>
 <p>This is equivalent to a 1-sample test on the difference:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_1samp</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>   
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_1samp</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>   
 <div class="newline"></div><span class="go">Ttest_1sampResult(statistic=1.784201940..., pvalue=0.082172638...)</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -528,7 +519,7 @@ can be removed, using a “paired test”, or <a class="reference external" href
 <p>T-tests assume Gaussian errors. We
 can use a <a class="reference external" href="https://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test">Wilcoxon signed-rank test</a>, that relaxes
 this assumption:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">wilcoxon</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">])</span>   
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">wilcoxon</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">])</span>   
 <div class="newline"></div><span class="go">WilcoxonResult(statistic=274.5, pvalue=0.106594927...)</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -536,7 +527,7 @@ this assumption:</p>
 <p class="first admonition-title">Note</p>
 <p class="last">The corresponding test in the non paired case is the <a class="reference external" href="https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U">Mann–Whitney U
 test</a>,
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mannwhitneyu.html#scipy.stats.mannwhitneyu" title="(in SciPy v1.3.0)"><code class="xref py py-func docutils literal"><span class="pre">scipy.stats.mannwhitneyu()</span></code></a>.</p>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mannwhitneyu.html#scipy.stats.mannwhitneyu" title="(in SciPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.stats.mannwhitneyu()</span></code></a>.</p>
 </div>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong></p>
@@ -563,7 +554,7 @@ that males and females have different VIQ.</p>
 <p>Given two set of observations, <cite>x</cite> and <cite>y</cite>, we want to test the
 hypothesis that <cite>y</cite> is a linear function of <cite>x</cite>. In other terms:</p>
 <blockquote>
-<div><img class="math" src="../../_images/math/8c27948834377cd91a6907f91d1f87acb32f1817.png" alt="y = x * \textit{coef} + \textit{intercept} + e"/></div></blockquote>
+<div><span class="math">y = x * \textit{coef} + \textit{intercept} + e</span></div></blockquote>
 <p>where <cite>e</cite> is observation noise. We will use the <a class="reference external" href="http://statsmodels.sourceforge.net/">statsmodels</a> module to:</p>
 <ol class="arabic simple">
 <li>Fit a linear model. We will use the simplest strategy, <a class="reference external" href="https://en.wikipedia.org/wiki/Ordinary_least_squares">ordinary least
@@ -574,7 +565,7 @@ squares</a> (OLS).</li>
 <div class="line"><br /></div>
 </div>
 <p>First, we generate simulated data according to the model:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c1"># normal distributed noise</span>
@@ -591,12 +582,12 @@ squares</a> (OLS).</li>
 <div class="line"><br /></div>
 </div>
 <p>Then we specify an OLS model and fit it:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">statsmodels.formula.api</span> <span class="k">import</span> <span class="n">ols</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">import</span> <span class="n">ols</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s2">&quot;y ~ x&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>We can inspect the various statistics derived from the fit:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>  
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>  
 <div class="newline"></div><span class="go">                            OLS Regression Results</span>
 <div class="newline"></div><span class="go">==========================...</span>
 <div class="newline"></div><span class="go">Dep. Variable:                      y   R-squared:                       0.804</span>
@@ -645,12 +636,12 @@ use tab-completion to find the relevent attribute.</p>
 <div class="section" id="categorical-variables-comparing-groups-or-multiple-categories">
 <h4>Categorical variables: comparing groups or multiple categories<a class="headerlink" href="#categorical-variables-comparing-groups-or-multiple-categories" title="Permalink to this headline">¶</a></h4>
 <p>Let us go back the data on brain size:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/brain_size.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/brain_size.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>We can write a comparison between IQ of male and female using a linear
 model:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s2">&quot;VIQ ~ Gender + 1&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s2">&quot;VIQ ~ Gender + 1&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>  
 <div class="newline"></div><span class="go">                            OLS Regression Results</span>
 <div class="newline"></div><span class="go">==========================...</span>
@@ -685,7 +676,7 @@ model:</p>
 categorical variable, and thus each of its different values are
 treated as different entities.</p>
 <p>An integer column can be forced to be treated as categorical using:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s1">&#39;VIQ ~ C(Gender)&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s1">&#39;VIQ ~ C(Gender)&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <p><strong>Intercept</strong>: We can remove the intercept using <cite>- 1</cite> in the formula,
@@ -708,7 +699,7 @@ encodings for categorical variables
 <p>To compare different types of IQ, we need to create a “long-form”
 table, listing IQs, where the type of IQ is indicated by a
 categorical variable:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data_fisq</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;iq&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;fsiq&#39;</span><span class="p">})</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data_fisq</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;iq&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;fsiq&#39;</span><span class="p">})</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data_piq</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;iq&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;piq&#39;</span><span class="p">})</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data_long</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">data_fisq</span><span class="p">,</span> <span class="n">data_piq</span><span class="p">))</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data_long</span><span class="p">)</span>  
@@ -737,7 +728,7 @@ categorical variable:</p>
 <p>We can see that we retrieve the same values for t-test and
 corresponding p-values for the effect of the type of iq than the
 previous t-test:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">])</span>   
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FSIQ&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;PIQ&#39;</span><span class="p">])</span>   
 <div class="newline"></div><span class="go">Ttest_indResult(statistic=0.46563759638..., pvalue=0.64277250...)</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -753,21 +744,21 @@ previous t-test:</p>
 <p>Consider a linear model explaining a variable <cite>z</cite> (the dependent
 variable) with 2 variables <cite>x</cite> and <cite>y</cite>:</p>
 <blockquote>
-<div><img class="math" src="../../_images/math/c614adc419681149b0169764207ca1a3edb8a1b7.png" alt="z = x \, c_1 + y \, c_2 + i + e"/></div></blockquote>
+<div><span class="math">z = x \, c_1 + y \, c_2 + i + e</span></div></blockquote>
 <p>Such a model can be seen in 3D as fitting a plane to a cloud of (<cite>x</cite>,
 <cite>y</cite>, <cite>z</cite>) points.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 <div class="line"><br /></div>
 </div>
-<p><strong>Example: the iris data</strong> (<a class="reference download internal" href="../../_downloads/iris.csv" download=""><code class="xref download docutils literal"><span class="pre">examples/iris.csv</span></code></a>)</p>
+<p><strong>Example: the iris data</strong> (<a class="reference download internal" href="../../_downloads/iris.csv" download=""><code class="xref download docutils literal notranslate"><span class="pre">examples/iris.csv</span></code></a>)</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">Sepal and petal size tend to be related: bigger flowers are bigger!
 But is there in addition a systematic effect of species?</p>
 </div>
 <a class="reference external image-reference" href="auto_examples/plot_iris_analysis_1.html"><img alt="../../_images/sphx_glr_plot_iris_analysis_001.png" class="align-center" src="../../_images/sphx_glr_plot_iris_analysis_001.png" style="width: 512.0px; height: 384.0px;" /></a>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/iris.csv&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/iris.csv&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s1">&#39;sepal_width ~ name + petal_length&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>  
 <div class="newline"></div><span class="go">                            OLS Regression Results</span>
@@ -811,9 +802,9 @@ sepal width. This can be formulated as testing the difference between the
 coefficient associated to versicolor and virginica in the linear model
 estimated above (it is an Analysis of Variance, <a class="reference external" href="https://en.wikipedia.org/wiki/Analysis_of_variance">ANOVA</a>). For this, we
 write a <strong>vector of ‘contrast’</strong> on the parameters estimated: we want to
-test <code class="docutils literal"><span class="pre">&quot;name[T.versicolor]</span> <span class="pre">-</span> <span class="pre">name[T.virginica]&quot;</span></code>, with an <a class="reference external" href="https://en.wikipedia.org/wiki/F-test">F-test</a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">f_test</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>  
-<div class="newline"></div><span class="go">&lt;F test: F=array([[ 3.24533535]]), p=0.07369..., df_denom=146, df_num=1&gt;</span>
+test <code class="docutils literal notranslate"><span class="pre">&quot;name[T.versicolor]</span> <span class="pre">-</span> <span class="pre">name[T.virginica]&quot;</span></code>, with an <a class="reference external" href="https://en.wikipedia.org/wiki/F-test">F-test</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">f_test</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>  
+<div class="newline"></div><span class="go">&lt;F test: F=array([[3.24533535]]), p=0.07369..., df_denom=146, df_num=1&gt;</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Is this difference significant?</p>
@@ -843,7 +834,7 @@ Addison-Wesley</a>).</p>
 <p class="last">The full code loading and plotting of the wages data is found in
 <span class="xref std std-ref">corresponding example</span>.</p>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  
 <div class="newline"></div><span class="go">     EDUCATION  SOUTH  SEX  EXPERIENCE  UNION      WAGE  AGE  RACE  \</span>
 <div class="newline"></div><span class="go">0            8      0    1          21      0  0.707570   35     2</span>
 <div class="newline"></div><span class="go">1            9      0    1          42      0  0.694605   57     3</span>
@@ -855,25 +846,25 @@ Addison-Wesley</a>).</p>
 <div class="section" id="pairplot-scatter-matrices">
 <h3><a class="toc-backref" href="#id21">3.1.4.1. Pairplot: scatter matrices</a><a class="headerlink" href="#pairplot-scatter-matrices" title="Permalink to this headline">¶</a></h3>
 <p>We can easily have an intuition on the interactions between continuous
-variables using <a class="reference external" href="http://seaborn.pydata.org/generated/seaborn.pairplot.html#seaborn.pairplot" title="(in seaborn v0.9.0)"><code class="xref py py-func docutils literal"><span class="pre">seaborn.pairplot()</span></code></a> to display a scatter matrix:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">seaborn</span>
+variables using <a class="reference external" href="http://seaborn.pydata.org/generated/seaborn.pairplot.html#seaborn.pairplot" title="(in seaborn v0.10.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">seaborn.pairplot()</span></code></a> to display a scatter matrix:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">seaborn</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">seaborn</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;WAGE&#39;</span><span class="p">,</span> <span class="s1">&#39;AGE&#39;</span><span class="p">,</span> <span class="s1">&#39;EDUCATION&#39;</span><span class="p">],</span>
 <div class="newline"></div><span class="gp">... </span>                 <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;reg&#39;</span><span class="p">)</span>  
 <div class="newline"></div></pre></div>
 </div>
 <a class="reference external image-reference" href="auto_examples/plot_wage_data.html"><img alt="../../_images/sphx_glr_plot_wage_data_001.png" class="align-center" src="../../_images/sphx_glr_plot_wage_data_001.png" style="width: 450.0px; height: 450.0px;" /></a>
 <p>Categorical variables can be plotted as the hue:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seaborn</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;WAGE&#39;</span><span class="p">,</span> <span class="s1">&#39;AGE&#39;</span><span class="p">,</span> <span class="s1">&#39;EDUCATION&#39;</span><span class="p">],</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seaborn</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;WAGE&#39;</span><span class="p">,</span> <span class="s1">&#39;AGE&#39;</span><span class="p">,</span> <span class="s1">&#39;EDUCATION&#39;</span><span class="p">],</span>
 <div class="newline"></div><span class="gp">... </span>                 <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;reg&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;SEX&#39;</span><span class="p">)</span>  
 <div class="newline"></div></pre></div>
 </div>
-<a class="reference external image-reference" href="auto_examples/plot_wage_data.html"><img alt="../../_images/sphx_glr_plot_wage_data_002.png" class="align-center" src="../../_images/sphx_glr_plot_wage_data_002.png" style="width: 484.2px; height: 450.0px;" /></a>
+<a class="reference external image-reference" href="auto_examples/plot_wage_data.html"><img alt="../../_images/sphx_glr_plot_wage_data_002.png" class="align-center" src="../../_images/sphx_glr_plot_wage_data_002.png" style="width: 484.79999999999995px; height: 450.0px;" /></a>
 <div class="topic">
 <p class="topic-title first"><strong>Look and feel and matplotlib settings</strong></p>
 <p>Seaborn changes the default of matplotlib figures to achieve a more
 “modern”, “excel-like” look. It does that upon import. You can reset
 the default using:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">rcdefaults</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -888,8 +879,8 @@ seaborn, see the <a class="reference external" href="https://seaborn.pydata.org/
 <h3><a class="toc-backref" href="#id22">3.1.4.2. lmplot: plotting a univariate regression</a><a class="headerlink" href="#lmplot-plotting-a-univariate-regression" title="Permalink to this headline">¶</a></h3>
 <a class="reference external image-reference" href="auto_examples/plot_wage_data.html"><img alt="../../_images/sphx_glr_plot_wage_data_005.png" class="align-right" src="../../_images/sphx_glr_plot_wage_data_005.png" style="width: 300.0px; height: 300.0px;" /></a>
 <p>A regression capturing the relation between one variable and another, eg
-wage and eduction, can be plotted using <a class="reference external" href="http://seaborn.pydata.org/generated/seaborn.lmplot.html#seaborn.lmplot" title="(in seaborn v0.9.0)"><code class="xref py py-func docutils literal"><span class="pre">seaborn.lmplot()</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seaborn</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;WAGE&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;EDUCATION&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>  
+wage and eduction, can be plotted using <a class="reference external" href="http://seaborn.pydata.org/generated/seaborn.lmplot.html#seaborn.lmplot" title="(in seaborn v0.10.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">seaborn.lmplot()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seaborn</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;WAGE&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;EDUCATION&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>  
 <div class="newline"></div></pre></div>
 </div>
 <div style="clear: both"></div><div class="topic">
@@ -903,15 +894,15 @@ regression.</p>
 </div>
 <p>To compute a regression that is less sentive to outliers, one must
 use a <a class="reference external" href="https://en.wikipedia.org/wiki/Robust_statistics">robust model</a>. This is done in
-seaborn using <code class="docutils literal"><span class="pre">robust=True</span></code> in the plotting functions, or in
+seaborn using <code class="docutils literal notranslate"><span class="pre">robust=True</span></code> in the plotting functions, or in
 statsmodels by replacing the use of the OLS by a “Robust Linear
-Model”, <code class="xref py py-func docutils literal"><span class="pre">statsmodels.formula.api.rlm()</span></code>.</p>
+Model”, <a class="reference external" href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.rlm.html#statsmodels.formula.api.rlm" title="(in statsmodels vv0.11.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">statsmodels.formula.api.rlm()</span></code></a>.</p>
 </div>
 </div>
 </div>
 <div class="section" id="testing-for-interactions">
 <h2><a class="toc-backref" href="#id23">3.1.5. Testing for interactions</a><a class="headerlink" href="#testing-for-interactions" title="Permalink to this headline">¶</a></h2>
-<a class="reference external image-reference" href="auto_examples/plot_wage_education_gender.html"><img alt="../../_images/sphx_glr_plot_wage_education_gender_001.png" class="align-center" src="../../_images/sphx_glr_plot_wage_education_gender_001.png" style="width: 413.7px; height: 350.0px;" /></a>
+<a class="reference external image-reference" href="auto_examples/plot_wage_education_gender.html"><img alt="../../_images/sphx_glr_plot_wage_education_gender_001.png" class="align-center" src="../../_images/sphx_glr_plot_wage_education_gender_001.png" style="width: 418.59999999999997px; height: 350.0px;" /></a>
 <p>Do wages increase more with education for males than females?</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -919,7 +910,7 @@ Model”, <code class="xref py py-func docutils literal"><span class="pre">stats
 single model that tests for a variance of slope across the two
 populations. This is done via an <a class="reference external" href="http://statsmodels.sourceforge.net/devel/example_formulas.html#multiplicative-interactions">“interaction”</a>.</p>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;wage ~ education + gender + education * gender&#39;</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;wage ~ education + gender + education * gender&#39;</span><span class="p">,</span>
 <div class="newline"></div><span class="gp">... </span>                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>    
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>    
 <div class="newline"></div><span class="gp">...</span>
@@ -1017,9 +1008,9 @@ interpretation.</li>
 </div>
 <div style='clear:both'></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/auto_examples_python10.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></div>
+<a class="reference download internal" href="../../_downloads/auto_examples_python10.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/auto_examples_jupyter10.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></div>
+<a class="reference download internal" href="../../_downloads/auto_examples_jupyter10.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
@@ -1032,7 +1023,6 @@ interpretation.</li>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-	<div class="sidebartoc">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">3.1. Statistics in Python</a><ul>
@@ -1078,26 +1068,32 @@ interpretation.</li>
 </ul>
 </li>
 </ul>
-</div>
 
-
-
-    <div class="script_container">
-    <script>
-    (function() {
-	var cx = '004523248466141510607:hgv2yimrahw';
-	var gcse = document.createElement('script');
-	gcse.type = 'text/javascript';
-	gcse.async = true;
-	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-	    '//cse.google.com/cse.js?cx=' + cx;
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(gcse, s);
-    })();
-    </script>
-    <gcse:search></gcse:search>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">3. Packages and applications</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="auto_examples/plot_paired_boxplots.html"
+                        title="next chapter">3.1.6.1. Boxplots and paired differences</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/packages/statistics/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
     </div>
-
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -1136,8 +1132,8 @@ interpretation.</li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>
 </html>

@@ -69,8 +69,8 @@ Let's visualize these faces to see what we're working with
    gathering a sufficient amount of training data for the algorithm to work.
    Fortunately, this piece is common enough that it has been done. One good
    resource is
-   `OpenCV <http://opencv.willowgarage.com/wiki/FaceRecognition>`__, the
-   *Open Computer Vision Library*.
+   `OpenCV <https://docs.opencv.org/2.4/modules/contrib/doc/facerec/facerec_tutorial.html>`__,
+   the *Open Computer Vision Library*.
 
 We'll perform a Support Vector classification of the images. We'll do a
 typical train-test split on the images:
@@ -275,8 +275,7 @@ training set:
                   cmap=plt.cm.bone)
         y_pred = clf.predict(X_test_pca[i, np.newaxis])[0]
         color = ('black' if y_pred == y_test[i] else 'red')
-        ax.set_title(faces.target[y_pred],
-                     fontsize='small', color=color)
+        ax.set_title(y_pred, fontsize='small', color=color)
 
 
 
@@ -381,13 +380,13 @@ on the off-diagonal:
 
  .. code-block:: none
 
-    [[4 0 0 ..., 0 0 0]
-     [0 4 0 ..., 0 0 0]
-     [0 0 2 ..., 0 0 0]
-     ..., 
-     [0 0 0 ..., 3 0 0]
-     [0 0 0 ..., 0 1 0]
-     [0 0 0 ..., 0 0 3]]
+    [[4 0 0 ... 0 0 0]
+     [0 4 0 ... 0 0 0]
+     [0 0 2 ... 0 0 0]
+     ...
+     [0 0 0 ... 3 0 0]
+     [0 0 0 ... 0 1 0]
+     [0 0 0 ... 0 0 3]]
 
 
 Pipelining
@@ -425,13 +424,13 @@ follows:
 
  .. code-block:: none
 
-    [[2 0 0 ..., 0 0 0]
-     [0 4 0 ..., 0 0 0]
-     [0 0 1 ..., 0 0 0]
-     ..., 
-     [0 0 0 ..., 3 0 0]
-     [0 0 0 ..., 0 1 0]
-     [0 0 0 ..., 0 0 3]]
+    [[2 0 0 ... 0 0 0]
+     [0 4 0 ... 0 0 0]
+     [0 0 1 ... 0 0 0]
+     ...
+     [0 0 0 ... 3 0 0]
+     [0 0 0 ... 0 1 0]
+     [0 0 0 ... 0 0 3]]
 
 
 A Note on Facial Recognition
@@ -445,7 +444,7 @@ however, has shown that other more specific feature extraction methods
 are can be much more effective.
 
 
-**Total running time of the script:** ( 0 minutes  2.401 seconds)
+**Total running time of the script:** ( 0 minutes  2.259 seconds)
 
 
 .. _sphx_glr_download_packages_scikit-learn_auto_examples_plot_eigenfaces.py:

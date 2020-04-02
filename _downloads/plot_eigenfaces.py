@@ -39,8 +39,8 @@ for i in range(15):
 #    gathering a sufficient amount of training data for the algorithm to work.
 #    Fortunately, this piece is common enough that it has been done. One good
 #    resource is
-#    `OpenCV <http://opencv.willowgarage.com/wiki/FaceRecognition>`__, the
-#    *Open Computer Vision Library*.
+#    `OpenCV <https://docs.opencv.org/2.4/modules/contrib/doc/facerec/facerec_tutorial.html>`__,
+#    the *Open Computer Vision Library*.
 #
 # We'll perform a Support Vector classification of the images. We'll do a
 # typical train-test split on the images:
@@ -128,8 +128,7 @@ for i in range(15):
               cmap=plt.cm.bone)
     y_pred = clf.predict(X_test_pca[i, np.newaxis])[0]
     color = ('black' if y_pred == y_test[i] else 'red')
-    ax.set_title(faces.target[y_pred],
-                 fontsize='small', color=color)
+    ax.set_title(y_pred, fontsize='small', color=color)
 
 ############################################################
 # The classifier is correct on an impressive number of images given the

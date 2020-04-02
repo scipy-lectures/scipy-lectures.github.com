@@ -4,28 +4,20 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>1.5.11.3. Image processing application: counting bubbles and unmolten grains &#8212; Scipy lecture notes</title>
+    <title>1.6.11.3. Image processing application: counting bubbles and unmolten grains &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '2019.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../_static/copybutton.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="1.5.11.4. Example of solution for the image processing exercise: unmolten grains in glass" href="answers_image_processing.html" />
-    <link rel="prev" title="1.5.11.2. Non linear least squares curve fitting: application to point extraction in topographical lidar data" href="optimize-fit.html" />
+    <link rel="next" title="1.6.11.4. Example of solution for the image processing exercise: unmolten grains in glass" href="answers_image_processing.html" />
+    <link rel="prev" title="1.6.11.2. Non linear least squares curve fitting: application to point extraction in topographical lidar data" href="optimize-fit.html" />
    
     <link rel="stylesheet"
 	  href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
@@ -65,8 +57,7 @@ $(function () {
 </script>
 
 
-  </head>
-  <body>
+  </head><body>
    <!-- Use the header to add javascript -->
     
 
@@ -133,14 +124,14 @@ $(function () {
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="answers_image_processing.html" title="1.5.11.4. Example of solution for the image processing exercise: unmolten grains in glass"
+          <a href="answers_image_processing.html" title="1.6.11.4. Example of solution for the image processing exercise: unmolten grains in glass"
              accesskey="N">next</a></li>
         <li class="right" >
-          <a href="optimize-fit.html" title="1.5.11.2. Non linear least squares curve fitting: application to point extraction in topographical lidar data"
+          <a href="optimize-fit.html" title="1.6.11.2. Non linear least squares curve fitting: application to point extraction in topographical lidar data"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >1. Getting started with Python for science</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../scipy.html" accesskey="U">1.5. Scipy : high-level scientific computing</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../scipy.html" accesskey="U">1.6. Scipy : high-level scientific computing</a> &#187;</li>
      
     <!-- Insert a menu in the navigation bar -->
     <li class="left">
@@ -170,12 +161,12 @@ $(function () {
           <div class="body" role="main">
             
   <div class="section" id="image-processing-application-counting-bubbles-and-unmolten-grains">
-<span id="summary-exercise-image-processing"></span><h1>1.5.11.3. Image processing application: counting bubbles and unmolten grains<a class="headerlink" href="#image-processing-application-counting-bubbles-and-unmolten-grains" title="Permalink to this headline">¶</a></h1>
+<span id="summary-exercise-image-processing"></span><h1>1.6.11.3. Image processing application: counting bubbles and unmolten grains<a class="headerlink" href="#image-processing-application-counting-bubbles-and-unmolten-grains" title="Permalink to this headline">¶</a></h1>
 <img alt="../../_images/MV_HFV_012.jpg" class="align-center" src="../../_images/MV_HFV_012.jpg" />
 <div class="section" id="statement-of-the-problem">
 <h2>Statement of the problem<a class="headerlink" href="#statement-of-the-problem" title="Permalink to this headline">¶</a></h2>
 <p>1. Open the image file MV_HFV_012.jpg and display it. Browse through the
-keyword arguments in the docstring of <code class="docutils literal"><span class="pre">imshow</span></code> to display the image
+keyword arguments in the docstring of <code class="docutils literal notranslate"><span class="pre">imshow</span></code> to display the image
 with the “right” orientation (origin in the bottom left corner, and not
 the upper left corner as for standard arrays).</p>
 <p>This Scanning Element Microscopy image shows a glass sample (light gray
@@ -199,7 +190,7 @@ different colors.</p>
 </ol>
 <p>7. Attribute labels to all bubbles and sand grains, and remove from the
 sand mask grains that are smaller than 10 pixels. To do so, use
-<code class="docutils literal"><span class="pre">ndimage.sum</span></code> or <code class="docutils literal"><span class="pre">np.bincount</span></code> to compute the grain sizes.</p>
+<code class="docutils literal notranslate"><span class="pre">ndimage.sum</span></code> or <code class="docutils literal notranslate"><span class="pre">np.bincount</span></code> to compute the grain sizes.</p>
 <ol class="arabic simple" start="8">
 <li>Compute the mean size of bubbles.</li>
 </ol>
@@ -216,35 +207,40 @@ sand mask grains that are smaller than 10 pixels. To do so, use
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-	<div class="sidebartoc">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">1.5.11.3. Image processing application: counting bubbles and unmolten grains</a><ul>
+<li><a class="reference internal" href="#">1.6.11.3. Image processing application: counting bubbles and unmolten grains</a><ul>
 <li><a class="reference internal" href="#statement-of-the-problem">Statement of the problem</a></li>
 <li><a class="reference internal" href="#proposed-solution">Proposed solution</a></li>
 </ul>
 </li>
 </ul>
-</div>
 
-
-
-    <div class="script_container">
-    <script>
-    (function() {
-	var cx = '004523248466141510607:hgv2yimrahw';
-	var gcse = document.createElement('script');
-	gcse.type = 'text/javascript';
-	gcse.async = true;
-	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-	    '//cse.google.com/cse.js?cx=' + cx;
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(gcse, s);
-    })();
-    </script>
-    <gcse:search></gcse:search>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="optimize-fit.html"
+                        title="previous chapter">1.6.11.2. Non linear least squares curve fitting: application to point extraction in topographical lidar data</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="answers_image_processing.html"
+                        title="next chapter">1.6.11.4. Example of solution for the image processing exercise: unmolten grains in glass</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/intro/summary-exercises/image-processing.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
     </div>
-
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -253,14 +249,14 @@ sand mask grains that are smaller than 10 pixels. To do so, use
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="answers_image_processing.html" title="1.5.11.4. Example of solution for the image processing exercise: unmolten grains in glass"
+          <a href="answers_image_processing.html" title="1.6.11.4. Example of solution for the image processing exercise: unmolten grains in glass"
              >next</a></li>
         <li class="right" >
-          <a href="optimize-fit.html" title="1.5.11.2. Non linear least squares curve fitting: application to point extraction in topographical lidar data"
+          <a href="optimize-fit.html" title="1.6.11.2. Non linear least squares curve fitting: application to point extraction in topographical lidar data"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Scipy lecture notes</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >1. Getting started with Python for science</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../scipy.html" >1.5. Scipy : high-level scientific computing</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../scipy.html" >1.6. Scipy : high-level scientific computing</a> &#187;</li>
      
     <!-- Insert a menu in the navigation bar -->
     <li class="left">
@@ -284,8 +280,8 @@ sand mask grains that are smaller than 10 pixels. To do so, use
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>
 </html>

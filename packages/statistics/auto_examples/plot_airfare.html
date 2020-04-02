@@ -4,21 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>3.1.6.8. Air fares before and after 9/11 &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '2019.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -65,8 +57,7 @@ $(function () {
 </script>
 
 
-  </head>
-  <body>
+  </head><body>
    <!-- Use the header to add javascript -->
     
 
@@ -183,13 +174,13 @@ only as a function of the trip endpoints.</p>
 least square) and a robust fit, the intercept and the slope are
 significantly non-zero: the air fares have decreased between 2000 and
 2001, and their dependence on distance travelled has also decreased</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Standard library imports</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard library imports</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">urllib</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">os</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Load the data</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;airfares.txt&#39;</span><span class="p">):</span>
 <div class="newline"></div>    <span class="c1"># Download the file if it is not present</span>
@@ -199,19 +190,19 @@ significantly non-zero: the air fares have decreased between 2000 and
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># As a seperator, &#39; +&#39; is a regular expression that means &#39;one of more</span>
 <div class="newline"></div><span class="c1"># space&#39;</span>
-<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html#pandas.read_csv" title="View documentation for pandas.read_csv"><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="s1">&#39;airfares.txt&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; +&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html#pandas.read_csv" title="View documentation for pandas.read_csv"><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="s1">&#39;airfares.txt&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; +&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <div class="newline"></div>                       <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;city1&#39;</span><span class="p">,</span> <span class="s1">&#39;city2&#39;</span><span class="p">,</span> <span class="s1">&#39;pop1&#39;</span><span class="p">,</span> <span class="s1">&#39;pop2&#39;</span><span class="p">,</span>
 <div class="newline"></div>                              <span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="s1">&#39;fare_2000&#39;</span><span class="p">,</span> <span class="s1">&#39;nb_passengers_2000&#39;</span><span class="p">,</span>
 <div class="newline"></div>                              <span class="s1">&#39;fare_2001&#39;</span><span class="p">,</span> <span class="s1">&#39;nb_passengers_2001&#39;</span><span class="p">])</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># we log-transform the number of passengers</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2000&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.log10.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2000&#39;</span><span class="p">])</span>
 <div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2001&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.log10.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2001&#39;</span><span class="p">])</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Make a dataframe whith the year as an attribute, instead of separate columns</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># This involves a small danse in which we separate the dataframes in 2,</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This involves a small danse in which we separate the dataframes in 2,</span>
 <div class="newline"></div><span class="c1"># one for year 2000, and one for 2001, before concatenating again.</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Make an index of each flight</span>
@@ -233,11 +224,11 @@ significantly non-zero: the air fares have decreased between 2000 and
 <div class="newline"></div><span class="c1"># Add a column with the year</span>
 <div class="newline"></div><span class="n">data_2001</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2001</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">data_flat</span> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.concat.html#pandas.concat" title="View documentation for pandas.concat"><span class="n">pandas</span><span class="o">.</span><span class="n">concat</span></a><span class="p">([</span><span class="n">data_2000</span><span class="p">,</span> <span class="n">data_2001</span><span class="p">])</span>
+<div class="newline"></div><span class="n">data_flat</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.concat.html#pandas.concat" title="View documentation for pandas.concat"><span class="n">pandas</span><span class="o">.</span><span class="n">concat</span></a><span class="p">([</span><span class="n">data_2000</span><span class="p">,</span> <span class="n">data_2001</span><span class="p">])</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Plot scatter matrices highlighting different aspects</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span>
 <div class="newline"></div><a href="http://seaborn.pydata.org/generated/seaborn.pairplot.html#seaborn.pairplot" title="View documentation for seaborn.pairplot"><span class="n">seaborn</span><span class="o">.</span><span class="n">pairplot</span></a><span class="p">(</span><span class="n">data_flat</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fare&#39;</span><span class="p">,</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="s1">&#39;nb_passengers&#39;</span><span class="p">],</span>
 <div class="newline"></div>                 <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;reg&#39;</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
 <div class="newline"></div>
@@ -253,7 +244,7 @@ significantly non-zero: the air fares have decreased between 2000 and
 </li>
 </ul>
 <p>Plot the difference in fare</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <div class="newline"></div>
 <div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <div class="newline"></div><a href="http://seaborn.pydata.org/generated/seaborn.boxplot.html#seaborn.boxplot" title="View documentation for seaborn.boxplot"><span class="n">seaborn</span><span class="o">.</span><span class="n">boxplot</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">fare_2001</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">fare_2000</span><span class="p">)</span>
@@ -274,24 +265,24 @@ significantly non-zero: the air fares have decreased between 2000 and
 </ul>
 <p>Statistical testing: dependence of fare on distance and number of
 passengers</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">as</span> <span class="nn">sm</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">sm</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">result</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;fare ~ 1 + dist + nb_passengers&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_flat</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div><span class="n">result</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.ols.html#statsmodels.formula.api.ols" title="View documentation for statsmodels.formula.api.ols"><span class="n">sm</span><span class="o">.</span><span class="n">ols</span></a><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;fare ~ 1 + dist + nb_passengers&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_flat</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Using a robust fit</span>
-<div class="newline"></div><span class="n">result</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">rlm</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;fare ~ 1 + dist + nb_passengers&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_flat</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div><span class="n">result</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.rlm.html#statsmodels.formula.api.rlm" title="View documentation for statsmodels.formula.api.rlm"><span class="n">sm</span><span class="o">.</span><span class="n">rlm</span></a><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;fare ~ 1 + dist + nb_passengers&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_flat</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>OLS Regression Results
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>OLS Regression Results
 <div class="newline"></div>==============================================================================
 <div class="newline"></div>Dep. Variable:                   fare   R-squared:                       0.275
 <div class="newline"></div>Model:                            OLS   Adj. R-squared:                  0.275
 <div class="newline"></div>Method:                 Least Squares   F-statistic:                     1585.
-<div class="newline"></div>Date:                Fri, 31 May 2019   Prob (F-statistic):               0.00
-<div class="newline"></div>Time:                        14:14:49   Log-Likelihood:                -45532.
+<div class="newline"></div>Date:                Wed, 01 Apr 2020   Prob (F-statistic):               0.00
+<div class="newline"></div>Time:                        10:15:30   Log-Likelihood:                -45532.
 <div class="newline"></div>No. Observations:                8352   AIC:                         9.107e+04
 <div class="newline"></div>Df Residuals:                    8349   BIC:                         9.109e+04
 <div class="newline"></div>Df Model:                           2
@@ -321,8 +312,8 @@ passengers</p>
 <div class="newline"></div>Norm:                          HuberT
 <div class="newline"></div>Scale Est.:                       mad
 <div class="newline"></div>Cov Type:                          H1
-<div class="newline"></div>Date:                Fri, 31 May 2019
-<div class="newline"></div>Time:                        14:14:49
+<div class="newline"></div>Date:                Wed, 01 Apr 2020
+<div class="newline"></div>Time:                        10:15:30
 <div class="newline"></div>No. Iterations:                    12
 <div class="newline"></div>=================================================================================
 <div class="newline"></div>                    coef    std err          z      P&gt;|z|      [0.025      0.975]
@@ -337,8 +328,8 @@ passengers</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>Statistical testing: regression of fare on distance: 2001/2000 difference</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;fare_2001 - fare_2000 ~ 1 + dist&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.ols.html#statsmodels.formula.api.ols" title="View documentation for statsmodels.formula.api.ols"><span class="n">sm</span><span class="o">.</span><span class="n">ols</span></a><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;fare_2001 - fare_2000 ~ 1 + dist&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Plot the corresponding regression</span>
 <div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;fare_difference&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;fare_2001&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;fare_2000&#39;</span><span class="p">]</span>
@@ -349,13 +340,13 @@ passengers</p>
 </div>
 <img alt="../../../_images/sphx_glr_plot_airfare_005.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_airfare_005.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>OLS Regression Results
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>OLS Regression Results
 <div class="newline"></div>==============================================================================
 <div class="newline"></div>Dep. Variable:              fare_2001   R-squared:                       0.159
 <div class="newline"></div>Model:                            OLS   Adj. R-squared:                  0.159
 <div class="newline"></div>Method:                 Least Squares   F-statistic:                     791.7
-<div class="newline"></div>Date:                Fri, 31 May 2019   Prob (F-statistic):          1.20e-159
-<div class="newline"></div>Time:                        14:14:49   Log-Likelihood:                -22640.
+<div class="newline"></div>Date:                Wed, 01 Apr 2020   Prob (F-statistic):          1.20e-159
+<div class="newline"></div>Time:                        10:15:30   Log-Likelihood:                -22640.
 <div class="newline"></div>No. Observations:                4176   AIC:                         4.528e+04
 <div class="newline"></div>Df Residuals:                    4174   BIC:                         4.530e+04
 <div class="newline"></div>Df Model:                           1
@@ -378,12 +369,12 @@ passengers</p>
 <div class="newline"></div>strong multicollinearity or other numerical problems.
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  10.073 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  9.935 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-statistics-auto-examples-plot-airfare-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../../_downloads/plot_airfare.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_airfare.py</span></code></a></div>
+<a class="reference download internal" href="../../../_downloads/plot_airfare.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_airfare.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../../_downloads/plot_airfare.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_airfare.ipynb</span></code></a></div>
+<a class="reference download internal" href="../../../_downloads/plot_airfare.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_airfare.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
@@ -395,26 +386,31 @@ passengers</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-	<div class="sidebartoc"></div>
-
-
-
-    <div class="script_container">
-    <script>
-    (function() {
-	var cx = '004523248466141510607:hgv2yimrahw';
-	var gcse = document.createElement('script');
-	gcse.type = 'text/javascript';
-	gcse.async = true;
-	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-	    '//cse.google.com/cse.js?cx=' + cx;
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(gcse, s);
-    })();
-    </script>
-    <gcse:search></gcse:search>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="plot_wage_data.html"
+                        title="previous chapter">3.1.6.7. Visualizing factors influencing wages</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="solutions/plot_brain_size.html"
+                        title="next chapter">3.1.7.1. Relating Gender and IQ</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/packages/statistics/auto_examples/plot_airfare.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
     </div>
-
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -454,8 +450,8 @@ passengers</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>
 </html>

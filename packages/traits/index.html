@@ -4,21 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>3.4. Traits: building interactive dialogs &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '2019.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -65,8 +57,7 @@ $(function () {
 </script>
 
 
-  </head>
-  <body>
+  </head><body>
    <!-- Use the header to add javascript -->
     
 
@@ -192,7 +183,7 @@ under a BSD-style license.</p>
 <a class="reference external" href="https://riverbankcomputing.com/software/pyqt/intro">PyQt</a> or
 <a class="reference external" href="https://pyside.github.io/docs/pyside/">PySide</a></li>
 <li>Numpy and Scipy</li>
-<li><a class="reference external" href="http://code.enthought.com/projects">Enthought Tool Suite</a></li>
+<li><a class="reference external" href="http://docs.enthought.com/ets">Enthought Tool Suite</a></li>
 <li>All required software can be obtained by installing the <a class="reference external" href="https://store.enthought.com/">EPD Free</a></li>
 </ul>
 </div>
@@ -258,15 +249,15 @@ reservoir and the dams do have a set of parameters :</p>
 <p>The reservoir has a known behaviour. One part is related to the energy
 production based on the water released. A simple formula for
 approximating electric power production at a hydroelectric plant is
-<img class="math" src="../../_images/math/924380d1f45ea2eb29bb8c4ec3877e2dddc182ad.png" alt="P = \rho hrgk"/>, where:</p>
+<span class="math">P = \rho hrgk</span>, where:</p>
 <blockquote>
 <div><ul class="simple">
-<li><img class="math" src="../../_images/math/9dcbbef8e0f76051d388013b90a95bec3069e484.png" alt="P"/> is Power in watts,</li>
-<li><img class="math" src="../../_images/math/9a51ab9a0b521705e1e8762fac6bdd6f11771758.png" alt="\rho"/> is the density of water (~1000 kg/m3),</li>
-<li><img class="math" src="../../_images/math/293fb39e1b93282c804a86186e721b32f829f1b2.png" alt="h"/> is height in meters,</li>
-<li><img class="math" src="../../_images/math/eaa6ad49a7f78fe5a13b486690163bf2dc7e3e60.png" alt="r"/> is flow rate in cubic meters per second,</li>
-<li><img class="math" src="../../_images/math/307b3725cbb03398131f9ca542d79aff4933195f.png" alt="g"/> is acceleration due to gravity of 9.8 m/s2,</li>
-<li><img class="math" src="../../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> is a coefficient of efficiency ranging from 0 to 1.</li>
+<li><span class="math">P</span> is Power in watts,</li>
+<li><span class="math">\rho</span> is the density of water (~1000 kg/m3),</li>
+<li><span class="math">h</span> is height in meters,</li>
+<li><span class="math">r</span> is flow rate in cubic meters per second,</li>
+<li><span class="math">g</span> is acceleration due to gravity of 9.8 m/s2,</li>
+<li><span class="math">k</span> is a coefficient of efficiency ranging from 0 to 1.</li>
 </ul>
 </div></blockquote>
 <div class="admonition tip">
@@ -278,7 +269,7 @@ over the course of a year.</p>
 <p>The second part of the behaviour is the state of the storage that depends
 on controlled and uncontrolled parameters :</p>
 <blockquote>
-<div><img class="math" src="../../_images/math/5ebb483ac72ea41b5cff6fd2ffd62b4cbce80861.png" alt="storage_{t+1} = storage_t + inflows - release - spillage - irrigation"/></div></blockquote>
+<div><span class="math">storage_{t+1} = storage_t + inflows - release - spillage - irrigation</span></div></blockquote>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The data used in this tutorial are not real and might even not have sense
@@ -312,7 +303,7 @@ trait attributes within the class. Trait attributes defined by a class
 are automatically inherited by any subclass derived from the class.</p>
 <p>The common way of creating a traits class is by extending from the
 <strong>HasTraits</strong> base class and defining class traits :</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">Reservoir</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>
@@ -334,7 +325,7 @@ packages:</p>
 </div>
 <p>Using a traits class like that is as simple as any other Python class. Note
 that the trait value are passed using keyword arguments:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">reservoir</span> <span class="o">=</span> <span class="n">Reservoir</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Lac de Vouglans&#39;</span><span class="p">,</span> <span class="n">max_storage</span><span class="o">=</span><span class="mi">605</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reservoir</span> <span class="o">=</span> <span class="n">Reservoir</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Lac de Vouglans&#39;</span><span class="p">,</span> <span class="n">max_storage</span><span class="o">=</span><span class="mi">605</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <div class="section" id="initialisation">
@@ -380,14 +371,14 @@ example, the basic python types do have the following trait equivalents:</p>
 </tr>
 <tr class="row-even"><td>Unicode</td>
 <td>Unicode</td>
-<td>u’‘</td>
+<td>u’’</td>
 </tr>
 </tbody>
 </table>
 <p>A number of other predefined trait type do exist : Array, Enum, Range, Event,
 Dict, List, Color, Set, Expression, Code, Callable, Type, Tuple, etc.</p>
 <p>Custom default values can be defined in the code:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">Reservoir</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>
@@ -402,7 +393,7 @@ Dict, List, Color, Set, Expression, Code, Callable, Type, Tuple, etc.</p>
 <p>When a complex initialisation is required for a trait, a _XXX_default magic
 method can be implemented. It will be lazily called when trying to access
 the XXX trait. For example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_name_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_name_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <div class="newline"></div>    <span class="sd">&quot;&quot;&quot; Complex initialisation of the reservoir name. &quot;&quot;&quot;</span>
 <div class="newline"></div>
 <div class="newline"></div>    <span class="k">return</span> <span class="s1">&#39;Undefined&#39;</span>
@@ -413,7 +404,7 @@ the XXX trait. For example:</p>
 <div class="section" id="validation">
 <h3><a class="toc-backref" href="#id5">3.4.3.2. Validation</a><a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h3>
 <p>Every trait does validation when the user tries to set its content:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">reservoir</span> <span class="o">=</span> <span class="n">Reservoir</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Lac de Vouglans&#39;</span><span class="p">,</span> <span class="n">max_storage</span><span class="o">=</span><span class="mi">605</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reservoir</span> <span class="o">=</span> <span class="n">Reservoir</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Lac de Vouglans&#39;</span><span class="p">,</span> <span class="n">max_storage</span><span class="o">=</span><span class="mi">605</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">reservoir</span><span class="o">.</span><span class="n">max_storage</span> <span class="o">=</span> <span class="s1">&#39;230&#39;</span>
 <div class="newline"></div><span class="o">---------------------------------------------------------------------------</span>
@@ -436,7 +427,7 @@ the XXX trait. For example:</p>
 <h3><a class="toc-backref" href="#id6">3.4.3.3. Documentation</a><a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
 <p>By essence, all the traits do provide documentation about the model itself. The
 declarative approach to the creation of classes makes it self-descriptive:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">Reservoir</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>
@@ -446,7 +437,7 @@ declarative approach to the creation of classes makes it self-descriptive:</p>
 </div>
 <p>The <strong>desc</strong> metadata of the traits can be used to provide a more descriptive
 information about the trait :</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">Reservoir</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>
@@ -455,7 +446,7 @@ information about the trait :</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>Let’s now define the complete reservoir class:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">Reservoir</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">name</span> <span class="o">=</span> <span class="n">Str</span>
@@ -491,7 +482,7 @@ information about the trait :</p>
 <h3><a class="toc-backref" href="#id7">3.4.3.4. Visualization: opening a dialog</a><a class="headerlink" href="#visualization-opening-a-dialog" title="Permalink to this headline">¶</a></h3>
 <p>The Traits library is also aware of user interfaces and can pop up a default
 view for the Reservoir class:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">reservoir1</span> <span class="o">=</span> <span class="n">Reservoir</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reservoir1</span> <span class="o">=</span> <span class="n">Reservoir</span><span class="p">()</span>
 <div class="newline"></div><span class="n">reservoir1</span><span class="o">.</span><span class="n">edit_traits</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -501,8 +492,8 @@ HasTraits class has a default editor that will manage the way the trait is
 rendered to the screen (e.g. the Range trait is displayed as a slider, etc.).</p>
 <p>In the very same vein as the Traits declarative way of creating classes,
 TraitsUI provides a declarative interface to build user interfaces code:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="k">import</span> <span class="n">View</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="kn">import</span> <span class="n">View</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">Reservoir</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">name</span> <span class="o">=</span> <span class="n">Str</span>
@@ -542,9 +533,9 @@ TraitsUI provides a declarative interface to build user interfaces code:</p>
 <h3><a class="toc-backref" href="#id8">3.4.3.5. Deferral</a><a class="headerlink" href="#deferral" title="Permalink to this headline">¶</a></h3>
 <p>Being able to defer the definition of a trait and its value to another object
 is a powerful feature of Traits.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">DelegatesTo</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">DelegatesTo</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="k">import</span> <span class="n">Reservoir</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="kn">import</span> <span class="n">Reservoir</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">ReservoirState</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>    <span class="sd">&quot;&quot;&quot;Keeps track of the reservoir state given the initial storage.</span>
@@ -590,9 +581,9 @@ is a powerful feature of Traits.</p>
 </div>
 <p>A special trait allows to manage events and trigger function calls using the
 magic <strong>_xxxx_fired</strong> method:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">DelegatesTo</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Event</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">DelegatesTo</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Event</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="k">import</span> <span class="n">Reservoir</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="kn">import</span> <span class="n">Reservoir</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">ReservoirState</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>    <span class="sd">&quot;&quot;&quot;Keeps track of the reservoir state given the initial storage.</span>
@@ -663,10 +654,10 @@ Again, Traits uses magic method names for the property :</p>
 <li>_set_XXX for the setter of the XXX Property trait</li>
 </ul>
 </div></blockquote>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">DelegatesTo</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">Property</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">DelegatesTo</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">Property</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="k">import</span> <span class="n">Reservoir</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="kn">import</span> <span class="n">Reservoir</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">ReservoirState</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>    <span class="sd">&quot;&quot;&quot;Keeps track of the reservoir state given the initial storage.</span>
@@ -737,10 +728,10 @@ accessing a property where the inputs have not changed. The
 recompute them once invalidated.</p>
 </div>
 <p>Let’s extend the TraitsUI introduction with the ReservoirState example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">DelegatesTo</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Property</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="k">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">Group</span><span class="p">,</span> <span class="n">VGroup</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">DelegatesTo</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Property</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="kn">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">Group</span><span class="p">,</span> <span class="n">VGroup</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="k">import</span> <span class="n">Reservoir</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="kn">import</span> <span class="n">Reservoir</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">ReservoirState</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>    <span class="sd">&quot;&quot;&quot;Keeps track of the reservoir state given the initial storage.</span>
@@ -818,7 +809,7 @@ recompute them once invalidated.</p>
 <p>Some use cases need the delegation mechanism to be broken by the user when
 setting the value of the trait. The <strong>PrototypeFrom</strong> trait implements this
 behaviour.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">PrototypedFrom</span><span class="p">,</span> <span class="n">Instance</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">PrototypedFrom</span><span class="p">,</span> <span class="n">Instance</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">Turbine</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">turbine_type</span> <span class="o">=</span> <span class="n">Str</span>
@@ -871,9 +862,9 @@ behaviour.</p>
 dynamic listeners can be fed with callbacks. When the trait does change, all
 the listeners are called.</p>
 <p>Static listeners are defined using the _XXX_changed magic methods:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">DelegatesTo</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">DelegatesTo</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="k">import</span> <span class="n">Reservoir</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="kn">import</span> <span class="n">Reservoir</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">ReservoirState</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>    <span class="sd">&quot;&quot;&quot;Keeps track of the reservoir state given the initial storage.</span>
@@ -957,8 +948,8 @@ the listeners are called.</p>
 <p>In many situations, you do not know in advance what type of listeners need to
 be activated. Traits offers the ability to register listeners on the fly with
 the dynamic listeners</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir</span> <span class="k">import</span> <span class="n">Reservoir</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir_state_property</span> <span class="k">import</span> <span class="n">ReservoirState</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir</span> <span class="kn">import</span> <span class="n">Reservoir</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir_state_property</span> <span class="kn">import</span> <span class="n">ReservoirState</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">def</span> <span class="nf">wake_up_watchman_if_spillage</span><span class="p">(</span><span class="n">new_value</span><span class="p">):</span>
 <div class="newline"></div>    <span class="k">if</span> <span class="n">new_value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -1031,10 +1022,10 @@ remove=True,</li>
 </dd>
 </dl>
 <p>Listeners can also be added to classes using the <strong>on_trait_change</strong> decorator:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">DelegatesTo</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">on_trait_change</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">DelegatesTo</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">on_trait_change</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="k">import</span> <span class="n">Reservoir</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="kn">import</span> <span class="n">Reservoir</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">ReservoirState</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>    <span class="sd">&quot;&quot;&quot;Keeps track of the reservoir state given the initial storage.</span>
@@ -1103,8 +1094,8 @@ for the details.</p>
 <div class="section" id="some-more-advanced-traits">
 <h3><a class="toc-backref" href="#id10">3.4.3.7. Some more advanced traits</a><a class="headerlink" href="#some-more-advanced-traits" title="Permalink to this headline">¶</a></h3>
 <p>The following example demonstrate the usage of the Enum and List traits :</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">List</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="k">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">List</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="kn">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">IrrigationArea</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">name</span> <span class="o">=</span> <span class="n">Str</span>
@@ -1156,8 +1147,8 @@ for the details.</p>
 </div>
 <p>Trait listeners can be used to listen to changes in the content of the list to
 e.g. keep track of the total crop surface on linked to a given reservoir.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Property</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="k">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Property</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="kn">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">IrrigationArea</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">name</span> <span class="o">=</span> <span class="n">Str</span>
@@ -1217,14 +1208,14 @@ e.g. keep track of the total crop surface on linked to a given reservoir.</p>
 </div>
 <p>The next example shows how the Array trait can be used to feed a specialised
 TraitsUI Item, the ChacoPlotItem:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Property</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">traits.api</span> <span class="k">import</span> <span class="n">DelegatesTo</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="k">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">Group</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">chaco.chaco_plot_editor</span> <span class="k">import</span> <span class="n">ChacoPlotItem</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Property</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">DelegatesTo</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="kn">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">Group</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">chaco.chaco_plot_editor</span> <span class="kn">import</span> <span class="n">ChacoPlotItem</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="k">import</span> <span class="n">Reservoir</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">reservoir</span> <span class="kn">import</span> <span class="n">Reservoir</span>
 <div class="newline"></div>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">class</span> <span class="nc">ReservoirEvolution</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
@@ -1303,7 +1294,6 @@ TraitsUI Item, the ChacoPlotItem:</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-	<div class="sidebartoc">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">3.4. Traits: building interactive dialogs</a><ul>
@@ -1322,26 +1312,32 @@ TraitsUI Item, the ChacoPlotItem:</p>
 </ul>
 </li>
 </ul>
-</div>
 
-
-
-    <div class="script_container">
-    <script>
-    (function() {
-	var cx = '004523248466141510607:hgv2yimrahw';
-	var gcse = document.createElement('script');
-	gcse.type = 'text/javascript';
-	gcse.async = true;
-	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-	    '//cse.google.com/cse.js?cx=' + cx;
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(gcse, s);
-    })();
-    </script>
-    <gcse:search></gcse:search>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../scikit-image/auto_examples/plot_segmentations.html"
+                        title="previous chapter">3.3.9.11. Watershed and random walker for segmentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../3d_plotting/index.html"
+                        title="next chapter">3.5. 3D plotting with Mayavi</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/packages/traits/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
     </div>
-
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -1380,8 +1376,8 @@ TraitsUI Item, the ChacoPlotItem:</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>
 </html>

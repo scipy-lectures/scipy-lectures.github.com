@@ -4,21 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>2.3. Debugging code &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '2019.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -65,8 +57,7 @@ $(function () {
 </script>
 
 
-  </head>
-  <body>
+  </head><body>
    <!-- Use the header to add javascript -->
     
 
@@ -262,7 +253,7 @@ Menu: ‘settings -&gt; configure kate</p>
 <li><p class="first">In plugins enable ‘external tools’</p>
 </li>
 <li><p class="first">In external Tools’, add <cite>pyflakes</cite>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">kdialog</span> <span class="o">--</span><span class="n">title</span> <span class="s2">&quot;pyflakes </span><span class="si">%f</span><span class="s2">ilename&quot;</span> <span class="o">--</span><span class="n">msgbox</span> <span class="s2">&quot;$(pyflakes </span><span class="si">%f</span><span class="s2">ilename)&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kdialog</span> <span class="o">--</span><span class="n">title</span> <span class="s2">&quot;pyflakes </span><span class="si">%f</span><span class="s2">ilename&quot;</span> <span class="o">--</span><span class="n">msgbox</span> <span class="s2">&quot;$(pyflakes </span><span class="si">%f</span><span class="s2">ilename)&quot;</span>
 <div class="newline"></div></pre></div>
 </div>
 </li>
@@ -272,14 +263,14 @@ Menu: ‘settings -&gt; configure kate</p>
 <li><p class="first"><strong>In TextMate</strong></p>
 <p>Menu: TextMate -&gt; Preferences -&gt; Advanced -&gt; Shell variables, add a
 shell variable:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">TM_PYCHECKER</span> <span class="o">=</span> <span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Frameworks</span><span class="o">/</span><span class="n">Python</span><span class="o">.</span><span class="n">framework</span><span class="o">/</span><span class="n">Versions</span><span class="o">/</span><span class="n">Current</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">pyflakes</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TM_PYCHECKER</span> <span class="o">=</span> <span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Frameworks</span><span class="o">/</span><span class="n">Python</span><span class="o">.</span><span class="n">framework</span><span class="o">/</span><span class="n">Versions</span><span class="o">/</span><span class="n">Current</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">pyflakes</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Then <cite>Ctrl-Shift-V</cite> is binded to a pyflakes report</p>
 </li>
 <li><p class="first"><strong>In vim</strong>
 In your <cite>.vimrc</cite> (binds F5 to <cite>pyflakes</cite>):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>autocmd FileType python let &amp;mp = &#39;echo &quot;*** running % ***&quot; ; pyflakes %&#39;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>autocmd FileType python let &amp;mp = &#39;echo &quot;*** running % ***&quot; ; pyflakes %&#39;
 <div class="newline"></div>autocmd FileType tex,mp,rst,python imap &lt;Esc&gt;[15~ &lt;C-O&gt;:make!^M
 <div class="newline"></div>autocmd FileType tex,mp,rst,python map  &lt;Esc&gt;[15~ :make!^M
 <div class="newline"></div>autocmd FileType tex,mp,rst,python set autowrite
@@ -288,7 +279,7 @@ In your <cite>.vimrc</cite> (binds F5 to <cite>pyflakes</cite>):</p>
 </li>
 <li><p class="first"><strong>In emacs</strong>
 In your <cite>.emacs</cite> (binds F5 to <cite>pyflakes</cite>):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">defun</span> <span class="n">pyflakes</span><span class="o">-</span><span class="n">thisfile</span> <span class="p">()</span> <span class="p">(</span><span class="n">interactive</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">defun</span> <span class="n">pyflakes</span><span class="o">-</span><span class="n">thisfile</span> <span class="p">()</span> <span class="p">(</span><span class="n">interactive</span><span class="p">)</span>
 <div class="newline"></div>       <span class="p">(</span><span class="nb">compile</span> <span class="p">(</span><span class="nb">format</span> <span class="s2">&quot;pyflakes </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="p">(</span><span class="n">buffer</span><span class="o">-</span><span class="n">file</span><span class="o">-</span><span class="n">name</span><span class="p">)))</span>
 <div class="newline"></div><span class="p">)</span>
 <div class="newline"></div>
@@ -320,35 +311,25 @@ In your <cite>.emacs</cite> (binds F5 to <cite>pyflakes</cite>):</p>
 <ol class="arabic simple">
 <li>download the zip file from
 <a class="reference external" href="http://www.vim.org/scripts/script.php?script_id=2441">http://www.vim.org/scripts/script.php?script_id=2441</a></li>
-<li>extract the files in <code class="docutils literal"><span class="pre">~/.vim/ftplugin/python</span></code></li>
-<li>make sure your vimrc has <code class="docutils literal"><span class="pre">filetype</span> <span class="pre">plugin</span> <span class="pre">indent</span> <span class="pre">on</span></code></li>
+<li>extract the files in <code class="docutils literal notranslate"><span class="pre">~/.vim/ftplugin/python</span></code></li>
+<li>make sure your vimrc has <code class="docutils literal notranslate"><span class="pre">filetype</span> <span class="pre">plugin</span> <span class="pre">indent</span> <span class="pre">on</span></code></li>
 </ol>
 <img alt="../../_images/vim_pyflakes.png" src="../../_images/vim_pyflakes.png" />
 </li>
 <li><p class="first">Alternatively: use the <a class="reference external" href="https://github.com/scrooloose/syntastic">syntastic</a>
-plugin. This can be configured to use <code class="docutils literal"><span class="pre">flake8</span></code> too and also handles
+plugin. This can be configured to use <code class="docutils literal notranslate"><span class="pre">flake8</span></code> too and also handles
 on-the-fly checking for many other languages.</p>
 <img alt="../../_images/vim_syntastic.png" src="../../_images/vim_syntastic.png" />
 </li>
 </ul>
 </li>
-<li><p class="first"><strong>In emacs</strong>
-Use the flymake mode with pyflakes, documented on
-<a class="reference external" href="http://www.plope.com/Members/chrism/flymake-mode">http://www.plope.com/Members/chrism/flymake-mode</a> : add the following to
-your .emacs file:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">when</span> <span class="p">(</span><span class="n">load</span> <span class="s2">&quot;flymake&quot;</span> <span class="n">t</span><span class="p">)</span>
-<div class="newline"></div>        <span class="p">(</span><span class="n">defun</span> <span class="n">flymake</span><span class="o">-</span><span class="n">pyflakes</span><span class="o">-</span><span class="n">init</span> <span class="p">()</span>
-<div class="newline"></div>        <span class="p">(</span><span class="n">let</span><span class="o">*</span> <span class="p">((</span><span class="n">temp</span><span class="o">-</span><span class="n">file</span> <span class="p">(</span><span class="n">flymake</span><span class="o">-</span><span class="n">init</span><span class="o">-</span><span class="n">create</span><span class="o">-</span><span class="n">temp</span><span class="o">-</span><span class="n">buffer</span><span class="o">-</span><span class="n">copy</span>
-<div class="newline"></div>                            <span class="s1">&#39;flymake-create-temp-inplace))</span>
-<div class="newline"></div>            <span class="p">(</span><span class="n">local</span><span class="o">-</span><span class="n">file</span> <span class="p">(</span><span class="n">file</span><span class="o">-</span><span class="n">relative</span><span class="o">-</span><span class="n">name</span>
-<div class="newline"></div>                        <span class="n">temp</span><span class="o">-</span><span class="n">file</span>
-<div class="newline"></div>                        <span class="p">(</span><span class="n">file</span><span class="o">-</span><span class="n">name</span><span class="o">-</span><span class="n">directory</span> <span class="n">buffer</span><span class="o">-</span><span class="n">file</span><span class="o">-</span><span class="n">name</span><span class="p">))))</span>
-<div class="newline"></div>            <span class="p">(</span><span class="nb">list</span> <span class="s2">&quot;pyflakes&quot;</span> <span class="p">(</span><span class="nb">list</span> <span class="n">local</span><span class="o">-</span><span class="n">file</span><span class="p">))))</span>
-<div class="newline"></div>
-<div class="newline"></div>        <span class="p">(</span><span class="n">add</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="nb">list</span> <span class="s1">&#39;flymake-allowed-file-name-masks</span>
-<div class="newline"></div>                <span class="s1">&#39;(&quot;</span><span class="se">\\</span><span class="s1">.py</span><span class="se">\\</span><span class="s1">&#39;</span><span class="s2">&quot; flymake-pyflakes-init)))</span>
-<div class="newline"></div>
-<div class="newline"></div><span class="p">(</span><span class="n">add</span><span class="o">-</span><span class="n">hook</span> <span class="s1">&#39;find-file-hook &#39;</span><span class="n">flymake</span><span class="o">-</span><span class="n">find</span><span class="o">-</span><span class="n">file</span><span class="o">-</span><span class="n">hook</span><span class="p">)</span>
+<li><p class="first"><strong>In emacs</strong></p>
+<p>Use the flymake mode with pyflakes, documented on
+<a class="reference external" href="https://www.emacswiki.org/emacs/FlyMake">https://www.emacswiki.org/emacs/FlyMake</a> and included in Emacs 26 and
+more recent. To activate it, use <code class="docutils literal notranslate"><span class="pre">M-x</span></code> (meta-key then x) and enter
+<cite>flymake-mode</cite> at the prompt. To enable it automatically when
+opening a Python file, add the following line to your .emacs file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">add</span><span class="o">-</span><span class="n">hook</span> <span class="s1">&#39;python-mode-hook &#39;</span><span class="p">(</span><span class="k">lambda</span> <span class="p">()</span> <span class="p">(</span><span class="n">flymake</span><span class="o">-</span><span class="n">mode</span><span class="p">)))</span>
 <div class="newline"></div></pre></div>
 </div>
 </li>
@@ -393,7 +374,7 @@ the corresponding code to your test suite.</p>
 </div>
 <div class="section" id="using-the-python-debugger">
 <h2><a class="toc-backref" href="#id5">2.3.3. Using the Python debugger</a><a class="headerlink" href="#using-the-python-debugger" title="Permalink to this headline">¶</a></h2>
-<p>The python debugger, <code class="docutils literal"><span class="pre">pdb</span></code>: <a class="reference external" href="https://docs.python.org/library/pdb.html">https://docs.python.org/library/pdb.html</a>,
+<p>The python debugger, <code class="docutils literal notranslate"><span class="pre">pdb</span></code>: <a class="reference external" href="https://docs.python.org/library/pdb.html">https://docs.python.org/library/pdb.html</a>,
 allows you to inspect your code interactively.</p>
 <p>Specifically it allows you to:</p>
 <blockquote>
@@ -407,7 +388,7 @@ allows you to inspect your code interactively.</p>
 </div></blockquote>
 <div class="topic">
 <p class="topic-title first"><strong>print</strong></p>
-<p>Yes, <code class="docutils literal"><span class="pre">print</span></code> statements do work as a debugging tool. However to
+<p>Yes, <code class="docutils literal notranslate"><span class="pre">print</span></code> statements do work as a debugging tool. However to
 inspect runtime, it is often more efficient to use the debugger.</p>
 </div>
 <div class="section" id="invoking-the-debugger">
@@ -421,9 +402,9 @@ inspect runtime, it is often more efficient to use the debugger.</p>
 <div class="section" id="postmortem">
 <h4>Postmortem<a class="headerlink" href="#postmortem" title="Permalink to this headline">¶</a></h4>
 <p><strong>Situation</strong>: You’re working in IPython and you get a traceback.</p>
-<p>Here we debug the file <a class="reference download internal" href="../../_downloads/index_error.py" download=""><code class="xref download docutils literal"><span class="pre">index_error.py</span></code></a>. When running it, an
-<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#IndexError" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">IndexError</span></code></a> is raised. Type <code class="docutils literal"><span class="pre">%debug</span></code> and drop into the debugger.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="o">%</span><span class="n">run</span> <span class="n">index_error</span><span class="o">.</span><span class="n">py</span>
+<p>Here we debug the file <a class="reference download internal" href="../../_downloads/index_error.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">index_error.py</span></code></a>. When running it, an
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#IndexError" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndexError</span></code></a> is raised. Type <code class="docutils literal notranslate"><span class="pre">%debug</span></code> and drop into the debugger.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="o">%</span><span class="n">run</span> <span class="n">index_error</span><span class="o">.</span><span class="n">py</span>
 <div class="newline"></div><span class="go">---------------------------------------------------------------------------</span>
 <div class="newline"></div><span class="go">IndexError                                Traceback (most recent call last)</span>
 <div class="newline"></div><span class="go">/home/varoquau/dev/scipy-lecture-notes/advanced/debugging/index_error.py in &lt;module&gt;()</span>
@@ -471,8 +452,8 @@ inspect runtime, it is often more efficient to use the debugger.</p>
 <p class="topic-title first">Post-mortem debugging without IPython</p>
 <p>In some situations you cannot use IPython, for instance to debug a
 script that wants to be called from the command line. In this case,
-you can call the script with <code class="docutils literal"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pdb</span> <span class="pre">script.py</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ python -m pdb index_error.py
+you can call the script with <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pdb</span> <span class="pre">script.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m pdb index_error.py
 <div class="newline"></div>&gt; /home/varoquau/dev/scipy-lecture-notes/advanced/optimizing/index_error.py(1)&lt;module&gt;()
 <div class="newline"></div>-&gt; &quot;&quot;&quot;Small snippet to raise an IndexError.&quot;&quot;&quot;
 <div class="newline"></div>(Pdb) continue
@@ -501,12 +482,12 @@ you can call the script with <code class="docutils literal"><span class="pre">py
 <div class="section" id="step-by-step-execution">
 <h4>Step-by-step execution<a class="headerlink" href="#step-by-step-execution" title="Permalink to this headline">¶</a></h4>
 <p><strong>Situation</strong>: You believe a bug exists in a module but are not sure where.</p>
-<p>For instance we are trying to debug <a class="reference download internal" href="../../_downloads/wiener_filtering.py" download=""><code class="xref download docutils literal"><span class="pre">wiener_filtering.py</span></code></a>.
+<p>For instance we are trying to debug <a class="reference download internal" href="../../_downloads/wiener_filtering.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">wiener_filtering.py</span></code></a>.
 Indeed the code runs, but the filtering does not work well.</p>
 <ul>
-<li><p class="first">Run the script in IPython with the debugger using <code class="docutils literal"><span class="pre">%run</span> <span class="pre">-d</span>
+<li><p class="first">Run the script in IPython with the debugger using <code class="docutils literal notranslate"><span class="pre">%run</span> <span class="pre">-d</span>
 <span class="pre">wiener_filtering.p</span></code> :</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="o">%</span><span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="n">wiener_filtering</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="o">%</span><span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="n">wiener_filtering</span><span class="o">.</span><span class="n">py</span>
 <div class="newline"></div><span class="go">*** Blank or comment</span>
 <div class="newline"></div><span class="go">*** Blank or comment</span>
 <div class="newline"></div><span class="go">*** Blank or comment</span>
@@ -516,8 +497,8 @@ Indeed the code runs, but the filtering does not work well.</p>
 <div class="newline"></div></pre></div>
 </div>
 </li>
-<li><p class="first">Set a break point at line 34 using <code class="docutils literal"><span class="pre">b</span> <span class="pre">34</span></code>:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="go">ipdb&gt; n</span>
+<li><p class="first">Set a break point at line 34 using <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">34</span></code>:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="go">ipdb&gt; n</span>
 <div class="newline"></div><span class="go">&gt; /home/varoquau/dev/scipy-lecture-notes/advanced/optimizing/wiener_filtering.py(4)&lt;module&gt;()</span>
 <div class="newline"></div><span class="go">      3</span>
 <div class="newline"></div><span class="go">1---&gt; 4 import numpy as np</span>
@@ -528,8 +509,8 @@ Indeed the code runs, but the filtering does not work well.</p>
 <div class="newline"></div></pre></div>
 </div>
 </li>
-<li><p class="first">Continue execution to next breakpoint with <code class="docutils literal"><span class="pre">c(ont(inue))</span></code>:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="go">ipdb&gt; c</span>
+<li><p class="first">Continue execution to next breakpoint with <code class="docutils literal notranslate"><span class="pre">c(ont(inue))</span></code>:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="go">ipdb&gt; c</span>
 <div class="newline"></div><span class="go">&gt; /home/varoquau/dev/scipy-lecture-notes/advanced/optimizing/wiener_filtering.py(34)iterated_wiener()</span>
 <div class="newline"></div><span class="go">     33     &quot;&quot;&quot;</span>
 <div class="newline"></div><span class="go">2--&gt; 34     noisy_img = noisy_img</span>
@@ -537,10 +518,10 @@ Indeed the code runs, but the filtering does not work well.</p>
 <div class="newline"></div></pre></div>
 </div>
 </li>
-<li><p class="first">Step into code with <code class="docutils literal"><span class="pre">n(ext)</span></code> and <code class="docutils literal"><span class="pre">s(tep)</span></code>: <code class="docutils literal"><span class="pre">next</span></code> jumps to the next
-statement in the current execution context, while <code class="docutils literal"><span class="pre">step</span></code> will go across
+<li><p class="first">Step into code with <code class="docutils literal notranslate"><span class="pre">n(ext)</span></code> and <code class="docutils literal notranslate"><span class="pre">s(tep)</span></code>: <code class="docutils literal notranslate"><span class="pre">next</span></code> jumps to the next
+statement in the current execution context, while <code class="docutils literal notranslate"><span class="pre">step</span></code> will go across
 execution contexts, i.e. enable exploring inside function calls:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="go">ipdb&gt; s</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="go">ipdb&gt; s</span>
 <div class="newline"></div><span class="go">&gt; /home/varoquau/dev/scipy-lecture-notes/advanced/optimizing/wiener_filtering.py(35)iterated_wiener()</span>
 <div class="newline"></div><span class="go">2    34     noisy_img = noisy_img</span>
 <div class="newline"></div><span class="go">---&gt; 35     denoised_img = local_mean(noisy_img, size=size)</span>
@@ -555,7 +536,7 @@ execution contexts, i.e. enable exploring inside function calls:</p>
 </div>
 </li>
 <li><p class="first">Step a few lines and explore the local variables:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="go">ipdb&gt; n</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="go">ipdb&gt; n</span>
 <div class="newline"></div><span class="go">&gt; /home/varoquau/dev/scipy-lecture-notes/advanced/optimizing/wiener_filtering.py(37)iterated_wiener()</span>
 <div class="newline"></div><span class="go">     36     l_var = local_var(noisy_img, size=size)</span>
 <div class="newline"></div><span class="go">---&gt; 37     for i in range(3):</span>
@@ -578,16 +559,16 @@ execution contexts, i.e. enable exploring inside function calls:</p>
 doing integer arithmetic.</p>
 <div class="topic">
 <p class="topic-title first">Raising exception on numerical errors</p>
-<p>When we run the <a class="reference download internal" href="../../_downloads/wiener_filtering.py" download=""><code class="xref download docutils literal"><span class="pre">wiener_filtering.py</span></code></a> file, the following
+<p>When we run the <a class="reference download internal" href="../../_downloads/wiener_filtering.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">wiener_filtering.py</span></code></a> file, the following
 warnings are raised:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [2]: </span><span class="o">%</span><span class="n">run</span> <span class="n">wiener_filtering</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [2]: </span><span class="o">%</span><span class="n">run</span> <span class="n">wiener_filtering</span><span class="o">.</span><span class="n">py</span>
 <div class="newline"></div><span class="go">wiener_filtering.py:40: RuntimeWarning: divide by zero encountered in divide</span>
 <div class="newline"></div><span class="go">    noise_level = (1 - noise/l_var )</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>We can turn these warnings in exception, which enables us to do
 post-mortem debugging on them, and find our problem more quickly:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [3]: </span><span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="s1">&#39;raise&#39;</span><span class="p">)</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [3]: </span><span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="s1">&#39;raise&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="gr">Out[3]: </span><span class="p">{</span><span class="s1">&#39;divide&#39;</span><span class="p">:</span> <span class="s1">&#39;print&#39;</span><span class="p">,</span> <span class="s1">&#39;invalid&#39;</span><span class="p">:</span> <span class="s1">&#39;print&#39;</span><span class="p">,</span> <span class="s1">&#39;over&#39;</span><span class="p">:</span> <span class="s1">&#39;print&#39;</span><span class="p">,</span> <span class="s1">&#39;under&#39;</span><span class="p">:</span> <span class="s1">&#39;ignore&#39;</span><span class="p">}</span>
 <div class="newline"></div><span class="gp">In [4]: </span><span class="o">%</span><span class="n">run</span> <span class="n">wiener_filtering</span><span class="o">.</span><span class="n">py</span>
 <div class="newline"></div><span class="go">---------------------------------------------------------------------------</span>
@@ -622,41 +603,40 @@ post-mortem debugging on them, and find our problem more quickly:</p>
 <li><p class="first"><strong>Raising an exception as a poor man break point</strong></p>
 <p>If you find it tedious to note the line number to set a break point,
 you can simply raise an exception at the point that you want to
-inspect and use IPython’s <code class="docutils literal"><span class="pre">%debug</span></code>. Note that in this case you cannot
+inspect and use IPython’s <code class="docutils literal notranslate"><span class="pre">%debug</span></code>. Note that in this case you cannot
 step or continue the execution.</p>
 </li>
 <li><p class="first"><strong>Debugging test failures using nosetests</strong></p>
-<p>You can run <code class="docutils literal"><span class="pre">nosetests</span> <span class="pre">--pdb</span></code> to drop in post-mortem debugging on
-exceptions, and <code class="docutils literal"><span class="pre">nosetests</span> <span class="pre">--pdb-failure</span></code> to inspect test failures
+<p>You can run <code class="docutils literal notranslate"><span class="pre">nosetests</span> <span class="pre">--pdb</span></code> to drop in post-mortem debugging on
+exceptions, and <code class="docutils literal notranslate"><span class="pre">nosetests</span> <span class="pre">--pdb-failure</span></code> to inspect test failures
 using the debugger.</p>
 <p>In addition, you can use the IPython interface for the debugger in nose
 by installing the nose plugin
 <a class="reference external" href="http://pypi.python.org/pypi/ipdbplugin">ipdbplugin</a>. You can than
-pass <code class="docutils literal"><span class="pre">--ipdb</span></code> and <code class="docutils literal"><span class="pre">--ipdb-failure</span></code> options to nosetests.</p>
+pass <code class="docutils literal notranslate"><span class="pre">--ipdb</span></code> and <code class="docutils literal notranslate"><span class="pre">--ipdb-failure</span></code> options to nosetests.</p>
 </li>
 <li><p class="first"><strong>Calling the debugger explicitly</strong></p>
 <p>Insert the following line where you want to drop in the debugger:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pdb</span><span class="p">;</span> <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pdb</span><span class="p">;</span> <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 </li>
 </ul>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">When running <code class="docutils literal"><span class="pre">nosetests</span></code>, the output is captured, and thus it seems
-that the debugger does not work. Simply run the nosetests with the <code class="docutils literal"><span class="pre">-s</span></code>
+<p class="last">When running <code class="docutils literal notranslate"><span class="pre">nosetests</span></code>, the output is captured, and thus it seems
+that the debugger does not work. Simply run the nosetests with the <code class="docutils literal notranslate"><span class="pre">-s</span></code>
 flag.</p>
 </div>
 <div class="topic">
 <p class="topic-title first">Graphical debuggers and alternatives</p>
 <ul class="simple">
-<li>For stepping through code and inspecting variables, you might find it
-more convenient to use a graphical debugger such as
-<a class="reference external" href="http://winpdb.org/">winpdb</a>.</li>
-<li>Alternatively, <a class="reference external" href="http://pypi.python.org/pypi/pudb">pudb</a> is a good
-semi-graphical debugger with a text user interface in the console.</li>
-<li>Also, the <a class="reference external" href="http://code.google.com/p/pydbgr/">pydbgr</a> project is probably
-worth looking at.</li>
+<li><a class="reference external" href="http://pypi.python.org/pypi/pudb">pudb</a> is a good semi-graphical
+debugger with a text user interface in the console.</li>
+<li>The <a class="reference external" href="https://code.visualstudio.com/">Visual Studio Code</a> integrated
+development environment includes a debugging mode.</li>
+<li>The <a class="reference external" href="https://codewith.mu/">Mu editor</a> is a simple Python editor that
+includes a debugging mode.</li>
 </ul>
 </div>
 </div>
@@ -669,28 +649,28 @@ worth looking at.</li>
 <col width="85%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">l(list)</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">l(list)</span></code></td>
 <td>Lists the code at the current position</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">u(p)</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">u(p)</span></code></td>
 <td>Walk up the call stack</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">d(own)</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">d(own)</span></code></td>
 <td>Walk down the call stack</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">n(ext)</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">n(ext)</span></code></td>
 <td>Execute the next line (does not go down in new functions)</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">s(tep)</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">s(tep)</span></code></td>
 <td>Execute the next statement (goes down in new functions)</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">bt</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">bt</span></code></td>
 <td>Print the call stack</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">a</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">a</span></code></td>
 <td>Print the local variables</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">!command</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">!command</span></code></td>
 <td>Execute the given <strong>Python</strong> command (by opposition to pdb commands</td>
 </tr>
 </tbody>
@@ -705,8 +685,8 @@ in the debugger</strong>.</p>
 </div>
 <div class="section" id="getting-help-when-in-the-debugger">
 <h4>Getting help when in the debugger<a class="headerlink" href="#getting-help-when-in-the-debugger" title="Permalink to this headline">¶</a></h4>
-<p>Type <code class="docutils literal"><span class="pre">h</span></code> or <code class="docutils literal"><span class="pre">help</span></code> to access the interactive help:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="go">ipdb&gt; help</span>
+<p>Type <code class="docutils literal notranslate"><span class="pre">h</span></code> or <code class="docutils literal notranslate"><span class="pre">help</span></code> to access the interactive help:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="go">ipdb&gt; help</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="go">Documented commands (type help &lt;topic&gt;):</span>
 <div class="newline"></div><span class="go">========================================</span>
@@ -737,15 +717,15 @@ Similarly, if you have a bug in C code embedded in Python, pdb is
 useless. For this we turn to the gnu debugger,
 <a class="reference external" href="http://www.gnu.org/s/gdb/">gdb</a>, available on Linux.</p>
 <p>Before we start with gdb, let us add a few Python-specific tools to it.
-For this we add a few macros to our <code class="docutils literal"><span class="pre">~/.gdbinit</span></code>. The optimal choice of
+For this we add a few macros to our <code class="docutils literal notranslate"><span class="pre">~/.gdbinit</span></code>. The optimal choice of
 macro depends on your Python version and your gdb version. I have added a
-simplified version in <a class="reference download internal" href="../../_downloads/gdbinit" download=""><code class="xref download docutils literal"><span class="pre">gdbinit</span></code></a>, but feel free to read
+simplified version in <a class="reference download internal" href="../../_downloads/gdbinit" download=""><code class="xref download docutils literal notranslate"><span class="pre">gdbinit</span></code></a>, but feel free to read
 <a class="reference external" href="http://wiki.python.org/moin/DebuggingWithGdb">DebuggingWithGdb</a>.</p>
-<p>To debug with gdb the Python script <a class="reference download internal" href="../../_downloads/segfault.py" download=""><code class="xref download docutils literal"><span class="pre">segfault.py</span></code></a>, we can run the
+<p>To debug with gdb the Python script <a class="reference download internal" href="../../_downloads/segfault.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">segfault.py</span></code></a>, we can run the
 script in gdb as follows</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> gdb python
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> gdb python
 <div class="newline"></div><span class="go">...</span>
-<div class="newline"></div><span class="go">(gdb) run segfault.py</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">run segfault.py</span>
 <div class="newline"></div><span class="go">Starting program: /usr/bin/python segfault.py</span>
 <div class="newline"></div><span class="go">[Thread debugging using libthread_db enabled]</span>
 <div class="newline"></div>
@@ -755,13 +735,13 @@ script in gdb as follows</p>
 <div class="newline"></div><span class="go">    elsize=4)</span>
 <div class="newline"></div><span class="go">        at numpy/core/src/multiarray/ctors.c:365</span>
 <div class="newline"></div><span class="go">365            _FAST_MOVE(Int32);</span>
-<div class="newline"></div><span class="go">(gdb)</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>We get a segfault, and gdb captures it for post-mortem debugging in the C
 level stack (not the Python call stack). We can debug the C call stack
 using gdb’s commands:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">(gdb) up</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
 <div class="newline"></div><span class="gp">#</span><span class="m">1</span>  0x004af4f5 in _copy_from_same_shape <span class="o">(</span><span class="nv">dest</span><span class="o">=</span>&lt;value optimized out&gt;,
 <div class="newline"></div><span class="go">    src=&lt;value optimized out&gt;, myfunc=0x496780 &lt;_strided_byte_copy&gt;,</span>
 <div class="newline"></div><span class="go">    swap=0)</span>
@@ -772,43 +752,43 @@ using gdb’s commands:</p>
 <p>As you can see, right now, we are in the C code of numpy. We would like
 to know what is the Python code that triggers this segfault, so we go up
 the stack until we hit the Python execution loop:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">(gdb) up</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
 <div class="newline"></div><span class="gp">#</span><span class="m">8</span>  0x080ddd23 in call_function <span class="o">(</span><span class="nv">f</span><span class="o">=</span>
 <div class="newline"></div><span class="go">    Frame 0x85371ec, for file /home/varoquau/usr/lib/python2.6/site-packages/numpy/core/arrayprint.py, line 156, in _leading_trailing (a=&lt;numpy.ndarray at remote 0x85371b0&gt;, _nc=&lt;module at remote 0xb7f93a64&gt;), throwflag=0)</span>
 <div class="newline"></div><span class="go">    at ../Python/ceval.c:3750</span>
 <div class="newline"></div><span class="go">3750    ../Python/ceval.c: No such file or directory.</span>
 <div class="newline"></div><span class="go">        in ../Python/ceval.c</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="go">(gdb) up</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
 <div class="newline"></div><span class="gp">#</span><span class="m">9</span>  PyEval_EvalFrameEx <span class="o">(</span><span class="nv">f</span><span class="o">=</span>
 <div class="newline"></div><span class="go">    Frame 0x85371ec, for file /home/varoquau/usr/lib/python2.6/site-packages/numpy/core/arrayprint.py, line 156, in _leading_trailing (a=&lt;numpy.ndarray at remote 0x85371b0&gt;, _nc=&lt;module at remote 0xb7f93a64&gt;), throwflag=0)</span>
 <div class="newline"></div><span class="go">    at ../Python/ceval.c:2412</span>
 <div class="newline"></div><span class="go">2412    in ../Python/ceval.c</span>
-<div class="newline"></div><span class="go">(gdb)</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Once we are in the Python execution loop, we can use our special Python
 helper function. For instance we can find the corresponding Python code:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">(gdb) pyframe</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">pyframe</span>
 <div class="newline"></div><span class="go">/home/varoquau/usr/lib/python2.6/site-packages/numpy/core/arrayprint.py (158): _leading_trailing</span>
-<div class="newline"></div><span class="go">(gdb)</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>This is numpy code, we need to go up until we find code that we have
 written:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">(gdb) up</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
 <div class="newline"></div><span class="go">...</span>
-<div class="newline"></div><span class="go">(gdb) up</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
 <div class="newline"></div><span class="gp">#</span><span class="m">34</span> 0x080dc97a in PyEval_EvalFrameEx <span class="o">(</span><span class="nv">f</span><span class="o">=</span>
 <div class="newline"></div><span class="go">    Frame 0x82f064c, for file segfault.py, line 11, in print_big_array (small_array=&lt;numpy.ndarray at remote 0x853ecf0&gt;, big_array=&lt;numpy.ndarray at remote 0x853ed20&gt;), throwflag=0) at ../Python/ceval.c:1630</span>
 <div class="newline"></div><span class="go">1630    ../Python/ceval.c: No such file or directory.</span>
 <div class="newline"></div><span class="go">        in ../Python/ceval.c</span>
-<div class="newline"></div><span class="go">(gdb) pyframe</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">pyframe</span>
 <div class="newline"></div><span class="go">segfault.py (12): print_big_array</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>The corresponding code is:</p>
-<div class="highlight-py"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_big_array</span><span class="p">(</span><span class="n">small_array</span><span class="p">):</span>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_big_array</span><span class="p">(</span><span class="n">small_array</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">big_array</span> <span class="o">=</span> <span class="n">stride_tricks</span><span class="o">.</span><span class="n">as_strided</span><span class="p">(</span><span class="n">small_array</span><span class="p">,</span>
 <div class="newline"></div>                                         <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mf">2e6</span><span class="p">,</span> <span class="mf">2e6</span><span class="p">),</span> <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">))</span>
 <div class="newline"></div>    <span class="k">return</span> <span class="n">big_array</span>
@@ -817,8 +797,8 @@ written:</p>
 <div class="newline"></div>    <span class="n">big_array</span> <span class="o">=</span> <span class="n">make_big_array</span><span class="p">(</span><span class="n">small_array</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<p>Thus the segfault happens when printing <code class="docutils literal"><span class="pre">big_array[-10:]</span></code>. The reason is
-simply that <code class="docutils literal"><span class="pre">big_array</span></code> has been allocated with its end outside the
+<p>Thus the segfault happens when printing <code class="docutils literal notranslate"><span class="pre">big_array[-10:]</span></code>. The reason is
+simply that <code class="docutils literal notranslate"><span class="pre">big_array</span></code> has been allocated with its end outside the
 program memory.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -831,8 +811,8 @@ the source of this file.</p>
 <p>The following script is well documented and hopefully legible. It
 seeks to answer a problem of actual interest for numerical computing,
 but it does not work… Can you debug it?</p>
-<p><strong>Python source code:</strong> <a class="reference download internal" href="../../_downloads/to_debug.py" download=""><code class="xref download docutils literal"><span class="pre">to_debug.py</span></code></a></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<p><strong>Python source code:</strong> <a class="reference download internal" href="../../_downloads/to_debug.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">to_debug.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
 <div class="newline"></div><span class="sd">A script to compare different root-finding algorithms.</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="sd">This version of the script is buggy and does not execute. It is your task</span>
@@ -846,10 +826,10 @@ but it does not work… Can you debug it?</p>
 <div class="newline"></div><span class="sd">                ridder:   778394 total function calls</span>
 <div class="newline"></div><span class="sd">                bisect:  2148380 total function calls</span>
 <div class="newline"></div><span class="sd">&quot;&quot;&quot;</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">product</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">optimize</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">FUNCTIONS</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">,</span>  <span class="c1"># Dilating map</span>
 <div class="newline"></div>             <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="c1"># Contracting map</span>
@@ -908,7 +888,6 @@ but it does not work… Can you debug it?</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-	<div class="sidebartoc">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">2.3. Debugging code</a><ul>
@@ -939,26 +918,32 @@ but it does not work… Can you debug it?</p>
 </ul>
 </li>
 </ul>
-</div>
 
-
-
-    <div class="script_container">
-    <script>
-    (function() {
-	var cx = '004523248466141510607:hgv2yimrahw';
-	var gcse = document.createElement('script');
-	gcse.type = 'text/javascript';
-	gcse.async = true;
-	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-	    '//cse.google.com/cse.js?cx=' + cx;
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(gcse, s);
-    })();
-    </script>
-    <gcse:search></gcse:search>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../advanced_numpy/index.html"
+                        title="previous chapter">2.2. Advanced NumPy</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../optimizing/index.html"
+                        title="next chapter">2.4. Optimizing code</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/advanced/debugging/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
     </div>
-
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -997,8 +982,8 @@ but it does not work… Can you debug it?</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>
 </html>

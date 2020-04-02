@@ -4,21 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>1.2.8. Exception handling in Python &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '2019.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -65,8 +57,7 @@ $(function () {
 </script>
 
 
-  </head>
-  <body>
+  </head><body>
    <!-- Use the header to add javascript -->
     
 
@@ -182,7 +173,7 @@ for the right exception type.</p>
 <div class="section" id="exceptions">
 <h2>1.2.8.1. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
 <p>Exceptions are raised by errors in Python:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="mi">1</span><span class="o">/</span><span class="mi">0</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="mi">1</span><span class="o">/</span><span class="mi">0</span>
 <div class="newline"></div><span class="go">---------------------------------------------------------------------------</span>
 <div class="newline"></div><span class="go">ZeroDivisionError: integer division or modulo by zero</span>
 <div class="newline"></div>
@@ -213,12 +204,12 @@ for the right exception type.</p>
 <h2>1.2.8.2. Catching exceptions<a class="headerlink" href="#catching-exceptions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="try-except">
 <h3>try/except<a class="headerlink" href="#try-except" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
 <div class="newline"></div><span class="gp">   ....:</span>     <span class="k">try</span><span class="p">:</span>
-<div class="newline"></div><span class="gp">   ....:</span>         <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">raw_input</span><span class="p">(</span><span class="s1">&#39;Please enter a number: &#39;</span><span class="p">))</span>
+<div class="newline"></div><span class="gp">   ....:</span>         <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw_input</span><span class="p">(</span><span class="s1">&#39;Please enter a number: &#39;</span><span class="p">))</span>
 <div class="newline"></div><span class="gp">   ....:</span>         <span class="k">break</span>
 <div class="newline"></div><span class="gp">   ....:</span>     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-<div class="newline"></div><span class="gp">   ....:</span>         <span class="k">print</span><span class="p">(</span><span class="s1">&#39;That was no valid number.  Try again...&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">   ....:</span>         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;That was no valid number.  Try again...&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">   ....:</span>
 <div class="newline"></div><span class="go">Please enter a number: a</span>
 <div class="newline"></div><span class="go">That was no valid number.  Try again...</span>
@@ -231,10 +222,10 @@ for the right exception type.</p>
 </div>
 <div class="section" id="try-finally">
 <h3>try/finally<a class="headerlink" href="#try-finally" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="k">try</span><span class="p">:</span>
-<div class="newline"></div><span class="gp">   ....:</span>     <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">raw_input</span><span class="p">(</span><span class="s1">&#39;Please enter a number: &#39;</span><span class="p">))</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="k">try</span><span class="p">:</span>
+<div class="newline"></div><span class="gp">   ....:</span>     <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw_input</span><span class="p">(</span><span class="s1">&#39;Please enter a number: &#39;</span><span class="p">))</span>
 <div class="newline"></div><span class="gp">   ....:</span> <span class="k">finally</span><span class="p">:</span>
-<div class="newline"></div><span class="gp">   ....:</span>     <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Thank you for your input&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">   ....:</span>     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Thank you for your input&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">   ....:</span>
 <div class="newline"></div><span class="gp">   ....:</span>
 <div class="newline"></div><span class="go">Please enter a number: a</span>
@@ -247,12 +238,12 @@ for the right exception type.</p>
 </div>
 <div class="section" id="easier-to-ask-for-forgiveness-than-for-permission">
 <h3>Easier to ask for forgiveness than for permission<a class="headerlink" href="#easier-to-ask-for-forgiveness-than-for-permission" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="k">def</span> <span class="nf">print_sorted</span><span class="p">(</span><span class="n">collection</span><span class="p">):</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="k">def</span> <span class="nf">print_sorted</span><span class="p">(</span><span class="n">collection</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">   ....:</span>     <span class="k">try</span><span class="p">:</span>
 <div class="newline"></div><span class="gp">   ....:</span>         <span class="n">collection</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 <div class="newline"></div><span class="gp">   ....:</span>     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
 <div class="newline"></div><span class="gp">   ....:</span>         <span class="k">pass</span> <span class="c1"># The pass statement does nothing</span>
-<div class="newline"></div><span class="gp">   ....:</span>     <span class="k">print</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">   ....:</span>     <span class="nb">print</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">   ....:</span>
 <div class="newline"></div><span class="gp">   ....:</span>
 <div class="newline"></div>
@@ -272,12 +263,12 @@ for the right exception type.</p>
 <h2>1.2.8.3. Raising exceptions<a class="headerlink" href="#raising-exceptions" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">Capturing and reraising an exception:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [15]: </span><span class="k">def</span> <span class="nf">filter_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [15]: </span><span class="k">def</span> <span class="nf">filter_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">   ....:</span>    <span class="k">try</span><span class="p">:</span>
 <div class="newline"></div><span class="gp">   ....:</span>        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">   ....:</span>    <span class="k">except</span> <span class="ne">UnicodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 <div class="newline"></div><span class="gp">   ....:</span>        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;Gaël&#39;</span><span class="p">:</span>
-<div class="newline"></div><span class="gp">   ....:</span>            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;OK, Gaël&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">   ....:</span>            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;OK, Gaël&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">   ....:</span>        <span class="k">else</span><span class="p">:</span>
 <div class="newline"></div><span class="gp">   ....:</span>            <span class="k">raise</span> <span class="n">e</span>
 <div class="newline"></div><span class="gp">   ....:</span>    <span class="k">return</span> <span class="n">name</span>
@@ -294,7 +285,7 @@ for the right exception type.</p>
 </div>
 </li>
 <li><p class="first">Exceptions to pass messages between parts of the code:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [17]: </span><span class="k">def</span> <span class="nf">achilles_arrow</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [17]: </span><span class="k">def</span> <span class="nf">achilles_arrow</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">   ....:</span>    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-3</span><span class="p">:</span>
 <div class="newline"></div><span class="gp">   ....:</span>        <span class="k">raise</span> <span class="ne">StopIteration</span>
 <div class="newline"></div><span class="gp">   ....:</span>    <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span>
@@ -303,7 +294,7 @@ for the right exception type.</p>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">In [18]: </span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="gp">In [19]: </span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<div class="newline"></div><span class="gp">In [19]: </span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
 <div class="newline"></div><span class="gp">   ....:</span>     <span class="k">try</span><span class="p">:</span>
 <div class="newline"></div><span class="gp">   ....:</span>         <span class="n">x</span> <span class="o">=</span> <span class="n">achilles_arrow</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">   ....:</span>     <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
@@ -329,7 +320,6 @@ StopIteration) or not (e.g. custom error raising)</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-	<div class="sidebartoc">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">1.2.8. Exception handling in Python</a><ul>
@@ -344,26 +334,32 @@ StopIteration) or not (e.g. custom error raising)</p>
 </ul>
 </li>
 </ul>
-</div>
 
-
-
-    <div class="script_container">
-    <script>
-    (function() {
-	var cx = '004523248466141510607:hgv2yimrahw';
-	var gcse = document.createElement('script');
-	gcse.type = 'text/javascript';
-	gcse.async = true;
-	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-	    '//cse.google.com/cse.js?cx=' + cx;
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(gcse, s);
-    })();
-    </script>
-    <gcse:search></gcse:search>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="standard_library.html"
+                        title="previous chapter">1.2.7. Standard Library</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="oop.html"
+                        title="next chapter">1.2.9. Object-oriented programming (OOP)</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/intro/language/exceptions.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
     </div>
-
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -403,8 +399,8 @@ StopIteration) or not (e.g. custom error raising)</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>
 </html>

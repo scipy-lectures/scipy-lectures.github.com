@@ -4,21 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>3.6. scikit-learn: machine learning in Python &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '2019.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -65,8 +57,7 @@ $(function () {
 </script>
 
 
-  </head>
-  <body>
+  </head><body>
    <!-- Use the header to add javascript -->
     
 
@@ -260,8 +251,8 @@ would allow us to predict the y value.</p>
 <h4>The data matrix<a class="headerlink" href="#the-data-matrix" title="Permalink to this headline">¶</a></h4>
 <p>Machine learning algorithms implemented in scikit-learn expect data
 to be stored in a <strong>two-dimensional array or matrix</strong>. The arrays can be
-either <code class="docutils literal"><span class="pre">numpy</span></code> arrays, or in some cases <code class="docutils literal"><span class="pre">scipy.sparse</span></code> matrices. The
-size of the array is expected to be <code class="docutils literal"><span class="pre">[n_samples,</span> <span class="pre">n_features]</span></code></p>
+either <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays, or in some cases <code class="docutils literal notranslate"><span class="pre">scipy.sparse</span></code> matrices. The
+size of the array is expected to be <code class="docutils literal notranslate"><span class="pre">[n_samples,</span> <span class="pre">n_features]</span></code></p>
 <ul class="simple">
 <li><strong>n_samples:</strong> The number of samples: each sample is an item to
 process (e.g. classify). A sample can be a document, a picture, a
@@ -277,7 +268,7 @@ cases.</li>
 <p class="first admonition-title">Tip</p>
 <p class="last">The number of features must be fixed in advance. However it can be
 very high dimensional (e.g. millions of features) with most of them
-being zeros for a given sample. This is a case where <code class="docutils literal"><span class="pre">scipy.sparse</span></code>
+being zeros for a given sample. This is a case where <code class="docutils literal notranslate"><span class="pre">scipy.sparse</span></code>
 matrices can be useful, in that they are much more memory-efficient
 than numpy arrays.</p>
 </div>
@@ -314,15 +305,15 @@ three different species of irises:</p>
 <blockquote>
 <div><p><strong>If we want to design an algorithm to recognize iris species, what
 might the data be?</strong></p>
-<p>Remember: we need a 2D array of size <code class="docutils literal"><span class="pre">[n_samples</span> <span class="pre">x</span> <span class="pre">n_features]</span></code>.</p>
+<p>Remember: we need a 2D array of size <code class="docutils literal notranslate"><span class="pre">[n_samples</span> <span class="pre">x</span> <span class="pre">n_features]</span></code>.</p>
 <ul class="simple">
-<li>What would the <code class="docutils literal"><span class="pre">n_samples</span></code> refer to?</li>
-<li>What might the <code class="docutils literal"><span class="pre">n_features</span></code> refer to?</li>
+<li>What would the <code class="docutils literal notranslate"><span class="pre">n_samples</span></code> refer to?</li>
+<li>What might the <code class="docutils literal notranslate"><span class="pre">n_features</span></code> refer to?</li>
 </ul>
 </div></blockquote>
 </div>
 <p>Remember that there must be a <strong>fixed</strong> number of features for each
-sample, and feature number <code class="docutils literal"><span class="pre">i</span></code> must be a similar kind of quantity for
+sample, and feature number <code class="docutils literal notranslate"><span class="pre">i</span></code> must be a similar kind of quantity for
 each sample.</p>
 </div>
 <div class="section" id="loading-the-iris-data-with-scikit-learn">
@@ -344,19 +335,19 @@ species. The data consist of the following:</p>
 </ul>
 </li>
 </ul>
-<p><code class="xref py py-mod docutils literal"><span class="pre">scikit-learn</span></code> embeds a copy of the iris CSV file along with a
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">scikit-learn</span></code> embeds a copy of the iris CSV file along with a
 function to load it into numpy arrays:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_iris</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><strong>Import sklearn</strong> Note that scikit-learn is imported as <code class="xref py py-mod docutils literal"><span class="pre">sklearn</span></code></p>
+<p class="last"><strong>Import sklearn</strong> Note that scikit-learn is imported as <code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn</span></code></p>
 </div>
-<p>The features of each sample flower are stored in the <code class="docutils literal"><span class="pre">data</span></code> attribute
+<p>The features of each sample flower are stored in the <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute
 of the dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div><span class="go">(150, 4)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
@@ -364,12 +355,12 @@ of the dataset:</p>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">n_features</span><span class="p">)</span>
 <div class="newline"></div><span class="go">4</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<div class="newline"></div><span class="go">[ 5.1  3.5  1.4  0.2]</span>
+<div class="newline"></div><span class="go">[5.1  3.5  1.4  0.2]</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>The information about the class of each sample is stored in the
-<code class="docutils literal"><span class="pre">target</span></code> attribute of the dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<code class="docutils literal notranslate"><span class="pre">target</span></code> attribute of the dataset:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div><span class="go">(150,)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
 <div class="newline"></div><span class="go">[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</span>
@@ -380,8 +371,8 @@ of the dataset:</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>The names of the classes are stored in the last attribute, namely
-<code class="docutils literal"><span class="pre">target_names</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
+<code class="docutils literal notranslate"><span class="pre">target_names</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
 <div class="newline"></div><span class="go">[&#39;setosa&#39; &#39;versicolor&#39; &#39;virginica&#39;]</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -404,13 +395,13 @@ and modify this code.</p>
 <div class="section" id="introducing-the-scikit-learn-estimator-object">
 <h3>3.6.2.1. Introducing the scikit-learn estimator object<a class="headerlink" href="#introducing-the-scikit-learn-estimator-object" title="Permalink to this headline">¶</a></h3>
 <p>Every algorithm is exposed in scikit-learn via an ‘’Estimator’’ object.
-For instance a linear regression is: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">sklearn.linear_model.LinearRegression</span></code></a></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
+For instance a linear regression is: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.linear_model.LinearRegression</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 <div class="newline"></div></pre></div>
 </div>
 <p><strong>Estimator parameters</strong>: All the parameters of an estimator can be set
 when it is instantiated:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">normalize</span><span class="p">)</span>
 <div class="newline"></div><span class="go">True</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
@@ -420,7 +411,7 @@ when it is instantiated:</p>
 <div class="section" id="fitting-on-data">
 <h4>Fitting on data<a class="headerlink" href="#fitting-on-data" title="Permalink to this headline">¶</a></h4>
 <p>Let’s create some simple data with <a class="reference internal" href="../../intro/numpy/index.html#numpy"><span class="std std-ref">numpy</span></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <div class="newline"></div>
@@ -438,8 +429,8 @@ when it is instantiated:</p>
 parameters are estimated from the data at hand. All the estimated
 parameters are attributes of the estimator object ending by an
 underscore:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span>
-<div class="newline"></div><span class="go">array([ 1.])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span>
+<div class="newline"></div><span class="go">array([1.])</span>
 <div class="newline"></div></pre></div>
 </div>
 </div>
@@ -479,7 +470,7 @@ problem, because the label (age) is a continuous quantity.</p>
 learning strategies: given a new, unknown observation, look up in your
 reference database which ones have the closest features and assign the
 predominant class. Let’s try it out on our iris classification problem:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">neighbors</span><span class="p">,</span> <span class="n">datasets</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">neighbors</span><span class="p">,</span> <span class="n">datasets</span>
 <div class="newline"></div><span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
 <div class="newline"></div><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
 <div class="newline"></div><span class="n">knn</span> <span class="o">=</span> <span class="n">neighbors</span><span class="o">.</span><span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -503,33 +494,33 @@ regression one:</p>
 <h3>3.6.2.3. A recap on Scikit-learn’s estimator interface<a class="headerlink" href="#a-recap-on-scikit-learn-s-estimator-interface" title="Permalink to this headline">¶</a></h3>
 <p>Scikit-learn strives to have a uniform interface across all methods, and
 we’ll see examples of these below. Given a scikit-learn <em>estimator</em>
-object named <code class="docutils literal"><span class="pre">model</span></code>, the following methods are available:</p>
+object named <code class="docutils literal notranslate"><span class="pre">model</span></code>, the following methods are available:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name" colspan="2">In <strong>all Estimators</strong>:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><code class="docutils literal"><span class="pre">model.fit()</span></code> : fit training data. For supervised learning
-applications, this accepts two arguments: the data <code class="docutils literal"><span class="pre">X</span></code> and the
-labels <code class="docutils literal"><span class="pre">y</span></code> (e.g. <code class="docutils literal"><span class="pre">model.fit(X,</span> <span class="pre">y)</span></code>). For unsupervised learning
-applications, this accepts only a single argument, the data <code class="docutils literal"><span class="pre">X</span></code>
-(e.g. <code class="docutils literal"><span class="pre">model.fit(X)</span></code>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">model.fit()</span></code> : fit training data. For supervised learning
+applications, this accepts two arguments: the data <code class="docutils literal notranslate"><span class="pre">X</span></code> and the
+labels <code class="docutils literal notranslate"><span class="pre">y</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">model.fit(X,</span> <span class="pre">y)</span></code>). For unsupervised learning
+applications, this accepts only a single argument, the data <code class="docutils literal notranslate"><span class="pre">X</span></code>
+(e.g. <code class="docutils literal notranslate"><span class="pre">model.fit(X)</span></code>).</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">In <strong>supervised estimators</strong>:</th></tr>
 <tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><code class="docutils literal"><span class="pre">model.predict()</span></code> : given a trained model, predict the label of a
+<li><code class="docutils literal notranslate"><span class="pre">model.predict()</span></code> : given a trained model, predict the label of a
 new set of data. This method accepts one argument, the new data
-<code class="docutils literal"><span class="pre">X_new</span></code> (e.g. <code class="docutils literal"><span class="pre">model.predict(X_new)</span></code>), and returns the learned
+<code class="docutils literal notranslate"><span class="pre">X_new</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">model.predict(X_new)</span></code>), and returns the learned
 label for each object in the array.</li>
-<li><code class="docutils literal"><span class="pre">model.predict_proba()</span></code> : For classification problems, some
+<li><code class="docutils literal notranslate"><span class="pre">model.predict_proba()</span></code> : For classification problems, some
 estimators also provide this method, which returns the probability
 that a new observation has each categorical label. In this case, the
 label with the highest probability is returned by
-<code class="docutils literal"><span class="pre">model.predict()</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">model.score()</span></code> : for classification or regression problems, most
+<code class="docutils literal notranslate"><span class="pre">model.predict()</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">model.score()</span></code> : for classification or regression problems, most
 (all?) estimators implement a score method. Scores are between 0 and
 1, with a larger score indicating a better fit.</li>
 </ul>
@@ -537,11 +528,11 @@ label with the highest probability is returned by
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">In <strong>unsupervised estimators</strong>:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
-<li><code class="docutils literal"><span class="pre">model.transform()</span></code> : given an unsupervised model, transform new
-data into the new basis. This also accepts one argument <code class="docutils literal"><span class="pre">X_new</span></code>,
+<li><code class="docutils literal notranslate"><span class="pre">model.transform()</span></code> : given an unsupervised model, transform new
+data into the new basis. This also accepts one argument <code class="docutils literal notranslate"><span class="pre">X_new</span></code>,
 and returns the new representation of the data based on the
 unsupervised model.</li>
-<li><code class="docutils literal"><span class="pre">model.fit_transform()</span></code> : some estimators implement this method,
+<li><code class="docutils literal notranslate"><span class="pre">model.fit_transform()</span></code> : some estimators implement this method,
 which more efficiently performs a fit and a transform on the same
 input data.</li>
 </ul>
@@ -563,7 +554,7 @@ You need to leave out a test set.</li>
 </ul>
 <p><strong>An example of regularization</strong> The core idea behind regularization is
 that we are going to prefer models that are simpler, for a certain
-definition of ‘’simpler’‘, even if they lead to more errors on the train
+definition of ‘’simpler’’, even if they lead to more errors on the train
 set.</p>
 <p>As an example, let’s generate with a 9th order polynomial, with noise:</p>
 <div class="figure align-center">
@@ -630,14 +621,14 @@ features, is more complex than a non-linear one.</p>
 handwritten digits. This will go a bit beyond the iris classification we
 saw before: we’ll discuss some of the metrics which can be used in
 evaluating the effectiveness of a classification model.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_digits</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">digits</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <a class="reference external image-reference" href="auto_examples/plot_digits_simple_classif.html"><img alt="../../_images/sphx_glr_plot_digits_simple_classif_001.png" class="align-center" src="../../_images/sphx_glr_plot_digits_simple_classif_001.png" /></a>
 <p>Let us visualize the data and remind us what we’re looking at (click on
 the figure for the full code):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># plot the digits: each image is 8x8 pixels</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the digits: each image is 8x8 pixels</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
 <div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">binary</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
@@ -652,7 +643,7 @@ straightforward one, <a class="reference external" href="https://en.wikipedia.or
 <p>PCA seeks orthogonal linear combinations of the features which show the
 greatest variance, and as such, can help give you a good idea of the
 structure of the data set.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">proj</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">proj</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">proj</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">)</span> 
@@ -676,11 +667,11 @@ and fast method is sufficient, then we don’t have to waste CPU cycles on
 more complex models. If not, we can use the results of the simple method
 to give us clues about our data.</p>
 <p>One good method to keep in mind is Gaussian Naive Bayes
-(<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">sklearn.naive_bayes.GaussianNB</span></code></a>).</p>
+(<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.naive_bayes.GaussianNB</span></code></a>).</p>
 <div class="sidebar">
 <p class="first sidebar-title">Old scikit-learn versions</p>
-<p class="last"><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="(in scikit-learn v0.21.2)"><code class="xref py py-func docutils literal"><span class="pre">train_test_split()</span></code></a> is imported from
-<code class="docutils literal"><span class="pre">sklearn.cross_validation</span></code></p>
+<p class="last"><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="(in scikit-learn v0.22)"><code class="xref py py-func docutils literal notranslate"><span class="pre">train_test_split()</span></code></a> is imported from
+<code class="docutils literal notranslate"><span class="pre">sklearn.cross_validation</span></code></p>
 </div>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -689,8 +680,8 @@ independantly on each feature, and uses this to quickly give a rough
 classification. It is generally not sufficiently accurate for real-world
 data, but can perform surprisingly well, for instance on text data.</p>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="k">import</span> <span class="n">GaussianNB</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c1"># split the data into training and validation sets</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
@@ -722,7 +713,7 @@ how well the classification is working.</p>
 <p>We’d like to measure the performance of our estimator without having to
 resort to plotting examples. A simple method might be to simply compare
 the number of matches:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matches</span> <span class="o">=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">expected</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matches</span> <span class="o">=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">expected</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">matches</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
 <div class="newline"></div><span class="go">367</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">))</span>
@@ -734,10 +725,10 @@ the number of matches:</p>
 <p>We see that more than 80% of the 450 predictions match the input. But
 there are other more sophisticated metrics that can be used to judge the
 performance of a classifier: several are available in the
-<a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.21.2)"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics</span></code></a> submodule.</p>
-<p>One of the most useful metrics is the <code class="docutils literal"><span class="pre">classification_report</span></code>, which
+<a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.22)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a> submodule.</p>
+<p>One of the most useful metrics is the <code class="docutils literal notranslate"><span class="pre">classification_report</span></code>, which
 combines several measures and prints a table with the results:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">metrics</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">))</span>
 <div class="newline"></div><span class="go">             precision    recall  f1-score   support</span>
 <div class="newline"></div>
@@ -758,7 +749,7 @@ combines several measures and prints a table with the results:</p>
 <p>Another enlightening metric for this sort of multi-label classification
 is a <em>confusion matrix</em>: it helps us visualize which labels are being
 interchanged in the classification errors:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">))</span>
 <div class="newline"></div><span class="go">[[42  0  0  0  3  0  0  1  0  0]</span>
 <div class="newline"></div><span class="go"> [ 0 28  0  0  0  0  0  1 13  2]</span>
 <div class="newline"></div><span class="go"> [ 0  3 29  0  0  0  0  0 15  0]</span>
@@ -790,7 +781,7 @@ continuous value from a set of features.</p>
 This records measurements of 13 attributes of housing markets around
 Boston, as well as the median price. The question is: can you predict
 the price of a new market given its attributes?:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_boston</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_boston</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_boston</span><span class="p">()</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div><span class="go">(506, 13)</span>
@@ -799,8 +790,8 @@ the price of a new market given its attributes?:</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>We can see that there are just over 500 data points.</p>
-<p>The <code class="docutils literal"><span class="pre">DESCR</span></code> variable has a long description of the dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">DESCR</span><span class="p">)</span> 
+<p>The <code class="docutils literal notranslate"><span class="pre">DESCR</span></code> variable has a long description of the dataset:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">DESCR</span><span class="p">)</span> 
 <div class="newline"></div><span class="go">Boston House Prices dataset</span>
 <div class="newline"></div><span class="go">===========================</span>
 <div class="newline"></div>
@@ -835,14 +826,14 @@ the price of a new market given its attributes?:</p>
 <p>It often helps to quickly visualize pieces of the data using histograms,
 scatter plots, or other plot types. With matplotlib, let us show a
 histogram of the target values: the median price in each neighborhood:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>  
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>  
 <div class="newline"></div><span class="go">(array([...</span>
 <div class="newline"></div></pre></div>
 </div>
 <a class="reference external image-reference" href="auto_examples/plot_boston_prediction.html"><img alt="../../_images/sphx_glr_plot_boston_prediction_001.png" class="align-center" src="../../_images/sphx_glr_plot_boston_prediction_001.png" style="width: 280.0px; height: 210.0px;" /></a>
 <p>Let’s have a quick look to see if some features are more relevant than
 others for our problem:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">feature_names</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">feature_names</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>  
 <div class="newline"></div><span class="go">&lt;Figure size...</span>
@@ -872,13 +863,13 @@ the most informative features.</p>
 </div>
 <div class="section" id="predicting-home-prices-a-simple-linear-regression">
 <h3>3.6.4.2. Predicting Home Prices: a Simple Linear Regression<a class="headerlink" href="#predicting-home-prices-a-simple-linear-regression" title="Permalink to this headline">¶</a></h3>
-<p>Now we’ll use <code class="docutils literal"><span class="pre">scikit-learn</span></code> to perform a simple linear regression on
+<p>Now we’ll use <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> to perform a simple linear regression on
 the housing data. There are many possibilities of regressors to use. A
-particularly simple one is <code class="docutils literal"><span class="pre">LinearRegression</span></code>: this is basically a
+particularly simple one is <code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code>: this is basically a
 wrapper around an ordinary least squares calculation.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div><span class="go">LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False)</span>
@@ -890,7 +881,7 @@ wrapper around an ordinary least squares calculation.</p>
 </div>
 <a class="reference external image-reference" href="auto_examples/plot_boston_prediction.html"><img alt="../../_images/sphx_glr_plot_boston_prediction_015.png" class="align-right" src="../../_images/sphx_glr_plot_boston_prediction_015.png" /></a>
 <p>We can plot the error: expected as a function of predicted:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">)</span> 
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">predicted</span><span class="p">)</span> 
 <div class="newline"></div><span class="go">&lt;matplotlib.collections.PathCollection object at ...&gt;</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -908,9 +899,9 @@ cover in a later section.</p>
 we’ll try a more powerful one here.</p>
 <p><strong>Use the GradientBoostingRegressor class to fit the housing data</strong>.</p>
 <p><strong>hint</strong> You can copy and paste some of the above code, replacing
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">LinearRegression</span></code></a> with
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">GradientBoostingRegressor</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">GradientBoostingRegressor</span>
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearRegression</span></code></a> with
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingRegressor</span>
 <div class="newline"></div><span class="c1"># Instantiate the model, fit the results, and scatter in vs. out</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -927,20 +918,20 @@ K-Neighbors classifier.  The K-neighbors classifier is an instance-based
 classifier.  The K-neighbors classifier predicts the label of
 an unknown point based on the labels of the <em>K</em> nearest points in the
 parameter space.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get the data</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_digits</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get the data</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">digits</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Instantiate and train the classifier</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <span class="n">KNeighborsClassifier</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> 
 <div class="newline"></div><span class="go">KNeighborsClassifier(...)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Check the results using metrics</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">metrics</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
@@ -963,8 +954,8 @@ does, we need to try some samples it <em>hasn’t</em> yet seen.</p>
 <p>This problem also occurs with regression models. In the following we
 fit an other instance-based model named “decision tree” to the Boston
 Housing price dataset we introduced previously:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_boston</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="k">import</span> <span class="n">DecisionTreeRegressor</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_boston</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_boston</span><span class="p">()</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
@@ -1002,8 +993,8 @@ parameters of a predictive model</li>
 predictive model</li>
 </ul>
 <p>In scikit-learn such a random split can be quickly computed with the
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="(in scikit-learn v0.21.2)"><code class="xref py py-func docutils literal"><span class="pre">train_test_split()</span></code></a> function:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">model_selection</span>
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="(in scikit-learn v0.22)"><code class="xref py py-func docutils literal notranslate"><span class="pre">train_test_split()</span></code></a> function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">model_selection</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span>
 <div class="newline"></div>
@@ -1015,7 +1006,7 @@ predictive model</li>
 <div class="newline"></div></pre></div>
 </div>
 <p>Now we train on the training data, and test on the testing data:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
@@ -1049,13 +1040,13 @@ predictive model</li>
 <p>The averaged f1-score is often used as a convenient measure of the
 overall performance of an algorithm.  It appears in the bottom row
 of the classification report; it can also be accessed directly:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)</span> 
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)</span> 
 <div class="newline"></div><span class="go">0.991367...</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>The over-fitting we saw previously can be quantified by computing the
 f1-score on the training data itself:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">),</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">),</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)</span>
 <div class="newline"></div><span class="go">1.0</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -1078,11 +1069,11 @@ of the three estimators works best for this dataset.</p>
 <li><p class="first">With the default hyper-parameters for each estimator, which gives the
 best f1 score on the <strong>validation set</strong>?  Recall that hyperparameters
 are the parameters set when you instantiate the classifier: for
-example, the <code class="docutils literal"><span class="pre">n_neighbors</span></code> in <code class="docutils literal"><span class="pre">clf</span> <span class="pre">=</span>
+example, the <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> in <code class="docutils literal notranslate"><span class="pre">clf</span> <span class="pre">=</span>
 <span class="pre">KNeighborsClassifier(n_neighbors=1)</span></code></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="k">import</span> <span class="n">GaussianNB</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <span class="n">KNeighborsClassifier</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">LinearSVC</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">LinearSVC</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span>
@@ -1101,13 +1092,13 @@ example, the <code class="docutils literal"><span class="pre">n_neighbors</span>
 </div>
 </li>
 <li><p class="first">For each classifier, which value for the hyperparameters gives the best
-results for the digits data?  For <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">LinearSVC</span></code></a>, use
-<code class="docutils literal"><span class="pre">loss='l2'</span></code> and <code class="docutils literal"><span class="pre">loss='l1'</span></code>.  For
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">KNeighborsClassifier</span></code></a> we use
-<code class="docutils literal"><span class="pre">n_neighbors</span></code> between 1 and 10. Note that
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">GaussianNB</span></code></a> does not have any adjustable
+results for the digits data?  For <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearSVC</span></code></a>, use
+<code class="docutils literal notranslate"><span class="pre">loss='l2'</span></code> and <code class="docutils literal notranslate"><span class="pre">loss='l1'</span></code>.  For
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighborsClassifier</span></code></a> we use
+<code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> between 1 and 10. Note that
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GaussianNB</span></code></a> does not have any adjustable
 hyperparameters.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">LinearSVC</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">):</span> <span class="mf">0.930570687535</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LinearSVC</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">):</span> <span class="mf">0.930570687535</span>
 <div class="newline"></div><span class="n">LinearSVC</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">):</span> <span class="mf">0.933068826918</span>
 <div class="newline"></div><span class="o">-------------------</span>
 <div class="newline"></div><span class="n">KNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span> <span class="mf">0.991367521884</span>
@@ -1131,15 +1122,15 @@ hyperparameters.</p>
 <p>Cross-validation consists in repetively splitting the data in pairs of
 train and test sets, called ‘folds’. Scikit-learn comes with a function
 to automatically compute score on all these folds. Here we do
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">KFold</span></code></a> with k=5.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">()</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">cross_val_score</span>
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">KFold</span></code></a> with k=5.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">()</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<div class="newline"></div><span class="go">array([ 0.9478022 ,  0.9558011 ,  0.96657382,  0.98039216,  0.96338028])</span>
+<div class="newline"></div><span class="go">array([0.9478022 ,  0.9558011 ,  0.96657382,  0.98039216,  0.96338028])</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>We can use different splitting strategies, such as random splitting:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">ShuffleSplit</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">ShuffleSplit</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">cv</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">)</span>  
 <div class="newline"></div><span class="go">array([...])</span>
@@ -1161,7 +1152,7 @@ regularization. Choosing their regularization parameter is important.</p>
 problem. The diabetes data consists of 10 physiological variables (age,
 sex, weight, blood pressure) measure on 442 patients, and an indication
 of disease progression after one year:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_diabetes</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_diabetes</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_diabetes</span><span class="p">()</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -1169,7 +1160,7 @@ of disease progression after one year:</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>With the default hyper-parameters: we compute the cross-validation score:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">Ridge</span><span class="p">,</span> <span class="n">Lasso</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span><span class="p">,</span> <span class="n">Lasso</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">Model</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Ridge</span><span class="p">,</span> <span class="n">Lasso</span><span class="p">]:</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
@@ -1181,10 +1172,10 @@ of disease progression after one year:</p>
 <div class="section" id="basic-hyperparameter-optimization">
 <h4>Basic Hyperparameter Optimization<a class="headerlink" href="#basic-hyperparameter-optimization" title="Permalink to this headline">¶</a></h4>
 <p>We compute the cross-validation score as a function of alpha, the
-strength of the regularization for <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">Lasso</span></code></a>
-and <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">Ridge</span></code></a>. We choose 20 values of alpha
+strength of the regularization for <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lasso</span></code></a>
+and <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ridge</span></code></a>. We choose 20 values of alpha
 between 0.0001 and 1:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alphas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alphas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">Model</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Lasso</span><span class="p">,</span> <span class="n">Ridge</span><span class="p">]:</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">Model</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -1201,10 +1192,10 @@ between 0.0001 and 1:</p>
 </div>
 <div class="section" id="automatically-performing-grid-search">
 <h4>Automatically Performing Grid Search<a class="headerlink" href="#automatically-performing-grid-search" title="Permalink to this headline">¶</a></h4>
-<p><code class="xref py py-class docutils literal"><span class="pre">sklearn.grid_search.GridSearchCV</span></code> is constructed with an
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.grid_search.GridSearchCV</span></code> is constructed with an
 estimator, as well as a dictionary of parameter values to be searched.
 We can find the optimal parameters this way:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.grid_search</span> <span class="k">import</span> <span class="n">GridSearchCV</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.grid_search</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">Model</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Ridge</span><span class="p">,</span> <span class="n">Lasso</span><span class="p">]:</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="n">gscv</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">Model</span><span class="p">(),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alphas</span><span class="p">),</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">gscv</span><span class="o">.</span><span class="n">best_params_</span><span class="p">))</span>
@@ -1218,12 +1209,12 @@ We can find the optimal parameters this way:</p>
 <p>For some models within scikit-learn, cross-validation can be performed
 more efficiently on large datasets.  In this case, a cross-validated
 version of the particular model is included.  The cross-validated
-versions of <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">Ridge</span></code></a> and
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">Lasso</span></code></a> are
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeCV.html#sklearn.linear_model.RidgeCV" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">RidgeCV</span></code></a> and
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LassoCV.html#sklearn.linear_model.LassoCV" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">LassoCV</span></code></a>, respectively.  Parameter search
+versions of <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ridge</span></code></a> and
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lasso</span></code></a> are
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeCV.html#sklearn.linear_model.RidgeCV" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RidgeCV</span></code></a> and
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LassoCV.html#sklearn.linear_model.LassoCV" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LassoCV</span></code></a>, respectively.  Parameter search
 on these estimators can be performed as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">RidgeCV</span><span class="p">,</span> <span class="n">LassoCV</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">RidgeCV</span><span class="p">,</span> <span class="n">LassoCV</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">Model</span> <span class="ow">in</span> <span class="p">[</span><span class="n">RidgeCV</span><span class="p">,</span> <span class="n">LassoCV</span><span class="p">]:</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">alphas</span><span class="o">=</span><span class="n">alphas</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">alpha_</span><span class="p">))</span>
@@ -1237,10 +1228,10 @@ on these estimators can be performed as follows:</p>
 <h4>Nested cross-validation<a class="headerlink" href="#nested-cross-validation" title="Permalink to this headline">¶</a></h4>
 <p>How do we measure the performance of these estimators? We have used data
 to set the hyperparameters, so we need to test on actually new data. We
-can do this by running <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="(in scikit-learn v0.21.2)"><code class="xref py py-func docutils literal"><span class="pre">cross_val_score()</span></code></a>
+can do this by running <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="(in scikit-learn v0.22)"><code class="xref py py-func docutils literal notranslate"><span class="pre">cross_val_score()</span></code></a>
 on our CV objects. Here there are 2 cross-validation loops going on, this
 is called <em>‘nested cross validation’</em>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">Model</span> <span class="ow">in</span> <span class="p">[</span><span class="n">RidgeCV</span><span class="p">,</span> <span class="n">LassoCV</span><span class="p">]:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">Model</span> <span class="ow">in</span> <span class="p">[</span><span class="n">RidgeCV</span><span class="p">,</span> <span class="n">LassoCV</span><span class="p">]:</span>
 <div class="newline"></div>    <span class="n">scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">Model</span><span class="p">(</span><span class="n">alphas</span><span class="o">=</span><span class="n">alphas</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <div class="newline"></div>    <span class="nb">print</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">))</span>
 <div class="newline"></div></pre></div>
@@ -1248,8 +1239,8 @@ is called <em>‘nested cross validation’</em>:</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Note that these results do not match the best results of our curves
-above, and <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LassoCV.html#sklearn.linear_model.LassoCV" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">LassoCV</span></code></a> seems to
-under-perform <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeCV.html#sklearn.linear_model.RidgeCV" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">RidgeCV</span></code></a>. The reason is
+above, and <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LassoCV.html#sklearn.linear_model.LassoCV" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LassoCV</span></code></a> seems to
+under-perform <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeCV.html#sklearn.linear_model.RidgeCV" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RidgeCV</span></code></a>. The reason is
 that setting the hyper-parameter is harder for Lasso, thus the
 estimation error on this hyper-parameter is larger.</p>
 </div>
@@ -1266,61 +1257,61 @@ typical use case is to find hidden structure in the data.</p>
 than the original feature set. Here we’ll use <a class="reference external" href="https://en.wikipedia.org/wiki/Principal_component_analysis">Principal Component
 Analysis (PCA)</a>, a
 dimensionality reduction that strives to retain most of the variance of
-the original data. We’ll use <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">sklearn.decomposition.PCA</span></code></a> on the
+the original data. We’ll use <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.decomposition.PCA</span></code></a> on the
 iris dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
 <div class="newline"></div></pre></div>
 </div>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last"><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a> computes linear combinations of
+<p class="last"><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCA</span></code></a> computes linear combinations of
 the original features using a truncated Singular Value Decomposition
 of the matrix X, to project the data onto a base of the top singular
 vectors.</p>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
 <div class="newline"></div><span class="go">PCA(..., n_components=2, ...)</span>
 <div class="newline"></div></pre></div>
 </div>
-<p>Once fitted, <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a> exposes the singular
-vectors in the <code class="docutils literal"><span class="pre">components_</span></code> attribute:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span>     
+<p>Once fitted, <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCA</span></code></a> exposes the singular
+vectors in the <code class="docutils literal notranslate"><span class="pre">components_</span></code> attribute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span>     
 <div class="newline"></div><span class="go">array([[ 0.36158..., -0.08226...,  0.85657...,  0.35884...],</span>
 <div class="newline"></div><span class="go">       [ 0.65653...,  0.72971..., -0.17576..., -0.07470...]])</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Other attributes are available as well:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span>    
-<div class="newline"></div><span class="go">array([ 0.92461...,  0.05301...])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span>    
+<div class="newline"></div><span class="go">array([0.92461...,  0.05301...])</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Let us project the iris dataset along those first two dimensions::</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X_pca</span><span class="o">.</span><span class="n">shape</span>
 <div class="newline"></div><span class="go">(150, 2)</span>
 <div class="newline"></div></pre></div>
 </div>
-<p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a> <code class="docutils literal"><span class="pre">normalizes</span></code> and <code class="docutils literal"><span class="pre">whitens</span></code> the data, which means that the data
+<p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCA</span></code></a> <code class="docutils literal notranslate"><span class="pre">normalizes</span></code> and <code class="docutils literal notranslate"><span class="pre">whitens</span></code> the data, which means that the data
 is now centered on both components with unit variance:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X_pca</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> 
-<div class="newline"></div><span class="go">array([ ...e-15,  ...e-15])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X_pca</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> 
+<div class="newline"></div><span class="go">array([...e-15,  ...e-15])</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X_pca</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<div class="newline"></div><span class="go">array([ 1.,  1.])</span>
+<div class="newline"></div><span class="go">array([1.,  1.])</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Furthermore, the samples components do no longer carry any linear
 correlation:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">X_pca</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>  
-<div class="newline"></div><span class="go">array([[  1.00000000e+00,   ...],</span>
-<div class="newline"></div><span class="go">       [  ...,   1.00000000e+00]])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">X_pca</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>  
+<div class="newline"></div><span class="go">array([[1.00000000e+00,   0.0],</span>
+<div class="newline"></div><span class="go">       [0.0,   1.00000000e+00]])</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>With a number of retained components 2 or 3, PCA is useful to visualize
 the dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">target_ids</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">target_ids</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">))</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">target_ids</span><span class="p">,</span> <span class="s1">&#39;rgbcmykw&#39;</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_pca</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_pca</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
 <div class="newline"></div><span class="gp">... </span>                <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span> 
@@ -1341,16 +1332,16 @@ distinct than the other two species.</p>
 <div class="section" id="visualization-with-a-non-linear-embedding-tsne">
 <h3>3.6.6.2. Visualization with a non-linear embedding: tSNE<a class="headerlink" href="#visualization-with-a-non-linear-embedding-tsne" title="Permalink to this headline">¶</a></h3>
 <p>For visualization, more complex embeddings can be useful (for statistical
-analysis, they are harder to control). <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html#sklearn.manifold.TSNE" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">sklearn.manifold.TSNE</span></code></a> is
+analysis, they are harder to control). <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html#sklearn.manifold.TSNE" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.manifold.TSNE</span></code></a> is
 such a powerful manifold learning method. We apply it to the <em>digits</em>
 dataset, as the digits are vectors of dimension 8*8 = 64. Embedding them
 in 2D enables visualization:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Take the first 500 data points: it&#39;s hard to see 1500 points</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Take the first 500 data points: it&#39;s hard to see 1500 points</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">500</span><span class="p">]</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="mi">500</span><span class="p">]</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Fit and transform with a TSNE</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.manifold</span> <span class="k">import</span> <span class="n">TSNE</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.manifold</span> <span class="kn">import</span> <span class="n">TSNE</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">tsne</span> <span class="o">=</span> <span class="n">TSNE</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">X_2d</span> <span class="o">=</span> <span class="n">tsne</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <div class="newline"></div>
@@ -1362,20 +1353,20 @@ in 2D enables visualization:</p>
 <a class="reference external image-reference" href="auto_examples/plot_tsne.html"><img alt="../../_images/sphx_glr_plot_tsne_001.png" class="align-left" src="../../_images/sphx_glr_plot_tsne_001.png" style="width: 420.0px; height: 350.0px;" /></a>
 <div class="topic">
 <p class="topic-title first">fit_transform</p>
-<p>As <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html#sklearn.manifold.TSNE" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">TSNE</span></code></a> cannot be applied to new data, we
+<p>As <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html#sklearn.manifold.TSNE" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TSNE</span></code></a> cannot be applied to new data, we
 need to use its <cite>fit_transform</cite> method.</p>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html#sklearn.manifold.TSNE" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">sklearn.manifold.TSNE</span></code></a> separates quite well the different classes
+<p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html#sklearn.manifold.TSNE" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.manifold.TSNE</span></code></a> separates quite well the different classes
 of digits eventhough it had no access to the class information.</p>
 <div style="clear: both"></div><div class="green topic">
 <p class="topic-title first">Exercise: Other dimension reduction of digits</p>
-<p><a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.manifold" title="(in scikit-learn v0.21.2)"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.manifold</span></code></a> has many other non-linear embeddings. Try
+<p><a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.manifold" title="(in scikit-learn v0.22)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.manifold</span></code></a> has many other non-linear embeddings. Try
 them out on the digits dataset. Could you judge their quality without
-knowing the labels <code class="docutils literal"><span class="pre">y</span></code>?</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_digits</span>
+knowing the labels <code class="docutils literal notranslate"><span class="pre">y</span></code>?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">digits</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c1"># ...</span>
 <div class="newline"></div></pre></div>
@@ -1400,16 +1391,16 @@ idiomatic approach to pipelining in scikit-learn.</p>
 <p>Here we’ll take a look at a simple facial recognition example. Ideally,
 we would use a dataset consisting of a subset of the <a class="reference external" href="http://vis-www.cs.umass.edu/lfw/">Labeled Faces in
 the Wild</a> data that is available
-with <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_lfw_people.html#sklearn.datasets.fetch_lfw_people" title="(in scikit-learn v0.21.2)"><code class="xref py py-func docutils literal"><span class="pre">sklearn.datasets.fetch_lfw_people()</span></code></a>. However, this is a
+with <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_lfw_people.html#sklearn.datasets.fetch_lfw_people" title="(in scikit-learn v0.22)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.datasets.fetch_lfw_people()</span></code></a>. However, this is a
 relatively large download (~200MB) so we will do the tutorial on a
 simpler, less rich dataset. Feel free to explore the LFW dataset.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
 <div class="newline"></div><span class="n">faces</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">fetch_olivetti_faces</span><span class="p">()</span>
 <div class="newline"></div><span class="n">faces</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Let’s visualize these faces to see what we’re working with</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <div class="newline"></div><span class="c1"># plot several images</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">):</span>
@@ -1427,20 +1418,20 @@ training data. This can be done in scikit-learn, but the challenge is
 gathering a sufficient amount of training data for the algorithm to work.
 Fortunately, this piece is common enough that it has been done. One good
 resource is
-<a class="reference external" href="http://opencv.willowgarage.com/wiki/FaceRecognition">OpenCV</a>, the
-<em>Open Computer Vision Library</em>.</p>
+<a class="reference external" href="https://docs.opencv.org/2.4/modules/contrib/doc/facerec/facerec_tutorial.html">OpenCV</a>,
+the <em>Open Computer Vision Library</em>.</p>
 </div>
 <p>We’ll perform a Support Vector classification of the images. We’ll do a
 typical train-test split on the images:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <div class="newline"></div><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
 <div class="newline"></div>        <span class="n">faces</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>(300, 4096) (100, 4096)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(300, 4096) (100, 4096)
 <div class="newline"></div></pre></div>
 </div>
 <div class="section" id="preprocessing-principal-component-analysis">
@@ -1448,29 +1439,29 @@ typical train-test split on the images:</p>
 <p>1850 dimensions is a lot for SVM. We can use PCA to reduce these 1850
 features to a manageable size, while maintaining most of the information
 in the dataset.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">decomposition</span>
-<div class="newline"></div><span class="n">pca</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">decomposition</span>
+<div class="newline"></div><span class="n">pca</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <div class="newline"></div><span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>One interesting part of PCA is that it computes the “mean” face, which
 can be interesting to examine:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">mean_</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">mean_</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
 <div class="newline"></div>           <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">bone</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_eigenfaces_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_eigenfaces_002.png" />
 <p>The principal components measure deviations about this mean along
 orthogonal axes.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>(150, 4096)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(150, 4096)
 <div class="newline"></div></pre></div>
 </div>
 <p>It is also interesting to visualize these principal components:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
 <div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
@@ -1484,20 +1475,20 @@ primarily take care of lighting conditions; the remaining components
 pull out certain identifying features: the nose, eyes, eyebrows, etc.</p>
 <p>With this projection computed, we can now project our original training
 and test data onto the PCA basis:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">X_train_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
 <div class="newline"></div><span class="n">X_test_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">X_train_pca</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">X_train_pca</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>(300, 150)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(300, 150)
 <div class="newline"></div></pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">X_test_pca</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">X_test_pca</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>(100, 150)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(100, 150)
 <div class="newline"></div></pre></div>
 </div>
 <p>These projected components correspond to factors in a linear combination
@@ -1508,7 +1499,7 @@ face.</p>
 <h3>3.6.8.2. Doing the Learning: Support Vector Machines<a class="headerlink" href="#doing-the-learning-support-vector-machines" title="Permalink to this headline">¶</a></h3>
 <p>Now we’ll perform support-vector-machine classification on this reduced
 dataset:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
 <div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
 <div class="newline"></div><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_pca</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
@@ -1516,7 +1507,7 @@ dataset:</p>
 <p>Finally, we can evaluate how well this classification did. First, we
 might plot a few of the test-cases with the labels learned from the
 training set:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
@@ -1524,8 +1515,7 @@ training set:</p>
 <div class="newline"></div>              <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">bone</span><span class="p">)</span>
 <div class="newline"></div>    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_pca</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
 <div class="newline"></div>    <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;black&#39;</span> <span class="k">if</span> <span class="n">y_pred</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">y_pred</span><span class="p">],</span>
-<div class="newline"></div>                 <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;small&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;small&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_eigenfaces_004.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_eigenfaces_004.png" />
@@ -1534,16 +1524,16 @@ simplicity of its learning model! Using a linear classifier on 150
 features derived from the pixel-level data, the algorithm correctly
 identifies a large number of the people in the images.</p>
 <p>Again, we can quantify this effectiveness using one of several measures
-from <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.21.2)"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics</span></code></a>. First we can do the classification
+from <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.22)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>. First we can do the classification
 report, which shows the precision, recall and other measures of the
 “goodness” of the classification:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
 <div class="newline"></div><span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_pca</span><span class="p">)</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>precision    recall  f1-score   support
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>precision    recall  f1-score   support
 <div class="newline"></div>
 <div class="newline"></div>          0       1.00      0.67      0.80         6
 <div class="newline"></div>          1       1.00      1.00      1.00         4
@@ -1590,17 +1580,17 @@ report, which shows the precision, recall and other measures of the
 how often any two items are mixed-up. The confusion matrix of a perfect
 classifier would only have nonzero entries on the diagonal, with zeros
 on the off-diagonal:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>[[4 0 0 ..., 0 0 0]
-<div class="newline"></div> [0 4 0 ..., 0 0 0]
-<div class="newline"></div> [0 0 2 ..., 0 0 0]
-<div class="newline"></div> ...,
-<div class="newline"></div> [0 0 0 ..., 3 0 0]
-<div class="newline"></div> [0 0 0 ..., 0 1 0]
-<div class="newline"></div> [0 0 0 ..., 0 0 3]]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[4 0 0 ... 0 0 0]
+<div class="newline"></div> [0 4 0 ... 0 0 0]
+<div class="newline"></div> [0 0 2 ... 0 0 0]
+<div class="newline"></div> ...
+<div class="newline"></div> [0 0 0 ... 3 0 0]
+<div class="newline"></div> [0 0 0 ... 0 1 0]
+<div class="newline"></div> [0 0 0 ... 0 0 3]]
 <div class="newline"></div></pre></div>
 </div>
 </div>
@@ -1609,17 +1599,17 @@ on the off-diagonal:</p>
 <p>Above we used PCA as a pre-processing step before applying our support
 vector machine classifier. Plugging the output of one estimator directly
 into the input of a second estimator is a commonly used pattern; for
-this reason scikit-learn provides a <code class="docutils literal"><span class="pre">Pipeline</span></code> object which automates
+this reason scikit-learn provides a <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> object which automates
 this process. The above problem can be re-expressed as a pipeline as
 follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
-<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">)),</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<div class="newline"></div><span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
 <div class="newline"></div>                <span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">svm</span><span class="o">.</span><span class="n">LinearSVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))])</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
 <div class="newline"></div></pre></div>
 </div>
 </div>
@@ -1660,14 +1650,14 @@ successful machine learning practitioners from the unsuccessful.</p>
 <p>Let us start with a simple 1D regression problem. This
 will help us to easily visualize the data and the model, and the results
 generalize easily to higher-dimensional datasets. We’ll explore a simple
-<strong>linear regression</strong> problem, with <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.linear_model" title="(in scikit-learn v0.21.2)"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.linear_model</span></code></a>.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+<strong>linear regression</strong> problem, with <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.linear_model" title="(in scikit-learn v0.22)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.linear_model</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
 <div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <div class="newline"></div><span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Without noise, as linear regression fits the data perfectly</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
 <div class="newline"></div><span class="n">regr</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
 <div class="newline"></div><span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
@@ -1676,7 +1666,7 @@ generalize easily to higher-dimensional datasets. We’ll explore a simple
 </div>
 <img alt="../../_images/sphx_glr_plot_variance_linear_regr_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_variance_linear_regr_001.png" />
 <p>In real life situation, we have noise (e.g. measurement noise) in our data:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">noisy_X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div>    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">noisy_X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
@@ -1688,11 +1678,11 @@ generalize easily to higher-dimensional datasets. We’ll explore a simple
 <p>As we can see, our linear model captures and amplifies the noise in the
 data. It displays a lot of variance.</p>
 <p>We can use another linear estimator that uses regularization, the
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">Ridge</span></code></a> estimator. This estimator
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ridge</span></code></a> estimator. This estimator
 regularizes the coefficients by shrinking them to zero, under the
 assumption that very high correlations are often spurious. The alpha
 parameter controls the amount of shrinkage used.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">regr</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">regr</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span>
 <div class="newline"></div><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
 <div class="newline"></div>    <span class="n">noisy_X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -1723,7 +1713,7 @@ amount of noise and of observations available.</p>
 <p class="first admonition-title">Tip</p>
 <p class="last">Given a particular dataset and a model (e.g. a polynomial), we’d like to
 understand whether bias (underfit) or variance limits prediction, and how
-to tune the <em>hyperparameter</em> (here <code class="docutils literal"><span class="pre">d</span></code>, the degree of the polynomial)
+to tune the <em>hyperparameter</em> (here <code class="docutils literal notranslate"><span class="pre">d</span></code>, the degree of the polynomial)
 to give the best fit.</p>
 </div>
 <p>On a given data, let us fit a simple polynomial regression model with
@@ -1731,12 +1721,12 @@ varying degrees:</p>
 <a class="reference external image-reference" href="auto_examples/plot_bias_variance.html"><img alt="../../_images/sphx_glr_plot_bias_variance_001.png" class="align-center" src="../../_images/sphx_glr_plot_bias_variance_001.png" /></a>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>In the above figure, we see fits for three different values of <code class="docutils literal"><span class="pre">d</span></code>.
-For <code class="docutils literal"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">1</span></code>, the data is under-fit. This means that the model is too
+<p>In the above figure, we see fits for three different values of <code class="docutils literal notranslate"><span class="pre">d</span></code>.
+For <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">1</span></code>, the data is under-fit. This means that the model is too
 simplistic: no straight line will ever be a good fit to this data. In
 this case, we say that the model suffers from high bias. The model
 itself is biased, and this will be reflected in the fact that the data
-is poorly fit. At the other extreme, for <code class="docutils literal"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">6</span></code> the data is over-fit.
+is poorly fit. At the other extreme, for <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">6</span></code> the data is over-fit.
 This means that the model has too many free parameters (6 in this case)
 which can be adjusted to perfectly fit the training data. If we add a
 new point to this plot, though, chances are it will be very far from the
@@ -1744,7 +1734,7 @@ curve representing the degree-6 fit. In this case, we say that the model
 suffers from high variance. The reason for the term “high variance” is
 that if any of the input points are varied slightly, it could result in
 a very different model.</p>
-<p class="last">In the middle, for <code class="docutils literal"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">2</span></code>, we have found a good mid-point. It fits
+<p class="last">In the middle, for <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">2</span></code>, we have found a good mid-point. It fits
 the data fairly well, and does not suffer from the bias and variance
 problems seen in the figures on either side. What we would like is a way
 to quantitatively identify bias and variance, and optimize the
@@ -1754,11 +1744,11 @@ determine the best algorithm.</p>
 <div class="topic">
 <p class="topic-title first">Polynomial regression with scikit-learn</p>
 <p>A polynomial regression is built by pipelining
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PolynomialFeatures.html#sklearn.preprocessing.PolynomialFeatures" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">PolynomialFeatures</span></code></a>
-and a <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal"><span class="pre">LinearRegression</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">make_pipeline</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">PolynomialFeatures</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PolynomialFeatures.html#sklearn.preprocessing.PolynomialFeatures" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PolynomialFeatures</span></code></a>
+and a <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearRegression</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">PolynomialFeatures</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">LinearRegression</span><span class="p">())</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -1766,7 +1756,7 @@ and a <a class="reference external" href="https://scikit-learn.org/stable/module
 <div class="section" id="validation-curves">
 <h4>Validation Curves<a class="headerlink" href="#validation-curves" title="Permalink to this headline">¶</a></h4>
 <p>Let us create a dataset like in the example above:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">generating_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">generating_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">err</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c1"># randomly sample more data</span>
@@ -1779,7 +1769,7 @@ and a <a class="reference external" href="https://scikit-learn.org/stable/module
 <p>Central to quantify bias and variance of a model is to apply it on <em>test
 data</em>, sampled from the same distribution as the train, but that will
 capture independent noise:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xtrain</span><span class="p">,</span> <span class="n">xtest</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">,</span> <span class="n">ytest</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xtrain</span><span class="p">,</span> <span class="n">xtest</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">,</span> <span class="n">ytest</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <div style="clear: both"></div><p><strong>Validation curve</strong> A validation curve consists in varying a model parameter
@@ -1787,9 +1777,9 @@ that controls its complexity (here the degree of the
 polynomial) and measures both error of the model on training data, and on
 test data (<em>eg</em> with cross-validation). The model parameter is then
 adjusted so that the test error is minimized:</p>
-<p>We use <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.validation_curve.html#sklearn.model_selection.validation_curve" title="(in scikit-learn v0.21.2)"><code class="xref py py-func docutils literal"><span class="pre">sklearn.model_selection.validation_curve()</span></code></a> to compute train
+<p>We use <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.validation_curve.html#sklearn.model_selection.validation_curve" title="(in scikit-learn v0.22)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.model_selection.validation_curve()</span></code></a> to compute train
 and test error, and plot it:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">validation_curve</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">validation_curve</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">degrees</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
 <div class="newline"></div>
@@ -1817,13 +1807,13 @@ leads to a low explained variance for both the training set and the
 validation set. On the far right side of the plot, we have a very high
 degree polynomial, which over-fits the data. This can be seen in the fact
 that the training explained variance is very high, while on the
-validation set, it is low. Choosing <code class="docutils literal"><span class="pre">d</span></code> around 4 or 5 gets us the best
+validation set, it is low. Choosing <code class="docutils literal notranslate"><span class="pre">d</span></code> around 4 or 5 gets us the best
 tradeoff.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">The astute reader will realize that something is amiss here: in the
-above plot, <code class="docutils literal"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">4</span></code> gives the best results. But in the previous plot,
-we found that <code class="docutils literal"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">6</span></code> vastly over-fits the data. What’s going on here?
+above plot, <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">4</span></code> gives the best results. But in the previous plot,
+we found that <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">6</span></code> vastly over-fits the data. What’s going on here?
 The difference is the <strong>number of training points</strong> used. In the
 previous example, there were only eight training points. In this
 example, we have 100. As a general rule of thumb, the more training
@@ -1849,9 +1839,9 @@ to see for the training score? For the validation score?</li>
 validation score? Would you ever expect this to change?</li>
 </ul>
 </div>
-<p><code class="xref py py-mod docutils literal"><span class="pre">scikit-learn</span></code> provides
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.learning_curve.html#sklearn.model_selection.learning_curve" title="(in scikit-learn v0.21.2)"><code class="xref py py-func docutils literal"><span class="pre">sklearn.model_selection.learning_curve()</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">learning_curve</span>
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">scikit-learn</span></code> provides
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.learning_curve.html#sklearn.model_selection.learning_curve" title="(in scikit-learn v0.22)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.model_selection.learning_curve()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">learning_curve</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">train_sizes</span><span class="p">,</span> <span class="n">train_scores</span><span class="p">,</span> <span class="n">validation_scores</span> <span class="o">=</span> <span class="n">learning_curve</span><span class="p">(</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="n">train_sizes</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
 <div class="newline"></div>
@@ -1864,13 +1854,13 @@ validation score? Would you ever expect this to change?</li>
 </div>
 <div class="figure align-left" id="id6">
 <a class="reference external image-reference" href="auto_examples/plot_bias_variance.html"><img alt="../../_images/sphx_glr_plot_bias_variance_004.png" src="../../_images/sphx_glr_plot_bias_variance_004.png" style="width: 360.0px; height: 240.0px;" /></a>
-<p class="caption"><span class="caption-text">For a <code class="docutils literal"><span class="pre">degree=1</span></code> model</span></p>
+<p class="caption"><span class="caption-text">For a <code class="docutils literal notranslate"><span class="pre">degree=1</span></code> model</span></p>
 </div>
 <p>Note that the validation score <em>generally increases</em> with a growing
 training set, while the training score <em>generally decreases</em> with a
 growing training set. As the training size
 increases, they will converge to a single value.</p>
-<p>From the above discussion, we know that <code class="docutils literal"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">1</span></code> is a high-bias
+<p>From the above discussion, we know that <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">1</span></code> is a high-bias
 estimator which under-fits the data. This is indicated by the fact that
 both the training and validation scores are low. When confronted
 with this type of learning curve, we can expect that adding more
@@ -1881,7 +1871,7 @@ relatively low score.</p>
 high bias model.</strong></p>
 <p>A high-bias model can be improved by:</p>
 <ul class="simple">
-<li>Using a more sophisticated model (i.e. in this case, increase <code class="docutils literal"><span class="pre">d</span></code>)</li>
+<li>Using a more sophisticated model (i.e. in this case, increase <code class="docutils literal notranslate"><span class="pre">d</span></code>)</li>
 <li>Gather more features for each sample.</li>
 <li>Decrease regularization in a regularized model.</li>
 </ul>
@@ -1890,10 +1880,10 @@ model.</p>
 <p>Now let’s look at a high-variance (i.e. over-fit) model:</p>
 <div class="figure align-left" id="id7">
 <a class="reference external image-reference" href="auto_examples/plot_bias_variance.html"><img alt="../../_images/sphx_glr_plot_bias_variance_006.png" src="../../_images/sphx_glr_plot_bias_variance_006.png" style="width: 360.0px; height: 240.0px;" /></a>
-<p class="caption"><span class="caption-text">For a <code class="docutils literal"><span class="pre">degree=15</span></code> model</span></p>
+<p class="caption"><span class="caption-text">For a <code class="docutils literal notranslate"><span class="pre">degree=15</span></code> model</span></p>
 </div>
-<p>Here we show the learning curve for <code class="docutils literal"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">15</span></code>. From the above
-discussion, we know that <code class="docutils literal"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">15</span></code> is a <strong>high-variance</strong> estimator
+<p>Here we show the learning curve for <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">15</span></code>. From the above
+discussion, we know that <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">15</span></code> is a <strong>high-variance</strong> estimator
 which <strong>over-fits</strong> the data. This is indicated by the fact that the
 training score is much higher than the validation score. As we add more
 samples to this training set, the training score will continue to
@@ -1905,7 +1895,7 @@ set indicate a high-variance, over-fit model.</strong></p>
 <p>A high-variance model can be improved by:</p>
 <ul class="simple">
 <li>Gathering more training samples.</li>
-<li>Using a less-sophisticated model (i.e. in this case, make <code class="docutils literal"><span class="pre">d</span></code>
+<li>Using a less-sophisticated model (i.e. in this case, make <code class="docutils literal notranslate"><span class="pre">d</span></code>
 smaller)</li>
 <li>Increasing regularization.</li>
 </ul>
@@ -2103,9 +2093,9 @@ unknown data, using an independent test set is vital.</p>
 </div>
 <div style='clear:both'></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/auto_examples_python9.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></div>
+<a class="reference download internal" href="../../_downloads/auto_examples_python9.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/auto_examples_jupyter9.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></div>
+<a class="reference download internal" href="../../_downloads/auto_examples_jupyter9.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <div class="admonition seealso">
@@ -2130,7 +2120,6 @@ by Sarah Guido, Andreas Müller</li>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-	<div class="sidebartoc">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">3.6. scikit-learn: machine learning in Python</a><ul>
@@ -2223,26 +2212,32 @@ by Sarah Guido, Andreas Müller</li>
 </ul>
 </li>
 </ul>
-</div>
 
-
-
-    <div class="script_container">
-    <script>
-    (function() {
-	var cx = '004523248466141510607:hgv2yimrahw';
-	var gcse = document.createElement('script');
-	gcse.type = 'text/javascript';
-	gcse.async = true;
-	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-	    '//cse.google.com/cse.js?cx=' + cx;
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(gcse, s);
-    })();
-    </script>
-    <gcse:search></gcse:search>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../3d_plotting/index.html"
+                        title="previous chapter">3.5. 3D plotting with Mayavi</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="auto_examples/plot_measuring_performance.html"
+                        title="next chapter">3.6.10.1. Measuring Decision Tree performance</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/packages/scikit-learn/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
     </div>
-
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -2281,8 +2276,8 @@ by Sarah Guido, Andreas Müller</li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>
 </html>

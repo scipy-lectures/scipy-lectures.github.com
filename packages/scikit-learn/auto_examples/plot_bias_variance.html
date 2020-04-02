@@ -4,21 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>3.6.10.16. Bias and variance of polynomial fit &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '2019.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -65,8 +57,7 @@ $(function () {
 </script>
 
 
-  </head>
-  <body>
+  </head><body>
    <!-- Use the header to add javascript -->
     
 
@@ -179,24 +170,24 @@ $(function () {
 polynomial regression.</p>
 <p>Fit polynomes of different degrees to a dataset: for too small a degree,
 the model <em>underfits</em>, while for too large a degree, it overfits.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <div class="newline"></div>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">def</span> <span class="nf">generating_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
-<div class="newline"></div>    <span class="k">return</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.normal.html#numpy.random.normal" title="View documentation for numpy.random.normal"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span></a><span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">err</span><span class="p">)</span>
+<div class="newline"></div>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">err</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>A polynomial regression</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.make_pipeline.html#sklearn.pipeline.make_pipeline" title="View documentation for sklearn.pipeline.make_pipeline"><span class="n">make_pipeline</span></a>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.make_pipeline.html#sklearn.pipeline.make_pipeline" title="View documentation for sklearn.pipeline.make_pipeline"><span class="n">make_pipeline</span></a>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="View documentation for sklearn.linear_model.LinearRegression"><span class="n">LinearRegression</span></a>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PolynomialFeatures.html#sklearn.preprocessing.PolynomialFeatures" title="View documentation for sklearn.preprocessing.PolynomialFeatures"><span class="n">PolynomialFeatures</span></a>
 <div class="newline"></div></pre></div>
 </div>
 <p>A simple figure to illustrate the problem</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">8</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">8</span>
 <div class="newline"></div>
-<div class="newline"></div><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="newline"></div><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
 <div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">generating_func</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <div class="newline"></div>
@@ -229,15 +220,15 @@ the model <em>underfits</em>, while for too large a degree, it overfits.</p>
 </div>
 <img alt="../../../_images/sphx_glr_plot_bias_variance_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_bias_variance_001.png" />
 <p>Generate a larger dataset</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">200</span>
 <div class="newline"></div><span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.4</span>
 <div class="newline"></div><span class="n">error</span> <span class="o">=</span> <span class="mf">1.0</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># randomly sample the data</span>
-<div class="newline"></div><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.random.html#numpy.random.random" title="View documentation for numpy.random.random"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span></a><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+<div class="newline"></div><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
 <div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">generating_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># split into training, validation, and testing sets.</span>
@@ -253,7 +244,7 @@ the model <em>underfits</em>, while for too large a degree, it overfits.</p>
 </div>
 <img alt="../../../_images/sphx_glr_plot_bias_variance_002.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_bias_variance_002.png" />
 <p>Plot a validation curve</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.validation_curve.html#sklearn.model_selection.validation_curve" title="View documentation for sklearn.model_selection.validation_curve"><span class="n">validation_curve</span></a>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.validation_curve.html#sklearn.model_selection.validation_curve" title="View documentation for sklearn.model_selection.validation_curve"><span class="n">validation_curve</span></a>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">degrees</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
 <div class="newline"></div>
@@ -284,7 +275,7 @@ the model <em>underfits</em>, while for too large a degree, it overfits.</p>
 <h2>Learning curves<a class="headerlink" href="#learning-curves" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div>Plot train and test error with an increasing number of samples</div></blockquote>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># A learning curve for d=1, 5, 15</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># A learning curve for d=1, 5, 15</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">]:</span>
 <div class="newline"></div>    <span class="n">model</span> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.make_pipeline.html#sklearn.pipeline.make_pipeline" title="View documentation for sklearn.pipeline.make_pipeline"><span class="n">make_pipeline</span></a><span class="p">(</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PolynomialFeatures.html#sklearn.preprocessing.PolynomialFeatures" title="View documentation for sklearn.preprocessing.PolynomialFeatures"><span class="n">PolynomialFeatures</span></a><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="n">d</span><span class="p">),</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="View documentation for sklearn.linear_model.LinearRegression"><span class="n">LinearRegression</span></a><span class="p">())</span>
 <div class="newline"></div>
@@ -319,12 +310,12 @@ the model <em>underfits</em>, while for too large a degree, it overfits.</p>
 <li><img alt="../../../_images/sphx_glr_plot_bias_variance_006.png" class="sphx-glr-multi-img first" src="../../../_images/sphx_glr_plot_bias_variance_006.png" />
 </li>
 </ul>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.880 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  1.050 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-scikit-learn-auto-examples-plot-bias-variance-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../../_downloads/plot_bias_variance.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_bias_variance.py</span></code></a></div>
+<a class="reference download internal" href="../../../_downloads/plot_bias_variance.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_bias_variance.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../../_downloads/plot_bias_variance.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_bias_variance.ipynb</span></code></a></div>
+<a class="reference download internal" href="../../../_downloads/plot_bias_variance.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_bias_variance.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 <p><div style="clear: both"></div></p>
@@ -337,7 +328,6 @@ the model <em>underfits</em>, while for too large a degree, it overfits.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-	<div class="sidebartoc">
   <h3><a href="../../../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">3.6.10.16. Bias and variance of polynomial fit</a><ul>
@@ -345,26 +335,32 @@ the model <em>underfits</em>, while for too large a degree, it overfits.</p>
 </ul>
 </li>
 </ul>
-</div>
 
-
-
-    <div class="script_container">
-    <script>
-    (function() {
-	var cx = '004523248466141510607:hgv2yimrahw';
-	var gcse = document.createElement('script');
-	gcse.type = 'text/javascript';
-	gcse.async = true;
-	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-	    '//cse.google.com/cse.js?cx=' + cx;
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(gcse, s);
-    })();
-    </script>
-    <gcse:search></gcse:search>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="plot_svm_non_linear.html"
+                        title="previous chapter">3.6.10.15. Example of linear and non-linear models</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="plot_ML_flow_chart.html"
+                        title="next chapter">3.6.10.17. Tutorial Diagrams</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/packages/scikit-learn/auto_examples/plot_bias_variance.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
     </div>
-
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -404,8 +400,8 @@ the model <em>underfits</em>, while for too large a degree, it overfits.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>
 </html>

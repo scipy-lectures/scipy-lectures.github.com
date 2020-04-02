@@ -4,21 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>1.2.5. Reusing code: scripts and modules &#8212; Scipy lecture notes</title>
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '2019.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -65,8 +57,7 @@ $(function () {
 </script>
 
 
-  </head>
-  <body>
+  </head><body>
    <!-- Use the header to add javascript -->
     
 
@@ -186,9 +177,9 @@ instructions that are executed each time the script is called.
 Instructions may be e.g. copied-and-pasted from the interpreter (but
 take care to respect indentation rules!).</p>
 </div>
-<p>The extension for Python files is <code class="docutils literal"><span class="pre">.py</span></code>. Write or copy-and-paste the
-following lines in a file called <code class="docutils literal"><span class="pre">test.py</span></code></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Hello how are you?&quot;</span>
+<p>The extension for Python files is <code class="docutils literal notranslate"><span class="pre">.py</span></code>. Write or copy-and-paste the
+following lines in a file called <code class="docutils literal notranslate"><span class="pre">test.py</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Hello how are you?&quot;</span>
 <div class="newline"></div><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
 <div class="newline"></div>    <span class="nb">print</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
@@ -201,10 +192,10 @@ scientific computing.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">in Ipython, the syntax to execute a script is <code class="docutils literal"><span class="pre">%run</span> <span class="pre">script.py</span></code>. For
+<p class="last">in Ipython, the syntax to execute a script is <code class="docutils literal notranslate"><span class="pre">%run</span> <span class="pre">script.py</span></code>. For
 example,</p>
 </div>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="o">%</span><span class="n">run</span> <span class="n">test</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="o">%</span><span class="n">run</span> <span class="n">test</span><span class="o">.</span><span class="n">py</span>
 <div class="newline"></div><span class="go">Hello</span>
 <div class="newline"></div><span class="go">how</span>
 <div class="newline"></div><span class="go">are</span>
@@ -215,18 +206,18 @@ example,</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>The script has been executed. Moreover the variables defined in the
-script (such as <code class="docutils literal"><span class="pre">message</span></code>) are now available inside the interpreter’s
+script (such as <code class="docutils literal notranslate"><span class="pre">message</span></code>) are now available inside the interpreter’s
 namespace.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">Other interpreters also offer the possibility to execute scripts
-(e.g., <code class="docutils literal"><span class="pre">execfile</span></code> in the plain Python interpreter, etc.).</p>
+(e.g., <code class="docutils literal notranslate"><span class="pre">execfile</span></code> in the plain Python interpreter, etc.).</p>
 </div>
 <p>It is also possible In order to execute this script as a <em>standalone
 program</em>, by executing the script inside a shell terminal (Linux/Mac
 console or cmd Windows console). For example, if we are in the same
 directory as the test.py file, we can execute this in a console:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python test.py
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python test.py
 <div class="newline"></div>Hello
 <div class="newline"></div>how
 <div class="newline"></div>are
@@ -236,25 +227,25 @@ directory as the test.py file, we can execute this in a console:</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p>Standalone scripts may also take command-line arguments</p>
-<p>In <code class="docutils literal"><span class="pre">file.py</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<p>In <code class="docutils literal notranslate"><span class="pre">file.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python file.py <span class="nb">test</span> arguments
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python file.py <span class="nb">test</span> arguments
 <div class="newline"></div><span class="o">[</span><span class="s1">&#39;file.py&#39;</span>, <span class="s1">&#39;test&#39;</span>, <span class="s1">&#39;arguments&#39;</span><span class="o">]</span>
 <div class="newline"></div></pre></div>
 </div>
 <div class="last admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">Don’t implement option parsing yourself. Use modules such as
-<a class="reference external" href="https://docs.python.org/3/library/optparse.html#module-optparse" title="(in Python v3.7)"><code class="xref py py-mod docutils literal"><span class="pre">optparse</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/argparse.html#module-argparse" title="(in Python v3.7)"><code class="xref py py-mod docutils literal"><span class="pre">argparse</span></code></a> or :mod`docopt`.</p>
+<p class="last">Don’t implement option parsing yourself. Use a dedicated module such as
+<a class="reference external" href="https://docs.python.org/3/library/argparse.html#module-argparse" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">argparse</span></code></a>.</p>
 </div>
 </div>
 </div>
 <div class="section" id="importing-objects-from-modules">
 <h2>1.2.5.2. Importing objects from modules<a class="headerlink" href="#importing-objects-from-modules" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">In [2]: </span><span class="n">os</span>
 <div class="newline"></div><span class="gr">Out[2]: </span><span class="o">&lt;</span><span class="n">module</span> <span class="s1">&#39;os&#39;</span> <span class="kn">from</span> <span class="s1">&#39;/usr/lib/python2.6/os.pyc&#39;</span><span class="o">&gt;</span>
@@ -274,16 +265,16 @@ directory as the test.py file, we can execute this in a console:</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>And also:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Importing shorthands:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [5]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [5]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <div class="newline"></div></pre></div>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="o">*</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>This is called the <em>star import</em> and please, <strong>Do not use it</strong></p>
@@ -304,7 +295,7 @@ symbols.</li>
 <p class="first admonition-title">Tip</p>
 <p>Modules are thus a good way to organize code in a hierarchical way. Actually,
 all the scientific computing tools we are going to use are modules:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> <span class="c1"># data arrays</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> <span class="c1"># data arrays</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <div class="newline"></div><span class="go">array([  0.,   2.,   4.,   6.,   8.,  10.])</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy</span> <span class="c1"># scientific computing</span>
@@ -321,9 +312,9 @@ simple scripts), where some objects are defined, (variables,
 functions, classes) and that we want to reuse several times, we have
 to create our own <em>modules</em>.</p>
 </div>
-<p>Let us create a module <code class="docutils literal"><span class="pre">demo</span></code> contained in the file <code class="docutils literal"><span class="pre">demo.py</span></code>:</p>
+<p>Let us create a module <code class="docutils literal notranslate"><span class="pre">demo</span></code> contained in the file <code class="docutils literal notranslate"><span class="pre">demo.py</span></code>:</p>
 <blockquote>
-<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;A demo module.&quot;</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;A demo module.&quot;</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">def</span> <span class="nf">print_b</span><span class="p">():</span>
 <div class="newline"></div>    <span class="s2">&quot;Prints b.&quot;</span>
@@ -341,13 +332,13 @@ to create our own <em>modules</em>.</p>
 </div></blockquote>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">In this file, we defined two functions <code class="docutils literal"><span class="pre">print_a</span></code> and <code class="docutils literal"><span class="pre">print_b</span></code>. Suppose
-we want to call the <code class="docutils literal"><span class="pre">print_a</span></code> function from the interpreter. We could
+<p class="last">In this file, we defined two functions <code class="docutils literal notranslate"><span class="pre">print_a</span></code> and <code class="docutils literal notranslate"><span class="pre">print_b</span></code>. Suppose
+we want to call the <code class="docutils literal notranslate"><span class="pre">print_a</span></code> function from the interpreter. We could
 execute the file as a script, but since we just want to have access to
-the function <code class="docutils literal"><span class="pre">print_a</span></code>, we are rather going to <strong>import it as a module</strong>.
+the function <code class="docutils literal notranslate"><span class="pre">print_a</span></code>, we are rather going to <strong>import it as a module</strong>.
 The syntax is as follows.</p>
 </div>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">demo</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">demo</span>
 <div class="newline"></div>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">In [2]: </span><span class="n">demo</span><span class="o">.</span><span class="n">print_a</span><span class="p">()</span>
@@ -358,10 +349,10 @@ The syntax is as follows.</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>Importing the module gives access to its objects, using the
-<code class="docutils literal"><span class="pre">module.object</span></code> syntax. Don’t forget to put the module’s name before the
+<code class="docutils literal notranslate"><span class="pre">module.object</span></code> syntax. Don’t forget to put the module’s name before the
 object’s name, otherwise Python won’t recognize the instruction.</p>
 <p>Introspection</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="n">demo</span><span class="err">?</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="n">demo</span><span class="err">?</span>
 <div class="newline"></div><span class="go">Type:               module</span>
 <div class="newline"></div><span class="go">Base Class: &lt;type &#39;module&#39;&gt;</span>
 <div class="newline"></div><span class="go">String Form:        &lt;module &#39;demo&#39; from &#39;demo.py&#39;&gt;</span>
@@ -398,7 +389,7 @@ object’s name, otherwise Python won’t recognize the instruction.</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>Importing objects from modules into the main namespace</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [9]: </span><span class="kn">from</span> <span class="nn">demo</span> <span class="kn">import</span> <span class="n">print_a</span><span class="p">,</span> <span class="n">print_b</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [9]: </span><span class="kn">from</span> <span class="nn">demo</span> <span class="kn">import</span> <span class="n">print_a</span><span class="p">,</span> <span class="n">print_b</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">In [10]: </span><span class="n">whos</span>
 <div class="newline"></div><span class="go">Variable   Type        Data/Info</span>
@@ -415,17 +406,17 @@ object’s name, otherwise Python won’t recognize the instruction.</p>
 <p class="first admonition-title">Warning</p>
 <p><strong>Module caching</strong></p>
 <blockquote>
-<div>Modules are cached: if you modify <code class="docutils literal"><span class="pre">demo.py</span></code> and re-import it in the
+<div>Modules are cached: if you modify <code class="docutils literal notranslate"><span class="pre">demo.py</span></code> and re-import it in the
 old session, you will get the old one.</div></blockquote>
 <p>Solution:</p>
 <blockquote>
-<div><div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="nb">reload</span><span class="p">(</span><span class="n">demo</span><span class="p">)</span>
+<div><div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="n">reload</span><span class="p">(</span><span class="n">demo</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 </div></blockquote>
-<p>In Python3 instead <code class="docutils literal"><span class="pre">reload</span></code> is not builtin, so you have to import the <code class="docutils literal"><span class="pre">importlib</span></code> module first and then do:</p>
+<p>In Python3 instead <code class="docutils literal notranslate"><span class="pre">reload</span></code> is not builtin, so you have to import the <code class="docutils literal notranslate"><span class="pre">importlib</span></code> module first and then do:</p>
 <blockquote class="last">
-<div><div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">demo</span><span class="p">)</span>
+<div><div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">demo</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 </div></blockquote>
@@ -437,12 +428,12 @@ old session, you will get the old one.</div></blockquote>
 <p class="first admonition-title">Tip</p>
 <p class="last">Sometimes we want code to be executed when a module is
 run directly, but not when it is imported by another module.
-<code class="docutils literal"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">'__main__'</span></code> allows us to check whether the
+<code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">'__main__'</span></code> allows us to check whether the
 module is being run directly.</p>
 </div>
-<p>File <code class="docutils literal"><span class="pre">demo2.py</span></code>:</p>
+<p>File <code class="docutils literal notranslate"><span class="pre">demo2.py</span></code>:</p>
 <blockquote>
-<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_b</span><span class="p">():</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_b</span><span class="p">():</span>
 <div class="newline"></div>    <span class="s2">&quot;Prints b.&quot;</span>
 <div class="newline"></div>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
 <div class="newline"></div>
@@ -460,14 +451,14 @@ module is being run directly.</p>
 </div>
 </div></blockquote>
 <p>Importing it:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="kn">import</span> <span class="nn">demo2</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="kn">import</span> <span class="nn">demo2</span>
 <div class="newline"></div><span class="go">b</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">In [12]: </span><span class="kn">import</span> <span class="nn">demo2</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Running it:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [13]: </span><span class="o">%</span><span class="n">run</span> <span class="n">demo2</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [13]: </span><span class="o">%</span><span class="n">run</span> <span class="n">demo2</span>
 <div class="newline"></div><span class="go">b</span>
 <div class="newline"></div><span class="go">a</span>
 <div class="newline"></div></pre></div>
@@ -489,14 +480,14 @@ your functions in the different scripts!).</li>
 </div>
 <div class="section" id="how-modules-are-found-and-imported">
 <h3>How modules are found and imported<a class="headerlink" href="#how-modules-are-found-and-imported" title="Permalink to this headline">¶</a></h3>
-<p>When the <code class="docutils literal"><span class="pre">import</span> <span class="pre">mymodule</span></code> statement is executed, the module <code class="docutils literal"><span class="pre">mymodule</span></code>
+<p>When the <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">mymodule</span></code> statement is executed, the module <code class="docutils literal notranslate"><span class="pre">mymodule</span></code>
 is searched in a given list of directories. This list includes a list
-of installation-dependent default path (e.g., <code class="docutils literal"><span class="pre">/usr/lib/python</span></code>) as
+of installation-dependent default path (e.g., <code class="docutils literal notranslate"><span class="pre">/usr/lib/python</span></code>) as
 well as the list of directories specified by the environment variable
-<code class="docutils literal"><span class="pre">PYTHONPATH</span></code>.</p>
-<p>The list of directories searched by Python is given by the <code class="docutils literal"><span class="pre">sys.path</span></code>
+<code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code>.</p>
+<p>The list of directories searched by Python is given by the <code class="docutils literal notranslate"><span class="pre">sys.path</span></code>
 variable</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">sys</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">In [2]: </span><span class="n">sys</span><span class="o">.</span><span class="n">path</span>
 <div class="newline"></div><span class="go">Out[2]:</span>
@@ -512,26 +503,26 @@ variable</p>
 <p>Modules must be located in the search path, therefore you can:</p>
 <ul>
 <li><p class="first">write your own modules within directories already defined in the
-search path (e.g. <code class="docutils literal"><span class="pre">$HOME/.local/lib/python2.7/dist-packages</span></code>). You
+search path (e.g. <code class="docutils literal notranslate"><span class="pre">$HOME/.local/lib/python2.7/dist-packages</span></code>). You
 may use symbolic links (on Linux) to keep the code somewhere else.</p>
 </li>
-<li><p class="first">modify the environment variable <code class="docutils literal"><span class="pre">PYTHONPATH</span></code> to include the
+<li><p class="first">modify the environment variable <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> to include the
 directories containing the user-defined modules.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p>On Linux/Unix, add the following line to a file read by the shell at
 startup (e.g. /etc/profile, .profile)</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>export PYTHONPATH=$PYTHONPATH:/home/emma/user_defined_modules
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export PYTHONPATH=$PYTHONPATH:/home/emma/user_defined_modules
 <div class="newline"></div></pre></div>
 </div>
 <p class="last">On Windows, <a class="reference external" href="http://support.microsoft.com/kb/310519">http://support.microsoft.com/kb/310519</a> explains how to
 handle environment variables.</p>
 </div>
 </li>
-<li><p class="first">or modify the <code class="docutils literal"><span class="pre">sys.path</span></code> variable itself within a Python script.</p>
+<li><p class="first">or modify the <code class="docutils literal notranslate"><span class="pre">sys.path</span></code> variable itself within a Python script.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <div class="newline"></div><span class="n">new_path</span> <span class="o">=</span> <span class="s1">&#39;/home/emma/user_defined_modules&#39;</span>
 <div class="newline"></div><span class="k">if</span> <span class="n">new_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
 <div class="newline"></div>    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span>
@@ -555,10 +546,10 @@ about modules.</p>
 <h2>1.2.5.6. Packages<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h2>
 <p>A directory that contains many modules is called a <em>package</em>. A package
 is a module with submodules (which can have submodules themselves, etc.).
-A special file called <code class="docutils literal"><span class="pre">__init__.py</span></code> (which may be empty) tells Python
+A special file called <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> (which may be empty) tells Python
 that the directory is a Python package, from which modules can be
 imported.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ ls
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ls
 <div class="newline"></div>cluster/        io/          README.txt@     stsci/
 <div class="newline"></div>__config__.py@  LATEST.txt@  setup.py@       __svn_version__.py@
 <div class="newline"></div>__config__.pyc  lib/         setup.pyc       __svn_version__.pyc
@@ -581,7 +572,7 @@ imported.</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>From Ipython:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">scipy</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">scipy</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">In [2]: </span><span class="n">scipy</span><span class="o">.</span><span class="vm">__file__</span>
 <div class="newline"></div><span class="gr">Out[2]: </span><span class="s1">&#39;/usr/lib/python2.6/dist-packages/scipy/__init__.pyc&#39;</span>
@@ -629,13 +620,13 @@ imported.</p>
 <p>Indenting is compulsory in Python! Every command block following a
 colon bears an additional indentation level with respect to the
 previous line with a colon. One must therefore indent after
-<code class="docutils literal"><span class="pre">def</span> <span class="pre">f():</span></code> or <code class="docutils literal"><span class="pre">while:</span></code>. At the end of such logical blocks, one
+<code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">f():</span></code> or <code class="docutils literal notranslate"><span class="pre">while:</span></code>. At the end of such logical blocks, one
 decreases the indentation depth (and re-increases it if a new block
 is entered, etc.)</p>
 <p>Strict respect of indentation is the price to pay for getting rid of
-<code class="docutils literal"><span class="pre">{</span></code> or <code class="docutils literal"><span class="pre">;</span></code> characters that delineate logical blocks in other
+<code class="docutils literal notranslate"><span class="pre">{</span></code> or <code class="docutils literal notranslate"><span class="pre">;</span></code> characters that delineate logical blocks in other
 languages. Improper indentation leads to errors such as</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="go">------------------------------------------------------------</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="go">------------------------------------------------------------</span>
 <div class="newline"></div><span class="go">IndentationError: unexpected indent (test.py, line 2)</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -648,21 +639,21 @@ other languages.</p>
 <li><p class="first"><strong>Indentation depth</strong>: Inside your text editor, you may choose to
 indent with any positive number of spaces (1, 2, 3, 4, …). However,
 it is considered good practice to <strong>indent with 4 spaces</strong>. You may
-configure your editor to map the <code class="docutils literal"><span class="pre">Tab</span></code> key to a 4-space
+configure your editor to map the <code class="docutils literal notranslate"><span class="pre">Tab</span></code> key to a 4-space
 indentation.</p>
 </li>
 <li><p class="first"><strong>Style guidelines</strong></p>
 <p><strong>Long lines</strong>: you should not write very long lines that span over more
-than (e.g.) 80 characters. Long lines can be broken with the <code class="docutils literal"><span class="pre">\</span></code>
+than (e.g.) 80 characters. Long lines can be broken with the <code class="docutils literal notranslate"><span class="pre">\</span></code>
 character</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">long_line</span> <span class="o">=</span> <span class="s2">&quot;Here is a very very long line </span><span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">long_line</span> <span class="o">=</span> <span class="s2">&quot;Here is a very very long line </span><span class="se">\</span>
 <div class="newline"></div><span class="gp">... </span><span class="s2">that we break in two parts.&quot;</span>
 <div class="newline"></div></pre></div>
 </div>
 <p><strong>Spaces</strong></p>
 <p>Write well-spaced code: put whitespaces after commas, around arithmetic
 operators, etc.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># yes</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># yes</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="mi">1</span> <span class="c1"># too cramped</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -691,7 +682,6 @@ the intro part. But be sure to come back and finish this chapter later.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-	<div class="sidebartoc">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">1.2.5. Reusing code: scripts and modules</a><ul>
@@ -708,26 +698,32 @@ the intro part. But be sure to come back and finish this chapter later.</p>
 </ul>
 </li>
 </ul>
-</div>
 
-
-
-    <div class="script_container">
-    <script>
-    (function() {
-	var cx = '004523248466141510607:hgv2yimrahw';
-	var gcse = document.createElement('script');
-	gcse.type = 'text/javascript';
-	gcse.async = true;
-	gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-	    '//cse.google.com/cse.js?cx=' + cx;
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(gcse, s);
-    })();
-    </script>
-    <gcse:search></gcse:search>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="functions.html"
+                        title="previous chapter">1.2.4. Defining functions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="io.html"
+                        title="next chapter">1.2.6. Input and Output</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/intro/language/reusing_code.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
     </div>
-
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -767,8 +763,8 @@ the intro part. But be sure to come back and finish this chapter later.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>
 </html>
