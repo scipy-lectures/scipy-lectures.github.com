@@ -171,8 +171,8 @@ $(function () {
 p-values.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original author: Thomas Haslwanter</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">pandas</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># For statistics. Requires statsmodels 5.0 or more</span>
@@ -182,12 +182,12 @@ p-values.</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>Generate and show the data</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># To get reproducable values, provide a seed value</span>
-<div class="newline"></div><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="newline"></div><a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.normal.html#numpy.random.normal" title="View documentation for numpy.random.normal"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span></a><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Plot the data</span>
 <div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
@@ -205,13 +205,13 @@ intervals etc.</p>
 <div class="newline"></div><span class="n">model</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.ols.html#statsmodels.formula.api.ols" title="View documentation for statsmodels.formula.api.ols"><span class="n">ols</span></a><span class="p">(</span><span class="s2">&quot;y ~ x&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Print the summary</span>
-<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Peform analysis of variance on fitted linear model</span>
 <div class="newline"></div><span class="n">anova_results</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.anova.anova_lm.html#statsmodels.stats.anova.anova_lm" title="View documentation for statsmodels.stats.anova.anova_lm"><span class="n">anova_lm</span></a><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">ANOVA results&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">anova_results</span><span class="p">)</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">ANOVA results&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">anova_results</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -220,8 +220,8 @@ intervals etc.</p>
 <div class="newline"></div>Dep. Variable:                      y   R-squared:                       0.804
 <div class="newline"></div>Model:                            OLS   Adj. R-squared:                  0.794
 <div class="newline"></div>Method:                 Least Squares   F-statistic:                     74.03
-<div class="newline"></div>Date:                Fri, 03 Apr 2020   Prob (F-statistic):           8.56e-08
-<div class="newline"></div>Time:                        23:35:59   Log-Likelihood:                -57.988
+<div class="newline"></div>Date:                Wed, 02 Sep 2020   Prob (F-statistic):           8.56e-08
+<div class="newline"></div>Time:                        16:02:16   Log-Likelihood:                -57.988
 <div class="newline"></div>No. Observations:                  20   AIC:                             120.0
 <div class="newline"></div>Df Residuals:                      18   BIC:                             122.0
 <div class="newline"></div>Df Model:                           1
@@ -258,7 +258,7 @@ intervals etc.</p>
 <div class="newline"></div></pre></div>
 </div>
 <img alt="../../../_images/sphx_glr_plot_regression_002.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_regression_002.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.051 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.052 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-statistics-auto-examples-plot-regression-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_regression.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_regression.py</span></code></a></div>

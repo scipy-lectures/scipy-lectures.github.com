@@ -188,19 +188,19 @@ statsmodels’ formulas
 <div class="newline"></div><span class="c1"># EDUCATION: Number of years of education</span>
 <div class="newline"></div><span class="c1"># SEX: 1=Female, 0=Male</span>
 <div class="newline"></div><span class="c1"># WAGE: Wage (dollars per hour)</span>
-<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html#pandas.read_csv" title="View documentation for pandas.read_csv"><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="s1">&#39;wages.txt&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">skipfooter</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<div class="newline"></div>                       <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;education&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;wage&#39;</span><span class="p">],</span>
+<div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html#pandas.read_csv" title="View documentation for pandas.read_csv"><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="s1">&#39;wages.txt&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">skipfooter</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<div class="newline"></div>                       <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;education&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;wage&#39;</span><span class="p">],</span>
 <div class="newline"></div>                       <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
 <div class="newline"></div>                       <span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Convert genders to strings (this is particulary useful so that the</span>
 <div class="newline"></div><span class="c1"># statsmodels formulas detects that gender is a categorical variable)</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.choose.html#numpy.choose" title="View documentation for numpy.choose"><span class="n">np</span><span class="o">.</span><span class="n">choose</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">])</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.choose.html#numpy.choose" title="View documentation for numpy.choose"><span class="n">np</span><span class="o">.</span><span class="n">choose</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">])</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Log-transform the wages, because they typically are increased with</span>
 <div class="newline"></div><span class="c1"># multiplicative factors</span>
-<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;wage&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.log10.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;wage&#39;</span><span class="p">])</span>
+<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;wage&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.log10.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;wage&#39;</span><span class="p">])</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>simple plotting</p>
@@ -212,13 +212,13 @@ statsmodels’ formulas
 </div>
 <img alt="../../../_images/sphx_glr_plot_wage_education_gender_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_wage_education_gender_001.png" />
 <p>statistical analysis</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">as</span> <span class="nn">sm</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Note that this model is not the plot displayed above: it is one</span>
 <div class="newline"></div><span class="c1"># joined model for male and female, not separate models for male and</span>
 <div class="newline"></div><span class="c1"># female. The reason is that a single model enables statistical testing</span>
 <div class="newline"></div><span class="n">result</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.ols.html#statsmodels.formula.api.ols" title="View documentation for statsmodels.formula.api.ols"><span class="n">sm</span><span class="o">.</span><span class="n">ols</span></a><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;wage ~ education + gender&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -227,8 +227,8 @@ statsmodels’ formulas
 <div class="newline"></div>Dep. Variable:                   wage   R-squared:                       0.193
 <div class="newline"></div>Model:                            OLS   Adj. R-squared:                  0.190
 <div class="newline"></div>Method:                 Least Squares   F-statistic:                     63.42
-<div class="newline"></div>Date:                Fri, 03 Apr 2020   Prob (F-statistic):           2.01e-25
-<div class="newline"></div>Time:                        23:36:00   Log-Likelihood:                 86.654
+<div class="newline"></div>Date:                Wed, 02 Sep 2020   Prob (F-statistic):           2.01e-25
+<div class="newline"></div>Time:                        16:02:17   Log-Likelihood:                 86.654
 <div class="newline"></div>No. Observations:                 534   AIC:                            -167.3
 <div class="newline"></div>Df Residuals:                     531   BIC:                            -154.5
 <div class="newline"></div>Df Model:                           2
@@ -255,7 +255,7 @@ wage but also a different slope</p>
 <p>We need to model this using an interaction</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.ols.html#statsmodels.formula.api.ols" title="View documentation for statsmodels.formula.api.ols"><span class="n">sm</span><span class="o">.</span><span class="n">ols</span></a><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;wage ~ education + gender + education * gender&#39;</span><span class="p">,</span>
 <div class="newline"></div>                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -264,8 +264,8 @@ wage but also a different slope</p>
 <div class="newline"></div>Dep. Variable:                   wage   R-squared:                       0.198
 <div class="newline"></div>Model:                            OLS   Adj. R-squared:                  0.194
 <div class="newline"></div>Method:                 Least Squares   F-statistic:                     43.72
-<div class="newline"></div>Date:                Fri, 03 Apr 2020   Prob (F-statistic):           2.94e-25
-<div class="newline"></div>Time:                        23:36:00   Log-Likelihood:                 88.503
+<div class="newline"></div>Date:                Wed, 02 Sep 2020   Prob (F-statistic):           2.94e-25
+<div class="newline"></div>Time:                        16:02:17   Log-Likelihood:                 88.503
 <div class="newline"></div>No. Observations:                 534   AIC:                            -169.0
 <div class="newline"></div>Df Residuals:                     530   BIC:                            -151.9
 <div class="newline"></div>Df Model:                           3
@@ -291,11 +291,11 @@ wage but also a different slope</p>
 <p>Looking at the p-value of the interaction of gender and education, the
 data does not support the hypothesis that education benefits males
 more than female (p-value &gt; 0.05).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.807 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.501 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-statistics-auto-examples-plot-wage-education-gender-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_wage_education_gender.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_wage_education_gender.py</span></code></a></div>

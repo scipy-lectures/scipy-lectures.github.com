@@ -190,14 +190,14 @@ containing information about one target.</p>
 <p>One state of the art method to extract information from these data is to
 decompose them in a sum of Gaussian functions where each function represents the
 contribution of a target hit by the laser beam.</p>
-<p>Therefore, we use the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html#module-scipy.optimize" title="(in SciPy v1.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.optimize</span></code></a> module to fit a waveform to one
+<p>Therefore, we use the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html#module-scipy.optimize" title="(in SciPy v1.5.2)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.optimize</span></code></a> module to fit a waveform to one
 or a sum of Gaussian functions.</p>
 </div>
 <div class="section" id="loading-and-visualization">
 <span id="first-step"></span><h2>Loading and visualization<a class="headerlink" href="#loading-and-visualization" title="Permalink to this headline">¶</a></h2>
 <p>Load the first waveform using:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">waveform_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;data/waveform_1.npy&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">waveform_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;intro/summary-exercises/examples/waveform_1.npy&#39;</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>and visualize it:</p>
@@ -208,8 +208,12 @@ or a sum of Gaussian functions.</p>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<img alt="../../_images/waveform_1.png" class="align-center" src="../../_images/waveform_1.png" />
-<p>As you can notice, this waveform is a 80-bin-length signal with a single peak.</p>
+<p>As shown below, this waveform is a 80-bin-length signal with a single peak
+with an amplitude of approximately 30 in the 15 nanosecond bin. Additionally, the
+base level of noise is approximately 3. These values can be used in the initial solution.</p>
+<div class="figure align-center">
+<a class="reference external image-reference" href="auto_examples/plot_optimize_lidar_data.html"><img alt="../../_images/sphx_glr_plot_optimize_lidar_data_001.png" src="../../_images/sphx_glr_plot_optimize_lidar_data_001.png" /></a>
+</div>
 </div>
 <div class="section" id="fitting-a-waveform-with-a-simple-gaussian-model">
 <h2>Fitting a waveform with a simple Gaussian model<a class="headerlink" href="#fitting-a-waveform-with-a-simple-gaussian-model" title="Permalink to this headline">¶</a></h2>
@@ -225,7 +229,7 @@ function, we must:</p>
 <h3>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h3>
 <p>A Gaussian function defined by</p>
 <div class="math">
-<p><span class="math">B + A \exp\left\{-\left(\frac{t-\mu}{\sigma}\right)^2\right\}</span></p>
+<p><img src="../../_images/math/c3c496074ab9d9cde83a5232eefd73dde1cbfa95.png" alt="B + A \exp\left\{-\left(\frac{t-\mu}{\sigma}\right)^2\right\}"/></p>
 </div><p>can be defined in python by:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">coeffs</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>   <span class="k">return</span> <span class="n">coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">coeffs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="o">-</span> <span class="p">((</span><span class="n">t</span><span class="o">-</span><span class="n">coeffs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">coeffs</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
@@ -233,16 +237,15 @@ function, we must:</p>
 </div>
 <p>where</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">coeffs[0]</span></code> is <span class="math">B</span> (noise)</li>
-<li><code class="docutils literal notranslate"><span class="pre">coeffs[1]</span></code> is <span class="math">A</span> (amplitude)</li>
-<li><code class="docutils literal notranslate"><span class="pre">coeffs[2]</span></code> is <span class="math">\mu</span> (center)</li>
-<li><code class="docutils literal notranslate"><span class="pre">coeffs[3]</span></code> is <span class="math">\sigma</span> (width)</li>
+<li><code class="docutils literal notranslate"><span class="pre">coeffs[0]</span></code> is <img class="math" src="../../_images/math/9805f44feec6f81d376d09e88b8236635edbb3c8.png" alt="B"/> (noise)</li>
+<li><code class="docutils literal notranslate"><span class="pre">coeffs[1]</span></code> is <img class="math" src="../../_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> (amplitude)</li>
+<li><code class="docutils literal notranslate"><span class="pre">coeffs[2]</span></code> is <img class="math" src="../../_images/math/d79e8a2c7ce54906c2b25549da38bdbe02cf40d6.png" alt="\mu"/> (center)</li>
+<li><code class="docutils literal notranslate"><span class="pre">coeffs[3]</span></code> is <img class="math" src="../../_images/math/011e5790a6c33043ceadca81d9657dde6c61d769.png" alt="\sigma"/> (width)</li>
 </ul>
 </div>
 <div class="section" id="initial-solution">
 <h3>Initial solution<a class="headerlink" href="#initial-solution" title="Permalink to this headline">¶</a></h3>
-<p>An approximative initial solution that we can find from looking at the graph is
-for instance:</p>
+<p>One possible initial solution that we determine by inspection is:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -256,54 +259,57 @@ difference between the data and the model):</p>
 <div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="n">y</span> <span class="o">-</span> <span class="n">model</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">coeffs</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
-<p>So let’s get our solution by calling <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html#scipy.optimize.leastsq" title="(in SciPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.leastsq()</span></code></a> with the
+<p>So let’s get our solution by calling <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html#scipy.optimize.leastsq" title="(in SciPy v1.5.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.leastsq()</span></code></a> with the
 following arguments:</p>
 <ul class="simple">
 <li>the function to minimize</li>
 <li>an initial solution</li>
 <li>the additional arguments to pass to the function</li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">leastsq</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">leastsq</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">waveform_1</span><span class="p">))</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">flag</span> <span class="o">=</span> <span class="n">leastsq</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">waveform_1</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <div class="newline"></div><span class="go">[  2.70363341  27.82020742  15.47924562   3.05636228]</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>And visualize the solution:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">waveform_1</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">model</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span> 
-<div class="newline"></div><span class="go">[&lt;matplotlib.lines.Line2D object at ...&gt;, &lt;matplotlib.lines.Line2D object at ...&gt;]</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;waveform&#39;</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span><span class="p">])</span> 
-<div class="newline"></div><span class="go">&lt;matplotlib.legend.Legend object at ...&gt;</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">waveform_1</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">model</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [ns]&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude [bins]&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Waveform&#39;</span><span class="p">,</span> <span class="s1">&#39;Model&#39;</span><span class="p">])</span>
+<div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<p><em>Remark:</em> from scipy v0.8 and above, you should rather use <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy.optimize.curve_fit" title="(in SciPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit()</span></code></a> which takes the model and the data as arguments, so you don’t need to define the residuals any more.</p>
+<div class="figure align-center">
+<a class="reference external image-reference" href="auto_examples/plot_optimize_lidar_data_fit.html"><img alt="../../_images/sphx_glr_plot_optimize_lidar_data_fit_001.png" src="../../_images/sphx_glr_plot_optimize_lidar_data_fit_001.png" /></a>
+</div>
+<p><em>Remark:</em> from scipy v0.8 and above, you should rather use <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy.optimize.curve_fit" title="(in SciPy v1.5.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit()</span></code></a> which takes the model and the data as arguments, so you don’t need to define the residuals any more.</p>
 </div>
 </div>
 <div class="section" id="going-further">
 <h2>Going further<a class="headerlink" href="#going-further" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><p class="first">Try with a more complex waveform (for instance <code class="docutils literal notranslate"><span class="pre">data/waveform_2.npy</span></code>)
+<ul class="simple">
+<li>Try with a more complex waveform (for instance <code class="docutils literal notranslate"><span class="pre">waveform_2.npy</span></code>)
 that contains three significant peaks. You must adapt the model which is
-now a sum of Gaussian functions instead of only one Gaussian peak.</p>
-<img alt="../../_images/waveform_2.png" class="align-center" src="../../_images/waveform_2.png" />
-</li>
-<li><p class="first">In some cases, writing an explicit function to compute the Jacobian is faster
+now a sum of Gaussian functions instead of only one Gaussian peak.</li>
+</ul>
+<div class="figure align-center">
+<a class="reference external image-reference" href="auto_examples/plot_optimize_lidar_complex_data.html"><img alt="../../_images/sphx_glr_plot_optimize_lidar_complex_data_001.png" src="../../_images/sphx_glr_plot_optimize_lidar_complex_data_001.png" /></a>
+</div>
+<ul class="simple">
+<li>In some cases, writing an explicit function to compute the Jacobian is faster
 than letting <code class="docutils literal notranslate"><span class="pre">leastsq</span></code> estimate it numerically. Create a function to compute
-the Jacobian of the residuals and use it as an input for <code class="docutils literal notranslate"><span class="pre">leastsq</span></code>.</p>
-</li>
-<li><p class="first">When we want to detect very small peaks in the signal, or when the initial
+the Jacobian of the residuals and use it as an input for <code class="docutils literal notranslate"><span class="pre">leastsq</span></code>.</li>
+<li>When we want to detect very small peaks in the signal, or when the initial
 guess is too far from a good solution, the result given by the algorithm is
 often not satisfying. Adding constraints to the parameters of the model
 enables to overcome such limitations. An example of <em>a priori</em> knowledge we can
-add is the sign of our variables (which are all positive).</p>
-<p>With the following initial solution:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<div class="newline"></div></pre></div>
-</div>
-<p>compare the result of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html#scipy.optimize.leastsq" title="(in SciPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.leastsq()</span></code></a> and what you can get with
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_slsqp.html#scipy.optimize.fmin_slsqp" title="(in SciPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.fmin_slsqp()</span></code></a> when adding boundary constraints.</p>
-</li>
+add is the sign of our variables (which are all positive).</li>
+<li>See the <a class="reference external" href="auto_examples/plot_optimize_lidar_complex_data_fit.html">solution</a>.</li>
+<li>Further exercise: compare the result of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html#scipy.optimize.leastsq" title="(in SciPy v1.5.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.leastsq()</span></code></a> and what you can
+get with <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_slsqp.html#scipy.optimize.fmin_slsqp" title="(in SciPy v1.5.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.fmin_slsqp()</span></code></a> when adding boundary constraints.</li>
 </ul>
 <table class="docutils footnote" frame="void" id="data" rules="none">
 <colgroup><col class="label" /><col /></colgroup>

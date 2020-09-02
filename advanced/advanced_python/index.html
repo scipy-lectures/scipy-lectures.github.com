@@ -694,11 +694,11 @@ which is not very useful. Therefore it’s enough to discuss class-based
 decorators where arguments are given in the decorator expression and
 the decorator <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method is used for decorator construction.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">decorator_class</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>      <span class="c1"># this method is called in the decorator expression</span>
 <div class="newline"></div><span class="gp">... </span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;in decorator init, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">arg</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">... </span>      <span class="bp">self</span><span class="o">.</span><span class="n">arg</span> <span class="o">=</span> <span class="n">arg</span>
-<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>      <span class="c1"># this method is called to do the job</span>
 <div class="newline"></div><span class="gp">... </span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;in decorator call, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">... </span>      <span class="k">return</span> <span class="n">function</span>
@@ -720,11 +720,11 @@ have a decorator which returns the original function. Objects are
 supposed to hold state, and such decorators are more useful when the
 decorator returns a new object.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">replacing_decorator_class</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>      <span class="c1"># this method is called in the decorator expression</span>
 <div class="newline"></div><span class="gp">... </span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;in decorator init, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">arg</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">... </span>      <span class="bp">self</span><span class="o">.</span><span class="n">arg</span> <span class="o">=</span> <span class="n">arg</span>
-<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>      <span class="c1"># this method is called to do the job</span>
 <div class="newline"></div><span class="gp">... </span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;in decorator call, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">... </span>      <span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="n">function</span>
@@ -816,7 +816,7 @@ as the first parameter, often called <code class="docutils literal notranslate">
 they don’t pollute the module’s namespace. Class methods can be used
 to provide alternative constructors:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Array</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="newline"></div>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
 <div class="newline"></div>
 <div class="newline"></div>    <span class="nd">@classmethod</span>
@@ -856,7 +856,7 @@ read-only, because no setter is defined.</p>
 <p>To have a setter and a getter, two methods are required,
 obviously. Since Python 2.6 the following syntax is preferred:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Rectangle</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="newline"></div>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="o">=</span> <span class="n">edge</span>
 <div class="newline"></div>
 <div class="newline"></div>    <span class="nd">@property</span>
@@ -951,7 +951,7 @@ to modify the function, we can use a decorator:</p>
 <div class="newline"></div><span class="sd">    &gt;&gt;&gt; f()                              # doctest: +SKIP</span>
 <div class="newline"></div><span class="sd">    f is deprecated</span>
 <div class="newline"></div><span class="sd">    &quot;&quot;&quot;</span>
-<div class="newline"></div>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
 <div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
 <div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
 <div class="newline"></div>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrapper</span>
@@ -1113,11 +1113,11 @@ like in a <code class="docutils literal notranslate"><span class="pre">finally</
 <p>Let’s say we want to make sure that a file is closed immediately after
 we are done writing to it:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">closing</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span>
-<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span>
-<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<div class="newline"></div><span class="gp">... </span>  <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
 <div class="newline"></div><span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/tmp/file&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <div class="newline"></div><span class="gp">... </span>  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;the contents</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>   
@@ -1181,11 +1181,11 @@ classic example comes from unit-tests — we want to make sure that
 some code throws the right kind of exception:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">assert_raises</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <div class="newline"></div>    <span class="c1"># based on pytest and unittest.TestCase</span>
-<div class="newline"></div>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
 <div class="newline"></div>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
-<div class="newline"></div>    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <div class="newline"></div>        <span class="k">pass</span>
-<div class="newline"></div>    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+<div class="newline"></div>    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
 <div class="newline"></div>        <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <div class="newline"></div>            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;exception expected&#39;</span><span class="p">)</span>
 <div class="newline"></div>        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">):</span>
@@ -1208,7 +1208,7 @@ This includes exceptions, which can be thrown into the
 generator. We would like to implement context managers as special
 generator functions. In fact, the generator protocol was designed to
 support this use case.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@contextlib.contextmanager</span>
 <div class="newline"></div><span class="k">def</span> <span class="nf">some_generator</span><span class="p">(</span><span class="o">&lt;</span><span class="n">arguments</span><span class="o">&gt;</span><span class="p">):</span>
 <div class="newline"></div>    <span class="o">&lt;</span><span class="n">setup</span><span class="o">&gt;</span>
 <div class="newline"></div>    <span class="k">try</span><span class="p">:</span>

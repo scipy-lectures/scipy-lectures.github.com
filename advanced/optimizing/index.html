@@ -225,7 +225,7 @@ think</li>
 <div class="section" id="timeit">
 <h3><a class="toc-backref" href="#id5">2.4.2.1. Timeit</a><a class="headerlink" href="#timeit" title="Permalink to this headline">¶</a></h3>
 <p>In IPython, use <code class="docutils literal notranslate"><span class="pre">timeit</span></code> (<a class="reference external" href="https://docs.python.org/library/timeit.html">https://docs.python.org/library/timeit.html</a>) to time elementary operations:</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">In [2]: </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 <div class="newline"></div>
@@ -253,9 +253,9 @@ less precise but faster</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># For this example to run, you also need the &#39;ica.py&#39; file</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">linalg</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">ica</span> <span class="kn">import</span> <span class="n">fastica</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">ica</span> <span class="k">import</span> <span class="n">fastica</span>
 <div class="newline"></div>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
@@ -354,7 +354,7 @@ source file, we decorate a few functions that we want to inspect with
 <div class="newline"></div>    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
 <div class="newline"></div>    <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <div class="newline"></div>    <span class="n">pca</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">10</span><span class="p">],</span> <span class="n">data</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">results</span> <span class="o">=</span> <span class="n">fastica</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">results</span> <span class="o">=</span> <span class="n">fastica</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Then we run the script using the <a class="reference external" href="http://packages.python.org/line_profiler">kernprof.py</a> program, with switches <code class="docutils literal notranslate"><span class="pre">-l,</span> <span class="pre">--line-by-line</span></code> and <code class="docutils literal notranslate"><span class="pre">-v,</span> <span class="pre">--view</span></code> to use the line-by-line profiler and view the results in addition to saving them:</p>
@@ -398,7 +398,7 @@ loop</strong>, that bring in big gains.</p>
 <a class="reference external" href="https://en.wikipedia.org/wiki/Singular_value_decomposition">Singular Value Decomposition</a>
 - is what
 takes most of the time. Indeed, the computational cost of this algorithm is
-roughly <span class="math">n^3</span> in the size of the input matrix.</p>
+roughly <img class="math" src="../../_images/math/54b660c9d7d1b4abace974c2c0de4e20f1893b0c.png" alt="n^3"/> in the size of the input matrix.</p>
 <p>However, in both of these example, we are not using all the output of
 the SVD, but only the first few rows of its first return argument. If
 we use the <code class="docutils literal notranslate"><span class="pre">svd</span></code> implementation of scipy, we can ask for an incomplete
@@ -412,10 +412,10 @@ scipy are richer then those in numpy and should be preferred.</p>
 <div class="newline"></div><span class="gp">In [5]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <div class="newline"></div><span class="go">1 loops, best of 3: 14.2 s per loop</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="gp">In [6]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">In [6]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <div class="newline"></div><span class="go">1 loops, best of 3: 295 ms per loop</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="gp">In [7]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">In [7]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <div class="newline"></div><span class="go">1 loops, best of 3: 293 ms per loop</span>
 <div class="newline"></div></pre></div>
 </div>

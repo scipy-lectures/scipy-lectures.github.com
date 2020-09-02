@@ -197,9 +197,9 @@ significantly non-zero: the air fares have decreased between 2000 and
 <div class="newline"></div>                              <span class="s1">&#39;fare_2001&#39;</span><span class="p">,</span> <span class="s1">&#39;nb_passengers_2001&#39;</span><span class="p">])</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># we log-transform the number of passengers</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2000&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.log10.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2000&#39;</span><span class="p">])</span>
-<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2001&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.log10.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2001&#39;</span><span class="p">])</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2000&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.log10.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2000&#39;</span><span class="p">])</span>
+<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2001&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.log10.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;nb_passengers_2001&#39;</span><span class="p">])</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Make a dataframe whith the year as an attribute, instead of separate columns</p>
@@ -245,7 +245,7 @@ significantly non-zero: the air fares have decreased between 2000 and
 </li>
 </ul>
 <p>Plot the difference in fare</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div>
 <div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <div class="newline"></div><a href="http://seaborn.pydata.org/generated/seaborn.boxplot.html#seaborn.boxplot" title="View documentation for seaborn.boxplot"><span class="n">seaborn</span><span class="o">.</span><span class="n">boxplot</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">fare_2001</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">fare_2000</span><span class="p">)</span>
@@ -266,14 +266,14 @@ significantly non-zero: the air fares have decreased between 2000 and
 </ul>
 <p>Statistical testing: dependence of fare on distance and number of
 passengers</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">as</span> <span class="nn">sm</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">result</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.ols.html#statsmodels.formula.api.ols" title="View documentation for statsmodels.formula.api.ols"><span class="n">sm</span><span class="o">.</span><span class="n">ols</span></a><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;fare ~ 1 + dist + nb_passengers&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_flat</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Using a robust fit</span>
 <div class="newline"></div><span class="n">result</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.rlm.html#statsmodels.formula.api.rlm" title="View documentation for statsmodels.formula.api.rlm"><span class="n">sm</span><span class="o">.</span><span class="n">rlm</span></a><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;fare ~ 1 + dist + nb_passengers&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_flat</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -282,8 +282,8 @@ passengers</p>
 <div class="newline"></div>Dep. Variable:                   fare   R-squared:                       0.275
 <div class="newline"></div>Model:                            OLS   Adj. R-squared:                  0.275
 <div class="newline"></div>Method:                 Least Squares   F-statistic:                     1585.
-<div class="newline"></div>Date:                Fri, 03 Apr 2020   Prob (F-statistic):               0.00
-<div class="newline"></div>Time:                        23:36:19   Log-Likelihood:                -45532.
+<div class="newline"></div>Date:                Wed, 02 Sep 2020   Prob (F-statistic):               0.00
+<div class="newline"></div>Time:                        16:02:37   Log-Likelihood:                -45532.
 <div class="newline"></div>No. Observations:                8352   AIC:                         9.107e+04
 <div class="newline"></div>Df Residuals:                    8349   BIC:                         9.109e+04
 <div class="newline"></div>Df Model:                           2
@@ -313,8 +313,8 @@ passengers</p>
 <div class="newline"></div>Norm:                          HuberT
 <div class="newline"></div>Scale Est.:                       mad
 <div class="newline"></div>Cov Type:                          H1
-<div class="newline"></div>Date:                Fri, 03 Apr 2020
-<div class="newline"></div>Time:                        23:36:19
+<div class="newline"></div>Date:                Wed, 02 Sep 2020
+<div class="newline"></div>Time:                        16:02:37
 <div class="newline"></div>No. Iterations:                    12
 <div class="newline"></div>=================================================================================
 <div class="newline"></div>                    coef    std err          z      P&gt;|z|      [0.025      0.975]
@@ -330,7 +330,7 @@ passengers</p>
 </div>
 <p>Statistical testing: regression of fare on distance: 2001/2000 difference</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.ols.html#statsmodels.formula.api.ols" title="View documentation for statsmodels.formula.api.ols"><span class="n">sm</span><span class="o">.</span><span class="n">ols</span></a><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;fare_2001 - fare_2000 ~ 1 + dist&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Plot the corresponding regression</span>
 <div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;fare_difference&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;fare_2001&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;fare_2000&#39;</span><span class="p">]</span>
@@ -346,8 +346,8 @@ passengers</p>
 <div class="newline"></div>Dep. Variable:              fare_2001   R-squared:                       0.159
 <div class="newline"></div>Model:                            OLS   Adj. R-squared:                  0.159
 <div class="newline"></div>Method:                 Least Squares   F-statistic:                     791.7
-<div class="newline"></div>Date:                Fri, 03 Apr 2020   Prob (F-statistic):          1.20e-159
-<div class="newline"></div>Time:                        23:36:19   Log-Likelihood:                -22640.
+<div class="newline"></div>Date:                Wed, 02 Sep 2020   Prob (F-statistic):          1.20e-159
+<div class="newline"></div>Time:                        16:02:37   Log-Likelihood:                -22640.
 <div class="newline"></div>No. Observations:                4176   AIC:                         4.528e+04
 <div class="newline"></div>Df Residuals:                    4174   BIC:                         4.530e+04
 <div class="newline"></div>Df Model:                           1
@@ -370,7 +370,7 @@ passengers</p>
 <div class="newline"></div>strong multicollinearity or other numerical problems.
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  8.379 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  9.544 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-statistics-auto-examples-plot-airfare-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_airfare.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_airfare.py</span></code></a></div>

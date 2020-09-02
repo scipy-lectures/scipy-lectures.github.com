@@ -171,13 +171,13 @@ $(function () {
 implementing a blur with an FFT.</p>
 <p>Implements, via FFT, the following convolution:</p>
 <div class="math">
-<p><span class="math">f_1(t) = \int dt'\, K(t-t') f_0(t')</span></p>
+<p><img src="../../../../_images/math/90481892d2e0e489ba9eb7e9dfc72c7e2ebb46d2.png" alt="f_1(t) = \int dt'\, K(t-t') f_0(t')"/></p>
 </div><div class="math">
-<p><span class="math">\tilde{f}_1(\omega) = \tilde{K}(\omega) \tilde{f}_0(\omega)</span></p>
+<p><img src="../../../../_images/math/9c29db8906bc4cb851b96c5f69b65059b95630d5.png" alt="\tilde{f}_1(\omega) = \tilde{K}(\omega) \tilde{f}_0(\omega)"/></p>
 </div><div class="section" id="read-and-plot-the-image">
 <h2>Read and plot the image<a class="headerlink" href="#read-and-plot-the-image" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">im</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imread.html#matplotlib.pyplot.imread" title="View documentation for matplotlib.pyplot.imread"><span class="n">plt</span><span class="o">.</span><span class="n">imread</span></a><span class="p">(</span><span class="s1">&#39;../../../../data/moonlanding.png&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 <div class="newline"></div>
@@ -251,10 +251,10 @@ implementing a blur with an FFT.</p>
 <img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_004.png" class="sphx-glr-single-img" src="../../../../_images/sphx_glr_plot_fft_image_denoise_004.png" />
 </div>
 <div class="section" id="easier-and-better-scipy-ndimage-gaussian-filter">
-<h2>Easier and better: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter.html#scipy.ndimage.gaussian_filter" title="(in SciPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.ndimage.gaussian_filter()</span></code></a><a class="headerlink" href="#easier-and-better-scipy-ndimage-gaussian-filter" title="Permalink to this headline">¶</a></h2>
+<h2>Easier and better: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter.html#scipy.ndimage.gaussian_filter" title="(in SciPy v1.5.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.ndimage.gaussian_filter()</span></code></a><a class="headerlink" href="#easier-and-better-scipy-ndimage-gaussian-filter" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div>Implementing filtering directly with FFTs is tricky and time consuming.
-We can use the Gaussian filter from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/ndimage.html#module-scipy.ndimage" title="(in SciPy v1.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.ndimage</span></code></a></div></blockquote>
+We can use the Gaussian filter from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/ndimage.html#module-scipy.ndimage" title="(in SciPy v1.5.2)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.ndimage</span></code></a></div></blockquote>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
 <div class="newline"></div><span class="n">im_blur</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter.html#scipy.ndimage.gaussian_filter" title="View documentation for scipy.ndimage.gaussian_filter"><span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span></a><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <div class="newline"></div>
@@ -266,7 +266,7 @@ We can use the Gaussian filter from <a class="reference external" href="https://
 <div class="newline"></div></pre></div>
 </div>
 <img alt="../../../../_images/sphx_glr_plot_fft_image_denoise_005.png" class="sphx-glr-single-img" src="../../../../_images/sphx_glr_plot_fft_image_denoise_005.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.283 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.282 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-intro-scipy-auto-examples-solutions-plot-fft-image-denoise-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../../_downloads/plot_fft_image_denoise.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_fft_image_denoise.py</span></code></a></div>

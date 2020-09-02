@@ -414,14 +414,14 @@ longer. The import statement is not affected by this.</p>
 <div class="section" id="numpy-support">
 <h3>2.8.2.2. Numpy Support<a class="headerlink" href="#numpy-support" title="Permalink to this headline">¶</a></h3>
 <p>Analog to the Python-C-API, Numpy, which is itself implemented as a
-C-extension, comes with the <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/c-api.html">Numpy-C-API</a>. This API can be used
+C-extension, comes with the <a class="reference external" href="http://numpy.org/doc/stable/reference/c-api">Numpy-C-API</a>. This API can be used
 to create and manipulate Numpy arrays from C, when writing a custom
 C-extension. See also: <a class="reference internal" href="../advanced_numpy/index.html#advanced-numpy"><span class="std std-ref">Advanced NumPy</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you do ever need to use the Numpy C-API refer to the documentation about
-<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/c-api.array.html">Arrays</a> and
-<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/c-api.iterator.html">Iterators</a>.</p>
+<a class="reference external" href="http://numpy.org/doc/stable/reference/c-api/array.html">Arrays</a> and
+<a class="reference external" href="http://numpy.org/doc/stable/reference/c-api/iterator.html">Iterators</a>.</p>
 </div>
 <p>The following example shows how to pass Numpy arrays as arguments to functions
 and how to iterate over Numpy arrays using the (old) Numpy-C-API. It simply
@@ -608,8 +608,8 @@ include the Numpy headers by using :func:<code class="docutils literal notransla
 <p>To convince ourselves if this does actually works, we run the following test
 script:</p>
 <div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cos_module_np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
 <div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">cos_module_np</span><span class="o">.</span><span class="n">cos_func_np</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -762,8 +762,8 @@ message is not quite as helpful, since it does not tell us what the type should 
 support for exporting certain attributes of a Numpy array as ctypes data-types
 and there are functions to convert from C arrays to Numpy arrays and back.</p>
 <p>For more information, consult the corresponding section in the <a class="reference external" href="http://www.scipy.org/Cookbook/Ctypes">Numpy Cookbook</a> and the API documentation for
-<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.ctypes.html">numpy.ndarray.ctypes</a>
-and <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/routines.ctypeslib.html">numpy.ctypeslib</a>.</p>
+<a class="reference external" href="http://numpy.org/doc/stable/reference/generated/numpy.ndarray.ctypes.html">numpy.ndarray.ctypes</a>
+and <a class="reference external" href="http://numpy.org/doc/stable/reference/routines.ctypeslib.html">numpy.ctypeslib</a>.</p>
 <p>For the following example, let’s consider a C function in a library that takes
 an input and an output array, computes the cosine of the input array and
 stores the result in the output array.</p>
@@ -816,8 +816,8 @@ must use a combination of <code class="docutils literal notranslate"><span class
 <div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot; Example of wrapping a C library function that accepts a C double array as</span>
 <div class="newline"></div><span class="sd">    input using the numpy.ctypeslib. &quot;&quot;&quot;</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy.ctypeslib</span> <span class="k">as</span> <span class="nn">npct</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy.ctypeslib</span> <span class="kn">as</span> <span class="nn">npct</span>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">c_int</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># input type for the cos_doubles function</span>
@@ -828,7 +828,7 @@ must use a combination of <code class="docutils literal notranslate"><span class
 <div class="newline"></div><span class="n">libcd</span> <span class="o">=</span> <span class="n">npct</span><span class="o">.</span><span class="n">load_library</span><span class="p">(</span><span class="s2">&quot;libcos_doubles&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># setup the return types and argument types</span>
-<div class="newline"></div><span class="n">libcd</span><span class="o">.</span><span class="n">cos_doubles</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="kc">None</span>
+<div class="newline"></div><span class="n">libcd</span><span class="o">.</span><span class="n">cos_doubles</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="bp">None</span>
 <div class="newline"></div><span class="n">libcd</span><span class="o">.</span><span class="n">cos_doubles</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">array_1d_double</span><span class="p">,</span> <span class="n">array_1d_double</span><span class="p">,</span> <span class="n">c_int</span><span class="p">]</span>
 <div class="newline"></div>
 <div class="newline"></div>
@@ -840,14 +840,14 @@ must use a combination of <code class="docutils literal notranslate"><span class
 <li>Note the inherent limitation of contiguous single dimensional Numpy arrays,
 since the C functions requires this kind of buffer.</li>
 <li>Also note that the output array must be preallocated, for example with
-<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html#numpy.zeros" title="(in NumPy v1.17)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.zeros()</span></code></a> and the function will write into it’s buffer.</li>
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="(in NumPy v1.19)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.zeros()</span></code></a> and the function will write into it’s buffer.</li>
 <li>Although the original signature of the <code class="docutils literal notranslate"><span class="pre">cos_doubles</span></code> function is <code class="docutils literal notranslate"><span class="pre">ARRAY,</span>
 <span class="pre">ARRAY,</span> <span class="pre">int</span></code> the final <code class="docutils literal notranslate"><span class="pre">cos_doubles_func</span></code> takes only two Numpy arrays as
 arguments.</li>
 </ul>
 <p>And, as before, we convince ourselves that it worked:</p>
-<div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">cos_doubles</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
@@ -1007,7 +1007,7 @@ module.</li>
 </div>
 <div class="section" id="id9">
 <h3>2.8.4.2. Numpy Support<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
-<p>Numpy provides <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/swig.html">support for SWIG</a> with the <code class="docutils literal notranslate"><span class="pre">numpy.i</span></code>
+<p>Numpy provides <a class="reference external" href="http://numpy.org/doc/stable/reference/swig.html">support for SWIG</a> with the <code class="docutils literal notranslate"><span class="pre">numpy.i</span></code>
 file. This interface file defines various so-called <em>typemaps</em> which support
 conversion between Numpy arrays and C-Arrays. In the following example we will
 take a quick look at how such typemaps work in practice.</p>
@@ -1108,8 +1108,8 @@ expose the functionality through <code class="docutils literal notranslate"><spa
 <div class="newline"></div></pre></div>
 </div>
 <p>And, as before, we convince ourselves that it worked:</p>
-<div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">cos_doubles</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
@@ -1175,8 +1175,8 @@ overcome by shipping the generated C files)</li>
 <code class="docutils literal notranslate"><span class="pre">cos_func</span></code> is then pure Python.</p>
 <p>Again we can use the standard <code class="docutils literal notranslate"><span class="pre">distutils</span></code> module, but this time we need some
 additional pieces from the <code class="docutils literal notranslate"><span class="pre">Cython.Distutils</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">Cython.Distutils</span> <span class="kn">import</span> <span class="n">build_ext</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="k">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">Cython.Distutils</span> <span class="k">import</span> <span class="n">build_ext</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">setup</span><span class="p">(</span>
 <div class="newline"></div>    <span class="n">cmdclass</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;build_ext&#39;</span><span class="p">:</span> <span class="n">build_ext</span><span class="p">},</span>
@@ -1341,8 +1341,8 @@ function using Cython.</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>And, as before, we convince ourselves that it worked:</p>
-<div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">cos_doubles</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
@@ -1447,7 +1447,7 @@ various solutions</li>
 the second is the preallocated output array, making it similar to the other Numpy examples.</li>
 <li>Modify the example such that the function only takes a single input array
 and modifies this in place.</li>
-<li>Try to fix the example to use the new <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/c-api.iterator.html">Numpy iterator protocol</a>. If you
+<li>Try to fix the example to use the new <a class="reference external" href="http://numpy.org/doc/stable/reference/c-api/iterator.html">Numpy iterator protocol</a>. If you
 manage to obtain a working solution, please submit a pull-request on github.</li>
 <li>You may have noticed, that the Numpy-C-API example is the only Numpy example
 that does not wrap <code class="docutils literal notranslate"><span class="pre">cos_doubles</span></code> but instead applies the <code class="docutils literal notranslate"><span class="pre">cos</span></code> function

@@ -169,20 +169,20 @@ $(function () {
 <span id="sphx-glr-advanced-image-processing-auto-examples-plot-face-tv-denoise-py"></span><h1>2.6.8.18. Total Variation denoising<a class="headerlink" href="#total-variation-denoising" title="Permalink to this headline">¶</a></h1>
 <p>This example demoes Total-Variation (TV) denoising on a Racoon face.</p>
 <img alt="../../../_images/sphx_glr_plot_face_tv_denoise_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_face_tv_denoise_001.png" />
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">scipy</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">scipy.misc</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="k">try</span><span class="p">:</span>
 <div class="newline"></div>    <span class="kn">from</span> <span class="nn">skimage.restoration</span> <span class="kn">import</span> <span class="n">denoise_tv_chambolle</span>
 <div class="newline"></div><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 <div class="newline"></div>    <span class="c1"># skimage &lt; 0.12</span>
 <div class="newline"></div>    <span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="kn">import</span> <span class="n">denoise_tv_chambolle</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">f</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">scipy</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">face</span></a><span class="p">(</span><span class="n">gray</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="newline"></div><span class="n">f</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">scipy</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">face</span></a><span class="p">(</span><span class="n">gray</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <div class="newline"></div><span class="n">f</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="mi">230</span><span class="p">:</span><span class="mi">290</span><span class="p">,</span> <span class="mi">220</span><span class="p">:</span><span class="mi">320</span><span class="p">]</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">noisy</span> <span class="o">=</span> <span class="n">f</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">f</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="newline"></div><span class="n">noisy</span> <span class="o">=</span> <span class="n">f</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">f</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">*</span><a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.random.html#numpy.random.random" title="View documentation for numpy.random.random"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span></a><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">tv_denoised</span> <span class="o">=</span> <span class="n">denoise_tv_chambolle</span><span class="p">(</span><span class="n">noisy</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <div class="newline"></div>
@@ -209,7 +209,7 @@ $(function () {
 <div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.336 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.364 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-advanced-image-processing-auto-examples-plot-face-tv-denoise-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_face_tv_denoise.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_face_tv_denoise.py</span></code></a></div>

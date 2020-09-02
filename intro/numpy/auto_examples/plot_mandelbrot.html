@@ -170,24 +170,28 @@ $(function () {
 <span id="sphx-glr-intro-numpy-auto-examples-plot-mandelbrot-py"></span><h1>Mandelbrot set<a class="headerlink" href="#mandelbrot-set" title="Permalink to this headline">¶</a></h1>
 <p>Compute the Mandelbrot fractal and plot it</p>
 <img alt="../../../_images/sphx_glr_plot_mandelbrot_001.png" class="sphx-glr-single-img" src="../../../_images/sphx_glr_plot_mandelbrot_001.png" />
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <a href="https://docs.scipy.org/doc/numpy/reference/constants.html#numpy.newaxis" title="View documentation for numpy.newaxis"><span class="n">newaxis</span></a>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <a href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="View documentation for numpy.newaxis"><span class="n">newaxis</span></a>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">def</span> <span class="nf">compute_mandelbrot</span><span class="p">(</span><span class="n">N_max</span><span class="p">,</span> <span class="n">some_threshold</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">):</span>
 <div class="newline"></div>    <span class="c1"># A grid of c-values</span>
-<div class="newline"></div>    <span class="n">x</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">y</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">x</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">y</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="n">c</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span><a href="https://docs.scipy.org/doc/numpy/reference/constants.html#numpy.newaxis" title="View documentation for numpy.newaxis"><span class="n">newaxis</span></a><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><a href="https://docs.scipy.org/doc/numpy/reference/constants.html#numpy.newaxis" title="View documentation for numpy.newaxis"><span class="n">newaxis</span></a><span class="p">,:]</span>
+<div class="newline"></div>    <span class="n">c</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span><a href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="View documentation for numpy.newaxis"><span class="n">newaxis</span></a><span class="p">]</span> <span class="o">+</span> <span class="mi">1j</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><a href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="View documentation for numpy.newaxis"><span class="n">newaxis</span></a><span class="p">,:]</span>
 <div class="newline"></div>
 <div class="newline"></div>    <span class="c1"># Mandelbrot iteration</span>
 <div class="newline"></div>
 <div class="newline"></div>    <span class="n">z</span> <span class="o">=</span> <span class="n">c</span>
-<div class="newline"></div>    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_max</span><span class="p">):</span>
-<div class="newline"></div>        <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">c</span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="n">mandelbrot_set</span> <span class="o">=</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">some_threshold</span><span class="p">)</span>
+<div class="newline"></div>    <span class="c1"># The code below overflows in many regions of the x-y grid, suppress</span>
+<div class="newline"></div>    <span class="c1"># warnings temporarily</span>
+<div class="newline"></div>    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+<div class="newline"></div>        <span class="n">np</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<div class="newline"></div>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_max</span><span class="p">):</span>
+<div class="newline"></div>            <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">c</span>
+<div class="newline"></div>        <span class="n">mandelbrot_set</span> <span class="o">=</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">some_threshold</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div>    <span class="k">return</span> <span class="n">mandelbrot_set</span>
 <div class="newline"></div>
@@ -198,7 +202,7 @@ $(function () {
 <div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.103 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.112 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-intro-numpy-auto-examples-plot-mandelbrot-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_mandelbrot.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_mandelbrot.py</span></code></a></div>

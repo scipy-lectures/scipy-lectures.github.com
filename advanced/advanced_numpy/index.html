@@ -211,11 +211,11 @@ wrap any data in an ndarray, without unnecessary copies.</li>
 <li><a class="reference internal" href="#array-interface-protocol" id="id18">Array interface protocol</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#array-siblings-chararray-maskedarray-matrix" id="id19">Array siblings: <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">maskedarray</span></code>, <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a></a><ul>
-<li><a class="reference internal" href="#chararray-vectorized-string-operations" id="id20"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>: vectorized string operations</a></li>
+<li><a class="reference internal" href="#array-siblings-chararray-maskedarray-matrix" id="id19">Array siblings: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">maskedarray</span></code>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a></a><ul>
+<li><a class="reference internal" href="#chararray-vectorized-string-operations" id="id20"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>: vectorized string operations</a></li>
 <li><a class="reference internal" href="#masked-array-missing-data" id="id21"><code class="xref py py-class docutils literal notranslate"><span class="pre">masked_array</span></code> missing data</a></li>
-<li><a class="reference internal" href="#recarray-purely-convenience" id="id22"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.recarray.html#numpy.recarray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">recarray</span></code></a>: purely convenience</a></li>
-<li><a class="reference internal" href="#matrix-convenience" id="id23"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a>: convenience?</a></li>
+<li><a class="reference internal" href="#recarray-purely-convenience" id="id22"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.recarray.html#numpy.recarray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">recarray</span></code></a>: purely convenience</a></li>
+<li><a class="reference internal" href="#matrix-convenience" id="id23"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a>: convenience?</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#summary" id="id24">Summary</a></li>
@@ -296,7 +296,7 @@ wrap any data in an ndarray, without unnecessary copies.</li>
 <div class="newline"></div><span class="go"> &#39;version&#39;: 3}</span>
 <div class="newline"></div></pre></div>
 </div>
-<p>Reminder: two <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarrays</span></code></a> may share the same memory:</p>
+<p>Reminder: two <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarrays</span></code></a> may share the same memory:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9</span>
@@ -304,7 +304,7 @@ wrap any data in an ndarray, without unnecessary copies.</li>
 <div class="newline"></div><span class="go">array([9, 2, 3])</span>
 <div class="newline"></div></pre></div>
 </div>
-<p>Memory does not need to be owned by an <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>:</p>
+<p>Memory does not need to be owned by an <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;1234&#39;</span>      <span class="c1"># The &#39;b&#39; is for &quot;bytes&quot;, necessary in Python 3</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -328,12 +328,16 @@ array of ints:</p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">owndata</span></code> and <code class="docutils literal notranslate"><span class="pre">writeable</span></code> flags indicate status of the memory
 block.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://numpy.org/doc/stable/reference/arrays.interface.html">array interface</a></p>
+</div>
 </div>
 <div class="section" id="data-types">
 <h3><a class="toc-backref" href="#id6">2.2.1.3. Data types</a><a class="headerlink" href="#data-types" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="the-descriptor">
 <h4>The descriptor<a class="headerlink" href="#the-descriptor" title="Permalink to this headline">¶</a></h4>
-<p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code></a> describes a single item in the array:</p>
+<p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code></a> describes a single item in the array:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="10%" />
@@ -557,7 +561,7 @@ etc. for loading sound data…</p>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Exact rules: see <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/ufuncs.html#casting-rules">numpy documentation</a></p>
+<p class="last">Exact rules: see <a class="reference external" href="http://numpy.org/doc/stable/reference/ufuncs.html#casting-rules">numpy documentation</a></p>
 </div>
 </div>
 <div class="section" id="re-interpretation-viewing">
@@ -752,8 +756,8 @@ without copying data?</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
 <div class="newline"></div><span class="gp">... </span>              <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
 <div class="newline"></div><span class="gp">... </span>              <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>  
-<div class="newline"></div><span class="go">&#39;\x01\x02\x03\x04\x05\x06\x07\x08\t&#39;</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="go">b&#39;\x01\x02\x03\x04\x05\x06\x07\x08\t&#39;</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="go">At which byte in ``x.data`` does the item ``x[1, 2]`` begin?</span>
 <div class="newline"></div></pre></div>
@@ -778,12 +782,19 @@ without copying data?</p>
 </div>
 <div class="section" id="c-and-fortran-order">
 <h5>C and Fortran order<a class="headerlink" href="#c-and-fortran-order" title="Permalink to this headline">¶</a></h5>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Python built-in <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> returns bytes in C-order by default
+which can cause confusion when trying to inspect memory layout. We use
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.tobytes.html#numpy.ndarray.tobytes" title="(in NumPy v1.19)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">numpy.ndarray.tobytes()</span></code></a> with <code class="docutils literal notranslate"><span class="pre">order=A</span></code> instead, which preserves
+the C or F ordering of the bytes in memory.</p>
+</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
 <div class="newline"></div><span class="gp">... </span>              <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">strides</span>
 <div class="newline"></div><span class="go">(6, 2)</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>  
-<div class="newline"></div><span class="go">&#39;\x01\x00\x02\x00\x03\x00\x04\x00\x05\x00\x06\x00&#39;</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="go">b&#39;\x01\x00\x02\x00\x03\x00\x04\x00\x05\x00\x06\x00&#39;</span>
 <div class="newline"></div></pre></div>
 </div>
 <ul class="simple">
@@ -793,8 +804,8 @@ without copying data?</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">strides</span>
 <div class="newline"></div><span class="go">(2, 4)</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>  
-<div class="newline"></div><span class="go">&#39;\x01\x00\x04\x00\x02\x00\x05\x00\x03\x00\x06\x00&#39;</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="go">b&#39;\x01\x00\x04\x00\x02\x00\x05\x00\x03\x00\x06\x00&#39;</span>
 <div class="newline"></div></pre></div>
 </div>
 <ul class="simple">
@@ -808,13 +819,13 @@ without copying data?</p>
 <li>F: first dimensions vary fastest</li>
 </ul>
 <div class="math">
-<p><span class="math">\mathrm{shape} &amp;= (d_1, d_2, ..., d_n)
+<p><img src="../../_images/math/225b2f8b68f83995c7478d095744145e65c42e71.png" alt="\mathrm{shape} &amp;= (d_1, d_2, ..., d_n)
 \\
 \mathrm{strides} &amp;= (s_1, s_2, ..., s_n)
 \\
 s_j^C &amp;= d_{j+1} d_{j+2} ... d_{n} \times \mathrm{itemsize}
 \\
-s_j^F &amp;= d_{1} d_{2} ... d_{j-1} \times \mathrm{itemsize}</span></p>
+s_j^F &amp;= d_{1} d_{2} ... d_{j-1} \times \mathrm{itemsize}"/></p>
 </div></li>
 </ul>
 <div class="admonition note">
@@ -831,16 +842,29 @@ s_j^F &amp;= d_{1} d_{2} ... d_{j-1} \times \mathrm{itemsize}</span></p>
 <div class="newline"></div><span class="go">(1, 2)</span>
 <div class="newline"></div></pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>  
-<div class="newline"></div><span class="go">&#39;\x01\x02\x03\x04&#39;</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>  
-<div class="newline"></div><span class="go">&#39;\x01\x03\x02\x04&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="go">b&#39;\x01\x02\x03\x04&#39;</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="go">b&#39;\x01\x03\x02\x04&#39;</span>
 <div class="newline"></div></pre></div>
 </div>
 <ul class="last simple">
 <li>the results are different when interpreted as 2 of int16</li>
 <li><code class="docutils literal notranslate"><span class="pre">.copy()</span></code> creates new arrays in the C order (by default)</li>
 </ul>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><strong>In-place operations with views</strong></p>
+<p class="last">Prior to NumPy version 1.13, in-place operations with views could result in
+<strong>incorrect</strong> results for large arrays.
+Since <a class="reference external" href="https://numpy.org/doc/stable/release/1.13.0-notes.html" title="(in NumPy v1.19)"><span class="xref std std-doc">version 1.13</span></a>,
+NumPy includes checks for <em>memory overlap</em> to
+guarantee that results are consistent with the non in-place version
+(e.g. <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">a.T</span></code> produces the same result as <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">+=</span> <span class="pre">a.T</span></code>).
+Note however that this may result in the data being copied (as if using
+<code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">+=</span> <span class="pre">a.T.copy()</span></code>), ultimately resulting in more memory being used than
+might otherwise be expected for in-place operations!</p>
 </div>
 </div>
 <div class="section" id="slicing-with-integers">
@@ -888,8 +912,8 @@ strides:</p>
 <div class="newline"></div></pre></div>
 </div>
 <p>So far, so good. However:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>  
-<div class="newline"></div><span class="go">&#39;\x00\x01\x02\x03\x04\x05&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bytes</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<div class="newline"></div><span class="go">b&#39;\x00\x01\x02\x03\x04\x05&#39;</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
 <div class="newline"></div><span class="go">array([[0, 2, 4],</span>
 <div class="newline"></div><span class="go">       [1, 3, 5]], dtype=int8)</span>
@@ -906,7 +930,7 @@ operation needs to make a copy here.</p>
 <div class="section" id="example-fake-dimensions-with-strides">
 <span id="stride-manipulation-label"></span><h4>Example: fake dimensions with strides<a class="headerlink" href="#example-fake-dimensions-with-strides" title="Permalink to this headline">¶</a></h4>
 <p class="rubric">Stride manipulation</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="kn">import</span> <span class="n">as_strided</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="k">import</span> <span class="n">as_strided</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">as_strided</span><span class="p">)</span>    
 <div class="newline"></div><span class="go">as_strided(x, shape=None, strides=None)</span>
 <div class="newline"></div><span class="go">   Make an ndarray from the given array with the given shape and strides</span>
@@ -1117,8 +1141,8 @@ would make a copy.</p>
 <ul class="simple">
 <li>CPU pulls data from main memory to its cache in blocks</li>
 <li>If many array items consecutively operated on fit in a single block (small stride):<ul>
-<li><span class="math">\Rightarrow</span> fewer transfers needed</li>
-<li><span class="math">\Rightarrow</span> faster</li>
+<li><img class="math" src="../../_images/math/97e58c1e7a742a4105ca9408b7e8a9bf45658360.png" alt="\Rightarrow"/> fewer transfers needed</li>
+<li><img class="math" src="../../_images/math/97e58c1e7a742a4105ca9408b7e8a9bf45658360.png" alt="\Rightarrow"/> faster</li>
 </ul>
 </li>
 </ul>
@@ -1262,10 +1286,10 @@ pre-made ones</p>
 <h3><a class="toc-backref" href="#id11">2.2.2.2. Exercise: building an ufunc from scratch</a><a class="headerlink" href="#exercise-building-an-ufunc-from-scratch" title="Permalink to this headline">¶</a></h3>
 <p>The Mandelbrot fractal is defined by the iteration</p>
 <div class="math">
-<p><span class="math">z \leftarrow z^2 + c</span></p>
-</div><p>where <span class="math">c = x + i y</span> is a complex number. This iteration is
-repeated – if <span class="math">z</span> stays finite no matter how long the iteration
-runs, <span class="math">c</span> belongs to the Mandelbrot set.</p>
+<p><img src="../../_images/math/f5bbd55c704788a708db0c51577d9bbe2c0473b0.png" alt="z \leftarrow z^2 + c"/></p>
+</div><p>where <img class="math" src="../../_images/math/6065ef854df8ec4527976efe49d0e1454b1f2fd7.png" alt="c = x + i y"/> is a complex number. This iteration is
+repeated – if <img class="math" src="../../_images/math/683f2dd9129a91d21aaf1c04afa6f78b39d4cb0a.png" alt="z"/> stays finite no matter how long the iteration
+runs, <img class="math" src="../../_images/math/ae12a24f88803b5895632e4848d87d46483c492c.png" alt="c"/> belongs to the Mandelbrot set.</p>
 <ul>
 <li><p class="first">Make ufunc called <code class="docutils literal notranslate"><span class="pre">mandel(z0,</span> <span class="pre">c)</span></code> that computes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="n">z0</span>
@@ -1366,11 +1390,11 @@ Use it to determine which <cite>c</cite> are in the Mandelbrot set.</p>
 <div class="newline"></div><span class="c1"># Pulls definitions from the Numpy C headers.</span>
 <div class="newline"></div><span class="c1"># -------------------------------------------</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="n">cimport</span> <span class="n">import_array</span><span class="p">,</span> <span class="n">import_ufunc</span> 
-<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="n">cimport</span> <span class="p">(</span><span class="n">PyUFunc_FromFuncAndData</span><span class="p">,</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="nn">cimport</span> <span class="nn">import_array</span><span class="p">,</span> <span class="n">import_ufunc</span> 
+<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="nn">cimport</span> <span class="p">(</span><span class="n">PyUFunc_FromFuncAndData</span><span class="p">,</span>
 <div class="newline"></div>                    <span class="n">PyUFuncGenericFunction</span><span class="p">)</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="n">cimport</span> <span class="n">NPY_CDOUBLE</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="n">cimport</span> <span class="n">PyUFunc_DD_D</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="nn">cimport</span> <span class="nn">NPY_CDOUBLE</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="nn">cimport</span> <span class="nn">PyUFunc_DD_D</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Required module initialization</span>
 <div class="newline"></div><span class="c1"># ------------------------------</span>
@@ -1416,14 +1440,14 @@ Use it to determine which <cite>c</cite> are in the Mandelbrot set.</p>
 <div class="newline"></div>
 <div class="newline"></div><span class="sd">&quot;&quot;&quot;</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">mandel</span>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<div class="newline"></div><span class="n">c</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="kc">None</span><span class="p">,:]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">y</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span>
+<div class="newline"></div><span class="n">c</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="bp">None</span><span class="p">,:]</span> <span class="o">+</span> <span class="mi">1j</span><span class="o">*</span><span class="n">y</span><span class="p">[:,</span><span class="bp">None</span><span class="p">]</span>
 <div class="newline"></div><span class="n">z</span> <span class="o">=</span> <span class="n">mandel</span><span class="o">.</span><span class="n">mandel</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">])</span>
 <div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">gray</span><span class="p">()</span>
 <div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1611,7 +1635,7 @@ Imaging Library):</p>
 <p class="first admonition-title">See also</p>
 <p class="last">pilbuffer.py</p>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">]</span> <span class="c1"># Red</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c1"># In PIL, RGBA images consist of 32-bit integers whose bytes are [RR,GG,BB,AA]</span>
@@ -1634,7 +1658,7 @@ Imaging Library):</p>
 <div class="newline"></div><span class="sd">the buffer interface.</span>
 <div class="newline"></div><span class="sd">&quot;&quot;&quot;</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">Image</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Let&#39;s make a sample image, RGBA format</span>
@@ -1674,7 +1698,7 @@ Imaging Library):</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last">Documentation:
-<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/arrays.interface.html">http://docs.scipy.org/doc/numpy/reference/arrays.interface.html</a></p>
+<a class="reference external" href="http://numpy.org/doc/stable/reference/arrays.interface.html">http://numpy.org/doc/stable/reference/arrays.interface.html</a></p>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">__array_interface__</span>   
@@ -1689,7 +1713,7 @@ Imaging Library):</p>
 </div>
 <dl class="docutils">
 <dt>::</dt>
-<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;data/test.png&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="o">.</span><span class="n">__array_interface__</span>     
 <div class="newline"></div><span class="go">{&#39;data&#39;: ...,</span>
@@ -1709,9 +1733,9 @@ Imaging Library):</p>
 </div>
 </div>
 <div class="section" id="array-siblings-chararray-maskedarray-matrix">
-<span id="array-siblings"></span><h2><a class="toc-backref" href="#id19">2.2.4. Array siblings: <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">maskedarray</span></code>, <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a></a><a class="headerlink" href="#array-siblings-chararray-maskedarray-matrix" title="Permalink to this headline">¶</a></h2>
+<span id="array-siblings"></span><h2><a class="toc-backref" href="#id19">2.2.4. Array siblings: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">maskedarray</span></code>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a></a><a class="headerlink" href="#array-siblings-chararray-maskedarray-matrix" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="chararray-vectorized-string-operations">
-<h3><a class="toc-backref" href="#id20">2.2.4.1. <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>: vectorized string operations</a><a class="headerlink" href="#chararray-vectorized-string-operations" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id20">2.2.4.1. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>: vectorized string operations</a><a class="headerlink" href="#chararray-vectorized-string-operations" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;  bbb&#39;</span><span class="p">,</span> <span class="s1">&#39;  ccc&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">chararray</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>       
 <div class="newline"></div><span class="go">chararray([&#39;a&#39;, &#39;bbb&#39;, &#39;ccc&#39;],</span>
@@ -1850,7 +1874,7 @@ time, ignoring the invalid numbers.</p>
 </div>
 </div>
 <div class="section" id="recarray-purely-convenience">
-<h3><a class="toc-backref" href="#id22">2.2.4.3. <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.recarray.html#numpy.recarray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">recarray</span></code></a>: purely convenience</a><a class="headerlink" href="#recarray-purely-convenience" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id22">2.2.4.3. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.recarray.html#numpy.recarray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">recarray</span></code></a>: purely convenience</a><a class="headerlink" href="#recarray-purely-convenience" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;S1&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)])</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">arr2</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">arr2</span><span class="o">.</span><span class="n">x</span>       
@@ -1862,7 +1886,7 @@ time, ignoring the invalid numbers.</p>
 </div>
 </div>
 <div class="section" id="matrix-convenience">
-<h3><a class="toc-backref" href="#id23">2.2.4.4. <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a>: convenience?</a><a class="headerlink" href="#matrix-convenience" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id23">2.2.4.4. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a>: convenience?</a><a class="headerlink" href="#matrix-convenience" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>always 2-D</li>
 <li><code class="docutils literal notranslate"><span class="pre">*</span></code> is the matrix product, not the elementwise one</li>

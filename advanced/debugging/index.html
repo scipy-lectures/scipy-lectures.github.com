@@ -726,7 +726,7 @@ simplified version in <a class="reference download internal" href="../../_downlo
 script in gdb as follows</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> gdb python
 <div class="newline"></div><span class="go">...</span>
-<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">run segfault.py</span>
+<div class="newline"></div><span class="go">(gdb) run segfault.py</span>
 <div class="newline"></div><span class="go">Starting program: /usr/bin/python segfault.py</span>
 <div class="newline"></div><span class="go">[Thread debugging using libthread_db enabled]</span>
 <div class="newline"></div>
@@ -736,13 +736,13 @@ script in gdb as follows</p>
 <div class="newline"></div><span class="go">    elsize=4)</span>
 <div class="newline"></div><span class="go">        at numpy/core/src/multiarray/ctors.c:365</span>
 <div class="newline"></div><span class="go">365            _FAST_MOVE(Int32);</span>
-<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span>
+<div class="newline"></div><span class="go">(gdb)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>We get a segfault, and gdb captures it for post-mortem debugging in the C
 level stack (not the Python call stack). We can debug the C call stack
 using gdb’s commands:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(gdb) up</span>
 <div class="newline"></div><span class="gp">#</span><span class="m">1</span>  0x004af4f5 in _copy_from_same_shape <span class="o">(</span><span class="nv">dest</span><span class="o">=</span>&lt;value optimized out&gt;,
 <div class="newline"></div><span class="go">    src=&lt;value optimized out&gt;, myfunc=0x496780 &lt;_strided_byte_copy&gt;,</span>
 <div class="newline"></div><span class="go">    swap=0)</span>
@@ -753,38 +753,38 @@ using gdb’s commands:</p>
 <p>As you can see, right now, we are in the C code of numpy. We would like
 to know what is the Python code that triggers this segfault, so we go up
 the stack until we hit the Python execution loop:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(gdb) up</span>
 <div class="newline"></div><span class="gp">#</span><span class="m">8</span>  0x080ddd23 in call_function <span class="o">(</span><span class="nv">f</span><span class="o">=</span>
 <div class="newline"></div><span class="go">    Frame 0x85371ec, for file /home/varoquau/usr/lib/python2.6/site-packages/numpy/core/arrayprint.py, line 156, in _leading_trailing (a=&lt;numpy.ndarray at remote 0x85371b0&gt;, _nc=&lt;module at remote 0xb7f93a64&gt;), throwflag=0)</span>
 <div class="newline"></div><span class="go">    at ../Python/ceval.c:3750</span>
 <div class="newline"></div><span class="go">3750    ../Python/ceval.c: No such file or directory.</span>
 <div class="newline"></div><span class="go">        in ../Python/ceval.c</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
+<div class="newline"></div><span class="go">(gdb) up</span>
 <div class="newline"></div><span class="gp">#</span><span class="m">9</span>  PyEval_EvalFrameEx <span class="o">(</span><span class="nv">f</span><span class="o">=</span>
 <div class="newline"></div><span class="go">    Frame 0x85371ec, for file /home/varoquau/usr/lib/python2.6/site-packages/numpy/core/arrayprint.py, line 156, in _leading_trailing (a=&lt;numpy.ndarray at remote 0x85371b0&gt;, _nc=&lt;module at remote 0xb7f93a64&gt;), throwflag=0)</span>
 <div class="newline"></div><span class="go">    at ../Python/ceval.c:2412</span>
 <div class="newline"></div><span class="go">2412    in ../Python/ceval.c</span>
-<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span>
+<div class="newline"></div><span class="go">(gdb)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Once we are in the Python execution loop, we can use our special Python
 helper function. For instance we can find the corresponding Python code:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">pyframe</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(gdb) pyframe</span>
 <div class="newline"></div><span class="go">/home/varoquau/usr/lib/python2.6/site-packages/numpy/core/arrayprint.py (158): _leading_trailing</span>
-<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span>
+<div class="newline"></div><span class="go">(gdb)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>This is numpy code, we need to go up until we find code that we have
 written:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(gdb) up</span>
 <div class="newline"></div><span class="go">...</span>
-<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
+<div class="newline"></div><span class="go">(gdb) up</span>
 <div class="newline"></div><span class="gp">#</span><span class="m">34</span> 0x080dc97a in PyEval_EvalFrameEx <span class="o">(</span><span class="nv">f</span><span class="o">=</span>
 <div class="newline"></div><span class="go">    Frame 0x82f064c, for file segfault.py, line 11, in print_big_array (small_array=&lt;numpy.ndarray at remote 0x853ecf0&gt;, big_array=&lt;numpy.ndarray at remote 0x853ed20&gt;), throwflag=0) at ../Python/ceval.c:1630</span>
 <div class="newline"></div><span class="go">1630    ../Python/ceval.c: No such file or directory.</span>
 <div class="newline"></div><span class="go">        in ../Python/ceval.c</span>
-<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">pyframe</span>
+<div class="newline"></div><span class="go">(gdb) pyframe</span>
 <div class="newline"></div><span class="go">segfault.py (12): print_big_array</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -827,10 +827,10 @@ but it does not work… Can you debug it?</p>
 <div class="newline"></div><span class="sd">                ridder:   778394 total function calls</span>
 <div class="newline"></div><span class="sd">                bisect:  2148380 total function calls</span>
 <div class="newline"></div><span class="sd">&quot;&quot;&quot;</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">product</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">optimize</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">FUNCTIONS</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">,</span>  <span class="c1"># Dilating map</span>
 <div class="newline"></div>             <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="c1"># Contracting map</span>

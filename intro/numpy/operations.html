@@ -308,24 +308,30 @@ with odd elements</li>
 <div class="newline"></div><span class="go">       [1.,  1.,  0.]])</span>
 <div class="newline"></div></pre></div>
 </div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
 <p><strong>The transposition is a view</strong></p>
-<p>As a result, the following code <strong>is wrong</strong> and will <strong>not make a
-matrix symmetric</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">+=</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span>
+<p>The transpose returns a <em>view</em> of the original array:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">999</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">T</span>
+<div class="newline"></div><span class="go">array([[  0,   3, 999],</span>
+<div class="newline"></div><span class="go">       [  1,   4,   7],</span>
+<div class="newline"></div><span class="go">       [  2,   5,   8]])</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<div class="newline"></div><span class="go">array([[  0,   1,   2],</span>
+<div class="newline"></div><span class="go">       [  3,   4,   5],</span>
+<div class="newline"></div><span class="go">       [999,   7,   8]])</span>
 <div class="newline"></div></pre></div>
 </div>
-<p class="last">It will work for small arrays (because of buffering) but fail for
-large one, in unpredictable ways.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p><strong>Linear algebra</strong></p>
-<p class="last">The sub-module <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/routines.linalg.html#module-numpy.linalg" title="(in NumPy v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy.linalg</span></code></a> implements basic linear algebra, such as
+<p class="last">The sub-module <a class="reference external" href="https://numpy.org/doc/stable/reference/routines.linalg.html#module-numpy.linalg" title="(in NumPy v1.19)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy.linalg</span></code></a> implements basic linear algebra, such as
 solving linear systems, singular value decomposition, etc. However, it is
 not guaranteed to be compiled using efficient routines, and thus we
-recommend the use of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/linalg.html#module-scipy.linalg" title="(in SciPy v1.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.linalg</span></code></a>, as detailed in section
+recommend the use of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/linalg.html#module-scipy.linalg" title="(in SciPy v1.5.2)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.linalg</span></code></a>, as detailed in section
 <a class="reference internal" href="../scipy.html#scipy-linalg"><span class="std std-ref">Linear algebra operations: scipy.linalg</span></a></p>
 </div>
 <div class="green topic">
@@ -395,9 +401,9 @@ recommend the use of <a class="reference external" href="https://docs.scipy.org/
 <div class="newline"></div></pre></div>
 </div>
 <p><strong>Logical operations:</strong></p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
 <div class="newline"></div><span class="go">False</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
 <div class="newline"></div><span class="go">True</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -441,45 +447,6 @@ recommend the use of <a class="reference external" href="https://docs.scipy.org/
 <li>What is the difference between <code class="docutils literal notranslate"><span class="pre">sum</span></code> and <code class="docutils literal notranslate"><span class="pre">cumsum</span></code>?</li>
 </ul>
 </div></blockquote>
-</div>
-<div class="green topic">
-<p class="topic-title first">Worked Example: data statistics</p>
-<p>Data in <a class="reference download internal" href="../../_downloads/populations.txt" download=""><code class="xref download docutils literal notranslate"><span class="pre">populations.txt</span></code></a>
-describes the populations of hares and lynxes (and carrots) in northern
-Canada during 20 years.</p>
-<p>You can view the data in an editor, or alternatively in IPython (both shell and notebook):</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="err">!</span><span class="n">cat</span> <span class="n">data</span><span class="o">/</span><span class="n">populations</span><span class="o">.</span><span class="n">txt</span>
-<div class="newline"></div></pre></div>
-</div>
-<p>First, load the data into a NumPy array:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;data/populations.txt&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">year</span><span class="p">,</span> <span class="n">hares</span><span class="p">,</span> <span class="n">lynxes</span><span class="p">,</span> <span class="n">carrots</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># trick: columns to variables</span>
-<div class="newline"></div></pre></div>
-</div>
-<p>Then plot it:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span> 
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">hares</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">lynxes</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">carrots</span><span class="p">)</span> 
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">((</span><span class="s1">&#39;Hare&#39;</span><span class="p">,</span> <span class="s1">&#39;Lynx&#39;</span><span class="p">,</span> <span class="s1">&#39;Carrot&#39;</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span> 
-<div class="newline"></div></pre></div>
-</div>
-<a class="reference external image-reference" href="auto_examples/plot_populations.html"><img alt="../../_images/sphx_glr_plot_populations_001.png" class="align-center" src="../../_images/sphx_glr_plot_populations_001.png" style="width: 50%;" /></a>
-<p>The mean populations over time:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">populations</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
-<div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">populations</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<div class="newline"></div><span class="go">array([34080.95238095,  20166.66666667,  42400.        ])</span>
-<div class="newline"></div></pre></div>
-</div>
-<p>The sample standard deviations:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">populations</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<div class="newline"></div><span class="go">array([20897.90645809,  16254.59153691,   3322.50622558])</span>
-<div class="newline"></div></pre></div>
-</div>
-<p>Which species has the highest population each year?:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">populations</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<div class="newline"></div><span class="go">array([2, 2, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 1, 2, 2, 2, 2, 2])</span>
-<div class="newline"></div></pre></div>
-</div>
 </div>
 <div class="topic">
 <p class="topic-title first">Worked Example: diffusion using a random walk algorithm</p>
