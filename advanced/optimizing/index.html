@@ -169,13 +169,13 @@ $(function () {
 <p><strong>Author</strong>: <em>Gaël Varoquaux</em></p>
 <p>This chapter deals with strategies to make Python code go faster.</p>
 <div class="topic">
-<p class="topic-title first">Prerequisites</p>
+<p class="topic-title">Prerequisites</p>
 <ul class="simple">
 <li><a class="reference external" href="http://packages.python.org/line_profiler/">line_profiler</a></li>
 </ul>
 </div>
 <div class="contents local topic" id="chapters-contents">
-<p class="topic-title first">Chapters contents</p>
+<p class="topic-title">Chapters contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#optimization-workflow" id="id3">Optimization workflow</a></li>
 <li><a class="reference internal" href="#profiling-python-code" id="id4">Profiling Python code</a><ul>
@@ -215,7 +215,7 @@ with profiling runs lasting around 10s.</li>
 <div class="section" id="profiling-python-code">
 <h2><a class="toc-backref" href="#id4">2.4.2. Profiling Python code</a><a class="headerlink" href="#profiling-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="topic">
-<p class="topic-title first"><strong>No optimization without measuring!</strong></p>
+<p class="topic-title"><strong>No optimization without measuring!</strong></p>
 <ul class="simple">
 <li><strong>Measure:</strong> profiling, timing</li>
 <li>You’ll have surprises: the fastest code is not always what you
@@ -225,7 +225,7 @@ think</li>
 <div class="section" id="timeit">
 <h3><a class="toc-backref" href="#id5">2.4.2.1. Timeit</a><a class="headerlink" href="#timeit" title="Permalink to this headline">¶</a></h3>
 <p>In IPython, use <code class="docutils literal notranslate"><span class="pre">timeit</span></code> (<a class="reference external" href="https://docs.python.org/library/timeit.html">https://docs.python.org/library/timeit.html</a>) to time elementary operations:</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="gp">In [2]: </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 <div class="newline"></div>
@@ -253,9 +253,9 @@ less precise but faster</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># For this example to run, you also need the &#39;ica.py&#39; file</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">linalg</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">ica</span> <span class="k">import</span> <span class="n">fastica</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">ica</span> <span class="kn">import</span> <span class="n">fastica</span>
 <div class="newline"></div>
 <div class="newline"></div>
 <div class="newline"></div><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
@@ -329,11 +329,11 @@ bottleneck. We have to find a way to make this step go faster, or to avoid this
 step (algorithmic optimization). Spending time on the rest of the code is
 useless.</p>
 <div class="topic">
-<p class="topic-title first"><strong>Profiling outside of IPython, running ``cProfile``</strong></p>
+<p class="topic-title"><strong>Profiling outside of IPython, running ``cProfile``</strong></p>
 <p>Similar profiling can be done outside of IPython, simply calling the
 built-in <a class="reference external" href="https://docs.python.org/2/library/profile.html">Python profilers</a> <code class="docutils literal notranslate"><span class="pre">cProfile</span></code> and
 <code class="docutils literal notranslate"><span class="pre">profile</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span>  python -m cProfile -o demo.prof demo.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$  </span>python -m cProfile -o demo.prof demo.py
 <div class="newline"></div></pre></div>
 </div>
 <p>Using the <code class="docutils literal notranslate"><span class="pre">-o</span></code> switch will output the profiler results to the file
@@ -354,11 +354,11 @@ source file, we decorate a few functions that we want to inspect with
 <div class="newline"></div>    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
 <div class="newline"></div>    <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <div class="newline"></div>    <span class="n">pca</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">10</span><span class="p">],</span> <span class="n">data</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">results</span> <span class="o">=</span> <span class="n">fastica</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">results</span> <span class="o">=</span> <span class="n">fastica</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Then we run the script using the <a class="reference external" href="http://packages.python.org/line_profiler">kernprof.py</a> program, with switches <code class="docutils literal notranslate"><span class="pre">-l,</span> <span class="pre">--line-by-line</span></code> and <code class="docutils literal notranslate"><span class="pre">-v,</span> <span class="pre">--view</span></code> to use the line-by-line profiler and view the results in addition to saving them:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> kernprof.py -l -v demo.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kernprof.py -l -v demo.py
 <div class="newline"></div>
 <div class="newline"></div><span class="go">Wrote profile results to demo.py.lprof</span>
 <div class="newline"></div><span class="go">Timer unit: 1e-06 s</span>
@@ -412,10 +412,10 @@ scipy are richer then those in numpy and should be preferred.</p>
 <div class="newline"></div><span class="gp">In [5]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <div class="newline"></div><span class="go">1 loops, best of 3: 14.2 s per loop</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="gp">In [6]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">In [6]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <div class="newline"></div><span class="go">1 loops, best of 3: 295 ms per loop</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="gp">In [7]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="newline"></div><span class="gp">In [7]: </span><span class="o">%</span><span class="n">timeit</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <div class="newline"></div><span class="go">1 loops, best of 3: 293 ms per loop</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -447,7 +447,7 @@ scipy are richer then those in numpy and should be preferred.</p>
 <p>Real incomplete SVDs, e.g. computing only the first 10 eigenvectors, can
 be computed with arpack, available in <code class="docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh</span></code>.</p>
 <div class="topic">
-<p class="topic-title first">Computational linear algebra</p>
+<p class="topic-title">Computational linear algebra</p>
 <p>For certain algorithms, many of the bottlenecks will be linear
 algebra computations. In this case, using the right function to solve
 the right problem is key. For instance, an eigenvalue problem with a
@@ -673,7 +673,7 @@ make new commits to your repository, you could try:
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020,2021,2022.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>

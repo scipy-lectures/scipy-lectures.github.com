@@ -178,13 +178,13 @@ data type, statsmodels is able to automatically infer this.</p>
 <div class="newline"></div><span class="n">data</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html#pandas.read_csv" title="View documentation for pandas.read_csv"><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="s1">&#39;../brain_size.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">model</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.ols.html#statsmodels.formula.api.ols" title="View documentation for statsmodels.formula.api.ols"><span class="n">ols</span></a><span class="p">(</span><span class="s1">&#39;VIQ ~ Gender + MRI_Count + Height&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Here, we don&#39;t need to define a contrast, as we are testing a single</span>
 <div class="newline"></div><span class="c1"># coefficient of our model, and not a combination of coefficients.</span>
 <div class="newline"></div><span class="c1"># However, defining a contrast, which would then be a &#39;unit contrast&#39;,</span>
 <div class="newline"></div><span class="c1"># will give us the same results</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">f_test</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">f_test</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -193,8 +193,8 @@ data type, statsmodels is able to automatically infer this.</p>
 <div class="newline"></div>Dep. Variable:                    VIQ   R-squared:                       0.246
 <div class="newline"></div>Model:                            OLS   Adj. R-squared:                  0.181
 <div class="newline"></div>Method:                 Least Squares   F-statistic:                     3.809
-<div class="newline"></div>Date:                Wed, 02 Sep 2020   Prob (F-statistic):             0.0184
-<div class="newline"></div>Time:                        16:02:38   Log-Likelihood:                -172.34
+<div class="newline"></div>Date:                Thu, 18 Aug 2022   Prob (F-statistic):             0.0184
+<div class="newline"></div>Time:                        10:40:21   Log-Likelihood:                -172.34
 <div class="newline"></div>No. Observations:                  39   AIC:                             352.7
 <div class="newline"></div>Df Residuals:                      35   BIC:                             359.3
 <div class="newline"></div>Df Model:                           3
@@ -217,7 +217,7 @@ data type, statsmodels is able to automatically infer this.</p>
 <div class="newline"></div>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 <div class="newline"></div>[2] The condition number is large, 2.4e+07. This might indicate that there are
 <div class="newline"></div>strong multicollinearity or other numerical problems.
-<div class="newline"></div>&lt;F test: F=array([[0.68319608]]), p=0.4140878441244694, df_denom=35, df_num=1&gt;
+<div class="newline"></div>&lt;F test: F=array([[0.68319608]]), p=0.4140878441244722, df_denom=35, df_num=1&gt;
 <div class="newline"></div></pre></div>
 </div>
 <p>Here we plot a scatter matrix to get intuitions on our results.
@@ -226,10 +226,10 @@ This goes beyond what was asked in the exercise</p>
 <div class="newline"></div><span class="c1"># our different variables</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">pandas.tools</span> <span class="kn">import</span> <span class="n">plotting</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Fill in the missing values for Height for plotting</span>
-<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;pad&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="newline"></div><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;pad&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># The parameter &#39;c&#39; is passed to plt.scatter and will control the color</span>
 <div class="newline"></div><span class="c1"># The same holds for parameters &#39;marker&#39;, &#39;alpha&#39; and &#39;cmap&#39;, that</span>
@@ -239,14 +239,14 @@ This goes beyond what was asked in the exercise</p>
 <div class="newline"></div>                        <span class="n">c</span><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Female&#39;</span><span class="p">),</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
 <div class="newline"></div>                        <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;winter&#39;</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.gcf.html#matplotlib.pyplot.gcf" title="View documentation for matplotlib.pyplot.gcf"><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span></a><span class="p">()</span>
+<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.gcf.html#matplotlib.pyplot.gcf" title="View documentation for matplotlib.pyplot.gcf"><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;blue: male, green: female&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <img alt="../../../../_images/sphx_glr_plot_brain_size_001.png" class="sphx-glr-single-img" src="../../../../_images/sphx_glr_plot_brain_size_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.323 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.328 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-statistics-auto-examples-solutions-plot-brain-size-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../../_downloads/plot_brain_size.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_brain_size.py</span></code></a></div>
@@ -327,7 +327,7 @@ This goes beyond what was asked in the exercise</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020,2021,2022.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>

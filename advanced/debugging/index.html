@@ -168,7 +168,7 @@ debugging, to find and fix bugs.</p>
 <p>It is not specific to the scientific Python community, but the strategies
 that we will employ are tailored to its needs.</p>
 <div class="topic">
-<p class="topic-title first">Prerequisites</p>
+<p class="topic-title">Prerequisites</p>
 <ul class="simple">
 <li>Numpy</li>
 <li>IPython</li>
@@ -178,7 +178,7 @@ that we will employ are tailored to its needs.</p>
 </ul>
 </div>
 <div class="contents local topic" id="chapter-contents">
-<p class="topic-title first">Chapter contents</p>
+<p class="topic-title">Chapter contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#avoiding-bugs" id="id1">Avoiding bugs</a><ul>
 <li><a class="reference internal" href="#coding-best-practices-to-avoid-getting-in-trouble" id="id2">Coding best practices to avoid getting in trouble</a></li>
@@ -388,7 +388,7 @@ allows you to inspect your code interactively.</p>
 </ul>
 </div></blockquote>
 <div class="topic">
-<p class="topic-title first"><strong>print</strong></p>
+<p class="topic-title"><strong>print</strong></p>
 <p>Yes, <code class="docutils literal notranslate"><span class="pre">print</span></code> statements do work as a debugging tool. However to
 inspect runtime, it is often more efficient to use the debugger.</p>
 </div>
@@ -404,7 +404,7 @@ inspect runtime, it is often more efficient to use the debugger.</p>
 <h4>Postmortem<a class="headerlink" href="#postmortem" title="Permalink to this headline">¶</a></h4>
 <p><strong>Situation</strong>: You’re working in IPython and you get a traceback.</p>
 <p>Here we debug the file <a class="reference download internal" href="../../_downloads/index_error.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">index_error.py</span></code></a>. When running it, an
-<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#IndexError" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndexError</span></code></a> is raised. Type <code class="docutils literal notranslate"><span class="pre">%debug</span></code> and drop into the debugger.</p>
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#IndexError" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndexError</span></code></a> is raised. Type <code class="docutils literal notranslate"><span class="pre">%debug</span></code> and drop into the debugger.</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="o">%</span><span class="n">run</span> <span class="n">index_error</span><span class="o">.</span><span class="n">py</span>
 <div class="newline"></div><span class="go">---------------------------------------------------------------------------</span>
 <div class="newline"></div><span class="go">IndexError                                Traceback (most recent call last)</span>
@@ -450,7 +450,7 @@ inspect runtime, it is often more efficient to use the debugger.</p>
 <div class="newline"></div></pre></div>
 </div>
 <div class="topic">
-<p class="topic-title first">Post-mortem debugging without IPython</p>
+<p class="topic-title">Post-mortem debugging without IPython</p>
 <p>In some situations you cannot use IPython, for instance to debug a
 script that wants to be called from the command line. In this case,
 you can call the script with <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pdb</span> <span class="pre">script.py</span></code>:</p>
@@ -559,7 +559,7 @@ execution contexts, i.e. enable exploring inside function calls:</p>
 <p>Oh dear, nothing but integers, and 0 variation. Here is our bug, we are
 doing integer arithmetic.</p>
 <div class="topic">
-<p class="topic-title first">Raising exception on numerical errors</p>
+<p class="topic-title">Raising exception on numerical errors</p>
 <p>When we run the <a class="reference download internal" href="../../_downloads/wiener_filtering.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">wiener_filtering.py</span></code></a> file, the following
 warnings are raised:</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [2]: </span><span class="o">%</span><span class="n">run</span> <span class="n">wiener_filtering</span><span class="o">.</span><span class="n">py</span>
@@ -630,7 +630,7 @@ that the debugger does not work. Simply run the nosetests with the <code class="
 flag.</p>
 </div>
 <div class="topic">
-<p class="topic-title first">Graphical debuggers and alternatives</p>
+<p class="topic-title">Graphical debuggers and alternatives</p>
 <ul class="simple">
 <li><a class="reference external" href="http://pypi.python.org/pypi/pudb">pudb</a> is a good semi-graphical
 debugger with a text user interface in the console.</li>
@@ -724,9 +724,9 @@ simplified version in <a class="reference download internal" href="../../_downlo
 <a class="reference external" href="http://wiki.python.org/moin/DebuggingWithGdb">DebuggingWithGdb</a>.</p>
 <p>To debug with gdb the Python script <a class="reference download internal" href="../../_downloads/segfault.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">segfault.py</span></code></a>, we can run the
 script in gdb as follows</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> gdb python
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>gdb python
 <div class="newline"></div><span class="go">...</span>
-<div class="newline"></div><span class="go">(gdb) run segfault.py</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">run segfault.py</span>
 <div class="newline"></div><span class="go">Starting program: /usr/bin/python segfault.py</span>
 <div class="newline"></div><span class="go">[Thread debugging using libthread_db enabled]</span>
 <div class="newline"></div>
@@ -736,14 +736,14 @@ script in gdb as follows</p>
 <div class="newline"></div><span class="go">    elsize=4)</span>
 <div class="newline"></div><span class="go">        at numpy/core/src/multiarray/ctors.c:365</span>
 <div class="newline"></div><span class="go">365            _FAST_MOVE(Int32);</span>
-<div class="newline"></div><span class="go">(gdb)</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>We get a segfault, and gdb captures it for post-mortem debugging in the C
 level stack (not the Python call stack). We can debug the C call stack
 using gdb’s commands:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(gdb) up</span>
-<div class="newline"></div><span class="gp">#</span><span class="m">1</span>  0x004af4f5 in _copy_from_same_shape <span class="o">(</span><span class="nv">dest</span><span class="o">=</span>&lt;value optimized out&gt;,
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
+<div class="newline"></div><span class="gp">#</span><span class="m">1</span>  0x004af4f5 <span class="k">in</span> _copy_from_same_shape <span class="o">(</span><span class="nv">dest</span><span class="o">=</span>&lt;value optimized out&gt;,
 <div class="newline"></div><span class="go">    src=&lt;value optimized out&gt;, myfunc=0x496780 &lt;_strided_byte_copy&gt;,</span>
 <div class="newline"></div><span class="go">    swap=0)</span>
 <div class="newline"></div><span class="go">at numpy/core/src/multiarray/ctors.c:748</span>
@@ -753,38 +753,38 @@ using gdb’s commands:</p>
 <p>As you can see, right now, we are in the C code of numpy. We would like
 to know what is the Python code that triggers this segfault, so we go up
 the stack until we hit the Python execution loop:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(gdb) up</span>
-<div class="newline"></div><span class="gp">#</span><span class="m">8</span>  0x080ddd23 in call_function <span class="o">(</span><span class="nv">f</span><span class="o">=</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
+<div class="newline"></div><span class="gp">#</span><span class="m">8</span>  0x080ddd23 <span class="k">in</span> call_function <span class="o">(</span><span class="nv">f</span><span class="o">=</span>
 <div class="newline"></div><span class="go">    Frame 0x85371ec, for file /home/varoquau/usr/lib/python2.6/site-packages/numpy/core/arrayprint.py, line 156, in _leading_trailing (a=&lt;numpy.ndarray at remote 0x85371b0&gt;, _nc=&lt;module at remote 0xb7f93a64&gt;), throwflag=0)</span>
 <div class="newline"></div><span class="go">    at ../Python/ceval.c:3750</span>
 <div class="newline"></div><span class="go">3750    ../Python/ceval.c: No such file or directory.</span>
 <div class="newline"></div><span class="go">        in ../Python/ceval.c</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="go">(gdb) up</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
 <div class="newline"></div><span class="gp">#</span><span class="m">9</span>  PyEval_EvalFrameEx <span class="o">(</span><span class="nv">f</span><span class="o">=</span>
 <div class="newline"></div><span class="go">    Frame 0x85371ec, for file /home/varoquau/usr/lib/python2.6/site-packages/numpy/core/arrayprint.py, line 156, in _leading_trailing (a=&lt;numpy.ndarray at remote 0x85371b0&gt;, _nc=&lt;module at remote 0xb7f93a64&gt;), throwflag=0)</span>
 <div class="newline"></div><span class="go">    at ../Python/ceval.c:2412</span>
 <div class="newline"></div><span class="go">2412    in ../Python/ceval.c</span>
-<div class="newline"></div><span class="go">(gdb)</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>Once we are in the Python execution loop, we can use our special Python
 helper function. For instance we can find the corresponding Python code:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(gdb) pyframe</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">pyframe</span>
 <div class="newline"></div><span class="go">/home/varoquau/usr/lib/python2.6/site-packages/numpy/core/arrayprint.py (158): _leading_trailing</span>
-<div class="newline"></div><span class="go">(gdb)</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>This is numpy code, we need to go up until we find code that we have
 written:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">(gdb) up</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
 <div class="newline"></div><span class="go">...</span>
-<div class="newline"></div><span class="go">(gdb) up</span>
-<div class="newline"></div><span class="gp">#</span><span class="m">34</span> 0x080dc97a in PyEval_EvalFrameEx <span class="o">(</span><span class="nv">f</span><span class="o">=</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">up</span>
+<div class="newline"></div><span class="gp">#</span><span class="m">34</span> 0x080dc97a <span class="k">in</span> PyEval_EvalFrameEx <span class="o">(</span><span class="nv">f</span><span class="o">=</span>
 <div class="newline"></div><span class="go">    Frame 0x82f064c, for file segfault.py, line 11, in print_big_array (small_array=&lt;numpy.ndarray at remote 0x853ecf0&gt;, big_array=&lt;numpy.ndarray at remote 0x853ed20&gt;), throwflag=0) at ../Python/ceval.c:1630</span>
 <div class="newline"></div><span class="go">1630    ../Python/ceval.c: No such file or directory.</span>
 <div class="newline"></div><span class="go">        in ../Python/ceval.c</span>
-<div class="newline"></div><span class="go">(gdb) pyframe</span>
+<div class="newline"></div><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">pyframe</span>
 <div class="newline"></div><span class="go">segfault.py (12): print_big_array</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -808,7 +808,7 @@ the source of this file.</p>
 </div>
 <hr class="docutils" />
 <div class="green topic">
-<p class="topic-title first"><strong>Wrap up exercise</strong></p>
+<p class="topic-title"><strong>Wrap up exercise</strong></p>
 <p>The following script is well documented and hopefully legible. It
 seeks to answer a problem of actual interest for numerical computing,
 but it does not work… Can you debug it?</p>
@@ -827,10 +827,10 @@ but it does not work… Can you debug it?</p>
 <div class="newline"></div><span class="sd">                ridder:   778394 total function calls</span>
 <div class="newline"></div><span class="sd">                bisect:  2148380 total function calls</span>
 <div class="newline"></div><span class="sd">&quot;&quot;&quot;</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">product</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">optimize</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">FUNCTIONS</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">,</span>  <span class="c1"># Dilating map</span>
 <div class="newline"></div>             <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="c1"># Contracting map</span>
@@ -864,7 +864,7 @@ but it does not work… Can you debug it?</p>
 <div class="newline"></div><span class="sd">        lower bounds.</span>
 <div class="newline"></div><span class="sd">    &quot;&quot;&quot;</span>
 <div class="newline"></div>    <span class="n">random_a</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.3</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<div class="newline"></div>    <span class="n">random_b</span> <span class="o">=</span>   <span class="o">.</span><span class="mi">3</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class="newline"></div>    <span class="n">random_b</span> <span class="o">=</span>   <span class="mf">.3</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <div class="newline"></div>    <span class="n">param_grid</span> <span class="o">=</span> <span class="n">product</span><span class="p">(</span><span class="n">FUNCTIONS</span><span class="p">,</span> <span class="n">random_a</span><span class="p">,</span> <span class="n">random_b</span><span class="p">)</span>
 <div class="newline"></div>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Benching 1D root-finder optimizers from scipy.optimize:&quot;</span><span class="p">)</span>
 <div class="newline"></div>    <span class="k">for</span> <span class="n">optimizer</span> <span class="ow">in</span> <span class="n">OPTIMIZERS</span><span class="p">:</span>
@@ -983,7 +983,7 @@ but it does not work… Can you debug it?</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020,2021,2022.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>

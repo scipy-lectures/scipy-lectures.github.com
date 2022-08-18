@@ -172,7 +172,7 @@ for your specific needs. In any case, once you do start wrapping, you
 almost certainly will want to consult the respective documentation for
 your selected technique.</p>
 <div class="contents local topic" id="chapters-contents">
-<p class="topic-title first">Chapters contents</p>
+<p class="topic-title">Chapters contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#introduction" id="id19">Introduction</a></li>
 <li><a class="reference internal" href="#id1" id="id20">Python-C-Api</a></li>
@@ -273,64 +273,64 @@ which can help discover common errors with reference counting.</p>
 <h3>2.8.2.1. Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
 <p>The following C-extension module, make the <code class="docutils literal notranslate"><span class="pre">cos</span></code> function from the standard
 math library available to Python:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*  Example of wrapping cos function from math.h with the Python-C-API. */</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*  Example of wrapping cos function from math.h with the Python-C-API. */</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
-<div class="newline"></div><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<div class="newline"></div><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
+<div class="newline"></div><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="cm">/*  wrapped cosine function */</span>
-<div class="newline"></div><span class="k">static</span> <span class="n">PyObject</span><span class="o">*</span> <span class="nf">cos_func</span><span class="p">(</span><span class="n">PyObject</span><span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span><span class="o">*</span> <span class="n">args</span><span class="p">)</span>
-<div class="newline"></div><span class="p">{</span>
-<div class="newline"></div>    <span class="kt">double</span> <span class="n">value</span><span class="p">;</span>
-<div class="newline"></div>    <span class="kt">double</span> <span class="n">answer</span><span class="p">;</span>
+<div class="newline"></div><span class="cm">/*  wrapped cosine function */</span><span class="w"></span>
+<div class="newline"></div><span class="k">static</span><span class="w"> </span><span class="n">PyObject</span><span class="o">*</span><span class="w"> </span><span class="nf">cos_func</span><span class="p">(</span><span class="n">PyObject</span><span class="o">*</span><span class="w"> </span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">PyObject</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"></span>
+<div class="newline"></div><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">answer</span><span class="p">;</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="cm">/*  parse the input, from python float to c double */</span>
-<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">))</span>
-<div class="newline"></div>        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
-<div class="newline"></div>    <span class="cm">/* if the above function returns -1, an appropriate Python exception will</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/*  parse the input, from python float to c double */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;d&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">))</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* if the above function returns -1, an appropriate Python exception will</span>
 <div class="newline"></div><span class="cm">     * have been set, and the function simply returns NULL</span>
-<div class="newline"></div><span class="cm">     */</span>
+<div class="newline"></div><span class="cm">     */</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="cm">/* call cos from libm */</span>
-<div class="newline"></div>    <span class="n">answer</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* call cos from libm */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="n">value</span><span class="p">);</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="cm">/*  construct the output from cos, from c double to python float */</span>
-<div class="newline"></div>    <span class="k">return</span> <span class="n">Py_BuildValue</span><span class="p">(</span><span class="s">&quot;f&quot;</span><span class="p">,</span> <span class="n">answer</span><span class="p">);</span>
-<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/*  construct the output from cos, from c double to python float */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Py_BuildValue</span><span class="p">(</span><span class="s">&quot;f&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="cm">/*  define functions in module */</span>
-<div class="newline"></div><span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">CosMethods</span><span class="p">[]</span> <span class="o">=</span>
-<div class="newline"></div><span class="p">{</span>
-<div class="newline"></div>     <span class="p">{</span><span class="s">&quot;cos_func&quot;</span><span class="p">,</span> <span class="n">cos_func</span><span class="p">,</span> <span class="n">METH_VARARGS</span><span class="p">,</span> <span class="s">&quot;evaluate the cosine&quot;</span><span class="p">},</span>
-<div class="newline"></div>     <span class="p">{</span><span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">}</span>
-<div class="newline"></div><span class="p">};</span>
+<div class="newline"></div><span class="cm">/*  define functions in module */</span><span class="w"></span>
+<div class="newline"></div><span class="k">static</span><span class="w"> </span><span class="n">PyMethodDef</span><span class="w"> </span><span class="n">CosMethods</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<div class="newline"></div><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">     </span><span class="p">{</span><span class="s">&quot;cos_func&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cos_func</span><span class="p">,</span><span class="w"> </span><span class="n">METH_VARARGS</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;evaluate the cosine&quot;</span><span class="p">},</span><span class="w"></span>
+<div class="newline"></div><span class="w">     </span><span class="p">{</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">}</span><span class="w"></span>
+<div class="newline"></div><span class="p">};</span><span class="w"></span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cp">#if PY_MAJOR_VERSION &gt;= 3</span>
-<div class="newline"></div><span class="cm">/* module initialization */</span>
-<div class="newline"></div><span class="cm">/* Python version 3*/</span>
-<div class="newline"></div><span class="k">static</span> <span class="k">struct</span> <span class="n">PyModuleDef</span> <span class="n">cModPyDem</span> <span class="o">=</span>
-<div class="newline"></div><span class="p">{</span>
-<div class="newline"></div>    <span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span>
-<div class="newline"></div>    <span class="s">&quot;cos_module&quot;</span><span class="p">,</span> <span class="s">&quot;Some documentation&quot;</span><span class="p">,</span>
-<div class="newline"></div>    <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-<div class="newline"></div>    <span class="n">CosMethods</span>
-<div class="newline"></div><span class="p">};</span>
+<div class="newline"></div><span class="cm">/* module initialization */</span><span class="w"></span>
+<div class="newline"></div><span class="cm">/* Python version 3*/</span><span class="w"></span>
+<div class="newline"></div><span class="k">static</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">PyModuleDef</span><span class="w"> </span><span class="n">cModPyDem</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<div class="newline"></div><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="s">&quot;cos_module&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Some documentation&quot;</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="mi">-1</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">CosMethods</span><span class="w"></span>
+<div class="newline"></div><span class="p">};</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">PyMODINIT_FUNC</span>
-<div class="newline"></div><span class="nf">PyInit_cos_module</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<div class="newline"></div><span class="p">{</span>
-<div class="newline"></div>    <span class="k">return</span> <span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cModPyDem</span><span class="p">);</span>
-<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div><span class="n">PyMODINIT_FUNC</span><span class="w"></span>
+<div class="newline"></div><span class="nf">PyInit_cos_module</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<div class="newline"></div><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cModPyDem</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"></span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cp">#else</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="cm">/* module initialization */</span>
-<div class="newline"></div><span class="cm">/* Python version 2 */</span>
-<div class="newline"></div><span class="n">PyMODINIT_FUNC</span>
-<div class="newline"></div><span class="nf">initcos_module</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<div class="newline"></div><span class="p">{</span>
-<div class="newline"></div>    <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">Py_InitModule</span><span class="p">(</span><span class="s">&quot;cos_module&quot;</span><span class="p">,</span> <span class="n">CosMethods</span><span class="p">);</span>
-<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div><span class="cm">/* module initialization */</span><span class="w"></span>
+<div class="newline"></div><span class="cm">/* Python version 2 */</span><span class="w"></span>
+<div class="newline"></div><span class="n">PyMODINIT_FUNC</span><span class="w"></span>
+<div class="newline"></div><span class="nf">initcos_module</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<div class="newline"></div><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="n">Py_InitModule</span><span class="p">(</span><span class="s">&quot;cos_module&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">CosMethods</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"></span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cp">#endif</span>
 <div class="newline"></div></pre></div>
@@ -351,12 +351,12 @@ from a <code class="docutils literal notranslate"><span class="pre">setup.py</sp
 <div class="newline"></div></pre></div>
 </div>
 <p>This can be compiled:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> advanced/interfacing_with_c/python_c_api
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> advanced/interfacing_with_c/python_c_api
 <div class="newline"></div>
-<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="gp">$ </span>ls
 <div class="newline"></div><span class="go">cos_module.c  setup.py</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="gp">$</span> python setup.py build_ext --inplace
+<div class="newline"></div><span class="gp">$ </span>python setup.py build_ext --inplace
 <div class="newline"></div><span class="go">running build_ext</span>
 <div class="newline"></div><span class="go">building &#39;cos_module&#39; extension</span>
 <div class="newline"></div><span class="go">creating build</span>
@@ -364,7 +364,7 @@ from a <code class="docutils literal notranslate"><span class="pre">setup.py</sp
 <div class="newline"></div><span class="go">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/esc/anaconda/include/python2.7 -c cos_module.c -o build/temp.linux-x86_64-2.7/cos_module.o</span>
 <div class="newline"></div><span class="go">gcc -pthread -shared build/temp.linux-x86_64-2.7/cos_module.o -L/home/esc/anaconda/lib -lpython2.7 -o /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/python_c_api/cos_module.so</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="gp">$ </span>ls
 <div class="newline"></div><span class="go">build/  cos_module.c  cos_module.so  setup.py</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -427,167 +427,167 @@ C-extension. See also: <a class="reference internal" href="../advanced_numpy/ind
 and how to iterate over Numpy arrays using the (old) Numpy-C-API. It simply
 takes an array as argument applies the cosine function from the <code class="docutils literal notranslate"><span class="pre">math.h</span></code> and
 returns a resulting new array.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*  Example of wrapping the cos function from math.h using the Numpy-C-API. */</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*  Example of wrapping the cos function from math.h using the Numpy-C-API. */</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
-<div class="newline"></div><span class="cp">#include</span> <span class="cpf">&lt;numpy/arrayobject.h&gt;</span><span class="cp"></span>
-<div class="newline"></div><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<div class="newline"></div><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
+<div class="newline"></div><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;numpy/arrayobject.h&gt;</span><span class="cp"></span>
+<div class="newline"></div><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 <div class="newline"></div>
 <div class="newline"></div>
-<div class="newline"></div><span class="cm">/*  wrapped cosine function */</span>
-<div class="newline"></div><span class="k">static</span> <span class="n">PyObject</span><span class="o">*</span> <span class="nf">cos_func_np</span><span class="p">(</span><span class="n">PyObject</span><span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span><span class="o">*</span> <span class="n">args</span><span class="p">)</span>
-<div class="newline"></div><span class="p">{</span>
-<div class="newline"></div>    <span class="n">PyArrayObject</span> <span class="o">*</span><span class="n">arrays</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>  <span class="cm">/* holds input and output array */</span>
-<div class="newline"></div>    <span class="n">PyObject</span> <span class="o">*</span><span class="n">ret</span><span class="p">;</span>
-<div class="newline"></div>    <span class="n">NpyIter</span> <span class="o">*</span><span class="n">iter</span><span class="p">;</span>
-<div class="newline"></div>    <span class="n">npy_uint32</span> <span class="n">op_flags</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
-<div class="newline"></div>    <span class="n">npy_uint32</span> <span class="n">iterator_flags</span><span class="p">;</span>
-<div class="newline"></div>    <span class="n">PyArray_Descr</span> <span class="o">*</span><span class="n">op_dtypes</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<div class="newline"></div><span class="cm">/*  wrapped cosine function */</span><span class="w"></span>
+<div class="newline"></div><span class="k">static</span><span class="w"> </span><span class="n">PyObject</span><span class="o">*</span><span class="w"> </span><span class="nf">cos_func_np</span><span class="p">(</span><span class="n">PyObject</span><span class="o">*</span><span class="w"> </span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">PyObject</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"></span>
+<div class="newline"></div><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">PyArrayObject</span><span class="w"> </span><span class="o">*</span><span class="n">arrays</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w">  </span><span class="cm">/* holds input and output array */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">ret</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">NpyIter</span><span class="w"> </span><span class="o">*</span><span class="n">iter</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">npy_uint32</span><span class="w"> </span><span class="n">op_flags</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">npy_uint32</span><span class="w"> </span><span class="n">iterator_flags</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">PyArray_Descr</span><span class="w"> </span><span class="o">*</span><span class="n">op_dtypes</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="n">NpyIter_IterNextFunc</span> <span class="o">*</span><span class="n">iternext</span><span class="p">;</span>
+<div class="newline"></div><span class="w">    </span><span class="n">NpyIter_IterNextFunc</span><span class="w"> </span><span class="o">*</span><span class="n">iternext</span><span class="p">;</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="cm">/*  parse single numpy array argument */</span>
-<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;O!&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyArray_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">arrays</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="p">{</span>
-<div class="newline"></div>        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
-<div class="newline"></div>    <span class="p">}</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/*  parse single numpy array argument */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;O!&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">PyArray_Type</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">arrays</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="p">}</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="n">arrays</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>  <span class="cm">/* The result will be allocated by the iterator */</span>
+<div class="newline"></div><span class="w">    </span><span class="n">arrays</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w">  </span><span class="cm">/* The result will be allocated by the iterator */</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="cm">/* Set up and create the iterator */</span>
-<div class="newline"></div>    <span class="n">iterator_flags</span> <span class="o">=</span> <span class="p">(</span><span class="n">NPY_ITER_ZEROSIZE_OK</span> <span class="o">|</span>
-<div class="newline"></div>                      <span class="cm">/*</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* Set up and create the iterator */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">iterator_flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">NPY_ITER_ZEROSIZE_OK</span><span class="w"> </span><span class="o">|</span><span class="w"></span>
+<div class="newline"></div><span class="w">                      </span><span class="cm">/*</span>
 <div class="newline"></div><span class="cm">                       * Enable buffering in case the input is not behaved</span>
 <div class="newline"></div><span class="cm">                       * (native byte order or not aligned),</span>
 <div class="newline"></div><span class="cm">                       * disabling may speed up some cases when it is known to</span>
 <div class="newline"></div><span class="cm">                       * be unnecessary.</span>
-<div class="newline"></div><span class="cm">                       */</span>
-<div class="newline"></div>                      <span class="n">NPY_ITER_BUFFERED</span> <span class="o">|</span>
-<div class="newline"></div>                      <span class="cm">/* Manually handle innermost iteration for speed: */</span>
-<div class="newline"></div>                      <span class="n">NPY_ITER_EXTERNAL_LOOP</span> <span class="o">|</span>
-<div class="newline"></div>                      <span class="n">NPY_ITER_GROWINNER</span><span class="p">);</span>
+<div class="newline"></div><span class="cm">                       */</span><span class="w"></span>
+<div class="newline"></div><span class="w">                      </span><span class="n">NPY_ITER_BUFFERED</span><span class="w"> </span><span class="o">|</span><span class="w"></span>
+<div class="newline"></div><span class="w">                      </span><span class="cm">/* Manually handle innermost iteration for speed: */</span><span class="w"></span>
+<div class="newline"></div><span class="w">                      </span><span class="n">NPY_ITER_EXTERNAL_LOOP</span><span class="w"> </span><span class="o">|</span><span class="w"></span>
+<div class="newline"></div><span class="w">                      </span><span class="n">NPY_ITER_GROWINNER</span><span class="p">);</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="n">op_flags</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">NPY_ITER_READONLY</span> <span class="o">|</span>
-<div class="newline"></div>                   <span class="cm">/*</span>
+<div class="newline"></div><span class="w">    </span><span class="n">op_flags</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">NPY_ITER_READONLY</span><span class="w"> </span><span class="o">|</span><span class="w"></span>
+<div class="newline"></div><span class="w">                   </span><span class="cm">/*</span>
 <div class="newline"></div><span class="cm">                    * Required that the arrays are well behaved, since the cos</span>
 <div class="newline"></div><span class="cm">                    * call below requires this.</span>
-<div class="newline"></div><span class="cm">                    */</span>
-<div class="newline"></div>                   <span class="n">NPY_ITER_NBO</span> <span class="o">|</span>
-<div class="newline"></div>                   <span class="n">NPY_ITER_ALIGNED</span><span class="p">);</span>
+<div class="newline"></div><span class="cm">                    */</span><span class="w"></span>
+<div class="newline"></div><span class="w">                   </span><span class="n">NPY_ITER_NBO</span><span class="w"> </span><span class="o">|</span><span class="w"></span>
+<div class="newline"></div><span class="w">                   </span><span class="n">NPY_ITER_ALIGNED</span><span class="p">);</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="cm">/* Ask the iterator to allocate an array to write the output to */</span>
-<div class="newline"></div>    <span class="n">op_flags</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_ITER_WRITEONLY</span> <span class="o">|</span> <span class="n">NPY_ITER_ALLOCATE</span><span class="p">;</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* Ask the iterator to allocate an array to write the output to */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">op_flags</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NPY_ITER_WRITEONLY</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">NPY_ITER_ALLOCATE</span><span class="p">;</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="cm">/*</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/*</span>
 <div class="newline"></div><span class="cm">     * Ensure the iteration has the correct type, could be checked</span>
 <div class="newline"></div><span class="cm">     * specifically here.</span>
-<div class="newline"></div><span class="cm">     */</span>
-<div class="newline"></div>    <span class="n">op_dtypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">PyArray_DescrFromType</span><span class="p">(</span><span class="n">NPY_DOUBLE</span><span class="p">);</span>
-<div class="newline"></div>    <span class="n">op_dtypes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">op_dtypes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<div class="newline"></div><span class="cm">     */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">op_dtypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PyArray_DescrFromType</span><span class="p">(</span><span class="n">NPY_DOUBLE</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">op_dtypes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op_dtypes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="cm">/* Create the numpy iterator object: */</span>
-<div class="newline"></div>    <span class="n">iter</span> <span class="o">=</span> <span class="n">NpyIter_MultiNew</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">iterator_flags</span><span class="p">,</span>
-<div class="newline"></div>                            <span class="cm">/* Use input order for output and iteration */</span>
-<div class="newline"></div>                            <span class="n">NPY_KEEPORDER</span><span class="p">,</span>
-<div class="newline"></div>                            <span class="cm">/* Allow only byte-swapping of input */</span>
-<div class="newline"></div>                            <span class="n">NPY_EQUIV_CASTING</span><span class="p">,</span> <span class="n">op_flags</span><span class="p">,</span> <span class="n">op_dtypes</span><span class="p">);</span>
-<div class="newline"></div>    <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">op_dtypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>  <span class="cm">/* The second one is identical. */</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* Create the numpy iterator object: */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">iter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NpyIter_MultiNew</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">arrays</span><span class="p">,</span><span class="w"> </span><span class="n">iterator_flags</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">                            </span><span class="cm">/* Use input order for output and iteration */</span><span class="w"></span>
+<div class="newline"></div><span class="w">                            </span><span class="n">NPY_KEEPORDER</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">                            </span><span class="cm">/* Allow only byte-swapping of input */</span><span class="w"></span>
+<div class="newline"></div><span class="w">                            </span><span class="n">NPY_EQUIV_CASTING</span><span class="p">,</span><span class="w"> </span><span class="n">op_flags</span><span class="p">,</span><span class="w"> </span><span class="n">op_dtypes</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">Py_DECREF</span><span class="p">(</span><span class="n">op_dtypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w">  </span><span class="cm">/* The second one is identical. */</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="n">iter</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
-<div class="newline"></div>        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<div class="newline"></div><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iter</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="n">iternext</span> <span class="o">=</span> <span class="n">NpyIter_GetIterNext</span><span class="p">(</span><span class="n">iter</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
-<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="n">iternext</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
-<div class="newline"></div>        <span class="n">NpyIter_Deallocate</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span>
-<div class="newline"></div>        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
-<div class="newline"></div>    <span class="p">}</span>
+<div class="newline"></div><span class="w">    </span><span class="n">iternext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NpyIter_GetIterNext</span><span class="p">(</span><span class="n">iter</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iternext</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">NpyIter_Deallocate</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="p">}</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="cm">/* Fetch the output array which was allocated by the iterator: */</span>
-<div class="newline"></div>    <span class="n">ret</span> <span class="o">=</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="n">NpyIter_GetOperandArray</span><span class="p">(</span><span class="n">iter</span><span class="p">)[</span><span class="mi">1</span><span class="p">];</span>
-<div class="newline"></div>    <span class="n">Py_INCREF</span><span class="p">(</span><span class="n">ret</span><span class="p">);</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* Fetch the output array which was allocated by the iterator: */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">NpyIter_GetOperandArray</span><span class="p">(</span><span class="n">iter</span><span class="p">)[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">Py_INCREF</span><span class="p">(</span><span class="n">ret</span><span class="p">);</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="n">NpyIter_GetIterSize</span><span class="p">(</span><span class="n">iter</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-<div class="newline"></div>        <span class="cm">/*</span>
+<div class="newline"></div><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">NpyIter_GetIterSize</span><span class="p">(</span><span class="n">iter</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="cm">/*</span>
 <div class="newline"></div><span class="cm">         * If there are no elements, the loop cannot be iterated.</span>
 <div class="newline"></div><span class="cm">         * This check is necessary with NPY_ITER_ZEROSIZE_OK.</span>
-<div class="newline"></div><span class="cm">         */</span>
-<div class="newline"></div>        <span class="n">NpyIter_Deallocate</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span>
-<div class="newline"></div>        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
-<div class="newline"></div>    <span class="p">}</span>
+<div class="newline"></div><span class="cm">         */</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">NpyIter_Deallocate</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="p">}</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="cm">/* The location of the data pointer which the iterator may update */</span>
-<div class="newline"></div>    <span class="kt">char</span> <span class="o">**</span><span class="n">dataptr</span> <span class="o">=</span> <span class="n">NpyIter_GetDataPtrArray</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span>
-<div class="newline"></div>    <span class="cm">/* The location of the stride which the iterator may update */</span>
-<div class="newline"></div>    <span class="n">npy_intp</span> <span class="o">*</span><span class="n">strideptr</span> <span class="o">=</span> <span class="n">NpyIter_GetInnerStrideArray</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span>
-<div class="newline"></div>    <span class="cm">/* The location of the inner loop size which the iterator may update */</span>
-<div class="newline"></div>    <span class="n">npy_intp</span> <span class="o">*</span><span class="n">innersizeptr</span> <span class="o">=</span> <span class="n">NpyIter_GetInnerLoopSizePtr</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* The location of the data pointer which the iterator may update */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">dataptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NpyIter_GetDataPtrArray</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* The location of the stride which the iterator may update */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">npy_intp</span><span class="w"> </span><span class="o">*</span><span class="n">strideptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NpyIter_GetInnerStrideArray</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* The location of the inner loop size which the iterator may update */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">npy_intp</span><span class="w"> </span><span class="o">*</span><span class="n">innersizeptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NpyIter_GetInnerLoopSizePtr</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="cm">/* iterate over the arrays */</span>
-<div class="newline"></div>    <span class="k">do</span> <span class="p">{</span>
-<div class="newline"></div>        <span class="n">npy_intp</span> <span class="n">stride</span> <span class="o">=</span> <span class="n">strideptr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-<div class="newline"></div>        <span class="n">npy_intp</span> <span class="n">count</span> <span class="o">=</span> <span class="o">*</span><span class="n">innersizeptr</span><span class="p">;</span>
-<div class="newline"></div>        <span class="cm">/* out is always contiguous, so use double */</span>
-<div class="newline"></div>        <span class="kt">double</span> <span class="o">*</span><span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="kt">double</span> <span class="o">*</span><span class="p">)</span><span class="n">dataptr</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-<div class="newline"></div>        <span class="kt">char</span> <span class="o">*</span><span class="n">in</span> <span class="o">=</span> <span class="n">dataptr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* iterate over the arrays */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">do</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">npy_intp</span><span class="w"> </span><span class="n">stride</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strideptr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">npy_intp</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">innersizeptr</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="cm">/* out is always contiguous, so use double */</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">dataptr</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dataptr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>        <span class="cm">/* The output is allocated and guaranteed contiguous (out++ works): */</span>
-<div class="newline"></div>        <span class="n">assert</span><span class="p">(</span><span class="n">strideptr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">double</span><span class="p">));</span>
+<div class="newline"></div><span class="w">        </span><span class="cm">/* The output is allocated and guaranteed contiguous (out++ works): */</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">assert</span><span class="p">(</span><span class="n">strideptr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">double</span><span class="p">));</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>        <span class="cm">/*</span>
+<div class="newline"></div><span class="w">        </span><span class="cm">/*</span>
 <div class="newline"></div><span class="cm">         * For optimization it can make sense to add a check for</span>
 <div class="newline"></div><span class="cm">         * stride == sizeof(double) to allow the compiler to optimize for that.</span>
-<div class="newline"></div><span class="cm">         */</span>
-<div class="newline"></div>        <span class="k">while</span> <span class="p">(</span><span class="n">count</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
-<div class="newline"></div>            <span class="o">*</span><span class="n">out</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span><span class="p">)</span><span class="n">in</span><span class="p">);</span>
-<div class="newline"></div>            <span class="n">out</span><span class="o">++</span><span class="p">;</span>
-<div class="newline"></div>            <span class="n">in</span> <span class="o">+=</span> <span class="n">stride</span><span class="p">;</span>
-<div class="newline"></div>        <span class="p">}</span>
-<div class="newline"></div>    <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">iternext</span><span class="p">(</span><span class="n">iter</span><span class="p">));</span>
+<div class="newline"></div><span class="cm">         */</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">            </span><span class="o">*</span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">in</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">            </span><span class="n">out</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">            </span><span class="n">in</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">stride</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">iternext</span><span class="p">(</span><span class="n">iter</span><span class="p">));</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="cm">/* Clean up and return the result */</span>
-<div class="newline"></div>    <span class="n">NpyIter_Deallocate</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span>
-<div class="newline"></div>    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
-<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* Clean up and return the result */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">NpyIter_Deallocate</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"></span>
 <div class="newline"></div>
 <div class="newline"></div>
-<div class="newline"></div><span class="cm">/*  define functions in module */</span>
-<div class="newline"></div><span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">CosMethods</span><span class="p">[]</span> <span class="o">=</span>
-<div class="newline"></div><span class="p">{</span>
-<div class="newline"></div>     <span class="p">{</span><span class="s">&quot;cos_func_np&quot;</span><span class="p">,</span> <span class="n">cos_func_np</span><span class="p">,</span> <span class="n">METH_VARARGS</span><span class="p">,</span>
-<div class="newline"></div>         <span class="s">&quot;evaluate the cosine on a numpy array&quot;</span><span class="p">},</span>
-<div class="newline"></div>     <span class="p">{</span><span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">}</span>
-<div class="newline"></div><span class="p">};</span>
+<div class="newline"></div><span class="cm">/*  define functions in module */</span><span class="w"></span>
+<div class="newline"></div><span class="k">static</span><span class="w"> </span><span class="n">PyMethodDef</span><span class="w"> </span><span class="n">CosMethods</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<div class="newline"></div><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">     </span><span class="p">{</span><span class="s">&quot;cos_func_np&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cos_func_np</span><span class="p">,</span><span class="w"> </span><span class="n">METH_VARARGS</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">         </span><span class="s">&quot;evaluate the cosine on a numpy array&quot;</span><span class="p">},</span><span class="w"></span>
+<div class="newline"></div><span class="w">     </span><span class="p">{</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">}</span><span class="w"></span>
+<div class="newline"></div><span class="p">};</span><span class="w"></span>
 <div class="newline"></div>
 <div class="newline"></div>
 <div class="newline"></div><span class="cp">#if PY_MAJOR_VERSION &gt;= 3</span>
-<div class="newline"></div><span class="cm">/* module initialization */</span>
-<div class="newline"></div><span class="cm">/* Python version 3*/</span>
-<div class="newline"></div><span class="k">static</span> <span class="k">struct</span> <span class="n">PyModuleDef</span> <span class="n">cModPyDem</span> <span class="o">=</span> <span class="p">{</span>
-<div class="newline"></div>    <span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span>
-<div class="newline"></div>    <span class="s">&quot;cos_module&quot;</span><span class="p">,</span> <span class="s">&quot;Some documentation&quot;</span><span class="p">,</span>
-<div class="newline"></div>    <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-<div class="newline"></div>    <span class="n">CosMethods</span>
-<div class="newline"></div><span class="p">};</span>
-<div class="newline"></div><span class="n">PyMODINIT_FUNC</span> <span class="nf">PyInit_cos_module_np</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-<div class="newline"></div>    <span class="n">PyObject</span> <span class="o">*</span><span class="n">module</span><span class="p">;</span>
-<div class="newline"></div>    <span class="n">module</span> <span class="o">=</span> <span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cModPyDem</span><span class="p">);</span>
-<div class="newline"></div>    <span class="k">if</span><span class="p">(</span><span class="n">module</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
-<div class="newline"></div>    <span class="cm">/* IMPORTANT: this must be called */</span>
-<div class="newline"></div>    <span class="n">import_array</span><span class="p">();</span>
-<div class="newline"></div>    <span class="k">if</span> <span class="p">(</span><span class="n">PyErr_Occurred</span><span class="p">())</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
-<div class="newline"></div>    <span class="k">return</span> <span class="n">module</span><span class="p">;</span>
-<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div><span class="cm">/* module initialization */</span><span class="w"></span>
+<div class="newline"></div><span class="cm">/* Python version 3*/</span><span class="w"></span>
+<div class="newline"></div><span class="k">static</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">PyModuleDef</span><span class="w"> </span><span class="n">cModPyDem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="s">&quot;cos_module&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Some documentation&quot;</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="mi">-1</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">CosMethods</span><span class="w"></span>
+<div class="newline"></div><span class="p">};</span><span class="w"></span>
+<div class="newline"></div><span class="n">PyMODINIT_FUNC</span><span class="w"> </span><span class="nf">PyInit_cos_module_np</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">module</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cModPyDem</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">module</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* IMPORTANT: this must be called */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">import_array</span><span class="p">();</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PyErr_Occurred</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">module</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"></span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cp">#else</span>
-<div class="newline"></div><span class="cm">/* module initialization */</span>
-<div class="newline"></div><span class="cm">/* Python version 2 */</span>
-<div class="newline"></div><span class="n">PyMODINIT_FUNC</span> <span class="nf">initcos_module_np</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-<div class="newline"></div>    <span class="n">PyObject</span> <span class="o">*</span><span class="n">module</span><span class="p">;</span>
-<div class="newline"></div>    <span class="n">module</span> <span class="o">=</span> <span class="n">Py_InitModule</span><span class="p">(</span><span class="s">&quot;cos_module_np&quot;</span><span class="p">,</span> <span class="n">CosMethods</span><span class="p">);</span>
-<div class="newline"></div>    <span class="k">if</span><span class="p">(</span><span class="n">module</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-<div class="newline"></div>    <span class="cm">/* IMPORTANT: this must be called */</span>
-<div class="newline"></div>    <span class="n">import_array</span><span class="p">();</span>
-<div class="newline"></div>    <span class="k">return</span><span class="p">;</span>
-<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div><span class="cm">/* module initialization */</span><span class="w"></span>
+<div class="newline"></div><span class="cm">/* Python version 2 */</span><span class="w"></span>
+<div class="newline"></div><span class="n">PyMODINIT_FUNC</span><span class="w"> </span><span class="nf">initcos_module_np</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">module</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Py_InitModule</span><span class="p">(</span><span class="s">&quot;cos_module_np&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">CosMethods</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">module</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* IMPORTANT: this must be called */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">import_array</span><span class="p">();</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"></span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cp">#endif</span>
 <div class="newline"></div></pre></div>
@@ -608,8 +608,8 @@ include the Numpy headers by using :func:<code class="docutils literal notransla
 <p>To convince ourselves if this does actually works, we run the following test
 script:</p>
 <div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cos_module_np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
 <div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">cos_module_np</span><span class="o">.</span><span class="n">cos_func_np</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -769,20 +769,20 @@ an input and an output array, computes the cosine of the input array and
 stores the result in the output array.</p>
 <p>The library consists of the following header file (although this is not
 strictly needed for this example, we list it for completeness):</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">in_array</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_array</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
 <p>The function implementation resides in the following C source file:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cm">/*  Compute the cosine of each element in in_array, storing the result in</span>
-<div class="newline"></div><span class="cm"> *  out_array. */</span>
-<div class="newline"></div><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">){</span>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
-<div class="newline"></div>    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
-<div class="newline"></div>        <span class="n">out_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">in_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-<div class="newline"></div>    <span class="p">}</span>
-<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div><span class="cm"> *  out_array. */</span><span class="w"></span>
+<div class="newline"></div><span class="kt">void</span><span class="w"> </span><span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">in_array</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_array</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">){</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">out_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="n">in_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
 <p>And since the library is pure C, we can’t use <code class="docutils literal notranslate"><span class="pre">distutils</span></code> to compile it, but
@@ -801,12 +801,12 @@ must use a combination of <code class="docutils literal notranslate"><span class
 </div>
 <p>We can then compile this (on Linux) into the shared library
 <code class="docutils literal notranslate"><span class="pre">libcos_doubles.so</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ls
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls
 <div class="newline"></div><span class="go">cos_doubles.c  cos_doubles.h  cos_doubles.py  makefile  test_cos_doubles.py</span>
-<div class="newline"></div><span class="gp">$</span> make
+<div class="newline"></div><span class="gp">$ </span>make
 <div class="newline"></div><span class="go">gcc -c -fPIC cos_doubles.c -o cos_doubles.o</span>
 <div class="newline"></div><span class="go">gcc -shared -Wl,-soname,libcos_doubles.so -o libcos_doubles.so cos_doubles.o</span>
-<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="gp">$ </span>ls
 <div class="newline"></div><span class="go">cos_doubles.c  cos_doubles.o   libcos_doubles.so*  test_cos_doubles.py</span>
 <div class="newline"></div><span class="go">cos_doubles.h  cos_doubles.py  makefile</span>
 <div class="newline"></div></pre></div>
@@ -816,8 +816,8 @@ must use a combination of <code class="docutils literal notranslate"><span class
 <div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot; Example of wrapping a C library function that accepts a C double array as</span>
 <div class="newline"></div><span class="sd">    input using the numpy.ctypeslib. &quot;&quot;&quot;</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy.ctypeslib</span> <span class="kn">as</span> <span class="nn">npct</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy.ctypeslib</span> <span class="k">as</span> <span class="nn">npct</span>
 <div class="newline"></div><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">c_int</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># input type for the cos_doubles function</span>
@@ -828,7 +828,7 @@ must use a combination of <code class="docutils literal notranslate"><span class
 <div class="newline"></div><span class="n">libcd</span> <span class="o">=</span> <span class="n">npct</span><span class="o">.</span><span class="n">load_library</span><span class="p">(</span><span class="s2">&quot;libcos_doubles&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># setup the return types and argument types</span>
-<div class="newline"></div><span class="n">libcd</span><span class="o">.</span><span class="n">cos_doubles</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="bp">None</span>
+<div class="newline"></div><span class="n">libcd</span><span class="o">.</span><span class="n">cos_doubles</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="kc">None</span>
 <div class="newline"></div><span class="n">libcd</span><span class="o">.</span><span class="n">cos_doubles</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">array_1d_double</span><span class="p">,</span> <span class="n">array_1d_double</span><span class="p">,</span> <span class="n">c_int</span><span class="p">]</span>
 <div class="newline"></div>
 <div class="newline"></div>
@@ -840,14 +840,14 @@ must use a combination of <code class="docutils literal notranslate"><span class
 <li>Note the inherent limitation of contiguous single dimensional Numpy arrays,
 since the C functions requires this kind of buffer.</li>
 <li>Also note that the output array must be preallocated, for example with
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="(in NumPy v1.19)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.zeros()</span></code></a> and the function will write into it’s buffer.</li>
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="(in NumPy v1.23)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.zeros()</span></code></a> and the function will write into it’s buffer.</li>
 <li>Although the original signature of the <code class="docutils literal notranslate"><span class="pre">cos_doubles</span></code> function is <code class="docutils literal notranslate"><span class="pre">ARRAY,</span>
 <span class="pre">ARRAY,</span> <span class="pre">int</span></code> the final <code class="docutils literal notranslate"><span class="pre">cos_doubles_func</span></code> takes only two Numpy arrays as
 arguments.</li>
 </ul>
 <p>And, as before, we convince ourselves that it worked:</p>
-<div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">cos_doubles</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
@@ -890,30 +890,30 @@ the wrapping process, may be a bit tricky to understand.</p>
 <h3>2.8.4.1. Example<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <p>Let’s imagine that our <code class="docutils literal notranslate"><span class="pre">cos</span></code> function lives in a <code class="docutils literal notranslate"><span class="pre">cos_module</span></code> which has
 been written in <code class="docutils literal notranslate"><span class="pre">c</span></code> and consists of the source file <code class="docutils literal notranslate"><span class="pre">cos_module.c</span></code>:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kt">double</span> <span class="nf">cos_func</span><span class="p">(</span><span class="kt">double</span> <span class="n">arg</span><span class="p">){</span>
-<div class="newline"></div>    <span class="k">return</span> <span class="n">cos</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span>
-<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div><span class="kt">double</span><span class="w"> </span><span class="nf">cos_func</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">arg</span><span class="p">){</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
 <p>and the header file <code class="docutils literal notranslate"><span class="pre">cos_module.h</span></code>:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span> <span class="nf">cos_func</span><span class="p">(</span><span class="kt">double</span> <span class="n">arg</span><span class="p">);</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">cos_func</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
 <p>And our goal is to expose the <code class="docutils literal notranslate"><span class="pre">cos_func</span></code> to Python. To achieve this with
 SWIG, we must write an <em>interface file</em> which contains the instructions for SWIG.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*  Example of wrapping cos function from math.h using SWIG. */</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*  Example of wrapping cos function from math.h using SWIG. */</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="o">%</span><span class="n">module</span> <span class="n">cos_module</span>
-<div class="newline"></div><span class="o">%</span><span class="p">{</span>
-<div class="newline"></div>    <span class="cm">/* the resulting C file should be built as a python extension */</span>
-<div class="newline"></div>    <span class="cp">#define SWIG_FILE_WITH_INIT</span>
-<div class="newline"></div>    <span class="cm">/*  Includes the header in the wrapper code */</span>
-<div class="newline"></div>    <span class="cp">#include</span> <span class="cpf">&quot;cos_module.h&quot;</span><span class="cp"></span>
-<div class="newline"></div><span class="o">%</span><span class="p">}</span>
-<div class="newline"></div><span class="cm">/*  Parse the header file to generate wrappers */</span>
-<div class="newline"></div><span class="o">%</span><span class="n">include</span> <span class="s">&quot;cos_module.h&quot;</span>
+<div class="newline"></div><span class="o">%</span><span class="n">module</span><span class="w"> </span><span class="n">cos_module</span><span class="w"></span>
+<div class="newline"></div><span class="o">%</span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* the resulting C file should be built as a python extension */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cp">#define SWIG_FILE_WITH_INIT</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/*  Includes the header in the wrapper code */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;cos_module.h&quot;</span><span class="cp"></span>
+<div class="newline"></div><span class="o">%</span><span class="p">}</span><span class="w"></span>
+<div class="newline"></div><span class="cm">/*  Parse the header file to generate wrappers */</span><span class="w"></span>
+<div class="newline"></div><span class="o">%</span><span class="n">include</span><span class="w"> </span><span class="s">&quot;cos_module.h&quot;</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
 <p>As you can see, not too much code is needed here. For this simple example it is
@@ -937,12 +937,12 @@ module.</li>
 <div class="newline"></div>      <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cos_module.c&quot;</span><span class="p">,</span> <span class="s2">&quot;cos_module.i&quot;</span><span class="p">])])</span>
 <div class="newline"></div></pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> advanced/interfacing_with_c/swig
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> advanced/interfacing_with_c/swig
 <div class="newline"></div>
-<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="gp">$ </span>ls
 <div class="newline"></div><span class="go">cos_module.c  cos_module.h  cos_module.i  setup.py</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="gp">$</span> python setup.py build_ext --inplace
+<div class="newline"></div><span class="gp">$ </span>python setup.py build_ext --inplace
 <div class="newline"></div><span class="go">running build_ext</span>
 <div class="newline"></div><span class="go">building &#39;_cos_module&#39; extension</span>
 <div class="newline"></div><span class="go">swigging cos_module.i to cos_module_wrap.c</span>
@@ -953,7 +953,7 @@ module.</li>
 <div class="newline"></div><span class="go">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/esc/anaconda/include/python2.7 -c cos_module_wrap.c -o build/temp.linux-x86_64-2.7/cos_module_wrap.o</span>
 <div class="newline"></div><span class="go">gcc -pthread -shared build/temp.linux-x86_64-2.7/cos_module.o build/temp.linux-x86_64-2.7/cos_module_wrap.o -L/home/esc/anaconda/lib -lpython2.7 -o /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/swig/_cos_module.so</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="gp">$ </span>ls
 <div class="newline"></div><span class="go">build/  cos_module.c  cos_module.h  cos_module.i  cos_module.py  _cos_module.so*  cos_module_wrap.c  setup.py</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -1012,53 +1012,53 @@ file. This interface file defines various so-called <em>typemaps</em> which supp
 conversion between Numpy arrays and C-Arrays. In the following example we will
 take a quick look at how such typemaps work in practice.</p>
 <p>We have the same <code class="docutils literal notranslate"><span class="pre">cos_doubles</span></code> function as in the ctypes example:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">in_array</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_array</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cm">/*  Compute the cosine of each element in in_array, storing the result in</span>
-<div class="newline"></div><span class="cm"> *  out_array. */</span>
-<div class="newline"></div><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">){</span>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
-<div class="newline"></div>    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
-<div class="newline"></div>        <span class="n">out_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">in_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-<div class="newline"></div>    <span class="p">}</span>
-<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div><span class="cm"> *  out_array. */</span><span class="w"></span>
+<div class="newline"></div><span class="kt">void</span><span class="w"> </span><span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">in_array</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_array</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">){</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">out_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="n">in_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
 <p>This is wrapped as <code class="docutils literal notranslate"><span class="pre">cos_doubles_func</span></code> using the following SWIG interface
 file:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*  Example of wrapping a C function that takes a C double array as input using</span>
-<div class="newline"></div><span class="cm"> *  numpy typemaps for SWIG. */</span>
+<div class="newline"></div><span class="cm"> *  numpy typemaps for SWIG. */</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="o">%</span><span class="n">module</span> <span class="n">cos_doubles</span>
-<div class="newline"></div><span class="o">%</span><span class="p">{</span>
-<div class="newline"></div>    <span class="cm">/* the resulting C file should be built as a python extension */</span>
-<div class="newline"></div>    <span class="cp">#define SWIG_FILE_WITH_INIT</span>
-<div class="newline"></div>    <span class="cm">/*  Includes the header in the wrapper code */</span>
-<div class="newline"></div>    <span class="cp">#include</span> <span class="cpf">&quot;cos_doubles.h&quot;</span><span class="cp"></span>
-<div class="newline"></div><span class="o">%</span><span class="p">}</span>
+<div class="newline"></div><span class="o">%</span><span class="n">module</span><span class="w"> </span><span class="n">cos_doubles</span><span class="w"></span>
+<div class="newline"></div><span class="o">%</span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/* the resulting C file should be built as a python extension */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cp">#define SWIG_FILE_WITH_INIT</span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/*  Includes the header in the wrapper code */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;cos_doubles.h&quot;</span><span class="cp"></span>
+<div class="newline"></div><span class="o">%</span><span class="p">}</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="cm">/*  include the numpy typemaps */</span>
-<div class="newline"></div><span class="o">%</span><span class="n">include</span> <span class="s">&quot;numpy.i&quot;</span>
-<div class="newline"></div><span class="cm">/*  need this for correct module initialization */</span>
-<div class="newline"></div><span class="o">%</span><span class="n">init</span> <span class="o">%</span><span class="p">{</span>
-<div class="newline"></div>    <span class="n">import_array</span><span class="p">();</span>
-<div class="newline"></div><span class="o">%</span><span class="p">}</span>
+<div class="newline"></div><span class="cm">/*  include the numpy typemaps */</span><span class="w"></span>
+<div class="newline"></div><span class="o">%</span><span class="n">include</span><span class="w"> </span><span class="s">&quot;numpy.i&quot;</span><span class="w"></span>
+<div class="newline"></div><span class="cm">/*  need this for correct module initialization */</span><span class="w"></span>
+<div class="newline"></div><span class="o">%</span><span class="n">init</span><span class="w"> </span><span class="o">%</span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">import_array</span><span class="p">();</span><span class="w"></span>
+<div class="newline"></div><span class="o">%</span><span class="p">}</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="cm">/*  typemaps for the two arrays, the second will be modified in-place */</span>
-<div class="newline"></div><span class="o">%</span><span class="n">apply</span> <span class="p">(</span><span class="kt">double</span><span class="o">*</span> <span class="n">IN_ARRAY1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">DIM1</span><span class="p">)</span> <span class="p">{(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size_in</span><span class="p">)}</span>
-<div class="newline"></div><span class="o">%</span><span class="n">apply</span> <span class="p">(</span><span class="kt">double</span><span class="o">*</span> <span class="n">INPLACE_ARRAY1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">DIM1</span><span class="p">)</span> <span class="p">{(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size_out</span><span class="p">)}</span>
+<div class="newline"></div><span class="cm">/*  typemaps for the two arrays, the second will be modified in-place */</span><span class="w"></span>
+<div class="newline"></div><span class="o">%</span><span class="n">apply</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="o">*</span><span class="w"> </span><span class="n">IN_ARRAY1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">DIM1</span><span class="p">)</span><span class="w"> </span><span class="p">{(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">in_array</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size_in</span><span class="p">)}</span><span class="w"></span>
+<div class="newline"></div><span class="o">%</span><span class="n">apply</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="o">*</span><span class="w"> </span><span class="n">INPLACE_ARRAY1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">DIM1</span><span class="p">)</span><span class="w"> </span><span class="p">{(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_array</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size_out</span><span class="p">)}</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="cm">/*  Wrapper for cos_doubles that massages the types */</span>
-<div class="newline"></div><span class="o">%</span><span class="kr">inline</span> <span class="o">%</span><span class="p">{</span>
-<div class="newline"></div>    <span class="cm">/*  takes as input two numpy arrays */</span>
-<div class="newline"></div>    <span class="kt">void</span> <span class="n">cos_doubles_func</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size_in</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size_out</span><span class="p">)</span> <span class="p">{</span>
-<div class="newline"></div>        <span class="cm">/*  calls the original funcion, providing only the size of the first */</span>
-<div class="newline"></div>        <span class="n">cos_doubles</span><span class="p">(</span><span class="n">in_array</span><span class="p">,</span> <span class="n">out_array</span><span class="p">,</span> <span class="n">size_in</span><span class="p">);</span>
-<div class="newline"></div>    <span class="p">}</span>
-<div class="newline"></div><span class="o">%</span><span class="p">}</span>
+<div class="newline"></div><span class="cm">/*  Wrapper for cos_doubles that massages the types */</span><span class="w"></span>
+<div class="newline"></div><span class="o">%</span><span class="kr">inline</span><span class="w"> </span><span class="o">%</span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/*  takes as input two numpy arrays */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">cos_doubles_func</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">in_array</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size_in</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_array</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size_out</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="cm">/*  calls the original funcion, providing only the size of the first */</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">cos_doubles</span><span class="p">(</span><span class="n">in_array</span><span class="p">,</span><span class="w"> </span><span class="n">out_array</span><span class="p">,</span><span class="w"> </span><span class="n">size_in</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<div class="newline"></div><span class="o">%</span><span class="p">}</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
 <ul class="simple">
@@ -1082,9 +1082,9 @@ expose the functionality through <code class="docutils literal notranslate"><spa
 <div class="newline"></div></pre></div>
 </div>
 <p>As previously, we need to use <code class="docutils literal notranslate"><span class="pre">include_dirs</span></code> to specify the location.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ls
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls
 <div class="newline"></div><span class="go">cos_doubles.c  cos_doubles.h  cos_doubles.i  numpy.i  setup.py  test_cos_doubles.py</span>
-<div class="newline"></div><span class="gp">$</span> python setup.py build_ext -i
+<div class="newline"></div><span class="gp">$ </span>python setup.py build_ext -i
 <div class="newline"></div><span class="go">running build_ext</span>
 <div class="newline"></div><span class="go">building &#39;_cos_doubles&#39; extension</span>
 <div class="newline"></div><span class="go">swigging cos_doubles.i to cos_doubles_wrap.c</span>
@@ -1102,14 +1102,14 @@ expose the functionality through <code class="docutils literal notranslate"><spa
 <div class="newline"></div><span class="go">                 from cos_doubles_wrap.c:2706:</span>
 <div class="newline"></div><span class="go">/home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include/numpy/npy_deprecated_api.h:11:2: warning: #warning &quot;Using deprecated NumPy API, disable it by #defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION&quot;</span>
 <div class="newline"></div><span class="go">gcc -pthread -shared build/temp.linux-x86_64-2.7/cos_doubles.o build/temp.linux-x86_64-2.7/cos_doubles_wrap.o -L/home/esc/anaconda/lib -lpython2.7 -o /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/swig_numpy/_cos_doubles.so</span>
-<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="gp">$ </span>ls
 <div class="newline"></div><span class="go">build/         cos_doubles.h  cos_doubles.py    cos_doubles_wrap.c  setup.py</span>
 <div class="newline"></div><span class="go">cos_doubles.c  cos_doubles.i  _cos_doubles.so*  numpy.i             test_cos_doubles.py</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>And, as before, we convince ourselves that it worked:</p>
-<div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">cos_doubles</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
@@ -1175,8 +1175,8 @@ overcome by shipping the generated C files)</li>
 <code class="docutils literal notranslate"><span class="pre">cos_func</span></code> is then pure Python.</p>
 <p>Again we can use the standard <code class="docutils literal notranslate"><span class="pre">distutils</span></code> module, but this time we need some
 additional pieces from the <code class="docutils literal notranslate"><span class="pre">Cython.Distutils</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="k">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">Cython.Distutils</span> <span class="k">import</span> <span class="n">build_ext</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">Cython.Distutils</span> <span class="kn">import</span> <span class="n">build_ext</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">setup</span><span class="p">(</span>
 <div class="newline"></div>    <span class="n">cmdclass</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;build_ext&#39;</span><span class="p">:</span> <span class="n">build_ext</span><span class="p">},</span>
@@ -1185,10 +1185,10 @@ additional pieces from the <code class="docutils literal notranslate"><span clas
 <div class="newline"></div></pre></div>
 </div>
 <p>Compiling this:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> advanced/interfacing_with_c/cython
-<div class="newline"></div><span class="gp">$</span> ls
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> advanced/interfacing_with_c/cython
+<div class="newline"></div><span class="gp">$ </span>ls
 <div class="newline"></div><span class="go">cos_module.pyx  setup.py</span>
-<div class="newline"></div><span class="gp">$</span> python setup.py build_ext --inplace
+<div class="newline"></div><span class="gp">$ </span>python setup.py build_ext --inplace
 <div class="newline"></div><span class="go">running build_ext</span>
 <div class="newline"></div><span class="go">cythoning cos_module.pyx to cos_module.c</span>
 <div class="newline"></div><span class="go">building &#39;cos_module&#39; extension</span>
@@ -1196,7 +1196,7 @@ additional pieces from the <code class="docutils literal notranslate"><span clas
 <div class="newline"></div><span class="go">creating build/temp.linux-x86_64-2.7</span>
 <div class="newline"></div><span class="go">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/esc/anaconda/include/python2.7 -c cos_module.c -o build/temp.linux-x86_64-2.7/cos_module.o</span>
 <div class="newline"></div><span class="go">gcc -pthread -shared build/temp.linux-x86_64-2.7/cos_module.o -L/home/esc/anaconda/lib -lpython2.7 -o /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/cython/cos_module.so</span>
-<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="gp">$ </span>ls
 <div class="newline"></div><span class="go">build/  cos_module.c  cos_module.pyx  cos_module.so*  setup.py</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -1265,19 +1265,19 @@ want to pass Numpy arrays as C arrays to your Cython wrapped C functions, there
 is a section about this in the <a class="reference external" href="http://docs.cython.org/src/userguide/memoryviews.html#pass-data-from-a-c-function-via-pointer">Cython documentation</a>.</p>
 <p>In the following example, we will show how to wrap the familiar <code class="docutils literal notranslate"><span class="pre">cos_doubles</span></code>
 function using Cython.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">in_array</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_array</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 <div class="newline"></div>
 <div class="newline"></div><span class="cm">/*  Compute the cosine of each element in in_array, storing the result in</span>
-<div class="newline"></div><span class="cm"> *  out_array. */</span>
-<div class="newline"></div><span class="kt">void</span> <span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">in_array</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out_array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">){</span>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
-<div class="newline"></div>    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
-<div class="newline"></div>        <span class="n">out_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">in_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-<div class="newline"></div>    <span class="p">}</span>
-<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div><span class="cm"> *  out_array. */</span><span class="w"></span>
+<div class="newline"></div><span class="kt">void</span><span class="w"> </span><span class="nf">cos_doubles</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">in_array</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_array</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">){</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">out_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="n">in_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
 <p>This is wrapped as <code class="docutils literal notranslate"><span class="pre">cos_doubles_func</span></code> using the following Cython code:</p>
@@ -1319,9 +1319,9 @@ function using Cython.</p>
 <ul class="simple">
 <li>As with the previous compiled Numpy examples, we need the <code class="docutils literal notranslate"><span class="pre">include_dirs</span></code> option.</li>
 </ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ls
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls
 <div class="newline"></div><span class="go">cos_doubles.c  cos_doubles.h  _cos_doubles.pyx  setup.py  test_cos_doubles.py</span>
-<div class="newline"></div><span class="gp">$</span> python setup.py build_ext -i
+<div class="newline"></div><span class="gp">$ </span>python setup.py build_ext -i
 <div class="newline"></div><span class="go">running build_ext</span>
 <div class="newline"></div><span class="go">cythoning _cos_doubles.pyx to _cos_doubles.c</span>
 <div class="newline"></div><span class="go">building &#39;cos_doubles&#39; extension</span>
@@ -1336,13 +1336,13 @@ function using Cython.</p>
 <div class="newline"></div><span class="go">/home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include/numpy/__ufunc_api.h:236: warning: ‘_import_umath’ defined but not used</span>
 <div class="newline"></div><span class="go">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/esc/anaconda/lib/python2.7/site-packages/numpy/core/include -I/home/esc/anaconda/include/python2.7 -c cos_doubles.c -o build/temp.linux-x86_64-2.7/cos_doubles.o</span>
 <div class="newline"></div><span class="go">gcc -pthread -shared build/temp.linux-x86_64-2.7/_cos_doubles.o build/temp.linux-x86_64-2.7/cos_doubles.o -L/home/esc/anaconda/lib -lpython2.7 -o /home/esc/git-working/scipy-lecture-notes/advanced/interfacing_with_c/cython_numpy/cos_doubles.so</span>
-<div class="newline"></div><span class="gp">$</span> ls
+<div class="newline"></div><span class="gp">$ </span>ls
 <div class="newline"></div><span class="go">build/  _cos_doubles.c  cos_doubles.c  cos_doubles.h  _cos_doubles.pyx  cos_doubles.so*  setup.py  test_cos_doubles.py</span>
 <div class="newline"></div></pre></div>
 </div>
 <p>And, as before, we convince ourselves that it worked:</p>
-<div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="highlight-numpy notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">cos_doubles</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
@@ -1600,7 +1600,7 @@ you, thus making it more like the Numpy-C-API example.</li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020,2021,2022.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>

@@ -179,7 +179,7 @@ wrap any data in an ndarray, without unnecessary copies.</li>
 3118 buffers, generalized ufuncs, …</li>
 </ul>
 <div class="topic">
-<p class="topic-title first">Prerequisites</p>
+<p class="topic-title">Prerequisites</p>
 <ul class="simple">
 <li>NumPy</li>
 <li>Cython</li>
@@ -187,7 +187,7 @@ wrap any data in an ndarray, without unnecessary copies.</li>
 </ul>
 </div>
 <div class="contents local topic" id="chapter-contents">
-<p class="topic-title first">Chapter contents</p>
+<p class="topic-title">Chapter contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#life-of-ndarray" id="id3">Life of ndarray</a><ul>
 <li><a class="reference internal" href="#it-s" id="id4">It’s…</a></li>
@@ -211,11 +211,11 @@ wrap any data in an ndarray, without unnecessary copies.</li>
 <li><a class="reference internal" href="#array-interface-protocol" id="id18">Array interface protocol</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#array-siblings-chararray-maskedarray-matrix" id="id19">Array siblings: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">maskedarray</span></code>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a></a><ul>
-<li><a class="reference internal" href="#chararray-vectorized-string-operations" id="id20"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>: vectorized string operations</a></li>
+<li><a class="reference internal" href="#array-siblings-chararray-maskedarray-matrix" id="id19">Array siblings: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">maskedarray</span></code>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a></a><ul>
+<li><a class="reference internal" href="#chararray-vectorized-string-operations" id="id20"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>: vectorized string operations</a></li>
 <li><a class="reference internal" href="#masked-array-missing-data" id="id21"><code class="xref py py-class docutils literal notranslate"><span class="pre">masked_array</span></code> missing data</a></li>
-<li><a class="reference internal" href="#recarray-purely-convenience" id="id22"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.recarray.html#numpy.recarray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">recarray</span></code></a>: purely convenience</a></li>
-<li><a class="reference internal" href="#matrix-convenience" id="id23"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a>: convenience?</a></li>
+<li><a class="reference internal" href="#recarray-purely-convenience" id="id22"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.recarray.html#numpy.recarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">recarray</span></code></a>: purely convenience</a></li>
+<li><a class="reference internal" href="#matrix-convenience" id="id23"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a>: convenience?</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#summary" id="id24">Summary</a></li>
@@ -250,25 +250,25 @@ wrap any data in an ndarray, without unnecessary copies.</li>
 </ul>
 </div></blockquote>
 <img alt="../../_images/threefundamental.png" src="../../_images/threefundamental.png" />
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">PyArrayObject</span> <span class="p">{</span>
-<div class="newline"></div>        <span class="n">PyObject_HEAD</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">PyArrayObject</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">PyObject_HEAD</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>        <span class="cm">/* Block of memory */</span>
-<div class="newline"></div>        <span class="kt">char</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+<div class="newline"></div><span class="w">        </span><span class="cm">/* Block of memory */</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">;</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>        <span class="cm">/* Data type descriptor */</span>
-<div class="newline"></div>        <span class="n">PyArray_Descr</span> <span class="o">*</span><span class="n">descr</span><span class="p">;</span>
+<div class="newline"></div><span class="w">        </span><span class="cm">/* Data type descriptor */</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">PyArray_Descr</span><span class="w"> </span><span class="o">*</span><span class="n">descr</span><span class="p">;</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>        <span class="cm">/* Indexing scheme */</span>
-<div class="newline"></div>        <span class="kt">int</span> <span class="n">nd</span><span class="p">;</span>
-<div class="newline"></div>        <span class="n">npy_intp</span> <span class="o">*</span><span class="n">dimensions</span><span class="p">;</span>
-<div class="newline"></div>        <span class="n">npy_intp</span> <span class="o">*</span><span class="n">strides</span><span class="p">;</span>
+<div class="newline"></div><span class="w">        </span><span class="cm">/* Indexing scheme */</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">nd</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">npy_intp</span><span class="w"> </span><span class="o">*</span><span class="n">dimensions</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">npy_intp</span><span class="w"> </span><span class="o">*</span><span class="n">strides</span><span class="p">;</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>        <span class="cm">/* Other stuff */</span>
-<div class="newline"></div>        <span class="n">PyObject</span> <span class="o">*</span><span class="n">base</span><span class="p">;</span>
-<div class="newline"></div>        <span class="kt">int</span> <span class="n">flags</span><span class="p">;</span>
-<div class="newline"></div>        <span class="n">PyObject</span> <span class="o">*</span><span class="n">weakreflist</span><span class="p">;</span>
-<div class="newline"></div><span class="p">}</span> <span class="n">PyArrayObject</span><span class="p">;</span>
+<div class="newline"></div><span class="w">        </span><span class="cm">/* Other stuff */</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">base</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">weakreflist</span><span class="p">;</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"> </span><span class="n">PyArrayObject</span><span class="p">;</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
 </div>
@@ -296,7 +296,7 @@ wrap any data in an ndarray, without unnecessary copies.</li>
 <div class="newline"></div><span class="go"> &#39;version&#39;: 3}</span>
 <div class="newline"></div></pre></div>
 </div>
-<p>Reminder: two <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarrays</span></code></a> may share the same memory:</p>
+<p>Reminder: two <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarrays</span></code></a> may share the same memory:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9</span>
@@ -304,7 +304,7 @@ wrap any data in an ndarray, without unnecessary copies.</li>
 <div class="newline"></div><span class="go">array([9, 2, 3])</span>
 <div class="newline"></div></pre></div>
 </div>
-<p>Memory does not need to be owned by an <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>:</p>
+<p>Memory does not need to be owned by an <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;1234&#39;</span>      <span class="c1"># The &#39;b&#39; is for &quot;bytes&quot;, necessary in Python 3</span>
 <div class="newline"></div></pre></div>
 </div>
@@ -337,7 +337,7 @@ block.</p>
 <h3><a class="toc-backref" href="#id6">2.2.1.3. Data types</a><a class="headerlink" href="#data-types" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="the-descriptor">
 <h4>The descriptor<a class="headerlink" href="#the-descriptor" title="Permalink to this headline">¶</a></h4>
-<p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code></a> describes a single item in the array:</p>
+<p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code></a> describes a single item in the array:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="10%" />
@@ -466,7 +466,7 @@ to the name <code class="docutils literal notranslate"><span class="pre">format<
 <li>The second one is its offset (in bytes) from the beginning of the item</li>
 </ul>
 <div class="green topic">
-<p class="topic-title first">Exercise</p>
+<p class="topic-title">Exercise</p>
 <p>Mini-exercise, make a “sparse” dtype by using offsets, and only some
 of the fields:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wav_header_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
@@ -784,9 +784,9 @@ without copying data?</p>
 <h5>C and Fortran order<a class="headerlink" href="#c-and-fortran-order" title="Permalink to this headline">¶</a></h5>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The Python built-in <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> returns bytes in C-order by default
+<p class="last">The Python built-in <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> returns bytes in C-order by default
 which can cause confusion when trying to inspect memory layout. We use
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.tobytes.html#numpy.ndarray.tobytes" title="(in NumPy v1.19)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">numpy.ndarray.tobytes()</span></code></a> with <code class="docutils literal notranslate"><span class="pre">order=A</span></code> instead, which preserves
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.tobytes.html#numpy.ndarray.tobytes" title="(in NumPy v1.23)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">numpy.ndarray.tobytes()</span></code></a> with <code class="docutils literal notranslate"><span class="pre">order=A</span></code> instead, which preserves
 the C or F ordering of the bytes in memory.</p>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
@@ -858,7 +858,7 @@ s_j^F &amp;= d_{1} d_{2} ... d_{j-1} \times \mathrm{itemsize}"/></p>
 <p><strong>In-place operations with views</strong></p>
 <p class="last">Prior to NumPy version 1.13, in-place operations with views could result in
 <strong>incorrect</strong> results for large arrays.
-Since <a class="reference external" href="https://numpy.org/doc/stable/release/1.13.0-notes.html" title="(in NumPy v1.19)"><span class="xref std std-doc">version 1.13</span></a>,
+Since <a class="reference external" href="https://numpy.org/doc/stable/release/1.13.0-notes.html" title="(in NumPy v1.23)"><span class="xref std std-doc">version 1.13</span></a>,
 NumPy includes checks for <em>memory overlap</em> to
 guarantee that results are consistent with the non in-place version
 (e.g. <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">a.T</span></code> produces the same result as <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">+=</span> <span class="pre">a.T</span></code>).
@@ -930,7 +930,7 @@ operation needs to make a copy here.</p>
 <div class="section" id="example-fake-dimensions-with-strides">
 <span id="stride-manipulation-label"></span><h4>Example: fake dimensions with strides<a class="headerlink" href="#example-fake-dimensions-with-strides" title="Permalink to this headline">¶</a></h4>
 <p class="rubric">Stride manipulation</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="k">import</span> <span class="n">as_strided</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="kn">import</span> <span class="n">as_strided</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">as_strided</span><span class="p">)</span>    
 <div class="newline"></div><span class="go">as_strided(x, shape=None, strides=None)</span>
 <div class="newline"></div><span class="go">   Make an ndarray from the given array with the given shape and strides</span>
@@ -1193,47 +1193,47 @@ NumPy takes care of the rest.</p>
 <h4>Parts of an Ufunc<a class="headerlink" href="#parts-of-an-ufunc" title="Permalink to this headline">¶</a></h4>
 <ol class="arabic">
 <li><p class="first">Provided by user</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">ufunc_loop</span><span class="p">(</span><span class="kt">void</span> <span class="o">**</span><span class="n">args</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">dimensions</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">steps</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
-<div class="newline"></div><span class="p">{</span>
-<div class="newline"></div>    <span class="cm">/*</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">ufunc_loop</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">steps</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"></span>
+<div class="newline"></div><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="cm">/*</span>
 <div class="newline"></div><span class="cm">     * int8 output = elementwise_function(int8 input_1, int8 input_2)</span>
 <div class="newline"></div><span class="cm">     *</span>
 <div class="newline"></div><span class="cm">     * This function must compute the ufunc for many values at once,</span>
 <div class="newline"></div><span class="cm">     * in the way shown below.</span>
-<div class="newline"></div><span class="cm">     */</span>
-<div class="newline"></div>    <span class="kt">char</span> <span class="o">*</span><span class="n">input_1</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-<div class="newline"></div>    <span class="kt">char</span> <span class="o">*</span><span class="n">input_2</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-<div class="newline"></div>    <span class="kt">char</span> <span class="o">*</span><span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+<div class="newline"></div><span class="cm">     */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">input_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">input_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-<div class="newline"></div>        <span class="o">*</span><span class="n">output</span> <span class="o">=</span> <span class="n">elementwise_function</span><span class="p">(</span><span class="o">*</span><span class="n">input_1</span><span class="p">,</span> <span class="o">*</span><span class="n">input_2</span><span class="p">);</span>
-<div class="newline"></div>        <span class="n">input_1</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-<div class="newline"></div>        <span class="n">input_2</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-<div class="newline"></div>        <span class="n">output</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
-<div class="newline"></div>    <span class="p">}</span>
-<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="o">*</span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">elementwise_function</span><span class="p">(</span><span class="o">*</span><span class="n">input_1</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">input_2</span><span class="p">);</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">input_1</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">input_2</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">steps</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
 </li>
 <li><p class="first">The NumPy part, built by</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="n">types</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">types</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_BYTE</span>   <span class="cm">/* type of first input arg */</span>
-<div class="newline"></div><span class="n">types</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_BYTE</span>   <span class="cm">/* type of second input arg */</span>
-<div class="newline"></div><span class="n">types</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_BYTE</span>   <span class="cm">/* type of third input arg */</span>
+<div class="newline"></div><span class="n">types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NPY_BYTE</span><span class="w">   </span><span class="cm">/* type of first input arg */</span><span class="w"></span>
+<div class="newline"></div><span class="n">types</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NPY_BYTE</span><span class="w">   </span><span class="cm">/* type of second input arg */</span><span class="w"></span>
+<div class="newline"></div><span class="n">types</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NPY_BYTE</span><span class="w">   </span><span class="cm">/* type of third input arg */</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div><span class="n">PyObject</span> <span class="o">*</span><span class="n">python_ufunc</span> <span class="o">=</span> <span class="n">PyUFunc_FromFuncAndData</span><span class="p">(</span>
-<div class="newline"></div>    <span class="n">ufunc_loop</span><span class="p">,</span>
-<div class="newline"></div>    <span class="nb">NULL</span><span class="p">,</span>
-<div class="newline"></div>    <span class="n">types</span><span class="p">,</span>
-<div class="newline"></div>    <span class="mi">1</span><span class="p">,</span> <span class="cm">/* ntypes */</span>
-<div class="newline"></div>    <span class="mi">2</span><span class="p">,</span> <span class="cm">/* num_inputs */</span>
-<div class="newline"></div>    <span class="mi">1</span><span class="p">,</span> <span class="cm">/* num_outputs */</span>
-<div class="newline"></div>    <span class="n">identity_element</span><span class="p">,</span>
-<div class="newline"></div>    <span class="n">name</span><span class="p">,</span>
-<div class="newline"></div>    <span class="n">docstring</span><span class="p">,</span>
-<div class="newline"></div>    <span class="n">unused</span><span class="p">)</span>
+<div class="newline"></div><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">python_ufunc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PyUFunc_FromFuncAndData</span><span class="p">(</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">ufunc_loop</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="nb">NULL</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">types</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="cm">/* ntypes */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="cm">/* num_inputs */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="cm">/* num_outputs */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">identity_element</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">name</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">docstring</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="n">unused</span><span class="p">)</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
 <ul class="simple">
@@ -1390,11 +1390,11 @@ Use it to determine which <cite>c</cite> are in the Mandelbrot set.</p>
 <div class="newline"></div><span class="c1"># Pulls definitions from the Numpy C headers.</span>
 <div class="newline"></div><span class="c1"># -------------------------------------------</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="nn">cimport</span> <span class="nn">import_array</span><span class="p">,</span> <span class="n">import_ufunc</span> 
-<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="nn">cimport</span> <span class="p">(</span><span class="n">PyUFunc_FromFuncAndData</span><span class="p">,</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="n">cimport</span> <span class="n">import_array</span><span class="p">,</span> <span class="n">import_ufunc</span> 
+<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="n">cimport</span> <span class="p">(</span><span class="n">PyUFunc_FromFuncAndData</span><span class="p">,</span>
 <div class="newline"></div>                    <span class="n">PyUFuncGenericFunction</span><span class="p">)</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="nn">cimport</span> <span class="nn">NPY_CDOUBLE</span>
-<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="nn">cimport</span> <span class="nn">PyUFunc_DD_D</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="n">cimport</span> <span class="n">NPY_CDOUBLE</span>
+<div class="newline"></div><span class="kn">from</span> <span class="nn">numpy</span> <span class="n">cimport</span> <span class="n">PyUFunc_DD_D</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Required module initialization</span>
 <div class="newline"></div><span class="c1"># ------------------------------</span>
@@ -1440,14 +1440,14 @@ Use it to determine which <cite>c</cite> are in the Mandelbrot set.</p>
 <div class="newline"></div>
 <div class="newline"></div><span class="sd">&quot;&quot;&quot;</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">mandel</span>
 <div class="newline"></div><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <div class="newline"></div><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<div class="newline"></div><span class="n">c</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="bp">None</span><span class="p">,:]</span> <span class="o">+</span> <span class="mi">1j</span><span class="o">*</span><span class="n">y</span><span class="p">[:,</span><span class="bp">None</span><span class="p">]</span>
+<div class="newline"></div><span class="n">c</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="kc">None</span><span class="p">,:]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">y</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span>
 <div class="newline"></div><span class="n">z</span> <span class="o">=</span> <span class="n">mandel</span><span class="o">.</span><span class="n">mandel</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">])</span>
 <div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">gray</span><span class="p">()</span>
 <div class="newline"></div><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1461,44 +1461,44 @@ Use it to determine which <cite>c</cite> are in the Mandelbrot set.</p>
 </div>
 <p class="rubric">Several accepted input types</p>
 <p>E.g. supporting both single- and double-precision versions</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>cdef void mandel_single_point(double complex *z_in,
-<div class="newline"></div>                              double complex *c_in,
-<div class="newline"></div>                              double complex *z_out) nogil:
-<div class="newline"></div>   ...
+<div class="highlight-cython notranslate"><div class="highlight"><pre><span></span><span class="k">cdef</span> <span class="kt">void</span> <span class="nf">mandel_single_point</span><span class="p">(</span><span class="n">double</span> <span class="nb">complex</span> <span class="o">*</span><span class="n">z_in</span><span class="p">,</span>
+<div class="newline"></div>                              <span class="n">double</span> <span class="nb">complex</span> <span class="o">*</span><span class="n">c_in</span><span class="p">,</span>
+<div class="newline"></div>                              <span class="n">double</span> <span class="nb">complex</span> <span class="o">*</span><span class="n">z_out</span><span class="p">)</span> <span class="k">nogil</span><span class="p">:</span>
+<div class="newline"></div>   <span class="o">...</span>
 <div class="newline"></div>
-<div class="newline"></div>cdef void mandel_single_point_singleprec(float complex *z_in,
-<div class="newline"></div>                                         float complex *c_in,
-<div class="newline"></div>                                         float complex *z_out) nogil:
-<div class="newline"></div>   ...
+<div class="newline"></div><span class="k">cdef</span> <span class="kt">void</span> <span class="nf">mandel_single_point_singleprec</span><span class="p">(</span><span class="nb">float</span> <span class="nb">complex</span> <span class="o">*</span><span class="n">z_in</span><span class="p">,</span>
+<div class="newline"></div>                                         <span class="nb">float</span> <span class="nb">complex</span> <span class="o">*</span><span class="n">c_in</span><span class="p">,</span>
+<div class="newline"></div>                                         <span class="nb">float</span> <span class="nb">complex</span> <span class="o">*</span><span class="n">z_out</span><span class="p">)</span> <span class="k">nogil</span><span class="p">:</span>
+<div class="newline"></div>   <span class="o">...</span>
 <div class="newline"></div>
-<div class="newline"></div>cdef PyUFuncGenericFunction loop_funcs[2]
-<div class="newline"></div>cdef char input_output_types[3*2]
-<div class="newline"></div>cdef void *elementwise_funcs[1*2]
+<div class="newline"></div><span class="k">cdef</span> <span class="kt">PyUFuncGenericFunction</span> <span class="kt">loop_funcs</span>[2]
+<div class="newline"></div><span class="k">cdef</span> <span class="kt">char</span> <span class="kt">input_output_types</span>[3*2]
+<div class="newline"></div><span class="k">cdef</span> <span class="kt">void</span> *<span class="kt">elementwise_funcs</span>[1*2]
 <div class="newline"></div>
-<div class="newline"></div>loop_funcs[0] = PyUFunc_DD_D
-<div class="newline"></div>input_output_types[0] = NPY_CDOUBLE
-<div class="newline"></div>input_output_types[1] = NPY_CDOUBLE
-<div class="newline"></div>input_output_types[2] = NPY_CDOUBLE
-<div class="newline"></div>elementwise_funcs[0] = &lt;void*&gt;mandel_single_point
+<div class="newline"></div><span class="n">loop_funcs</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">PyUFunc_DD_D</span>
+<div class="newline"></div><span class="n">input_output_types</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_CDOUBLE</span>
+<div class="newline"></div><span class="n">input_output_types</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_CDOUBLE</span>
+<div class="newline"></div><span class="n">input_output_types</span><span class="p">[</span><span class="mf">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_CDOUBLE</span>
+<div class="newline"></div><span class="n">elementwise_funcs</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">void</span><span class="o">*&gt;</span><span class="n">mandel_single_point</span>
 <div class="newline"></div>
-<div class="newline"></div>loop_funcs[1] = PyUFunc_FF_F
-<div class="newline"></div>input_output_types[3] = NPY_CFLOAT
-<div class="newline"></div>input_output_types[4] = NPY_CFLOAT
-<div class="newline"></div>input_output_types[5] = NPY_CFLOAT
-<div class="newline"></div>elementwise_funcs[1] = &lt;void*&gt;mandel_single_point_singleprec
+<div class="newline"></div><span class="n">loop_funcs</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">PyUFunc_FF_F</span>
+<div class="newline"></div><span class="n">input_output_types</span><span class="p">[</span><span class="mf">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_CFLOAT</span>
+<div class="newline"></div><span class="n">input_output_types</span><span class="p">[</span><span class="mf">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_CFLOAT</span>
+<div class="newline"></div><span class="n">input_output_types</span><span class="p">[</span><span class="mf">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPY_CFLOAT</span>
+<div class="newline"></div><span class="n">elementwise_funcs</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">void</span><span class="o">*&gt;</span><span class="n">mandel_single_point_singleprec</span>
 <div class="newline"></div>
-<div class="newline"></div>mandel = PyUFunc_FromFuncAndData(
-<div class="newline"></div>    loop_func,
-<div class="newline"></div>    elementwise_funcs,
-<div class="newline"></div>    input_output_types,
-<div class="newline"></div>    2, # number of supported input types   &lt;----------------
-<div class="newline"></div>    2, # number of input args
-<div class="newline"></div>    1, # number of output args
-<div class="newline"></div>    0, # `identity` element, never mind this
-<div class="newline"></div>    &quot;mandel&quot;, # function name
-<div class="newline"></div>    &quot;mandel(z, c) -&gt; computes iterated z*z + c&quot;, # docstring
-<div class="newline"></div>    0 # unused
-<div class="newline"></div>    )
+<div class="newline"></div><span class="n">mandel</span> <span class="o">=</span> <span class="n">PyUFunc_FromFuncAndData</span><span class="p">(</span>
+<div class="newline"></div>    <span class="n">loop_func</span><span class="p">,</span>
+<div class="newline"></div>    <span class="n">elementwise_funcs</span><span class="p">,</span>
+<div class="newline"></div>    <span class="n">input_output_types</span><span class="p">,</span>
+<div class="newline"></div>    <span class="mf">2</span><span class="p">,</span> <span class="c"># number of supported input types   &lt;----------------</span>
+<div class="newline"></div>    <span class="mf">2</span><span class="p">,</span> <span class="c"># number of input args</span>
+<div class="newline"></div>    <span class="mf">1</span><span class="p">,</span> <span class="c"># number of output args</span>
+<div class="newline"></div>    <span class="mf">0</span><span class="p">,</span> <span class="c"># `identity` element, never mind this</span>
+<div class="newline"></div>    <span class="s">&quot;mandel&quot;</span><span class="p">,</span> <span class="c"># function name</span>
+<div class="newline"></div>    <span class="s">&quot;mandel(z, c) -&gt; computes iterated z*z + c&quot;</span><span class="p">,</span> <span class="c"># docstring</span>
+<div class="newline"></div>    <span class="mf">0</span> <span class="c"># unused</span>
+<div class="newline"></div>    <span class="p">)</span>
 <div class="newline"></div></pre></div>
 </div>
 </div>
@@ -1571,34 +1571,34 @@ many small matrices at once</p>
 </ul>
 <p class="rubric">Generalized ufunc loop</p>
 <p>Matrix multiplication <code class="docutils literal notranslate"><span class="pre">(m,n),(n,p)</span> <span class="pre">-&gt;</span> <span class="pre">(m,p)</span></code></p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">gufunc_loop</span><span class="p">(</span><span class="kt">void</span> <span class="o">**</span><span class="n">args</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">dimensions</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">steps</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
-<div class="newline"></div><span class="p">{</span>
-<div class="newline"></div>    <span class="kt">char</span> <span class="o">*</span><span class="n">input_1</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>  <span class="cm">/* these are as previously */</span>
-<div class="newline"></div>    <span class="kt">char</span> <span class="o">*</span><span class="n">input_2</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-<div class="newline"></div>    <span class="kt">char</span> <span class="o">*</span><span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">gufunc_loop</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">steps</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"></span>
+<div class="newline"></div><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">input_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w">  </span><span class="cm">/* these are as previously */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">input_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">input_1_stride_m</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>  <span class="cm">/* strides for the core dimensions */</span>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">input_1_stride_n</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>  <span class="cm">/* are added after the non-core */</span>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">input_2_strides_n</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span> <span class="cm">/* steps */</span>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">input_2_strides_p</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">output_strides_n</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">7</span><span class="p">];</span>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">output_strides_p</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">input_1_stride_m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">steps</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span><span class="w">  </span><span class="cm">/* strides for the core dimensions */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">input_1_stride_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">steps</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w">  </span><span class="cm">/* are added after the non-core */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">input_2_strides_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">steps</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span><span class="w"> </span><span class="cm">/* steps */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">input_2_strides_p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">steps</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">output_strides_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">steps</span><span class="p">[</span><span class="mi">7</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">output_strides_p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">steps</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">dimension</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="cm">/* core dimensions are added after */</span>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">dimension</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span> <span class="cm">/* the main dimension; order as in */</span>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">p</span> <span class="o">=</span> <span class="n">dimension</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span> <span class="cm">/* signature */</span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dimension</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"> </span><span class="cm">/* core dimensions are added after */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dimension</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"> </span><span class="cm">/* the main dimension; order as in */</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dimension</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span><span class="w"> </span><span class="cm">/* signature */</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+<div class="newline"></div><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-<div class="newline"></div>        <span class="n">matmul_for_strided_matrices</span><span class="p">(</span><span class="n">input_1</span><span class="p">,</span> <span class="n">input_2</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span>
-<div class="newline"></div>                                    <span class="n">strides</span> <span class="k">for</span> <span class="n">each</span> <span class="n">array</span><span class="p">...);</span>
+<div class="newline"></div><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">matmul_for_strided_matrices</span><span class="p">(</span><span class="n">input_1</span><span class="p">,</span><span class="w"> </span><span class="n">input_2</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="p">,</span><span class="w"></span>
+<div class="newline"></div><span class="w">                                    </span><span class="n">strides</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">array</span><span class="p">...);</span><span class="w"></span>
 <div class="newline"></div>
-<div class="newline"></div>        <span class="n">input_1</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-<div class="newline"></div>        <span class="n">input_2</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-<div class="newline"></div>        <span class="n">output</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
-<div class="newline"></div>    <span class="p">}</span>
-<div class="newline"></div><span class="p">}</span>
+<div class="newline"></div><span class="w">        </span><span class="n">input_1</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">input_2</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">steps</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<div class="newline"></div><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<div class="newline"></div><span class="p">}</span><span class="w"></span>
 <div class="newline"></div></pre></div>
 </div>
 </div>
@@ -1635,7 +1635,7 @@ Imaging Library):</p>
 <p class="first admonition-title">See also</p>
 <p class="last">pilbuffer.py</p>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">]</span> <span class="c1"># Red</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="c1"># In PIL, RGBA images consist of 32-bit integers whose bytes are [RR,GG,BB,AA]</span>
@@ -1658,7 +1658,7 @@ Imaging Library):</p>
 <div class="newline"></div><span class="sd">the buffer interface.</span>
 <div class="newline"></div><span class="sd">&quot;&quot;&quot;</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">Image</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Let&#39;s make a sample image, RGBA format</span>
@@ -1713,7 +1713,7 @@ Imaging Library):</p>
 </div>
 <dl class="docutils">
 <dt>::</dt>
-<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;data/test.png&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="o">.</span><span class="n">__array_interface__</span>     
 <div class="newline"></div><span class="go">{&#39;data&#39;: ...,</span>
@@ -1733,9 +1733,9 @@ Imaging Library):</p>
 </div>
 </div>
 <div class="section" id="array-siblings-chararray-maskedarray-matrix">
-<span id="array-siblings"></span><h2><a class="toc-backref" href="#id19">2.2.4. Array siblings: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">maskedarray</span></code>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a></a><a class="headerlink" href="#array-siblings-chararray-maskedarray-matrix" title="Permalink to this headline">¶</a></h2>
+<span id="array-siblings"></span><h2><a class="toc-backref" href="#id19">2.2.4. Array siblings: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">maskedarray</span></code>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a></a><a class="headerlink" href="#array-siblings-chararray-maskedarray-matrix" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="chararray-vectorized-string-operations">
-<h3><a class="toc-backref" href="#id20">2.2.4.1. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>: vectorized string operations</a><a class="headerlink" href="#chararray-vectorized-string-operations" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id20">2.2.4.1. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html#numpy.chararray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">chararray</span></code></a>: vectorized string operations</a><a class="headerlink" href="#chararray-vectorized-string-operations" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;  bbb&#39;</span><span class="p">,</span> <span class="s1">&#39;  ccc&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">chararray</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>       
 <div class="newline"></div><span class="go">chararray([&#39;a&#39;, &#39;bbb&#39;, &#39;ccc&#39;],</span>
@@ -1838,7 +1838,7 @@ array back:</p>
 in arrays is making its way into NumPy 1.7.  Stay tuned!</p>
 </div>
 <div class="topic">
-<p class="topic-title first">Example: Masked statistics</p>
+<p class="topic-title">Example: Masked statistics</p>
 <p>Canadian rangers were distracted when counting hares and lynxes in
 1903-1910 and 1917-1918, and got the numbers are wrong. (Carrot
 farmers stayed alert, though.)  Compute the mean populations over
@@ -1874,7 +1874,7 @@ time, ignoring the invalid numbers.</p>
 </div>
 </div>
 <div class="section" id="recarray-purely-convenience">
-<h3><a class="toc-backref" href="#id22">2.2.4.3. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.recarray.html#numpy.recarray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">recarray</span></code></a>: purely convenience</a><a class="headerlink" href="#recarray-purely-convenience" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id22">2.2.4.3. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.recarray.html#numpy.recarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">recarray</span></code></a>: purely convenience</a><a class="headerlink" href="#recarray-purely-convenience" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;S1&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)])</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">arr2</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">)</span>
 <div class="newline"></div><span class="gp">&gt;&gt;&gt; </span><span class="n">arr2</span><span class="o">.</span><span class="n">x</span>       
@@ -1886,7 +1886,7 @@ time, ignoring the invalid numbers.</p>
 </div>
 </div>
 <div class="section" id="matrix-convenience">
-<h3><a class="toc-backref" href="#id23">2.2.4.4. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a>: convenience?</a><a class="headerlink" href="#matrix-convenience" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id23">2.2.4.4. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a>: convenience?</a><a class="headerlink" href="#matrix-convenience" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>always 2-D</li>
 <li><code class="docutils literal notranslate"><span class="pre">*</span></code> is the matrix product, not the elementwise one</li>
@@ -2235,7 +2235,7 @@ time, ignoring the invalid numbers.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020,2021,2022.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>

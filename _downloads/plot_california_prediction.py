@@ -1,14 +1,14 @@
 """
-A simple regression analysis on the Boston housing data
-========================================================
+A simple regression analysis on the California housing data
+===========================================================
 
-Here we perform a simple regression analysis on the Boston housing
+Here we perform a simple regression analysis on the California housing
 data, exploring two types of regressors.
 
 """
 
-from sklearn.datasets import load_boston
-data = load_boston()
+from sklearn.datasets import fetch_california_housing 
+data = fetch_california_housing(as_frame=True)
 
 ##############################################################################
 # Print a histogram of the quantity to predict: price
@@ -24,7 +24,7 @@ plt.tight_layout()
 
 for index, feature_name in enumerate(data.feature_names):
     plt.figure(figsize=(4, 3))
-    plt.scatter(data.data[:, index], data.target)
+    plt.scatter(data.data[feature_name], data.target)
     plt.ylabel('Price', size=15)
     plt.xlabel(feature_name, size=15)
     plt.tight_layout()

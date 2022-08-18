@@ -172,8 +172,8 @@ statistical parameters.</p>
 <p>Also shows how to make 3d plots.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original author: Thomas Haslwanter</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="newline"></div><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <div class="newline"></div><span class="kn">import</span> <span class="nn">pandas</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># For 3d plots. This import is necessary to have 3D plotting below</span>
@@ -197,7 +197,7 @@ statistical parameters.</p>
 <div class="newline"></div><span class="n">Z</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">X</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">Y</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.normal.html#numpy.random.normal" title="View documentation for numpy.random.normal"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span></a><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Plot the data</span>
-<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+<div class="newline"></div><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
 <div class="newline"></div><span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
 <div class="newline"></div><span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
 <div class="newline"></div>                       <span class="n">rstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -224,19 +224,19 @@ intervals etc.</p>
 <div class="newline"></div><span class="n">model</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.ols.html#statsmodels.formula.api.ols" title="View documentation for statsmodels.formula.api.ols"><span class="n">ols</span></a><span class="p">(</span><span class="s2">&quot;z ~ x + y&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Print the summary</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Retrieving manually the parameter estimates:&quot;</span><span class="p">)</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">_results</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Retrieving manually the parameter estimates:&quot;</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">_results</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
 <div class="newline"></div><span class="c1"># should be array([-4.99754526,  3.00250049, -0.50514907])</span>
 <div class="newline"></div>
 <div class="newline"></div><span class="c1"># Peform analysis of variance on fitted linear model</span>
 <div class="newline"></div><span class="n">anova_results</span> <span class="o">=</span> <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.anova.anova_lm.html#statsmodels.stats.anova.anova_lm" title="View documentation for statsmodels.stats.anova.anova_lm"><span class="n">anova_lm</span></a><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">ANOVA results&#39;</span><span class="p">)</span>
-<div class="newline"></div><span class="k">print</span><span class="p">(</span><span class="n">anova_results</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">ANOVA results&#39;</span><span class="p">)</span>
+<div class="newline"></div><span class="nb">print</span><span class="p">(</span><span class="n">anova_results</span><span class="p">)</span>
 <div class="newline"></div>
-<div class="newline"></div><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<div class="newline"></div><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 <div class="newline"></div></pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -245,8 +245,8 @@ intervals etc.</p>
 <div class="newline"></div>Dep. Variable:                      z   R-squared:                       0.594
 <div class="newline"></div>Model:                            OLS   Adj. R-squared:                  0.592
 <div class="newline"></div>Method:                 Least Squares   F-statistic:                     320.4
-<div class="newline"></div>Date:                Wed, 02 Sep 2020   Prob (F-statistic):           1.89e-86
-<div class="newline"></div>Time:                        16:02:16   Log-Likelihood:                -1537.7
+<div class="newline"></div>Date:                Thu, 18 Aug 2022   Prob (F-statistic):           1.89e-86
+<div class="newline"></div>Time:                        10:40:00   Log-Likelihood:                -1537.7
 <div class="newline"></div>No. Observations:                 441   AIC:                             3081.
 <div class="newline"></div>Df Residuals:                     438   BIC:                             3094.
 <div class="newline"></div>Df Model:                           2
@@ -277,7 +277,7 @@ intervals etc.</p>
 <div class="newline"></div>Residual  438.0  27576.201607     62.959364         NaN           NaN
 <div class="newline"></div></pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.057 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.053 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-packages-statistics-auto-examples-plot-regression-3d-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../../_downloads/plot_regression_3d.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_regression_3d.py</span></code></a></div>
@@ -358,7 +358,7 @@ intervals etc.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020.
+        &#169; Copyright 2012,2013,2015,2016,2017,2018,2019,2020,2021,2022.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>

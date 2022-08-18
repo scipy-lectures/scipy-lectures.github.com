@@ -23,12 +23,12 @@ digits data.
 
  .. code-block:: none
 
-    LinearSVC: 0.9370307807021948
+    LinearSVC: 0.9341800269333108
     GaussianNB: 0.8332741681010101
     KNeighborsClassifier: 0.9804562804949924
     ------------------
-    LinearSVC(loss='l1'): 0.9411259626578682
-    LinearSVC(loss='l2'): 0.9341635132052719
+    LinearSVC(loss='hinge'): 0.9294570108037394
+    LinearSVC(loss='squared_hinge'): 0.9341371852581549
     -------------------
     KNeighbors(n_neighbors=1): 0.9913675218842191
     KNeighbors(n_neighbors=2): 0.9848442068835102
@@ -70,7 +70,7 @@ digits data.
     print('------------------')
 
     # test SVC loss
-    for loss in ['l1', 'l2']:
+    for loss in ['hinge', 'squared_hinge']:
         clf = LinearSVC(loss=loss).fit(X_train, y_train)
         y_pred = clf.predict(X_test)
         print("LinearSVC(loss='{0}'): {1}".format(loss,
@@ -87,7 +87,7 @@ digits data.
 
 
 
-**Total running time of the script:** ( 0 minutes  1.179 seconds)
+**Total running time of the script:** ( 0 minutes  1.025 seconds)
 
 
 .. _sphx_glr_download_packages_scikit-learn_auto_examples_plot_compare_classifiers.py:

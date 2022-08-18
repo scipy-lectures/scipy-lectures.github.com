@@ -244,7 +244,7 @@ dimensions at a time using a scatter plot:
    :align: left
    :target: auto_examples/plot_iris_scatter.html
 
-.. topic:: **Excercise**:
+.. topic:: **Exercise**:
     :class: green
    
     Can you choose 2 features to find a plot where it is easier to
@@ -268,11 +268,11 @@ For instance a linear regression is: :class:`sklearn.linear_model.LinearRegressi
 **Estimator parameters**: All the parameters of an estimator can be set
 when it is instantiated::
 
-    >>> model = LinearRegression(normalize=True)
+    >>> model = LinearRegression(n_jobs=1, normalize=True)
     >>> print(model.normalize)
     True
     >>> print(model)
-    LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=True)
+    LinearRegression(n_jobs=1, normalize=True)
 
 Fitting on data
 ~~~~~~~~~~~~~~~
@@ -290,7 +290,7 @@ Let's create some simple data with :ref:`numpy <numpy>`::
            [2]])
 
     >>> model.fit(X, y)
-    LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=True)
+    LinearRegression(n_jobs=1, normalize=True)
 
 **Estimated parameters**: When data is fitted with an estimator,
 parameters are estimated from the data at hand. All the estimated
@@ -579,7 +579,7 @@ One good method to keep in mind is Gaussian Naive Bayes
     >>> # train the model
     >>> clf = GaussianNB()
     >>> clf.fit(X_train, y_train)
-    GaussianNB(priors=None)
+    GaussianNB()
     
     >>> # use the model to predict the labels of the test data
     >>> predicted = clf.predict(X_test)
@@ -627,20 +627,22 @@ combines several measures and prints a table with the results::
 
     >>> from sklearn import metrics
     >>> print(metrics.classification_report(expected, predicted))
-                 precision    recall  f1-score   support
+                precision    recall  f1-score   support
     <BLANKLINE>
-              0       1.00      0.91      0.95        46
-              1       0.76      0.64      0.69        44
-              2       0.85      0.62      0.72        47
-              3       0.98      0.82      0.89        49
-              4       0.89      0.86      0.88        37
-              5       0.97      0.93      0.95        41
-              6       1.00      0.98      0.99        44
-              7       0.73      1.00      0.84        45
-              8       0.50      0.90      0.64        49
-              9       0.93      0.54      0.68        48
+             0       1.00      0.91      0.95        46
+             1       0.76      0.64      0.69        44
+             2       0.85      0.62      0.72        47
+             3       0.98      0.82      0.89        49
+             4       0.89      0.86      0.88        37
+             5       0.97      0.93      0.95        41
+             6       1.00      0.98      0.99        44
+             7       0.73      1.00      0.84        45
+             8       0.50      0.90      0.64        49
+             9       0.93      0.54      0.68        48
     <BLANKLINE>
-    avg / total       0.86      0.82      0.82       450
+        accuracy                           0.82       450
+       macro avg       0.86      0.82      0.82       450
+    weighted avg       0.86      0.82      0.82       450
     <BLANKLINE>
 
 
@@ -676,56 +678,68 @@ A quick look at the data
 .. sidebar:: Code and notebook
 
    Python code and Jupyter notebook for this section are found 
-   :ref:`here <sphx_glr_packages_scikit-learn_auto_examples_plot_boston_prediction.py>`
+   :ref:`here <sphx_glr_packages_scikit-learn_auto_examples_plot_california_prediction.py>`
 
 
 
-We'll use the simple Boston house prices set, available in scikit-learn.
-This records measurements of 13 attributes of housing markets around
-Boston, as well as the median price. The question is: can you predict
+We'll use the California house prices set, available in scikit-learn.
+This records measurements of 8 attributes of housing markets in 
+California, as well as the median price. The question is: can you predict
 the price of a new market given its attributes?::
 
-    >>> from sklearn.datasets import load_boston
-    >>> data = load_boston()
+    >>> from sklearn.datasets import fetch_california_housing
+    >>> data = fetch_california_housing(as_frame=True)
     >>> print(data.data.shape)
-    (506, 13)
+    (20640, 8)
     >>> print(data.target.shape)
-    (506,)
+    (20640,)
 
-We can see that there are just over 500 data points.
+We can see that there are just over 20000 data points.
 
 The ``DESCR`` variable has a long description of the dataset::
 
-    >>> print(data.DESCR) # doctest: +ELLIPSIS
-    Boston House Prices dataset
-    ===========================
+    >>> print(data.DESCR) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    .. _california_housing_dataset:
     <BLANKLINE>
-    Notes
-    ------
-    Data Set Characteristics:  
+    California Housing dataset
+    --------------------------
     <BLANKLINE>
-        :Number of Instances: 506 
+    **Data Set Characteristics:**
     <BLANKLINE>
-        :Number of Attributes: 13 numeric/categorical predictive
+	:Number of Instances: 20640
     <BLANKLINE>
-        :Median Value (attribute 14) is usually the target
+	:Number of Attributes: 8 numeric, predictive attributes and the target
     <BLANKLINE>
-        :Attribute Information (in order):
-            - CRIM     per capita crime rate by town
-            - ZN       proportion of residential land zoned for lots over 25,000 sq.ft.
-            - INDUS    proportion of non-retail business acres per town
-            - CHAS     Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)
-            - NOX      nitric oxides concentration (parts per 10 million)
-            - RM       average number of rooms per dwelling
-            - AGE      proportion of owner-occupied units built prior to 1940
-            - DIS      weighted distances to five Boston employment centres
-            - RAD      index of accessibility to radial highways
-            - TAX      full-value property-tax rate per $10,000
-            - PTRATIO  pupil-teacher ratio by town
-            - B        1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town
-            - LSTAT    % lower status of the population
-            - MEDV     Median value of owner-occupied homes in $1000's
-    ...
+	:Attribute Information:
+	    - MedInc        median income in block
+	    - HouseAge      median house age in block
+	    - AveRooms      average number of rooms
+	    - AveBedrms     average number of bedrooms
+	    - Population    block population
+	    - AveOccup      average house occupancy
+	    - Latitude      house block latitude
+	    - Longitude     house block longitude
+    <BLANKLINE>
+	:Missing Attribute Values: None
+    <BLANKLINE>
+    This dataset was obtained from the StatLib repository.
+    http://lib.stat.cmu.edu/datasets/
+    <BLANKLINE>
+    The target variable is the median house value for California districts.
+    <BLANKLINE>
+    This dataset was derived from the 1990 U.S. census, using one row per census
+    block group. A block group is the smallest geographical unit for which the U.S.
+    Census Bureau publishes sample data (a block group typically has a population
+    of 600 to 3,000 people).
+    <BLANKLINE>
+    It can be downloaded/loaded using the
+    :func:`sklearn.datasets.fetch_california_housing` function.
+    <BLANKLINE>
+    .. topic:: References
+    <BLANKLINE>
+	- Pace, R. Kelley and Ronald Barry, Sparse Spatial Autoregressions,
+	  Statistics and Probability Letters, 33 (1997) 291-297
+
 
 It often helps to quickly visualize pieces of the data using histograms,
 scatter plots, or other plot types. With matplotlib, let us show a
@@ -734,9 +748,9 @@ histogram of the target values: the median price in each neighborhood::
     >>> plt.hist(data.target)  # doctest: +ELLIPSIS
     (array([...
 
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_001.png
+.. image:: auto_examples/images/sphx_glr_plot_california_prediction_001.png
    :align: center
-   :target: auto_examples/plot_boston_prediction.html
+   :target: auto_examples/plot_california_prediction.html
    :scale: 70
 
 
@@ -746,49 +760,33 @@ others for our problem::
 
     >>> for index, feature_name in enumerate(data.feature_names):
     ...     plt.figure()
-    ...     plt.scatter(data.data[:, index], data.target)  # doctest: +ELLIPSIS
+    ...     plt.scatter(data.data[feature_name], data.target)  # doctest: +ELLIPSIS
     <Figure size...
 
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_002.png
+.. image:: auto_examples/images/sphx_glr_plot_california_prediction_002.png
    :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_003.png
+   :target: auto_examples/plot_california_prediction.html
+.. image:: auto_examples/images/sphx_glr_plot_california_prediction_003.png
    :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_004.png
+   :target: auto_examples/plot_california_prediction.html
+.. image:: auto_examples/images/sphx_glr_plot_california_prediction_004.png
    :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_005.png
+   :target: auto_examples/plot_california_prediction.html
+.. image:: auto_examples/images/sphx_glr_plot_california_prediction_005.png
    :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_006.png
+   :target: auto_examples/plot_california_prediction.html
+.. image:: auto_examples/images/sphx_glr_plot_california_prediction_006.png
    :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_007.png
+   :target: auto_examples/plot_california_prediction.html
+.. image:: auto_examples/images/sphx_glr_plot_california_prediction_007.png
    :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_008.png
+   :target: auto_examples/plot_california_prediction.html
+.. image:: auto_examples/images/sphx_glr_plot_california_prediction_008.png
    :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_009.png
+   :target: auto_examples/plot_california_prediction.html
+.. image:: auto_examples/images/sphx_glr_plot_california_prediction_009.png
    :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_010.png
-   :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_011.png
-   :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_012.png
-   :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_013.png
-   :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_014.png
-   :width: 32%  
-   :target: auto_examples/plot_boston_prediction.html
-
+   :target: auto_examples/plot_california_prediction.html
 
 
 This is a manual version of a technique called **feature selection**.
@@ -813,15 +811,15 @@ wrapper around an ordinary least squares calculation. ::
     >>> from sklearn.linear_model import LinearRegression
     >>> clf = LinearRegression()
     >>> clf.fit(X_train, y_train)
-    LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False)
+    LinearRegression()
     >>> predicted = clf.predict(X_test)
     >>> expected = y_test
     >>> print("RMS: %s" % np.sqrt(np.mean((predicted - expected) ** 2))) # doctest: +ELLIPSIS
-    RMS: 5.0059...
+    RMS: 0.7...
 
-.. image:: auto_examples/images/sphx_glr_plot_boston_prediction_015.png
+.. image:: auto_examples/images/sphx_glr_plot_california_prediction_010.png
    :align: right
-   :target: auto_examples/plot_boston_prediction.html
+   :target: auto_examples/plot_california_prediction.html
 
 We can plot the error: expected as a function of predicted::
 
@@ -851,7 +849,7 @@ We can plot the error: expected as a function of predicted::
         from sklearn.ensemble import GradientBoostingRegressor
         # Instantiate the model, fit the results, and scatter in vs. out
 
-    **Solution** The solution is found in :ref:`the code of this chapter <sphx_glr_packages_scikit-learn_auto_examples_plot_boston_prediction.py>`
+    **Solution** The solution is found in :ref:`the code of this chapter <sphx_glr_packages_scikit-learn_auto_examples_plot_california_prediction.py>`
 
 
 
@@ -901,13 +899,13 @@ samples it has already seen.  To really test how well this algorithm
 does, we need to try some samples it *hasn't* yet seen.
 
 This problem also occurs with regression models. In the following we
-fit an other instance-based model named "decision tree" to the Boston
+fit an other instance-based model named "decision tree" to the California 
 Housing price dataset we introduced previously::
 
-    >>> from sklearn.datasets import load_boston
+    >>> from sklearn.datasets import fetch_california_housing 
     >>> from sklearn.tree import DecisionTreeRegressor
 
-    >>> data = load_boston()
+    >>> data = fetch_california_housing(as_frame=True)
     >>> clf = DecisionTreeRegressor().fit(data.data, data.target)
     >>> predicted = clf.predict(data.data)
     >>> expected = data.target
@@ -975,20 +973,22 @@ Now we train on the training data, and test on the testing data::
      [ 0  0  0  0  0  0  0  0 48  0]
      [ 0  0  0  1  0  1  0  0  0 45]]
     >>> print(metrics.classification_report(y_test, y_pred))
-                 precision    recall  f1-score   support
+                  precision    recall  f1-score   support
     <BLANKLINE>
-              0       1.00      1.00      1.00        37
-              1       1.00      1.00      1.00        43
-              2       1.00      0.98      0.99        44
-              3       0.96      1.00      0.98        45
-              4       1.00      1.00      1.00        38
-              5       0.98      0.98      0.98        48
-              6       1.00      1.00      1.00        52
-              7       1.00      1.00      1.00        48
-              8       1.00      1.00      1.00        48
-              9       0.98      0.96      0.97        47
+	       0       1.00      1.00      1.00        37
+	       1       1.00      1.00      1.00        43
+	       2       1.00      0.98      0.99        44
+	       3       0.96      1.00      0.98        45
+	       4       1.00      1.00      1.00        38
+	       5       0.98      0.98      0.98        48
+	       6       1.00      1.00      1.00        52
+	       7       1.00      1.00      1.00        48
+	       8       1.00      1.00      1.00        48
+	       9       0.98      0.96      0.97        47
     <BLANKLINE>
-    avg / total       0.99      0.99      0.99       450
+        accuracy                           0.99       450
+       macro avg       0.99      0.99      0.99       450
+    weighted avg       0.99      0.99      0.99       450
     <BLANKLINE>
 
 The averaged f1-score is often used as a convenient measure of the
@@ -1039,9 +1039,9 @@ Model Selection via Validation
     ...     y_pred = clf.predict(X_test)
     ...     print('%s: %s' %
     ...           (Model.__name__, metrics.f1_score(y_test, y_pred, average="macro")))  # doctest: +ELLIPSIS
-    GaussianNB: 0.8332741681...
-    KNeighborsClassifier: 0.9804562804...
-    LinearSVC: 0.93...
+    GaussianNB: 0.8...
+    KNeighborsClassifier: 0.9...
+    LinearSVC: 0.9...
 
 * For each classifier, which value for the hyperparameters gives the best
   results for the digits data?  For :class:`~sklearn.svm.LinearSVC`, use
@@ -1078,8 +1078,8 @@ to automatically compute score on all these folds. Here we do
 
     >>> clf = KNeighborsClassifier()
     >>> from sklearn.model_selection import cross_val_score
-    >>> cross_val_score(clf, X, y, cv=5)
-    array([0.9478022 ,  0.9558011 ,  0.96657382,  0.98039216,  0.96338028])
+    >>> cross_val_score(clf, X, y, cv=5) #doctest: +ELLIPSIS
+    array([0.947...,  0.955...,  0.966...,  0.980...,  0.963... ])
 
 We can use different splitting strategies, such as random splitting::
 
@@ -1120,8 +1120,8 @@ With the default hyper-parameters: we compute the cross-validation score::
     >>> for Model in [Ridge, Lasso]:
     ...     model = Model()
     ...     print('%s: %s' % (Model.__name__, cross_val_score(model, X, y).mean()))
-    Ridge: 0.409427438303
-    Lasso: 0.353800083299
+    Ridge: 0.4...
+    Lasso: 0.3...
 
 Basic Hyperparameter Optimization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1157,7 +1157,7 @@ Automatically Performing Grid Search
 estimator, as well as a dictionary of parameter values to be searched.
 We can find the optimal parameters this way::
 
-    >>> from sklearn.grid_search import GridSearchCV
+    >>> from sklearn.model_selection import GridSearchCV
     >>> for Model in [Ridge, Lasso]:
     ...     gscv = GridSearchCV(Model(), dict(alpha=alphas), cv=3).fit(X, y)
     ...     print('%s: %s' % (Model.__name__, gscv.best_params_))
@@ -1239,19 +1239,19 @@ iris dataset::
     >>> from sklearn.decomposition import PCA
     >>> pca = PCA(n_components=2, whiten=True)
     >>> pca.fit(X) # doctest: +ELLIPSIS
-    PCA(..., n_components=2, ...)
+    PCA(n_components=2, ...)
 
 Once fitted, :class:`~sklearn.decomposition.PCA` exposes the singular
 vectors in the ``components_`` attribute::
 
     >>> pca.components_     # doctest: +ELLIPSIS
-    array([[ 0.36158..., -0.08226...,  0.85657...,  0.35884...],
-           [ 0.65653...,  0.72971..., -0.17576..., -0.07470...]])
+    array([[ 0.3..., -0.08...,  0.85...,  0.3...],
+           [ 0.6...,  0.7..., -0.1..., -0.07...]])
 
 Other attributes are available as well::
 
     >>> pca.explained_variance_ratio_    # doctest: +ELLIPSIS
-    array([0.92461...,  0.05301...])
+    array([0.92...,  0.053...])
 
 Let us project the iris dataset along those first two dimensions:::
 
